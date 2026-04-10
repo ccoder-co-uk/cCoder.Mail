@@ -1,0 +1,23 @@
+using cCoder.Mail.Models;
+using cCoder.Data.Models.CMS;
+using cCoder.Data.Models.Mail;
+using cCoder.Data.Models.Security;
+
+namespace cCoder.Mail.Services.Processings;
+
+public interface IMailServerProcessingService
+{
+    MailServer Get(int id);
+
+    IQueryable<MailServer> GetAll(bool ignoreFilters = false);
+
+    ValueTask<MailServer> AddAsync(MailServer entity);
+
+    ValueTask<MailServer> UpdateAsync(MailServer entity);
+
+    ValueTask DeleteAsync(int id);
+
+    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items);
+
+    ValueTask DeleteAllAsync(IEnumerable<MailServer> items);
+}
