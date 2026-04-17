@@ -46,7 +46,7 @@ public static partial class IServiceCollectionExtensions
         return configuration;
     }
 
-    internal static void ConfigureMailApiModel(this ODataConventionModelBuilder builder) =>
+    public static void ConfigureMailApiModel(this ODataConventionModelBuilder builder) =>
         new MailModelBuilder(builder).Configure();
 
     private static MailConfiguration CreateConfiguration(
