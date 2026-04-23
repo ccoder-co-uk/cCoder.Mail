@@ -37,8 +37,10 @@ public partial class MailServerServiceTests
         MailServer result = await mailServerService.AddAsync(mailServer);
 
         // Then
-        result.Should().NotBeSameAs(mailServer);
+        result.Should().BeSameAs(mailServer);
         submitted.Should().NotBeNull();
+        submitted.Should().NotBeSameAs(mailServer);
+        result.Should().NotBeSameAs(submitted);
 
         submitted
             .Should()

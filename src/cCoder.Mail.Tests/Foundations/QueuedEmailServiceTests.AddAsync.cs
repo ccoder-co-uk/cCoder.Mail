@@ -37,8 +37,10 @@ public partial class QueuedEmailServiceTests
         QueuedEmail result = await queuedEmailService.AddAsync(queuedEmail);
 
         // Then
-        result.Should().NotBeSameAs(queuedEmail);
+        result.Should().BeSameAs(queuedEmail);
         submitted.Should().NotBeNull();
+        submitted.Should().NotBeSameAs(queuedEmail);
+        result.Should().NotBeSameAs(submitted);
 
         submitted
             .Should()

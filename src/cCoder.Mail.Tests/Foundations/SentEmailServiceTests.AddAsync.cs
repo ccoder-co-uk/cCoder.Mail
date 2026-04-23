@@ -37,8 +37,10 @@ public partial class SentEmailServiceTests
         SentEmail result = await sentEmailService.AddAsync(sentEmail);
 
         // Then
-        result.Should().NotBeSameAs(sentEmail);
+        result.Should().BeSameAs(sentEmail);
         submitted.Should().NotBeNull();
+        submitted.Should().NotBeSameAs(sentEmail);
+        result.Should().NotBeSameAs(submitted);
 
         submitted
             .Should()

@@ -32,13 +32,35 @@ internal class SentEmailService(
     public async ValueTask<SentEmail> AddAsync(SentEmail sentEmail)
     {
         authorizationBroker.Authorize(sentEmail.AppId, $"{nameof(SentEmail)}_create");
-        return await sentEmailBroker.AddSentEmailAsync(Copy(sentEmail));
+        SentEmail result = await sentEmailBroker.AddSentEmailAsync(Copy(sentEmail));
+        sentEmail.Id = result.Id;
+        sentEmail.AppId = result.AppId;
+        sentEmail.SentByUserId = result.SentByUserId;
+        sentEmail.Subject = result.Subject;
+        sentEmail.Content = result.Content;
+        sentEmail.To = result.To;
+        sentEmail.CC = result.CC;
+        sentEmail.IsBodyHtml = result.IsBodyHtml;
+        sentEmail.SentOn = result.SentOn;
+        sentEmail.From = result.From;
+        return sentEmail;
     }
 
     public async ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail)
     {
         authorizationBroker.Authorize(sentEmail.AppId, $"{nameof(SentEmail)}_update");
-        return await sentEmailBroker.UpdateSentEmailAsync(Copy(sentEmail));
+        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(Copy(sentEmail));
+        sentEmail.Id = result.Id;
+        sentEmail.AppId = result.AppId;
+        sentEmail.SentByUserId = result.SentByUserId;
+        sentEmail.Subject = result.Subject;
+        sentEmail.Content = result.Content;
+        sentEmail.To = result.To;
+        sentEmail.CC = result.CC;
+        sentEmail.IsBodyHtml = result.IsBodyHtml;
+        sentEmail.SentOn = result.SentOn;
+        sentEmail.From = result.From;
+        return sentEmail;
     }
 
     public async ValueTask DeleteAsync(int id)

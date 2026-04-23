@@ -32,13 +32,33 @@ internal class MailServerService(
     public async ValueTask<MailServer> AddAsync(MailServer mailServer)
     {
         authorizationBroker.Authorize(mailServer.AppId, $"{nameof(MailServer)}_create");
-        return await mailServerBroker.AddMailServerAsync(Copy(mailServer));
+        MailServer result = await mailServerBroker.AddMailServerAsync(Copy(mailServer));
+        mailServer.Id = result.Id;
+        mailServer.AppId = result.AppId;
+        mailServer.Name = result.Name;
+        mailServer.User = result.User;
+        mailServer.Password = result.Password;
+        mailServer.Host = result.Host;
+        mailServer.FromEmail = result.FromEmail;
+        mailServer.Port = result.Port;
+        mailServer.EnableSSL = result.EnableSSL;
+        return mailServer;
     }
 
     public async ValueTask<MailServer> UpdateAsync(MailServer mailServer)
     {
         authorizationBroker.Authorize(mailServer.AppId, $"{nameof(MailServer)}_update");
-        return await mailServerBroker.UpdateMailServerAsync(Copy(mailServer));
+        MailServer result = await mailServerBroker.UpdateMailServerAsync(Copy(mailServer));
+        mailServer.Id = result.Id;
+        mailServer.AppId = result.AppId;
+        mailServer.Name = result.Name;
+        mailServer.User = result.User;
+        mailServer.Password = result.Password;
+        mailServer.Host = result.Host;
+        mailServer.FromEmail = result.FromEmail;
+        mailServer.Port = result.Port;
+        mailServer.EnableSSL = result.EnableSSL;
+        return mailServer;
     }
 
     public async ValueTask DeleteAsync(int id)

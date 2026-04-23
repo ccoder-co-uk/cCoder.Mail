@@ -16,13 +16,13 @@
 ## Build
 
 ```powershell
-dotnet build cCoder.Mail.sln -v minimal
+dotnet build src/cCoder.Mail.sln -v minimal
 ```
 
 ## Test
 
 ```powershell
-dotnet test cCoder.Mail.sln -v minimal --no-build
+dotnet test src/cCoder.Mail.sln -v minimal --no-build
 ```
 
 ## Package
