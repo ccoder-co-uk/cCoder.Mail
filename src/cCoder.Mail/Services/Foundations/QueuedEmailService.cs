@@ -34,13 +34,33 @@ internal class QueuedEmailService(
         if (checkPrivileges)
             authorizationBroker.Authorize(queuedEmail.AppId, $"{nameof(QueuedEmail)}_create");
 
-        return await queuedEmailBroker.AddQueuedEmailAsync(Copy(queuedEmail));
+        QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(Copy(queuedEmail));
+        queuedEmail.Id = result.Id;
+        queuedEmail.AppId = result.AppId;
+        queuedEmail.SentByUserId = result.SentByUserId;
+        queuedEmail.Subject = result.Subject;
+        queuedEmail.Content = result.Content;
+        queuedEmail.To = result.To;
+        queuedEmail.CC = result.CC;
+        queuedEmail.IsBodyHtml = result.IsBodyHtml;
+        queuedEmail.MailServerName = result.MailServerName;
+        return queuedEmail;
     }
 
     public async ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail)
     {
         authorizationBroker.Authorize(queuedEmail.AppId, $"{nameof(QueuedEmail)}_update");
-        return await queuedEmailBroker.UpdateQueuedEmailAsync(Copy(queuedEmail));
+        QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(Copy(queuedEmail));
+        queuedEmail.Id = result.Id;
+        queuedEmail.AppId = result.AppId;
+        queuedEmail.SentByUserId = result.SentByUserId;
+        queuedEmail.Subject = result.Subject;
+        queuedEmail.Content = result.Content;
+        queuedEmail.To = result.To;
+        queuedEmail.CC = result.CC;
+        queuedEmail.IsBodyHtml = result.IsBodyHtml;
+        queuedEmail.MailServerName = result.MailServerName;
+        return queuedEmail;
     }
 
     public ValueTask RecordSendFailureAsync(

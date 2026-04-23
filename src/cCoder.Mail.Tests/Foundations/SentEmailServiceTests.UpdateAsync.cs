@@ -33,8 +33,10 @@ public partial class SentEmailServiceTests
         SentEmail result = await sentEmailService.UpdateAsync(sentEmail);
 
         // Then
-        result.Should().NotBeSameAs(sentEmail);
+        result.Should().BeSameAs(sentEmail);
         submitted.Should().NotBeNull();
+        submitted.Should().NotBeSameAs(sentEmail);
+        result.Should().NotBeSameAs(submitted);
         submitted.Should().BeEquivalentTo(sentEmail);
         result.Should().BeEquivalentTo(sentEmail);
         sentEmailBrokerMock.Verify(x => x.UpdateSentEmailAsync(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.Once);

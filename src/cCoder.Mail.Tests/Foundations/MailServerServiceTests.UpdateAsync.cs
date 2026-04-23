@@ -33,8 +33,10 @@ public partial class MailServerServiceTests
         MailServer result = await mailServerService.UpdateAsync(mailServer);
 
         // Then
-        result.Should().NotBeSameAs(mailServer);
+        result.Should().BeSameAs(mailServer);
         submitted.Should().NotBeNull();
+        submitted.Should().NotBeSameAs(mailServer);
+        result.Should().NotBeSameAs(submitted);
         submitted.Should().BeEquivalentTo(mailServer);
         result.Should().BeEquivalentTo(mailServer);
         mailServerBrokerMock.Verify(
