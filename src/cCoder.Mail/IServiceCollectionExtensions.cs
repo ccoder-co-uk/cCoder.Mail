@@ -10,7 +10,7 @@ using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Services.Foundations.Events;
 using cCoder.Mail.Services.Orchestrations;
 using cCoder.Mail.Services.Processings;
-using EventLibrary;
+using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
