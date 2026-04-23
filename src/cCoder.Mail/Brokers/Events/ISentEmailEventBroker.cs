@@ -1,5 +1,5 @@
 using cCoder.Data.Models.Mail;
-using EventLibrary.Models;
+using cCoder.Eventing.Models;
 
 
 namespace cCoder.Mail.Brokers.Events;

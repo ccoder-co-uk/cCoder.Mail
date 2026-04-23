@@ -1,6 +1,6 @@
 using cCoder.Mail.Api.OData;
 using cCoder.Mail.Models;
-using EventLibrary;
+using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.AspNetCore.Server.Kestrel.Core;

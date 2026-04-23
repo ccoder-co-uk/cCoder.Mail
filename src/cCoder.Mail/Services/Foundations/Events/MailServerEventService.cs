@@ -4,7 +4,7 @@ using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
-using EventLibrary.Models;
+using cCoder.Eventing.Models;
 using DataMailServer = cCoder.Data.Models.Mail.MailServer;
 
 
