@@ -7,18 +7,25 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail;
 
-public static class WebApplicationExtensions
+public static partial class WebApplicationExtensions
 {
     private const string MetadataScope = "Mail";
 
-    public static WebApplication UseMailExposure(this WebApplication app, ILogger log = null)
+    public static WebApplication StartMailWeb(this WebApplication app, ILogger log = null) =>
+        app.UseMailExposure(log)
+            .UseMailEventHandlers();
+
+    public static WebApplication StartMailHostedServices(this WebApplication app) =>
+        app.UseMailEventHandlers();
+
+    private static WebApplication UseMailExposure(this WebApplication app, ILogger log = null)
     {
         log?.LogInformation("Initialising Mail");
         PopulateMetadataTypeCache(app);
         return app;
     }
 
-    public static WebApplication UseMailEventHandlers(this WebApplication app)
+    private static WebApplication UseMailEventHandlers(this WebApplication app)
     {
         using IServiceScope scope = app.Services.CreateScope();
         IServiceProvider services = scope.ServiceProvider;

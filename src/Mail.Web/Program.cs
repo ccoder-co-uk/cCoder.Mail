@@ -54,7 +54,7 @@ public class Program
             builder.Services,
             coreConnection);
 
-        builder.Services.AddMailApi();
+        builder.Services.AddMailWeb();
         builder.Services.AddMailHostedServices();
 
         WebApplication app = builder.Build();
@@ -74,9 +74,9 @@ public class Program
             .UseODataRouteDebug();
 
         app.UseDomainApiShell();
+        app.StartMailWeb(log);
         app.UseDomainDefaultCors();
         app.UseDomainExceptionHandling(HandleUnhandledException);
-        app.UseMailEventHandlers();
         app.Run();
     }
 
