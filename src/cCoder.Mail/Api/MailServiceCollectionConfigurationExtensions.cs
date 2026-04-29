@@ -10,24 +10,24 @@ using Microsoft.OpenApi;
 
 namespace cCoder.Mail;
 
-public static class MailServiceCollectionConfigurationExtensions
+public static partial class IServiceCollectionExtensions
 {
-    public static MailConfiguration AddMail(
+    private static MailConfiguration AddConfiguredMail(
         this IServiceCollection services,
         Action<IServiceCollection, MailConfiguration> configure)
     {
         MailConfiguration configuration = CreateConfiguration(services, configure);
-        IServiceCollectionExtensions.AddMail(services);
+        services.AddMail();
         return configuration;
     }
 
-    public static MailConfiguration AddMailApi(
+    private static MailConfiguration AddConfiguredMailWeb(
         this IServiceCollection services,
         Action<IServiceCollection, MailConfiguration> configure,
         ODataConventionModelBuilder builder = null)
     {
         MailConfiguration configuration = CreateConfiguration(services, configure);
-        IServiceCollectionExtensions.AddMail(services);
+        services.AddMailWeb(builder);
         services.AddConfiguredApi(
             configuration,
             "Mail",
@@ -37,12 +37,12 @@ public static class MailServiceCollectionConfigurationExtensions
         return configuration;
     }
 
-    public static MailConfiguration AddMailHostedServices(
+    private static MailConfiguration AddConfiguredMailHostedServices(
         this IServiceCollection services,
         Action<IServiceCollection, MailConfiguration> configure)
     {
         MailConfiguration configuration = CreateConfiguration(services, configure);
-        IServiceCollectionExtensions.AddMailHostedServices(services);
+        services.AddMailHostedServices();
         return configuration;
     }
 
