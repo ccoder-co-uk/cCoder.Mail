@@ -1,7 +1,7 @@
 using System.Security;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
-using IAuthorizationBroker = cCoder.Mail.Brokers.IAuthorizationBroker;
 
 namespace cCoder.Mail.Services.Foundations;
 
