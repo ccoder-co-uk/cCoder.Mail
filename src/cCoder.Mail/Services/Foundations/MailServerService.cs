@@ -1,10 +1,10 @@
 using System.Security;
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
-using IAuthorizationBroker = cCoder.Mail.Brokers.IAuthorizationBroker;
 
 namespace cCoder.Mail.Services.Foundations;
 
