@@ -64,6 +64,14 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
     public async ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        EmailSendFailure[] failures = coreDataContext.SendFailures
+            .Where(failure => failure.EmailId == entity.Id)
+            .ToArray();
+
+        if (failures.Length > 0)
+            coreDataContext.SendFailures.RemoveRange(failures);
+
         coreDataContext.QueuedMail.Remove(entity);
         return await coreDataContext.SaveChangesAsync();
     }

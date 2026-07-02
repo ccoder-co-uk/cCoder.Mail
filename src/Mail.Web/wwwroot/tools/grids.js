@@ -23,10 +23,11 @@ window.MailGrids = {
             name: "QueuedEmail",
             title: "Queued Email",
             key: "Id",
+            expand: "FailedSends",
             fields: {
                 Id: { label: "Id", readonly: true, create: false, type: "number" },
-                AppId: { label: "App Id", readonly: true, type: "number" },
-                MailServerName: { label: "Mail Server", readonly: true },
+                AppId: { label: "App Id", type: "number" },
+                MailServerName: { label: "Mail Server" },
                 SentByUserId: { label: "Sent By" },
                 To: { label: "To" },
                 CC: { label: "CC" },
@@ -42,7 +43,7 @@ window.MailGrids = {
             key: "Id",
             fields: {
                 Id: { label: "Id", readonly: true, create: false, type: "number" },
-                AppId: { label: "App Id", readonly: true, type: "number" },
+                AppId: { label: "App Id", type: "number" },
                 SentByUserId: { label: "Sent By" },
                 From: { label: "From" },
                 To: { label: "To" },
@@ -53,6 +54,19 @@ window.MailGrids = {
                 IsBodyHtml: { label: "Is Body HTML", type: "checkbox" }
             },
             columns: ["To", "Subject", "From", "SentOn", "SentByUserId", "Id"]
+        },
+        EmailSendFailure: {
+            name: "EmailSendFailure",
+            title: "Send Failure",
+            key: "Id",
+            readonly: true,
+            fields: {
+                Id: { label: "Id", readonly: true, create: false, type: "number" },
+                EmailId: { label: "Queued Email Id", readonly: true, type: "number" },
+                AttemptedOn: { label: "Attempted On", readonly: true },
+                FailureReason: { label: "Failure Reason", readonly: true, type: "textarea" }
+            },
+            columns: ["AttemptedOn", "FailureReason", "Id"]
         }
     },
 
@@ -61,8 +75,20 @@ window.MailGrids = {
     init: function () {
         document.getElementById("create-mail-server")
             ?.addEventListener("click", () => this.openEditor(this.configs.MailServer, null, null));
+        document.getElementById("create-queued-email")
+            ?.addEventListener("click", () => this.openEditor(this.configs.QueuedEmail, null, null));
+        document.getElementById("create-sent-email")
+            ?.addEventListener("click", () => this.openEditor(this.configs.SentEmail, null, null));
+        document.querySelectorAll("[data-main-tab]").forEach(tab =>
+            tab.addEventListener("click", () => this.showMainTab(tab.dataset.mainTab)));
 
-        this.loadMailServers();
+        this.loadAll();
+    },
+
+    loadAll: async function () {
+        await this.loadMailServers();
+        await this.loadQueuedEmails();
+        await this.loadSentEmails();
     },
 
     loadMailServers: async function () {
@@ -75,12 +101,36 @@ window.MailGrids = {
         }
     },
 
+    loadQueuedEmails: async function () {
+        try {
+            const rows = await this.read(this.configs.QueuedEmail);
+            this.renderGrid("queued-email-grid", this.configs.QueuedEmail, rows, "QueuedEmail");
+            MailApi.notify("Ready");
+        } catch (error) {
+            MailApi.notify(error.message, true);
+        }
+    },
+
+    loadSentEmails: async function () {
+        try {
+            const rows = await this.read(this.configs.SentEmail);
+            this.renderGrid("sent-email-grid", this.configs.SentEmail, rows, "SentEmail");
+            MailApi.notify("Ready");
+        } catch (error) {
+            MailApi.notify(error.message, true);
+        }
+    },
+
     read: async function (config, context) {
         let url = `${this.apiRoot}/${config.name}?$top=500`;
         const filters = this.filtersFor(config, context);
 
         if (filters.length > 0) {
             url += `&$filter=${encodeURIComponent(filters.join(" and "))}`;
+        }
+
+        if (config.expand) {
+            url += `&$expand=${encodeURIComponent(config.expand)}`;
         }
 
         const body = await MailApi.get(url);
@@ -109,8 +159,12 @@ window.MailGrids = {
     },
 
     renderMailServerGrid: function (rows) {
-        const grid = document.getElementById("mail-server-grid");
-        grid.innerHTML = this.tableHtml(this.configs.MailServer, rows, "MailServer");
+        this.renderGrid("mail-server-grid", this.configs.MailServer, rows, "MailServer");
+    },
+
+    renderGrid: function (elementId, config, rows, scope, context = null) {
+        const grid = document.getElementById(elementId);
+        grid.innerHTML = this.tableHtml(config, rows, scope, context);
         this.bindGridActions(grid);
     },
 
@@ -118,10 +172,11 @@ window.MailGrids = {
         const headers = [
             `<th class="mail-expand-column"></th>`,
             ...config.columns.map(column => `<th>${this.escape(this.label(config, column))}</th>`),
-            `<th>Actions</th>`
+            config.readonly ? "" : `<th>Actions</th>`
         ].join("");
+        const columnCount = config.columns.length + (config.readonly ? 1 : 2);
         const body = rows.length === 0
-            ? `<tr><td colspan="${config.columns.length + 2}" class="mail-empty">No ${this.escape(config.title)} rows found.</td></tr>`
+            ? `<tr><td colspan="${columnCount}" class="mail-empty">No ${this.escape(config.title)} rows found.</td></tr>`
             : rows.map(row => this.rowHtml(config, row, scope, context)).join("");
 
         return `<table class="mail-table" data-scope="${scope}">` +
@@ -135,19 +190,23 @@ window.MailGrids = {
         const values = config.columns
             .map(column => `<td>${this.escape(this.displayValue(row[column]))}</td>`)
             .join("");
-        const expandButton = config.name === "MailServer"
+        const expandButton = this.canExpand(config, row)
             ? `<button data-action="toggle" data-scope="${scope}" data-key="${this.escape(rowKey)}" type="button">+</button>`
             : "";
 
         this.storeRow(scope, rowKey, row, context);
 
+        const actions = config.readonly
+            ? ""
+            : `<td class="mail-actions">` +
+                `<button data-action="edit" data-scope="${scope}" data-key="${this.escape(rowKey)}" type="button">Edit</button>` +
+                `<button data-action="delete" data-scope="${scope}" data-key="${this.escape(rowKey)}" type="button">Delete</button>` +
+                `</td>`;
+
         return `<tr data-row-key="${this.escape(rowKey)}">` +
             `<td class="mail-expand-column">${expandButton}</td>` +
             values +
-            `<td class="mail-actions">` +
-            `<button data-action="edit" data-scope="${scope}" data-key="${this.escape(rowKey)}" type="button">Edit</button>` +
-            `<button data-action="delete" data-scope="${scope}" data-key="${this.escape(rowKey)}" type="button">Delete</button>` +
-            `</td>` +
+            actions +
             `</tr>`;
     },
 
@@ -202,10 +261,25 @@ window.MailGrids = {
         button.textContent = "-";
         const detailRow = document.createElement("tr");
         detailRow.className = "mail-detail-row";
-        detailRow.innerHTML = `<td colspan="${row.children.length}">${this.detailShellHtml()}</td>`;
+        detailRow.innerHTML = `<td colspan="${row.children.length}"></td>`;
         row.after(detailRow);
 
-        await this.loadMailServerDetails(detailRow, stored.row);
+        const config = this.configForScope(button.dataset.scope);
+
+        if (config.name === "MailServer") {
+            detailRow.querySelector("td").innerHTML = this.detailShellHtml();
+            await this.loadMailServerDetails(detailRow, stored.row);
+            return;
+        }
+
+        if (config.name === "QueuedEmail") {
+            this.loadQueuedEmailDetails(detailRow, stored.row);
+        }
+    },
+
+    canExpand: function (config, row) {
+        return config.name === "MailServer"
+            || (config.name === "QueuedEmail" && Array.isArray(row.FailedSends));
     },
 
     detailShellHtml: function () {
@@ -249,6 +323,22 @@ window.MailGrids = {
         this.bindGridActions(grid);
     },
 
+    loadQueuedEmailDetails: function (detailRow, queuedEmail) {
+        const failures = queuedEmail.FailedSends ?? [];
+        detailRow.querySelector("td").innerHTML =
+            `<div class="mail-detail">` +
+            `<div class="mail-detail-toolbar"><strong>Send Failures</strong></div>` +
+            `<div data-child-grid="EmailSendFailure"></div>` +
+            `</div>`;
+
+        const grid = detailRow.querySelector("[data-child-grid='EmailSendFailure']");
+        grid.innerHTML = this.tableHtml(
+            this.configs.EmailSendFailure,
+            failures,
+            `EmailSendFailure-${queuedEmail.Id}`,
+            { queuedEmail });
+    },
+
     showDetailTab: function (detailRow, tabName) {
         detailRow.querySelectorAll("[data-detail-tab]").forEach(tab =>
             tab.classList.toggle("active", tab.dataset.detailTab === tabName));
@@ -285,7 +375,7 @@ window.MailGrids = {
             if (afterSave) {
                 await afterSave();
             } else {
-                await this.loadMailServers();
+                await this.loadAll();
             }
         };
 
@@ -361,7 +451,7 @@ window.MailGrids = {
 
         await MailApi.delete(`${this.apiRoot}/${config.name}(${row[config.key]})`);
         MailApi.notify(`${config.title} deleted`);
-        await this.loadMailServers();
+        await this.loadAll();
     },
 
     contextValue: function (name, context, config) {
@@ -378,6 +468,13 @@ window.MailGrids = {
         }
 
         return null;
+    },
+
+    showMainTab: function (tabName) {
+        document.querySelectorAll("[data-main-tab]").forEach(tab =>
+            tab.classList.toggle("active", tab.dataset.mainTab === tabName));
+        document.querySelectorAll("[data-main-panel]").forEach(panel =>
+            panel.classList.toggle("active", panel.dataset.mainPanel === tabName));
     },
 
     rowKey: function (config, row) {

@@ -33,14 +33,44 @@
 
     <main class="mail-workbench">
         <section class="mail-panel">
-            <div class="mail-toolbar">
-                <div>
-                    <h2>Mail Servers</h2>
-                    <span>Expand a mail server to manage queued and sent mail for its app.</span>
-                </div>
-                <button id="create-mail-server" type="button">Create Mail Server</button>
+            <div class="mail-section-tabs">
+                <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
+                <button data-main-tab="queued" type="button">Queued Emails</button>
+                <button data-main-tab="sent" type="button">Sent Emails</button>
             </div>
-            <div id="mail-server-grid" class="mail-grid"></div>
+
+            <section class="mail-main-panel active" data-main-panel="servers">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Servers</h2>
+                        <span>SMTP configurations owned by an app.</span>
+                    </div>
+                    <button id="create-mail-server" type="button">Create Mail Server</button>
+                </div>
+                <div id="mail-server-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="queued">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Queued Emails</h2>
+                        <span>Expand a queued email to inspect send failures.</span>
+                    </div>
+                    <button id="create-queued-email" type="button">Create Queued Email</button>
+                </div>
+                <div id="queued-email-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="sent">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Sent Emails</h2>
+                        <span>Emails that have been successfully dispatched.</span>
+                    </div>
+                    <button id="create-sent-email" type="button">Create Sent Email</button>
+                </div>
+                <div id="sent-email-grid" class="mail-grid"></div>
+            </section>
         </section>
     </main>
 

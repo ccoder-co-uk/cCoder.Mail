@@ -28,6 +28,7 @@ body.mail-shell {
 .mail-header-actions,
 .mail-toolbar,
 .mail-detail-toolbar,
+.mail-section-tabs,
 .mail-tabs {
     display: flex;
     align-items: center;
@@ -111,6 +112,30 @@ a:hover {
     min-height: 100%;
     border: 1px solid #c8d2df;
     background: #fff;
+}
+
+.mail-section-tabs {
+    padding: 8px 10px 0;
+    border-bottom: 1px solid #d6dee8;
+    background: #f8fafc;
+}
+
+.mail-section-tabs button {
+    border-bottom: 0;
+}
+
+.mail-section-tabs button.active {
+    background: #fff;
+    color: #0b5cab;
+    font-weight: 600;
+}
+
+.mail-main-panel {
+    display: none;
+}
+
+.mail-main-panel.active {
+    display: block;
 }
 
 .mail-toolbar {
