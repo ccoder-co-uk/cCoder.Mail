@@ -83,19 +83,15 @@
                 <div class="mail-toolbar">
                     <div>
                         <h2>Received Emails</h2>
-                        <span>Fetch mailbox messages within a date range without storing them.</span>
+                        <span>Fetch Microsoft Graph mailbox messages within a date range without storing them.</span>
                     </div>
                     <button id="receive-email" type="button">Receive Emails</button>
                 </div>
                 <div class="mail-receive-form">
-                    <label><span>Host</span><input id="receive-host" placeholder="pop.example.com"></label>
-                    <label><span>Port</span><input id="receive-port" type="number" value="995"></label>
-                    <label><span>User</span><input id="receive-user" autocomplete="username"></label>
-                    <label><span>Password</span><input id="receive-password" autocomplete="current-password" type="password"></label>
+                    <label><span>Mailbox User</span><input id="receive-user" autocomplete="username" placeholder="user@example.com"></label>
                     <label><span>From</span><input id="receive-from" type="datetime-local"></label>
                     <label><span>To</span><input id="receive-to" type="datetime-local"></label>
                     <label><span>Max</span><input id="receive-maximum" type="number" value="100"></label>
-                    <label class="mail-checkbox"><input id="receive-ssl" type="checkbox" checked><span>Enable SSL</span></label>
                 </div>
                 <div id="received-email-grid" class="mail-grid"></div>
             </section>

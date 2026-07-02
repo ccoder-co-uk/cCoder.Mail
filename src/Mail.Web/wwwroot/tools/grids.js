@@ -162,11 +162,7 @@ window.MailGrids = {
 
     receiveRequest: function () {
         return {
-            host: document.getElementById("receive-host")?.value,
-            port: Number(document.getElementById("receive-port")?.value || 995),
-            enableSSL: document.getElementById("receive-ssl")?.checked === true,
             user: document.getElementById("receive-user")?.value,
-            password: document.getElementById("receive-password")?.value,
             from: this.dateInputValue("receive-from"),
             to: this.dateInputValue("receive-to"),
             maximumMessages: Number(document.getElementById("receive-maximum")?.value || 100)

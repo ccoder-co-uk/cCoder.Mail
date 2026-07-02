@@ -38,6 +38,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             services.RemoveAll<ICoreContextFactory>();
             services.RemoveAll<ISecurityDbContextFactory>();
             services.RemoveAll<IMailClient>();
+            services.RemoveAll<IMicrosoftGraphClient>();
 
             services.AddSingleton(
                 new cCoder.Data.Config
@@ -59,10 +60,11 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             );
             services.AddCoreData(settings.CoreConnectionString);
             services.AddTransient<IMailClient, AcceptanceMailClient>();
+            services.AddTransient<IMicrosoftGraphClient, AcceptanceMailClient>();
         });
     }
 
-    private sealed class AcceptanceMailClient : IMailClient
+    private sealed class AcceptanceMailClient : IMailClient, IMicrosoftGraphClient
     {
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
@@ -77,7 +79,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
                     MessageId = "<acceptance-message@example.test>",
                     From = request.User,
                     To = "recipient@example.test",
-                    Subject = $"Acceptance receive from {request.Host}",
+                    Subject = $"Acceptance receive from {request.User}",
                     Content = "Acceptance receive content",
                     IsBodyHtml = false,
                     ReceivedOn = request.From?.AddMinutes(1) ?? DateTimeOffset.UtcNow,

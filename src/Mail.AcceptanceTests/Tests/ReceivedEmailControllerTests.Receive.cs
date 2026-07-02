@@ -15,11 +15,7 @@ public sealed partial class ReceivedEmailControllerTests
         // When
         ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(new
         {
-            host = "mailbox.acceptance.local",
-            port = 995,
-            enableSSL = true,
             user = "sender@example.test",
-            password = "password",
             from,
             to = DateTimeOffset.UtcNow.AddMinutes(5),
             maximumMessages = 10,
@@ -29,7 +25,7 @@ public sealed partial class ReceivedEmailControllerTests
         receivedEmails.Should().HaveCount(1);
         receivedEmails[0].MessageId.Should().Be("<acceptance-message@example.test>");
         receivedEmails[0].From.Should().Be("sender@example.test");
-        receivedEmails[0].Subject.Should().Be("Acceptance receive from mailbox.acceptance.local");
+        receivedEmails[0].Subject.Should().Be("Acceptance receive from sender@example.test");
         receivedEmails[0].Content.Should().Be("Acceptance receive content");
     }
 }

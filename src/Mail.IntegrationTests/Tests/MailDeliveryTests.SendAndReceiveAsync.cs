@@ -15,7 +15,8 @@ public sealed partial class MailDeliveryTests
 
         string[] missingVariables = settings.MissingVariables();
         missingVariables.Should().BeEmpty(
-            "the mail end-to-end integration needs configured SMTP, POP3, and acceptance database settings");
+            "the mail end-to-end integration needs configured SMTP, Microsoft Graph, and acceptance database settings. "
+            + $"Missing variables: {string.Join(", ", missingVariables)}");
 
         await using IntegrationApplication application = await StartApplicationAsync(settings);
         string unique = Guid.NewGuid().ToString("N");

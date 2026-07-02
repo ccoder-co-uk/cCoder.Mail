@@ -83,6 +83,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
         services.AddTransient<IMailClient, MailClient>();
+        services.AddTransient<IMicrosoftGraphClient, MicrosoftGraphClient>();
         services.AddTransient<IMailClientBroker, MailClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();
         services.AddTransient<IQueuedEmailBroker, QueuedEmailBroker>();

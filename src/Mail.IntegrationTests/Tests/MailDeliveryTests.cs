@@ -138,11 +138,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             "/Api/Core/ReceivedEmail/Receive",
             new MailboxReceiveRequest
             {
-                Host = settings.PopHost,
-                Port = settings.PopPort,
-                EnableSSL = settings.PopEnableSsl,
-                User = settings.PopUser,
-                Password = settings.PopPassword,
+                User = settings.ReceiveUser,
                 From = from,
                 To = DateTimeOffset.UtcNow.AddMinutes(5),
                 MaximumMessages = settings.MaximumMessages,
@@ -213,8 +209,14 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         return app.Id;
     }
 
-    private static IntegrationSettings ReadSettings() =>
-        new()
+    private static IntegrationSettings ReadSettings()
+    {
+        string receiveUser = ReadRequired(
+            "CCODER_MAIL_INTEGRATION_RECEIVE_USER",
+            "CCODER_MAIL_INTEGRATION_SMTP_USER");
+        string to = ReadRequired("CCODER_MAIL_INTEGRATION_TO");
+
+        return new()
         {
             CoreConnectionString = AddDatabaseSuffix(CoreConnectionVariableName, "mail-integration"),
             SsoConnectionString = AddDatabaseSuffix(SsoConnectionVariableName, "mail-integration"),
@@ -224,16 +226,13 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             SmtpUser = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_USER"),
             SmtpPassword = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_PASSWORD"),
             From = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_FROM", "CCODER_MAIL_INTEGRATION_SMTP_USER"),
-            PopHost = ReadRequired("CCODER_MAIL_INTEGRATION_POP_HOST"),
-            PopPort = ReadInt("CCODER_MAIL_INTEGRATION_POP_PORT", 995),
-            PopEnableSsl = ReadBool("CCODER_MAIL_INTEGRATION_POP_SSL", true),
-            PopUser = ReadRequired("CCODER_MAIL_INTEGRATION_POP_USER", "CCODER_MAIL_INTEGRATION_SMTP_USER"),
-            PopPassword = ReadRequired("CCODER_MAIL_INTEGRATION_POP_PASSWORD", "CCODER_MAIL_INTEGRATION_SMTP_PASSWORD"),
-            To = ReadRequired("CCODER_MAIL_INTEGRATION_TO", "CCODER_MAIL_INTEGRATION_POP_USER"),
+            ReceiveUser = receiveUser,
+            To = string.IsNullOrWhiteSpace(to) ? receiveUser : to,
             MaximumMessages = ReadInt("CCODER_MAIL_INTEGRATION_MAX_MESSAGES", 50),
             ReceiveTimeout = TimeSpan.FromSeconds(ReadInt("CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS", 120)),
             ReceivePollDelay = TimeSpan.FromSeconds(ReadInt("CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS", 10)),
         };
+    }
 
     private static string ODataString(string value) =>
         (value ?? string.Empty).Replace("'", "''", StringComparison.Ordinal);
@@ -310,15 +309,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
         public string From { get; init; }
 
-        public string PopHost { get; init; }
-
-        public int PopPort { get; init; }
-
-        public bool PopEnableSsl { get; init; }
-
-        public string PopUser { get; init; }
-
-        public string PopPassword { get; init; }
+        public string ReceiveUser { get; init; }
 
         public string To { get; init; }
 
@@ -343,7 +334,9 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             "CCODER_MAIL_INTEGRATION_SMTP_HOST",
             "CCODER_MAIL_INTEGRATION_SMTP_USER",
             "CCODER_MAIL_INTEGRATION_SMTP_PASSWORD",
-            "CCODER_MAIL_INTEGRATION_POP_HOST",
+            "CCODER_MAIL_GRAPH_TENANT_ID",
+            "CCODER_MAIL_GRAPH_CLIENT_ID",
+            "CCODER_MAIL_GRAPH_CLIENT_SECRET",
         ];
     }
 
