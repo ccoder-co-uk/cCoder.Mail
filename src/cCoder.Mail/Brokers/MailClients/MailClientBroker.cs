@@ -4,31 +4,33 @@ using cCoder.Mail.Models;
 namespace cCoder.Mail.Brokers.MailClients;
 
 internal sealed class MailClientBroker(
-    IMailClient mailClient,
-    IMicrosoftGraphClient microsoftGraphClient) : IMailClientBroker
+    IMailSenderFactory mailSenderFactory,
+    IMailReceiverFactory mailReceiverFactory) : IMailClientBroker
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        ShouldUseMicrosoftGraph(email)
-            ? microsoftGraphClient.SendAsync(email, cancellationToken)
-            : mailClient.SendAsync(email, cancellationToken);
+        mailSenderFactory
+            .GetSender(GetSenderProviderName(email))
+            .SendAsync(email, cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        microsoftGraphClient.ReceiveAsync(request, cancellationToken);
+        mailReceiverFactory
+            .GetReceiver(request?.ProviderName)
+            .ReceiveAsync(request, cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
-        microsoftGraphClient.ReceiveTopAsync(count, cancellationToken);
+        mailReceiverFactory
+            .GetReceiver(null)
+            .ReceiveTopAsync(count, cancellationToken);
 
-    private static bool ShouldUseMicrosoftGraph(QueuedEmail email)
+    private static string GetSenderProviderName(QueuedEmail email)
     {
         MailServer server = email?.App?.MailServers?.FirstOrDefault(
             mailServer => mailServer.Name == email.MailServerName);
 
-        return string.Equals(server?.Host, "graph.microsoft.com", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(server?.Host, "microsoft-graph", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(server?.Host, "https://graph.microsoft.com", StringComparison.OrdinalIgnoreCase);
+        return server?.Host;
     }
 }

@@ -5,7 +5,8 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
+internal sealed class MicrosoftGraphClient(MailConfiguration mailConfiguration)
+    : IMicrosoftGraphClient, IMailSenderProvider, IMailReceiverProvider
 {
     private const string TenantIdVariableName = "CCODER_MAIL_GRAPH_TENANT_ID";
     private const string ClientIdVariableName = "CCODER_MAIL_GRAPH_CLIENT_ID";
@@ -15,6 +16,8 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
     private static readonly HttpClient HttpClient = new();
+
+    public string ProviderName => MailProviderNames.MicrosoftGraph;
 
     public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
     {
@@ -80,9 +83,13 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
         return server;
     }
 
-    private static string BuildSendUrl(MailServer server)
+    private string BuildSendUrl(MailServer server)
     {
-        string graphBaseUrl = ReadEnvironment(GraphBaseUrlVariableName) ?? DefaultGraphBaseUrl;
+        string graphBaseUrl = ReadConfiguredValue(
+            mailConfiguration.MicrosoftGraph.GraphBaseUrl,
+            GraphBaseUrlVariableName)
+            ?? DefaultGraphBaseUrl;
+
         return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(server.User)}/sendMail";
     }
 
@@ -117,12 +124,21 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
                 })
                 .ToArray();
 
-    private static async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
+    private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {
-        string tenantId = ReadRequiredEnvironment(TenantIdVariableName);
-        string clientId = ReadRequiredEnvironment(ClientIdVariableName);
-        string clientSecret = ReadRequiredEnvironment(ClientSecretVariableName);
-        string loginBaseUrl = ReadEnvironment(LoginBaseUrlVariableName) ?? DefaultLoginBaseUrl;
+        string tenantId = ReadRequiredConfiguredValue(
+            mailConfiguration.MicrosoftGraph.TenantId,
+            TenantIdVariableName);
+        string clientId = ReadRequiredConfiguredValue(
+            mailConfiguration.MicrosoftGraph.ClientId,
+            ClientIdVariableName);
+        string clientSecret = ReadRequiredConfiguredValue(
+            mailConfiguration.MicrosoftGraph.ClientSecret,
+            ClientSecretVariableName);
+        string loginBaseUrl = ReadConfiguredValue(
+            mailConfiguration.MicrosoftGraph.LoginBaseUrl,
+            LoginBaseUrlVariableName)
+            ?? DefaultLoginBaseUrl;
         string tokenUrl = $"{loginBaseUrl.TrimEnd('/')}/{Uri.EscapeDataString(tenantId)}/oauth2/v2.0/token";
 
         using FormUrlEncodedContent request = new(
@@ -145,9 +161,12 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
             ?? throw new InvalidOperationException("Microsoft Graph token response did not include an access token.");
     }
 
-    private static string BuildMessagesUrl(MailboxReceiveRequest request)
+    private string BuildMessagesUrl(MailboxReceiveRequest request)
     {
-        string graphBaseUrl = ReadEnvironment(GraphBaseUrlVariableName) ?? DefaultGraphBaseUrl;
+        string graphBaseUrl = ReadConfiguredValue(
+            mailConfiguration.MicrosoftGraph.GraphBaseUrl,
+            GraphBaseUrlVariableName)
+            ?? DefaultGraphBaseUrl;
         List<string> query =
         [
             "$select=internetMessageId,subject,body,receivedDateTime,from,toRecipients,ccRecipients",
@@ -246,17 +265,22 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
             ? property.GetString()
             : null;
 
-    private static string ReadRequiredEnvironment(string variableName) =>
-        ReadEnvironment(variableName)
-        ?? throw new InvalidOperationException($"{variableName} is required for Microsoft Graph mailbox receive.");
+    private static string ReadRequiredConfiguredValue(string configuredValue, string variableName) =>
+        ReadConfiguredValue(configuredValue, variableName)
+        ?? throw new InvalidOperationException($"{variableName} is required for Microsoft Graph mail.");
 
-    private static string ReadConfiguredReceiveUser() =>
-        ReadEnvironment("CCODER_MAIL_RECEIVE_USER")
+    private string ReadConfiguredReceiveUser() =>
+        ReadConfiguredValue(mailConfiguration.MicrosoftGraph.ReceiveUser, "CCODER_MAIL_RECEIVE_USER")
         ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_RECEIVE_USER")
         ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SEND_USER")
         ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SMTP_USER")
         ?? throw new InvalidOperationException(
             "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
+
+    private static string ReadConfiguredValue(string configuredValue, string variableName) =>
+        string.IsNullOrWhiteSpace(configuredValue)
+            ? ReadEnvironment(variableName)
+            : configuredValue;
 
     private static string ReadEnvironment(string variableName)
     {

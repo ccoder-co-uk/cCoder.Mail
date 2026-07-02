@@ -29,6 +29,11 @@ namespace cCoder.Mail;
 
 public static partial class IServiceCollectionExtensions
 {
+    public static void AddMail(
+        this IServiceCollection services,
+        Action<MailConfiguration> configure = null) =>
+        services.AddConfiguredMail((_, configuration) => configure?.Invoke(configuration));
+
     public static void AddMailWeb(
         this IServiceCollection services,
         Action<MailConfiguration> configure = null,
@@ -84,6 +89,12 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
         services.AddTransient<IMailClient, MailClient>();
         services.AddTransient<IMicrosoftGraphClient, MicrosoftGraphClient>();
+        services.AddTransient<IMailSenderProvider, SmtpMailSenderProvider>();
+        services.AddTransient<IMailReceiverProvider, Pop3MailReceiverProvider>();
+        services.AddTransient<IMailSenderProvider, MicrosoftGraphClient>();
+        services.AddTransient<IMailReceiverProvider, MicrosoftGraphClient>();
+        services.AddTransient<IMailSenderFactory, MailSenderFactory>();
+        services.AddTransient<IMailReceiverFactory, MailReceiverFactory>();
         services.AddTransient<IMailClientBroker, MailClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();
         services.AddTransient<IQueuedEmailBroker, QueuedEmailBroker>();

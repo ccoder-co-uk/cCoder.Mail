@@ -8,15 +8,22 @@ namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;
 public partial class MailClientBrokerTests
 {
     [Fact]
-    public async Task ShouldDelegateToMicrosoftGraphClientWhenReceiveAsync()
+    public async Task ShouldDelegateToConfiguredReceiverWhenReceiveAsync()
     {
         // Given
-        MailboxReceiveRequest request = new() { User = "mailbox@example.test" };
+        MailboxReceiveRequest request = new()
+        {
+            ProviderName = "MicrosoftGraph",
+            User = "mailbox@example.test",
+        };
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
-        microsoftGraphClientMock
-            .Setup(client => client.ReceiveAsync(request, cancellationToken))
+        mailReceiverFactoryMock
+            .Setup(factory => factory.GetReceiver("MicrosoftGraph"))
+            .Returns(mailReceiverProviderMock.Object);
+        mailReceiverProviderMock
+            .Setup(provider => provider.ReceiveAsync(request, cancellationToken))
             .ReturnsAsync(expectedEmails);
 
         // When
@@ -24,20 +31,26 @@ public partial class MailClientBrokerTests
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
-        microsoftGraphClientMock.Verify(client => client.ReceiveAsync(request, cancellationToken), Times.Once);
-        microsoftGraphClientMock.VerifyNoOtherCalls();
-        mailClientMock.VerifyNoOtherCalls();
+        mailReceiverFactoryMock.Verify(factory => factory.GetReceiver("MicrosoftGraph"), Times.Once);
+        mailReceiverProviderMock.Verify(provider => provider.ReceiveAsync(request, cancellationToken), Times.Once);
+        mailReceiverFactoryMock.VerifyNoOtherCalls();
+        mailReceiverProviderMock.VerifyNoOtherCalls();
+        mailSenderFactoryMock.VerifyNoOtherCalls();
+        mailSenderProviderMock.VerifyNoOtherCalls();
     }
 
     [Fact]
-    public async Task ShouldDelegateToMicrosoftGraphClientWhenReceiveTopAsync()
+    public async Task ShouldDelegateToDefaultReceiverWhenReceiveTopAsync()
     {
         // Given
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
-        microsoftGraphClientMock
-            .Setup(client => client.ReceiveTopAsync(1, cancellationToken))
+        mailReceiverFactoryMock
+            .Setup(factory => factory.GetReceiver(null))
+            .Returns(mailReceiverProviderMock.Object);
+        mailReceiverProviderMock
+            .Setup(provider => provider.ReceiveTopAsync(1, cancellationToken))
             .ReturnsAsync(expectedEmails);
 
         // When
@@ -45,8 +58,11 @@ public partial class MailClientBrokerTests
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
-        microsoftGraphClientMock.Verify(client => client.ReceiveTopAsync(1, cancellationToken), Times.Once);
-        microsoftGraphClientMock.VerifyNoOtherCalls();
-        mailClientMock.VerifyNoOtherCalls();
+        mailReceiverFactoryMock.Verify(factory => factory.GetReceiver(null), Times.Once);
+        mailReceiverProviderMock.Verify(provider => provider.ReceiveTopAsync(1, cancellationToken), Times.Once);
+        mailReceiverFactoryMock.VerifyNoOtherCalls();
+        mailReceiverProviderMock.VerifyNoOtherCalls();
+        mailSenderFactoryMock.VerifyNoOtherCalls();
+        mailSenderProviderMock.VerifyNoOtherCalls();
     }
 }

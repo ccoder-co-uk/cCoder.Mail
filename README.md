@@ -7,7 +7,7 @@
 - Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
 - Queued email management: create and inspect pending outbound emails.
 - Sent email management: inspect emails that have been successfully dispatched.
-- Mail client abstraction: `IMailClient` sends queued mail through SMTP; Microsoft Graph-backed send and receive support is used for Microsoft 365 mailboxes.
+- Mail provider abstraction: sender and receiver factories route mail work to named providers, with SMTP, POP3, and Microsoft Graph providers registered by default.
 - Received email inspection: `ReceivedEmailController` can fetch Microsoft 365 mailbox messages without persisting them.
 - Sender hosted service: checks the queue every minute and attempts SMTP delivery for pending messages.
 - App lifecycle event handling: listens for app add, update, and delete events so mail-owned app data stays aligned.
@@ -84,6 +84,31 @@ Before running `src/Mail.Web`, also set:
 - `Settings__DecryptionKey`
 
 The committed `appsettings.json` keeps these values blank so user or machine environment variables can supply them during local development.
+
+## Provider Configuration
+
+Library consumers can configure sender and receiver providers when adding Mail services:
+
+```csharp
+services.AddMail(mailConfig =>
+{
+    mailConfig.AddMicrosoftGraphSender(graphConfig =>
+    {
+        graphConfig.TenantId = tenantId;
+        graphConfig.ClientId = clientId;
+        graphConfig.ClientSecret = clientSecret;
+        graphConfig.ReceiveUser = receiveUser;
+    });
+
+    mailConfig.AddMicrosoftGraphReceiver();
+});
+```
+
+Registered sender providers are resolved by provider name. SMTP remains the default sender, so existing `MailServer.Host` values such as `smtp.office365.com` continue to use the SMTP provider. Microsoft Graph can be selected with provider names or aliases such as `MicrosoftGraph`, `graph.microsoft.com`, `https://graph.microsoft.com`, or `microsoft-graph`.
+
+Registered receiver providers are resolved by provider name. Microsoft Graph is the default receiver for direct mailbox receive calls, while POP3 remains available through the `Pop3` provider.
+
+Custom providers can be added by registering an implementation of `IMailSenderProvider` or `IMailReceiverProvider`, then mapping the public provider name with `AddSenderProvider` or `AddReceiverProvider`.
 
 ## Mail Delivery Integration
 

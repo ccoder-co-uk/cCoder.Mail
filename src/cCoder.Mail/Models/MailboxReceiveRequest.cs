@@ -2,6 +2,8 @@ namespace cCoder.Mail.Models;
 
 public sealed class MailboxReceiveRequest
 {
+    public string ProviderName { get; set; }
+
     public string Host { get; set; }
 
     public int Port { get; set; } = 995;

@@ -5,16 +5,20 @@ namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;
 
 public partial class MailClientBrokerTests
 {
-    private readonly Mock<IMailClient> mailClientMock;
-    private readonly Mock<IMicrosoftGraphClient> microsoftGraphClientMock;
+    private readonly Mock<IMailSenderFactory> mailSenderFactoryMock;
+    private readonly Mock<IMailReceiverFactory> mailReceiverFactoryMock;
+    private readonly Mock<IMailSenderProvider> mailSenderProviderMock;
+    private readonly Mock<IMailReceiverProvider> mailReceiverProviderMock;
     private readonly MailClientBroker mailClientBroker;
 
     public MailClientBrokerTests()
     {
-        mailClientMock = new Mock<IMailClient>(MockBehavior.Strict);
-        microsoftGraphClientMock = new Mock<IMicrosoftGraphClient>(MockBehavior.Strict);
+        mailSenderFactoryMock = new Mock<IMailSenderFactory>(MockBehavior.Strict);
+        mailReceiverFactoryMock = new Mock<IMailReceiverFactory>(MockBehavior.Strict);
+        mailSenderProviderMock = new Mock<IMailSenderProvider>(MockBehavior.Strict);
+        mailReceiverProviderMock = new Mock<IMailReceiverProvider>(MockBehavior.Strict);
         mailClientBroker = new MailClientBroker(
-            mailClientMock.Object,
-            microsoftGraphClientMock.Object);
+            mailSenderFactoryMock.Object,
+            mailReceiverFactoryMock.Object);
     }
 }
