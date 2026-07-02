@@ -14,7 +14,11 @@ public interface IQueuedEmailBroker
     ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail entity);
     ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail entity);
     ValueTask AddQueuedEmailSendFailureAsync(int emailId, string reason, CancellationToken cancellationToken = default);
-    ValueTask MarkQueuedEmailAsSentAsync(QueuedEmail entity, string fromAddress, CancellationToken cancellationToken = default);
+    ValueTask MarkQueuedEmailAsSentAsync(
+        QueuedEmail entity,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default);
     ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items);
     ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> items);
     int? GetAppId(QueuedEmail entity);
@@ -38,8 +42,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         return coreDataContext.QueuedMail
             .IgnoreQueryFilters()
             .Include(email => email.FailedSends)
-            .Include(email => email.App)
-                .ThenInclude(app => app.MailServers)
+            .Include(email => email.MailSender)
             .Where(email => email.FailedSends.Count < maxFailures)
             .Take(batchSize)
             .ToArray();
@@ -64,6 +67,14 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
     public async ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        EmailSendFailure[] failures = coreDataContext.SendFailures
+            .Where(failure => failure.EmailId == entity.Id)
+            .ToArray();
+
+        if (failures.Length > 0)
+            coreDataContext.SendFailures.RemoveRange(failures);
+
         coreDataContext.QueuedMail.Remove(entity);
         return await coreDataContext.SaveChangesAsync();
     }
@@ -89,6 +100,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
 
     public async ValueTask MarkQueuedEmailAsSentAsync(
         QueuedEmail entity,
+        Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default)
     {
@@ -113,6 +125,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
                 IsBodyHtml = queuedEmail.IsBodyHtml,
                 SentOn = DateTimeOffset.UtcNow,
                 From = fromAddress,
+                MailSenderId = mailSenderId,
             },
             cancellationToken);
 

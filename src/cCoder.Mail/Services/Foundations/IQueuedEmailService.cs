@@ -14,7 +14,11 @@ public interface IQueuedEmailService
     ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true);
     ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail);
     ValueTask RecordSendFailureAsync(int emailId, string reason, CancellationToken cancellationToken = default);
-    ValueTask MarkAsSentAsync(QueuedEmail queuedEmail, string fromAddress, CancellationToken cancellationToken = default);
+    ValueTask MarkAsSentAsync(
+        QueuedEmail queuedEmail,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default);
     ValueTask DeleteAsync(int id, bool checkPrivileges = true);
 }
 

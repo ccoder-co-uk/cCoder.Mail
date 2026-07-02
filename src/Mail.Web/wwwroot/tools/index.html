@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mail Management</title>
+    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-providers">
+</head>
+<body class="mail-shell">
+    <header class="mail-header">
+        <div class="mail-brand">
+            <img class="mail-logo" src="/tools/company-logo.png" alt="cCoder">
+            <div>
+                <h1>Mail Management</h1>
+                <span>Mail servers, queued mail, sent mail, and received mail</span>
+            </div>
+        </div>
+
+        <div class="mail-auth">
+            <span id="auth-user" class="mail-auth-user">Guest</span>
+            <input id="auth-username" autocomplete="username" placeholder="User">
+            <input id="auth-password" autocomplete="current-password" placeholder="Password" type="password">
+            <button id="auth-login" type="button">Login</button>
+            <button id="auth-logout" type="button" hidden>Logout</button>
+        </div>
+
+        <div class="mail-header-actions">
+            <span id="status-message" class="mail-status">Ready</span>
+            <a href="/swagger" target="_blank" rel="noreferrer">Swagger</a>
+            <button id="health-check" type="button">Health</button>
+        </div>
+    </header>
+
+    <section class="mail-login-gate">
+        <div>
+            <h2>Sign in required</h2>
+            <p>Use the login controls above to open the Mail Management tools.</p>
+        </div>
+    </section>
+
+    <main class="mail-workbench">
+        <nav class="mail-section-tabs" aria-label="Mail Management workspace tabs">
+            <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
+            <button data-main-tab="senders" type="button">Mail Senders</button>
+            <button data-main-tab="receivers" type="button">Mail Receivers</button>
+            <button data-main-tab="queued" type="button">Queued Emails</button>
+            <button data-main-tab="sent" type="button">Sent Emails</button>
+            <button data-main-tab="received" type="button">Received Emails</button>
+        </nav>
+        <section class="mail-panel">
+            <section class="mail-main-panel active" data-main-panel="servers">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Servers</h2>
+                        <span>Legacy SMTP configurations retained for migration.</span>
+                    </div>
+                    <button id="create-mail-server" type="button">Create Mail Server</button>
+                </div>
+                <div id="mail-server-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="senders">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Senders</h2>
+                        <span>Configured outbound providers owned by an app.</span>
+                    </div>
+                    <button id="create-mail-sender" type="button">Create Mail Sender</button>
+                </div>
+                <div id="mail-sender-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="receivers">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Receivers</h2>
+                        <span>Configured inbound providers owned by an app.</span>
+                    </div>
+                    <button id="create-mail-receiver" type="button">Create Mail Receiver</button>
+                </div>
+                <div id="mail-receiver-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="queued">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Queued Emails</h2>
+                        <span>Expand a queued email to inspect send failures.</span>
+                    </div>
+                    <button id="create-queued-email" type="button">Create Queued Email</button>
+                </div>
+                <div id="queued-email-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="sent">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Sent Emails</h2>
+                        <span>Emails that have been successfully dispatched.</span>
+                    </div>
+                    <button id="create-sent-email" type="button">Create Sent Email</button>
+                </div>
+                <div id="sent-email-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="received">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Received Emails</h2>
+                        <span>Received mail persisted by configured receivers. The receive button fetches a direct mailbox sample.</span>
+                    </div>
+                    <button id="receive-email" type="button">Receive Emails</button>
+                </div>
+                <div class="mail-receive-form">
+                    <label><span>Provider</span><select id="receive-provider"><option value="MicrosoftGraph">MicrosoftGraph</option></select></label>
+                    <label><span>Mailbox User</span><input id="receive-user" autocomplete="username" placeholder="user@example.com"></label>
+                    <label><span>From</span><input id="receive-from" type="datetime-local"></label>
+                    <label><span>To</span><input id="receive-to" type="datetime-local"></label>
+                    <label><span>Max</span><input id="receive-maximum" type="number" value="100"></label>
+                </div>
+                <div id="received-email-grid" class="mail-grid"></div>
+            </section>
+        </section>
+    </main>
+
+    <dialog id="editor-dialog" class="mail-dialog">
+        <form method="dialog">
+            <header>
+                <h3 id="editor-title">Edit</h3>
+                <button id="editor-close" value="cancel" type="submit">Close</button>
+            </header>
+            <div id="editor-fields" class="mail-editor-fields"></div>
+            <footer>
+                <button id="editor-save" value="default" type="submit">Save</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <script src="/tools/api.js?v=mail-grid-20260702-providers"></script>
+    <script src="/tools/grids.js?v=mail-grid-20260702-providers"></script>
+</body>
+</html>

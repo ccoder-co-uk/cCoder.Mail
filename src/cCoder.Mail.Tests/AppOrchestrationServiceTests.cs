@@ -9,19 +9,28 @@ namespace cCoder.Mail.Tests;
 public class AppOrchestrationServiceTests
 {
     private readonly Mock<IMailServerOrchestrationService> mailServerOrchestrationServiceMock;
+    private readonly Mock<IMailSenderConfigurationOrchestrationService> mailSenderConfigurationOrchestrationServiceMock;
+    private readonly Mock<IMailReceiverConfigurationOrchestrationService> mailReceiverConfigurationOrchestrationServiceMock;
     private readonly Mock<IQueuedEmailOrchestrationService> queuedEmailOrchestrationServiceMock;
     private readonly Mock<ISentEmailOrchestrationService> sentEmailOrchestrationServiceMock;
+    private readonly Mock<IReceivedEmailOrchestrationService> receivedEmailOrchestrationServiceMock;
     private readonly AppOrchestrationService service;
 
     public AppOrchestrationServiceTests()
     {
         mailServerOrchestrationServiceMock = new Mock<IMailServerOrchestrationService>(MockBehavior.Strict);
+        mailSenderConfigurationOrchestrationServiceMock = new Mock<IMailSenderConfigurationOrchestrationService>(MockBehavior.Strict);
+        mailReceiverConfigurationOrchestrationServiceMock = new Mock<IMailReceiverConfigurationOrchestrationService>(MockBehavior.Strict);
         queuedEmailOrchestrationServiceMock = new Mock<IQueuedEmailOrchestrationService>(MockBehavior.Strict);
         sentEmailOrchestrationServiceMock = new Mock<ISentEmailOrchestrationService>(MockBehavior.Strict);
+        receivedEmailOrchestrationServiceMock = new Mock<IReceivedEmailOrchestrationService>(MockBehavior.Strict);
         service = new AppOrchestrationService(
             mailServerOrchestrationServiceMock.Object,
+            mailSenderConfigurationOrchestrationServiceMock.Object,
+            mailReceiverConfigurationOrchestrationServiceMock.Object,
             queuedEmailOrchestrationServiceMock.Object,
-            sentEmailOrchestrationServiceMock.Object);
+            sentEmailOrchestrationServiceMock.Object,
+            receivedEmailOrchestrationServiceMock.Object);
     }
 
     [Fact]
@@ -29,19 +38,31 @@ public class AppOrchestrationServiceTests
     {
         mailServerOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
+        mailSenderConfigurationOrchestrationServiceMock.Setup(x => x.GetAll(true))
+            .Returns(Array.Empty<MailSender>().AsQueryable());
+        mailReceiverConfigurationOrchestrationServiceMock.Setup(x => x.GetAll(true))
+            .Returns(Array.Empty<MailReceiver>().AsQueryable());
         queuedEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
         sentEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
+        receivedEmailOrchestrationServiceMock.Setup(x => x.GetAll(true))
+            .Returns(Array.Empty<ReceivedEmail>().AsQueryable());
 
         await service.DeleteAsync(5);
 
         mailServerOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
+        mailSenderConfigurationOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
+        mailReceiverConfigurationOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
         queuedEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
         sentEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
+        receivedEmailOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
         mailServerOrchestrationServiceMock.VerifyNoOtherCalls();
+        mailSenderConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
+        mailReceiverConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
         queuedEmailOrchestrationServiceMock.VerifyNoOtherCalls();
         sentEmailOrchestrationServiceMock.VerifyNoOtherCalls();
+        receivedEmailOrchestrationServiceMock.VerifyNoOtherCalls();
     }
 
     [Fact]

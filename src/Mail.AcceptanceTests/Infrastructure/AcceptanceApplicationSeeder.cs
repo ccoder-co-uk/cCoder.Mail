@@ -14,10 +14,9 @@ internal sealed class AcceptanceApplicationSeeder(IServiceProvider services)
     private const string AcceptanceAdminRoleName = "Acceptance Administrators";
     private const string AcceptanceAdminPrivileges =
         "app_admin,"
-        + "file_create,file_read,file_update,file_delete,"
-        + "filecontent_create,filecontent_read,filecontent_update,filecontent_delete,"
-        + "folder_create,folder_read,folder_update,folder_delete,"
-        + "folderrole_create,folderrole_read,folderrole_update,folderrole_delete";
+        + "mailserver_create,mailserver_read,mailserver_update,mailserver_delete,"
+        + "queuedemail_create,queuedemail_read,queuedemail_update,queuedemail_delete,"
+        + "sentemail_create,sentemail_read,sentemail_update,sentemail_delete";
 
     public async Task SeedAsync()
     {

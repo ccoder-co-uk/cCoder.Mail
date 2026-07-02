@@ -1,4 +1,4 @@
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.CMS;
@@ -34,7 +34,7 @@ public partial class MailServerController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-                new cCoder.Mail.Api.OData.MailModelBuilder()
+                new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
                     .EDMModel.GetExtendedMetadataForType("Core", typeof(MailServer))
             )
@@ -88,7 +88,7 @@ public partial class MailServerController : ODataController
     public async Task<IActionResult> Post([FromBody] MailServer entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Api.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
 
         return Ok(await Service.AddAsync(entity));
     }
@@ -105,7 +105,7 @@ public partial class MailServerController : ODataController
     public async Task<IActionResult> Put([FromRoute] int key, [FromBody] MailServer entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Api.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
 
         return Ok(await Service.UpdateAsync(entity));
     }

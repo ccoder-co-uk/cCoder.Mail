@@ -64,6 +64,7 @@ public partial class SentEmailServiceTests
                 IsBodyHtml = item.IsBodyHtml,
                 SentOn = item.SentOn,
                 From = item.From,
+                MailSenderId = item.MailSenderId,
                 App = item.App == null ? null : new DataApp { Id = item.App.Id, Name = item.App.Name },
                 SentBy = item.SentBy == null ? null : new DataUser { Id = item.SentBy.Id, DisplayName = item.SentBy.DisplayName, Email = item.SentBy.Email },
             };

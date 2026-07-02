@@ -12,11 +12,11 @@ public static partial class WebApplicationExtensions
     private const string MetadataScope = "Mail";
 
     public static WebApplication StartMailWeb(this WebApplication app, ILogger log = null) =>
-        app.UseMailExposure(log)
-            .UseMailEventHandlers();
+        app.UseMailExposure(log);
 
     public static WebApplication StartMailHostedServices(this WebApplication app) =>
-        app.UseMailEventHandlers();
+        app.UseMailExposure()
+            .UseMailEventHandlers();
 
     private static WebApplication UseMailExposure(this WebApplication app, ILogger log = null)
     {

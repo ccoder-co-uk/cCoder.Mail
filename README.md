@@ -1,6 +1,20 @@
 # cCoder.Mail
 
-`cCoder.Mail` contains the Mail domain for the cCoder platform.
+`cCoder.Mail` contains the Mail domain for the cCoder platform. It provides mail-server configuration, queued email, sent email, mailbox receive support, event handling, and the background sender loop used by cCoder applications.
+
+## Functionality
+
+- Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
+- Queued email management: create and inspect pending outbound emails.
+- Sent email management: inspect emails that have been successfully dispatched.
+- Mail provider abstraction: sender and receiver factories route mail work to named providers, with SMTP, POP3, and Microsoft Graph providers registered by default.
+- Received email inspection: `ReceivedEmailController` can fetch Microsoft 365 mailbox messages without persisting them.
+- Sender hosted service: checks the queue every minute and attempts SMTP delivery for pending messages.
+- App lifecycle event handling: listens for app add, update, and delete events so mail-owned app data stays aligned.
+- Manual test UI: `/tools/index.html` provides a lightweight CRUD surface for mail servers, queued mail, and sent mail, plus a received-mail tab for direct mailbox fetch testing.
+- Operational health:
+  - `Mail.Web` returns `OK` from `/Health`.
+  - `Mail.HostedServices` returns `Healthy` from `/Health` and reports hosted services from `/`.
 
 ## Contents
 
@@ -8,10 +22,16 @@
   The main library package published to NuGet.
 - `src/Mail.Web`
   The standalone web host for the Mail domain.
+- `src/Mail.HostedServices`
+  The hosted-services app for event listeners and the queued email sender.
 - `src/cCoder.Mail.Tests`
   Unit tests for the domain.
 - `src/Mail.AcceptanceTests`
-  Acceptance tests for the standalone host.
+  Acceptance tests for the standalone web host.
+- `src/Mail.HostedServices.AcceptanceTests`
+  Acceptance tests for the hosted-services app.
+- `src/Mail.IntegrationTests`
+  End-to-end tests that send queued mail through Microsoft Graph and receive it back through Microsoft Graph.
 
 ## Build
 
@@ -25,17 +45,93 @@ dotnet build src/cCoder.Mail.sln -v minimal
 dotnet test src/cCoder.Mail.sln -v minimal --no-build
 ```
 
+The solution test run includes unit tests, app acceptance suites, and the mail delivery integration suite. Acceptance tests actively call the hosted HTTP surfaces, including health endpoints and the manual tools shell.
+
+The end-to-end mail delivery test queues an email through `Mail.Web`, runs the sender orchestration, then calls the received-mail API until the same message is visible in the mailbox.
+
+## Run Locally
+
+```powershell
+dotnet run --project src/Mail.Web/Mail.Web.csproj
+dotnet run --project src/Mail.HostedServices/Mail.HostedServices.csproj
+```
+
+Useful `Mail.Web` endpoints:
+
+- `/` redirects to `/tools/index.html`.
+- `/tools/index.html` opens the manual domain tester.
+- `/swagger` opens the API explorer.
+- `/Health` returns `OK`.
+- `/Api/Core/ReceivedEmail/Receive` fetches Microsoft Graph mailbox messages using the supplied mailbox user and date range.
+- `/Api/Mail/ReceivedEmail/Receive` exposes the same receive endpoint on the Mail route.
+
+Useful `Mail.HostedServices` endpoints:
+
+- `/` returns a plain-text hosted-services report.
+- `/Health` returns `Healthy`.
+
 ## Local Configuration
 
-The standalone web host reads local secrets from environment variables rather than committed config.
+The runnable apps read local secrets from environment variables rather than committed config.
 
-Before running `src/Mail.Web`, set:
+Before running `src/Mail.Web` or `src/Mail.HostedServices`, set:
 
 - `ConnectionStrings__Core`
+
+Before running `src/Mail.Web`, also set:
+
 - `ConnectionStrings__SSO`
 - `Settings__DecryptionKey`
 
 The committed `appsettings.json` keeps these values blank so user or machine environment variables can supply them during local development.
+
+## Provider Configuration
+
+Library consumers can configure sender and receiver providers when adding Mail services:
+
+```csharp
+services.AddMail(mailConfig =>
+{
+    mailConfig.AddMicrosoftGraphSender(graphConfig =>
+    {
+        graphConfig.TenantId = tenantId;
+        graphConfig.ClientId = clientId;
+        graphConfig.ClientSecret = clientSecret;
+        graphConfig.ReceiveUser = receiveUser;
+    });
+
+    mailConfig.AddMicrosoftGraphReceiver();
+});
+```
+
+Registered sender providers are resolved by provider name. SMTP remains the default sender, so existing `MailServer.Host` values such as `smtp.office365.com` continue to use the SMTP provider. Microsoft Graph can be selected with provider names or aliases such as `MicrosoftGraph`, `graph.microsoft.com`, `https://graph.microsoft.com`, or `microsoft-graph`.
+
+Registered receiver providers are resolved by provider name. Microsoft Graph is the default receiver for direct mailbox receive calls, while POP3 remains available through the `Pop3` provider.
+
+Custom providers can be added by registering an implementation of `IMailSenderProvider` or `IMailReceiverProvider`, then mapping the public provider name with `AddSenderProvider` or `AddReceiverProvider`.
+
+## Mail Delivery Integration
+
+The real send-and-receive integration test requires these variables on the runner:
+
+- `CCODER_ACCEPTANCE_CORE_CONNECTION_STRING`
+- `CCODER_ACCEPTANCE_SSO_CONNECTION_STRING`
+- `CCODER_MAIL_GRAPH_TENANT_ID`
+- `CCODER_MAIL_GRAPH_CLIENT_ID`
+- `CCODER_MAIL_GRAPH_CLIENT_SECRET`
+- `CCODER_MAIL_GRAPH_BASE_URL` (defaults to `https://graph.microsoft.com/v1.0`)
+- `CCODER_MAIL_GRAPH_LOGIN_BASE_URL` (defaults to `https://login.microsoftonline.com`)
+- `CCODER_MAIL_INTEGRATION_SEND_USER` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
+- `CCODER_MAIL_INTEGRATION_SEND_HOST` (defaults to `graph.microsoft.com`)
+- `CCODER_MAIL_INTEGRATION_SMTP_FROM` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
+- `CCODER_MAIL_INTEGRATION_RECEIVE_USER` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
+- `CCODER_MAIL_INTEGRATION_TO` (defaults to `CCODER_MAIL_INTEGRATION_RECEIVE_USER`)
+- `CCODER_MAIL_INTEGRATION_MAX_MESSAGES` (defaults to `50`)
+- `CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS` (defaults to `120`)
+- `CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS` (defaults to `10`)
+
+The test creates disposable integration databases by appending `-mail-integration` to the acceptance Core and SSO database names.
+The Graph application registration must have `Mail.Send` and `Mail.Read` application permissions with admin consent applied.
 
 ## Package
 

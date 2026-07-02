@@ -1,4 +1,7 @@
 using cCoder.Data;
+using cCoder.Data.Models.Mail;
+using cCoder.Mail.Exposures.MailClients;
+using cCoder.Mail.Models;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Interfaces;
 using cCoder.Security.Objects;
@@ -34,6 +37,9 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
         {
             services.RemoveAll<ICoreContextFactory>();
             services.RemoveAll<ISecurityDbContextFactory>();
+            services.RemoveAll<IMicrosoftGraphClient>();
+            services.RemoveAll<IMailSenderProvider>();
+            services.RemoveAll<IMailReceiverProvider>();
 
             services.AddSingleton(
                 new cCoder.Data.Config
@@ -54,7 +60,80 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
                 _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString)
             );
             services.AddCoreData(settings.CoreConnectionString);
+            services.AddTransient<AcceptanceMailClient>();
+            services.AddTransient<IMicrosoftGraphClient>(provider => provider.GetRequiredService<AcceptanceMailClient>());
+            services.AddTransient<IMailSenderProvider, AcceptanceSmtpMailSenderProvider>();
+            services.AddTransient<IMailSenderProvider, AcceptanceGraphMailProvider>();
+            services.AddTransient<IMailReceiverProvider, AcceptanceGraphMailProvider>();
         });
+    }
+
+    private sealed class AcceptanceMailClient : IMicrosoftGraphClient
+    {
+        public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task<ReceivedEmail[]> ReceiveAsync(
+            MailboxReceiveRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<ReceivedEmail[]>(
+            [
+                new()
+                {
+                    MessageId = "<acceptance-message@example.test>",
+                    From = request.User,
+                    To = "recipient@example.test",
+                    Subject = $"Acceptance receive from {request.User}",
+                    Content = "Acceptance receive content",
+                    IsBodyHtml = false,
+                    ReceivedOn = request.From?.AddMinutes(1) ?? DateTimeOffset.UtcNow,
+                }
+            ]);
+
+        public Task<ReceivedEmail[]> ReceiveTopAsync(
+            int count,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<ReceivedEmail[]>(
+            [
+                new()
+                {
+                    MessageId = "<acceptance-top-message@example.test>",
+                    From = "configured@example.test",
+                    To = "recipient@example.test",
+                    Subject = $"Acceptance top {count}",
+                    Content = "Acceptance top receive content",
+                    IsBodyHtml = false,
+                    ReceivedOn = DateTimeOffset.UtcNow,
+                }
+            ]);
+    }
+
+    private sealed class AcceptanceSmtpMailSenderProvider : IMailSenderProvider
+    {
+        public string ProviderName => MailProviderNames.Smtp;
+
+        public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AcceptanceGraphMailProvider(AcceptanceMailClient mailClient)
+        : IMailSenderProvider,
+            IMailReceiverProvider
+    {
+        public string ProviderName => MailProviderNames.MicrosoftGraph;
+
+        public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+            mailClient.SendAsync(email, cancellationToken);
+
+        public Task<ReceivedEmail[]> ReceiveAsync(
+            MailboxReceiveRequest request,
+            CancellationToken cancellationToken = default) =>
+            mailClient.ReceiveAsync(request, cancellationToken);
+
+        public Task<ReceivedEmail[]> ReceiveTopAsync(
+            int count,
+            CancellationToken cancellationToken = default) =>
+            mailClient.ReceiveTopAsync(count, cancellationToken);
     }
 }
 

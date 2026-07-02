@@ -43,6 +43,7 @@ internal class SentEmailService(
         sentEmail.IsBodyHtml = result.IsBodyHtml;
         sentEmail.SentOn = result.SentOn;
         sentEmail.From = result.From;
+        sentEmail.MailSenderId = result.MailSenderId;
         return sentEmail;
     }
 
@@ -60,6 +61,7 @@ internal class SentEmailService(
         sentEmail.IsBodyHtml = result.IsBodyHtml;
         sentEmail.SentOn = result.SentOn;
         sentEmail.From = result.From;
+        sentEmail.MailSenderId = result.MailSenderId;
         return sentEmail;
     }
 
@@ -89,6 +91,7 @@ internal class SentEmailService(
                 IsBodyHtml = sentEmail.IsBodyHtml,
                 SentOn = sentEmail.SentOn,
                 From = sentEmail.From,
+                MailSenderId = sentEmail.MailSenderId,
             };
 }
 

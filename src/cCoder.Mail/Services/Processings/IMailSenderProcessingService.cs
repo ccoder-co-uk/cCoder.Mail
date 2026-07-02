@@ -1,0 +1,13 @@
+using cCoder.Data.Models.Mail;
+
+namespace cCoder.Mail.Services.Processings;
+
+public interface IMailSenderProcessingService
+{
+    MailSender Get(Guid id);
+    IQueryable<MailSender> GetAll(bool ignoreFilters = false);
+    ValueTask<MailSender> AddAsync(MailSender entity);
+    ValueTask<MailSender> UpdateAsync(MailSender entity);
+    ValueTask<int> DeleteAsync(Guid id);
+    ValueTask DeleteAllAsync(IEnumerable<MailSender> items);
+}

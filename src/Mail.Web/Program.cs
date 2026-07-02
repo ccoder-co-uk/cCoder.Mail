@@ -2,10 +2,9 @@ using System.Security;
 using Apps.Shared;
 using Apps.Shared.Models;
 using cCoder.Mail;
+using cCoder.Mail.Models;
 using cCoder.Security;
-using cCoder.Security.Api;
-using cCoder.Security.Data.EF.MSSQL;
-using cCoder.Security.Objects;
+using cCoder.Security.Data.EF;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.OData;
@@ -28,7 +27,7 @@ public class Program
         string ssoConnection = builder.Configuration.GetConnectionString("SSO")
             ?? throw new InvalidOperationException("ConnectionStrings:SSO is required.");
 
-        Config config = new();
+        Apps.Shared.Models.Config config = new();
         builder.Configuration.Bind(config);
         builder.Services.AddSingleton(config);
         builder.Services.AddSingleton(
@@ -54,14 +53,15 @@ public class Program
             builder.Services,
             coreConnection);
 
-        builder.Services.AddMailWeb();
-        builder.Services.AddMailHostedServices();
+        builder.Services.AddMailWeb(mailConfiguration =>
+            ConfigureMailProviders(builder.Configuration, mailConfiguration));
 
         WebApplication app = builder.Build();
         log = app.Services.GetRequiredService<ILogger<Program>>();
 
         app.UseHttpsRedirection();
         app.UseSession();
+        app.UseStaticFiles();
 
         app.UseSwagger()
             .UseSwaggerUI(options =>
@@ -74,6 +74,8 @@ public class Program
             .UseODataRouteDebug();
 
         app.UseDomainApiShell();
+        app.MapGet("/Health", () => Results.Text("OK"));
+        app.MapGet("/", () => Results.Redirect("/tools/index.html"));
         app.StartMailWeb(log);
         app.UseDomainDefaultCors();
         app.UseDomainExceptionHandling(HandleUnhandledException);
@@ -94,6 +96,76 @@ public class Program
         log.LogError("{Message}\n{StackTrace}", exception.Message, exception.StackTrace);
         await context.Response.WriteAsync(
             "{ \"error\": \"" + exception.Message.Replace("\"", "\'") + "\" }");
+    }
+
+    private static void ConfigureMailProviders(
+        IConfiguration configuration,
+        MailConfiguration mailConfiguration)
+    {
+        ConfigureRuntime(configuration, mailConfiguration);
+        ConfigureMailbox(configuration, mailConfiguration.Pop3, "POP", 995);
+        ConfigureMailbox(configuration, mailConfiguration.Imap, "IMAP", 993);
+
+        mailConfiguration
+            .AddSmtpSender()
+            .AddPop3Receiver()
+            .AddImapReceiver()
+            .AddMicrosoftGraphSender(graphConfiguration => ConfigureGraph(configuration, graphConfiguration))
+            .AddMicrosoftGraphReceiver(graphConfiguration => ConfigureGraph(configuration, graphConfiguration));
+    }
+
+    private static void ConfigureGraph(
+        IConfiguration configuration,
+        MicrosoftGraphMailConfiguration graphConfiguration)
+    {
+        graphConfiguration.TenantId = configuration["CCODER_MAIL_GRAPH_TENANT_ID"] ?? graphConfiguration.TenantId;
+        graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
+        graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
+        graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
+        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_BASE_URL"]
+            ?? configuration["CCODER_MAIL_GRAPH_LOGIN_URL"]
+            ?? graphConfiguration.LoginBaseUrl;
+        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_RECEIVE_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_SEND_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_SMTP_USER"]
+            ?? graphConfiguration.ReceiveUser;
+    }
+
+    private static void ConfigureRuntime(
+        IConfiguration configuration,
+        MailConfiguration mailConfiguration)
+    {
+        mailConfiguration.IsMigrating =
+            int.TryParse(configuration["MIGRATING"], out int result) && result == 1;
+    }
+
+    private static void ConfigureMailbox(
+        IConfiguration configuration,
+        MailboxReceiveConfiguration mailboxConfiguration,
+        string providerPrefix,
+        int defaultPort)
+    {
+        mailboxConfiguration.Host = configuration[$"CCODER_MAIL_{providerPrefix}_HOST"]
+            ?? configuration["CCODER_MAIL_RECEIVE_HOST"]
+            ?? mailboxConfiguration.Host;
+        mailboxConfiguration.Port = int.TryParse(
+            configuration[$"CCODER_MAIL_{providerPrefix}_PORT"]
+            ?? configuration["CCODER_MAIL_RECEIVE_PORT"],
+            out int port)
+                ? port
+                : defaultPort;
+        mailboxConfiguration.EnableSSL = !bool.TryParse(
+            configuration[$"CCODER_MAIL_{providerPrefix}_SSL"]
+            ?? configuration["CCODER_MAIL_RECEIVE_SSL"],
+            out bool enableSsl)
+                || enableSsl;
+        mailboxConfiguration.User = configuration[$"CCODER_MAIL_{providerPrefix}_USER"]
+            ?? configuration["CCODER_MAIL_RECEIVE_USER"]
+            ?? mailboxConfiguration.User;
+        mailboxConfiguration.Password = configuration[$"CCODER_MAIL_{providerPrefix}_PASSWORD"]
+            ?? configuration["CCODER_MAIL_RECEIVE_PASSWORD"]
+            ?? mailboxConfiguration.Password;
     }
 }
 

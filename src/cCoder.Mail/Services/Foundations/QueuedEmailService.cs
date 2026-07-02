@@ -44,6 +44,8 @@ internal class QueuedEmailService(
         queuedEmail.CC = result.CC;
         queuedEmail.IsBodyHtml = result.IsBodyHtml;
         queuedEmail.MailServerName = result.MailServerName;
+        queuedEmail.MailSenderId = result.MailSenderId;
+        queuedEmail.MailSender = result.MailSender;
         return queuedEmail;
     }
 
@@ -60,6 +62,8 @@ internal class QueuedEmailService(
         queuedEmail.CC = result.CC;
         queuedEmail.IsBodyHtml = result.IsBodyHtml;
         queuedEmail.MailServerName = result.MailServerName;
+        queuedEmail.MailSenderId = result.MailSenderId;
+        queuedEmail.MailSender = result.MailSender;
         return queuedEmail;
     }
 
@@ -71,9 +75,10 @@ internal class QueuedEmailService(
 
     public ValueTask MarkAsSentAsync(
         QueuedEmail queuedEmail,
+        Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default) =>
-        queuedEmailBroker.MarkQueuedEmailAsSentAsync(Copy(queuedEmail), fromAddress, cancellationToken);
+        queuedEmailBroker.MarkQueuedEmailAsSentAsync(Copy(queuedEmail), mailSenderId, fromAddress, cancellationToken);
 
     public async ValueTask DeleteAsync(int id, bool checkPrivileges = true)
     {
@@ -105,6 +110,8 @@ internal class QueuedEmailService(
                 CC = queuedEmail.CC,
                 IsBodyHtml = queuedEmail.IsBodyHtml,
                 MailServerName = queuedEmail.MailServerName,
+                MailSenderId = queuedEmail.MailSenderId,
+                MailSender = queuedEmail.MailSender,
                 FailedSends = queuedEmail.FailedSends?.Select(Copy).ToArray(),
             };
 

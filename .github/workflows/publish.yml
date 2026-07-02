@@ -13,6 +13,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
   NUGET_DIRECTORY: ${{ github.workspace }}/artifacts/nuget
+  DOTNET_CLI_DISABLE_PERSISTENT_MSBUILD_SERVER: true
 
 defaults:
   run:
@@ -20,16 +21,11 @@ defaults:
 
 jobs:
   build-test-pack:
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.x
 
       - name: Create version number
         id: version
@@ -43,7 +39,21 @@ jobs:
         run: dotnet build src/cCoder.Mail.sln -c Release --no-restore -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false /p:Version="${{ steps.version.outputs.value }}"
 
       - name: Test
-        run: dotnet test src/cCoder.Mail.Tests/cCoder.Mail.Tests.csproj -c Release --no-build -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
+        run: |
+          $secretEnvironment = @{
+            CCODER_MAIL_GRAPH_TENANT_ID = '${{ secrets.CCODER_MAIL_GRAPH_TENANT_ID }}'
+            CCODER_MAIL_GRAPH_CLIENT_ID = '${{ secrets.CCODER_MAIL_GRAPH_CLIENT_ID }}'
+            CCODER_MAIL_GRAPH_CLIENT_SECRET = '${{ secrets.CCODER_MAIL_GRAPH_CLIENT_SECRET }}'
+            CCODER_MAIL_INTEGRATION_SEND_USER = '${{ secrets.CCODER_MAIL_INTEGRATION_SEND_USER }}'
+          }
+
+          foreach ($item in $secretEnvironment.GetEnumerator()) {
+            if (-not [string]::IsNullOrWhiteSpace($item.Value)) {
+              Set-Item -Path "Env:$($item.Key)" -Value $item.Value.Trim()
+            }
+          }
+
+          dotnet test src/cCoder.Mail.sln -c Release --no-build -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
 
       - name: Pack
         run: |

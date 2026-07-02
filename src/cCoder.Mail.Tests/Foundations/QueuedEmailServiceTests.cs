@@ -44,6 +44,13 @@ public partial class QueuedEmailServiceTests
             .With(x => x.CC = $"cc-{Guid.NewGuid():N}@test.local")
             .With(x => x.IsBodyHtml = true)
             .With(x => x.MailServerName = $"smtp-{Guid.NewGuid():N}")
+            .With(x => x.MailSenderId = Guid.Parse("00000000-0000-0000-0000-000000000001"))
+            .With(x => x.MailSender = new MailSender
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Name = "Default",
+                ProviderName = "SMTP",
+            })
             .With(x => x.FailedSends = Array.Empty<EmailSendFailure>())
             .Build();
 
@@ -64,6 +71,15 @@ public partial class QueuedEmailServiceTests
                 CC = item.CC,
                 IsBodyHtml = item.IsBodyHtml,
                 MailServerName = item.MailServerName,
+                MailSenderId = item.MailSenderId,
+                MailSender = item.MailSender == null
+                    ? null
+                    : new MailSender
+                    {
+                        Id = item.MailSender.Id,
+                        Name = item.MailSender.Name,
+                        ProviderName = item.MailSender.ProviderName,
+                    },
                 App = item.App == null ? null : new DataApp { Id = item.App.Id, Name = item.App.Name },
                 SentBy = item.SentBy == null ? null : new DataUser { Id = item.SentBy.Id, DisplayName = item.SentBy.DisplayName, Email = item.SentBy.Email },
                 FailedSends = item.FailedSends?.Select(ToExternalEmailSendFailure).ToArray(),

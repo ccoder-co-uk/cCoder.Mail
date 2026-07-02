@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LocalDataProject>..\..\..\cCoder.Data\src\cCoder.Data\cCoder.Data.csproj</LocalDataProject>
+    <UseLocalData Condition="'$(UseLocalData)' == ''">false</UseLocalData>
+    <UseLocalData Condition="'$(UseLocalData)' == 'true' and !Exists('$(LocalDataProject)')">false</UseLocalData>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseLocalData)' == 'true'">
+    <ProjectReference Include="$(LocalDataProject)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="cCoder.Data" Version="2026.7.2.1747" Condition="'$(UseLocalData)' != 'true'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cCoder.Mail\cCoder.Mail.csproj" AdditionalProperties="UseLocalData=$(UseLocalData)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
