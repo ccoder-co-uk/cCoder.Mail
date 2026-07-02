@@ -31,7 +31,7 @@
 - `src/Mail.HostedServices.AcceptanceTests`
   Acceptance tests for the hosted-services app.
 - `src/Mail.IntegrationTests`
-  Optional end-to-end tests that send queued mail through SMTP and receive it back from a POP3 mailbox.
+  End-to-end tests that send queued mail through SMTP and receive it back from a POP3 mailbox.
 
 ## Build
 
@@ -45,9 +45,9 @@ dotnet build src/cCoder.Mail.sln -v minimal
 dotnet test src/cCoder.Mail.sln -v minimal --no-build
 ```
 
-The solution test run includes unit tests, app acceptance suites, and the optional mail delivery integration suite. Acceptance tests actively call the hosted HTTP surfaces, including health endpoints and the manual tools shell.
+The solution test run includes unit tests, app acceptance suites, and the mail delivery integration suite. Acceptance tests actively call the hosted HTTP surfaces, including health endpoints and the manual tools shell.
 
-The end-to-end mail delivery test is disabled unless `CCODER_MAIL_INTEGRATION_ENABLED=true`. When enabled, it queues an email through `Mail.Web`, runs the sender orchestration, then calls the received-mail API until the same message is visible in the mailbox.
+The end-to-end mail delivery test queues an email through `Mail.Web`, runs the sender orchestration, then calls the received-mail API until the same message is visible in the mailbox.
 
 ## Run Locally
 
@@ -87,9 +87,8 @@ The committed `appsettings.json` keeps these values blank so user or machine env
 
 ## Mail Delivery Integration
 
-To enable the real send-and-receive integration test, set these variables on the runner:
+The real send-and-receive integration test requires these variables on the runner:
 
-- `CCODER_MAIL_INTEGRATION_ENABLED=true`
 - `CCODER_ACCEPTANCE_CORE_CONNECTION_STRING`
 - `CCODER_ACCEPTANCE_SSO_CONNECTION_STRING`
 - `CCODER_MAIL_INTEGRATION_SMTP_HOST`

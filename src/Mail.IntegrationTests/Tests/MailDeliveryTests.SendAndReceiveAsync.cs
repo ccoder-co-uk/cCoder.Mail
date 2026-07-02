@@ -13,14 +13,6 @@ public sealed partial class MailDeliveryTests
         // Given
         IntegrationSettings settings = ReadSettings();
 
-        if (!settings.Enabled)
-        {
-            Output.WriteLine(
-                "Mail end-to-end integration is disabled. Set CCODER_MAIL_INTEGRATION_ENABLED=true and configure: "
-                + IntegrationSettings.RequiredVariableSummary());
-            return;
-        }
-
         string[] missingVariables = settings.MissingVariables();
         missingVariables.Should().BeEmpty(
             "the mail end-to-end integration needs configured SMTP, POP3, and acceptance database settings");

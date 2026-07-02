@@ -216,7 +216,6 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     private static IntegrationSettings ReadSettings() =>
         new()
         {
-            Enabled = ReadBool("CCODER_MAIL_INTEGRATION_ENABLED"),
             CoreConnectionString = AddDatabaseSuffix(CoreConnectionVariableName, "mail-integration"),
             SsoConnectionString = AddDatabaseSuffix(SsoConnectionVariableName, "mail-integration"),
             SmtpHost = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_HOST"),
@@ -295,8 +294,6 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
     private sealed class IntegrationSettings
     {
-        public bool Enabled { get; init; }
-
         public string CoreConnectionString { get; init; }
 
         public string SsoConnectionString { get; init; }
