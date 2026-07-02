@@ -49,7 +49,7 @@ jobs:
 
           foreach ($item in $secretEnvironment.GetEnumerator()) {
             if (-not [string]::IsNullOrWhiteSpace($item.Value)) {
-              Set-Item -Path "Env:$($item.Key)" -Value $item.Value
+              Set-Item -Path "Env:$($item.Key)" -Value $item.Value.Trim()
             }
           }
 

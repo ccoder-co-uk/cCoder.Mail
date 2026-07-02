@@ -150,6 +150,6 @@ internal sealed class MicrosoftGraphMailSenderService(
             ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
             ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
 
-        return string.IsNullOrWhiteSpace(value) ? null : value;
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 }
