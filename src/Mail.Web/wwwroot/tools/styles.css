@@ -118,6 +118,34 @@ a:hover {
     padding: 10px;
 }
 
+.mail-login-gate {
+    height: calc(100% - 58px);
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    text-align: center;
+}
+
+.mail-login-gate h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.mail-login-gate p {
+    margin: 0;
+    color: #607085;
+}
+
+body.mail-shell:not(.is-authenticated) .mail-workbench,
+body.mail-shell:not(.is-authenticated) .mail-header-actions {
+    display: none;
+}
+
+body.mail-shell.is-authenticated .mail-login-gate {
+    display: none;
+}
+
 .mail-panel {
     min-height: 100%;
     border: 1px solid #c8d2df;

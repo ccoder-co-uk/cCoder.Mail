@@ -1,5 +1,6 @@
 window.MailGrids = {
     apiRoot: "/Api/Core",
+    initialized: false,
 
     configs: {
         MailServer: {
@@ -90,6 +91,11 @@ window.MailGrids = {
     store: {},
 
     init: function () {
+        if (this.initialized || !MailApi.isAuthenticated()) {
+            return;
+        }
+
+        this.initialized = true;
         document.getElementById("create-mail-server")
             ?.addEventListener("click", () => this.openEditor(this.configs.MailServer, null, null));
         document.getElementById("create-queued-email")
@@ -588,5 +594,11 @@ window.MailGrids = {
             .replace(/"/g, "&quot;");
     }
 };
+
+document.addEventListener("mail-auth-changed", event => {
+    if (event.detail.isAuthenticated) {
+        window.MailGrids.init();
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => window.MailGrids.init());

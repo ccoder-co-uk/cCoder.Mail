@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mail Management</title>
-    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-tabs">
+    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-auth">
 </head>
 <body class="mail-shell">
     <header class="mail-header">
@@ -30,6 +30,13 @@
             <button id="health-check" type="button">Health</button>
         </div>
     </header>
+
+    <section class="mail-login-gate">
+        <div>
+            <h2>Sign in required</h2>
+            <p>Use the login controls above to open the Mail Management tools.</p>
+        </div>
+    </section>
 
     <main class="mail-workbench">
         <nav class="mail-section-tabs" aria-label="Mail Management workspace tabs">
@@ -108,7 +115,7 @@
         </form>
     </dialog>
 
-    <script src="/tools/api.js?v=mail-grid-20260702-tabs"></script>
-    <script src="/tools/grids.js?v=mail-grid-20260702-tabs"></script>
+    <script src="/tools/api.js?v=mail-grid-20260702-auth"></script>
+    <script src="/tools/grids.js?v=mail-grid-20260702-auth"></script>
 </body>
 </html>

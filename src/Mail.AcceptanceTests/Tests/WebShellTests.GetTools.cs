@@ -17,6 +17,9 @@ public sealed partial class WebShellTests
         content.Should().Contain("Mail Management");
         content.Should().Contain("/tools/company-logo.png");
         content.Should().Contain("mail-logo");
+        content.Should().Contain("Sign in required");
+        content.Should().Contain("mail-login-gate");
+        content.Should().Contain("mail-workbench");
         content.Should().Contain("<nav class=\"mail-section-tabs\"");
         content.Should().MatchRegex("</nav>\\s*<section class=\"mail-panel\">");
         content.Should().Contain("mail-server-grid");
@@ -28,7 +31,21 @@ public sealed partial class WebShellTests
         content.Should().Contain("Received Emails");
         content.Should().Contain("/tools/api.js");
         content.Should().Contain("/tools/grids.js");
-        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-tabs");
+        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-auth");
+    }
+
+    [Fact]
+    public async Task GetToolsApi_ReturnsLoginGateLogic()
+    {
+        // Given
+
+        // When
+        string content = await GetOkContentAsync("/tools/api.js");
+
+        // Then
+        content.Should().Contain("mail-auth-changed");
+        content.Should().Contain("isAuthenticated: function");
+        content.Should().Contain("document.body.classList.toggle(\"is-authenticated\"");
     }
 
     [Fact]
@@ -41,6 +58,8 @@ public sealed partial class WebShellTests
 
         // Then
         content.Should().Contain("MailGrids");
+        content.Should().Contain("MailApi.isAuthenticated()");
+        content.Should().Contain("mail-auth-changed");
         content.Should().Contain("data-child-grid=\"QueuedEmail\"");
         content.Should().Contain("data-child-grid=\"SentEmail\"");
         content.Should().Contain("data-child-grid=\"EmailSendFailure\"");
@@ -67,6 +86,8 @@ public sealed partial class WebShellTests
         content.Should().Contain(".mail-section-tabs");
         content.Should().Contain(".mail-section-tabs button.active");
         content.Should().Contain(".mail-logo");
+        content.Should().Contain("body.mail-shell:not(.is-authenticated) .mail-workbench");
+        content.Should().Contain("body.mail-shell.is-authenticated .mail-login-gate");
         content.Should().Contain("border-radius: 4px 4px 0 0");
     }
 }
