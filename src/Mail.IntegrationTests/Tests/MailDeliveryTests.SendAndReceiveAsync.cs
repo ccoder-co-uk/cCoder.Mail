@@ -20,7 +20,7 @@ public sealed partial class MailDeliveryTests
 
         await using IntegrationApplication application = await StartApplicationAsync(settings);
         string unique = Guid.NewGuid().ToString("N");
-        string subject = $"cCoder Mail integration {unique}";
+        string subject = $"Integration Test Send {unique}";
         string content = $"cCoder Mail integration content {unique}";
         DateTimeOffset receiveFrom = DateTimeOffset.UtcNow.AddMinutes(-2);
 
