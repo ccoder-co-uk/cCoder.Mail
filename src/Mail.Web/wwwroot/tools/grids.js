@@ -67,6 +67,23 @@ window.MailGrids = {
                 FailureReason: { label: "Failure Reason", readonly: true, type: "textarea" }
             },
             columns: ["AttemptedOn", "FailureReason", "Id"]
+        },
+        ReceivedEmail: {
+            name: "ReceivedEmail",
+            title: "Received Email",
+            key: "MessageId",
+            readonly: true,
+            fields: {
+                MessageId: { label: "Message Id", readonly: true },
+                From: { label: "From", readonly: true },
+                To: { label: "To", readonly: true },
+                CC: { label: "CC", readonly: true },
+                Subject: { label: "Subject", readonly: true },
+                Content: { label: "Content", readonly: true, type: "textarea" },
+                IsBodyHtml: { label: "Is Body HTML", readonly: true, type: "checkbox" },
+                ReceivedOn: { label: "Received On", readonly: true }
+            },
+            columns: ["ReceivedOn", "From", "To", "Subject", "MessageId"]
         }
     },
 
@@ -79,6 +96,8 @@ window.MailGrids = {
             ?.addEventListener("click", () => this.openEditor(this.configs.QueuedEmail, null, null));
         document.getElementById("create-sent-email")
             ?.addEventListener("click", () => this.openEditor(this.configs.SentEmail, null, null));
+        document.getElementById("receive-email")
+            ?.addEventListener("click", () => this.receiveEmails());
         document.querySelectorAll("[data-main-tab]").forEach(tab =>
             tab.addEventListener("click", () => this.showMainTab(tab.dataset.mainTab)));
 
@@ -89,6 +108,7 @@ window.MailGrids = {
         await this.loadMailServers();
         await this.loadQueuedEmails();
         await this.loadSentEmails();
+        this.renderGrid("received-email-grid", this.configs.ReceivedEmail, [], "ReceivedEmail");
     },
 
     loadMailServers: async function () {
@@ -119,6 +139,32 @@ window.MailGrids = {
         } catch (error) {
             MailApi.notify(error.message, true);
         }
+    },
+
+    receiveEmails: async function () {
+        try {
+            const rows = await MailApi.post(
+                `${this.apiRoot}/ReceivedEmail/Receive`,
+                this.receiveRequest());
+
+            this.renderGrid("received-email-grid", this.configs.ReceivedEmail, rows ?? [], "ReceivedEmail");
+            MailApi.notify(`${rows?.length ?? 0} received emails loaded`);
+        } catch (error) {
+            MailApi.notify(error.message, true);
+        }
+    },
+
+    receiveRequest: function () {
+        return {
+            host: document.getElementById("receive-host")?.value,
+            port: Number(document.getElementById("receive-port")?.value || 995),
+            enableSSL: document.getElementById("receive-ssl")?.checked === true,
+            user: document.getElementById("receive-user")?.value,
+            password: document.getElementById("receive-password")?.value,
+            from: this.dateInputValue("receive-from"),
+            to: this.dateInputValue("receive-to"),
+            maximumMessages: Number(document.getElementById("receive-maximum")?.value || 100)
+        };
     },
 
     read: async function (config, context) {
@@ -523,6 +569,11 @@ window.MailGrids = {
         }
 
         return value;
+    },
+
+    dateInputValue: function (id) {
+        const value = document.getElementById(id)?.value;
+        return value ? new Date(value).toISOString() : null;
     },
 
     odataString: function (value) {

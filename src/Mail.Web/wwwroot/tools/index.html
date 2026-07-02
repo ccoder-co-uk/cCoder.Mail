@@ -12,7 +12,7 @@
             <span class="mail-mark">M</span>
             <div>
                 <h1>Mail Management</h1>
-                <span>Mail servers, queued mail, and sent mail</span>
+                <span>Mail servers, queued mail, sent mail, and received mail</span>
             </div>
         </div>
 
@@ -37,6 +37,7 @@
                 <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
                 <button data-main-tab="queued" type="button">Queued Emails</button>
                 <button data-main-tab="sent" type="button">Sent Emails</button>
+                <button data-main-tab="received" type="button">Received Emails</button>
             </div>
 
             <section class="mail-main-panel active" data-main-panel="servers">
@@ -70,6 +71,27 @@
                     <button id="create-sent-email" type="button">Create Sent Email</button>
                 </div>
                 <div id="sent-email-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="received">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Received Emails</h2>
+                        <span>Fetch mailbox messages within a date range without storing them.</span>
+                    </div>
+                    <button id="receive-email" type="button">Receive Emails</button>
+                </div>
+                <div class="mail-receive-form">
+                    <label><span>Host</span><input id="receive-host" placeholder="pop.example.com"></label>
+                    <label><span>Port</span><input id="receive-port" type="number" value="995"></label>
+                    <label><span>User</span><input id="receive-user" autocomplete="username"></label>
+                    <label><span>Password</span><input id="receive-password" autocomplete="current-password" type="password"></label>
+                    <label><span>From</span><input id="receive-from" type="datetime-local"></label>
+                    <label><span>To</span><input id="receive-to" type="datetime-local"></label>
+                    <label><span>Max</span><input id="receive-maximum" type="number" value="100"></label>
+                    <label class="mail-checkbox"><input id="receive-ssl" type="checkbox" checked><span>Enable SSL</span></label>
+                </div>
+                <div id="received-email-grid" class="mail-grid"></div>
             </section>
         </section>
     </main>

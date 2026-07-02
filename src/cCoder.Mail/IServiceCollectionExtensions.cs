@@ -3,6 +3,7 @@ using cCoder.Data.Models.Mail;
 using cCoder.Mail.Api.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
+using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Exposures;
 using cCoder.Mail.Exposures.EventHandlers;
@@ -81,6 +82,8 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
+        services.AddTransient<IMailClient, MailClient>();
+        services.AddTransient<IMailClientBroker, MailClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();
         services.AddTransient<IQueuedEmailBroker, QueuedEmailBroker>();
         services.AddTransient<ISentEmailBroker, SentEmailBroker>();
@@ -95,6 +98,8 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailMetadataTypeService, MailMetadataTypeService>();
         services.AddTransient<Services.Foundations.Events.IEventHandlerService, Services.Foundations.Events.EventHandlerService>();
         services.AddTransient<IMailServerService, MailServerService>();
+        services.AddTransient<IMailSendingService, MailSendingService>();
+        services.AddTransient<IMailReceivingService, MailReceivingService>();
         services.AddTransient<IQueuedEmailService, QueuedEmailService>();
         services.AddTransient<ISentEmailService, SentEmailService>();
         services.AddTransient<IMailServerEventService, MailServerEventService>();
@@ -105,6 +110,7 @@ public static partial class IServiceCollectionExtensions
     private static void AddOrchestrations(this IServiceCollection services)
     {
         services.AddTransient<IAppOrchestrationService, AppOrchestrationService>();
+        services.AddTransient<IMailClientOrchestrationService, MailClientOrchestrationService>();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddTransient<IMailServerOrchestrationService, MailServerOrchestrationService>();
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();

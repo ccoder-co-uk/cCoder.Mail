@@ -1,15 +1,17 @@
 # cCoder.Mail
 
-`cCoder.Mail` contains the Mail domain for the cCoder platform. It provides mail-server configuration, queued email, sent email, event handling, and the background sender loop used by cCoder applications.
+`cCoder.Mail` contains the Mail domain for the cCoder platform. It provides mail-server configuration, queued email, sent email, mailbox receive support, event handling, and the background sender loop used by cCoder applications.
 
 ## Functionality
 
 - Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
 - Queued email management: create and inspect pending outbound emails.
 - Sent email management: inspect emails that have been successfully dispatched.
+- Mail client abstraction: `IMailClient` sends queued mail and can receive mailbox messages for a requested time period.
+- Received email inspection: `ReceivedEmailController` can fetch mailbox messages without persisting them.
 - Sender hosted service: checks the queue every minute and attempts SMTP delivery for pending messages.
 - App lifecycle event handling: listens for app add, update, and delete events so mail-owned app data stays aligned.
-- Manual test UI: `/tools/index.html` provides a lightweight CRUD surface for mail servers, with queued and sent mail managed inside the selected server context.
+- Manual test UI: `/tools/index.html` provides a lightweight CRUD surface for mail servers, queued mail, and sent mail, plus a received-mail tab for direct mailbox fetch testing.
 - Operational health:
   - `Mail.Web` returns `OK` from `/Health`.
   - `Mail.HostedServices` returns `Healthy` from `/Health` and reports hosted services from `/`.
@@ -56,6 +58,8 @@ Useful `Mail.Web` endpoints:
 - `/tools/index.html` opens the manual domain tester.
 - `/swagger` opens the API explorer.
 - `/Health` returns `OK`.
+- `/Api/Core/ReceivedEmail/Receive` fetches mailbox messages using the supplied host, port, SSL, credentials, and date range.
+- `/Api/Mail/ReceivedEmail/Receive` exposes the same receive endpoint on the Mail route.
 
 Useful `Mail.HostedServices` endpoints:
 

@@ -1,4 +1,7 @@
 using cCoder.Data;
+using cCoder.Data.Models.Mail;
+using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Models;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Interfaces;
 using cCoder.Security.Objects;
@@ -34,6 +37,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
         {
             services.RemoveAll<ICoreContextFactory>();
             services.RemoveAll<ISecurityDbContextFactory>();
+            services.RemoveAll<IMailClient>();
 
             services.AddSingleton(
                 new cCoder.Data.Config
@@ -54,7 +58,31 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
                 _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString)
             );
             services.AddCoreData(settings.CoreConnectionString);
+            services.AddTransient<IMailClient, AcceptanceMailClient>();
         });
+    }
+
+    private sealed class AcceptanceMailClient : IMailClient
+    {
+        public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task<ReceivedEmail[]> ReceiveAsync(
+            MailboxReceiveRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<ReceivedEmail[]>(
+            [
+                new()
+                {
+                    MessageId = "<acceptance-message@example.test>",
+                    From = request.User,
+                    To = "recipient@example.test",
+                    Subject = $"Acceptance receive from {request.Host}",
+                    Content = "Acceptance receive content",
+                    IsBodyHtml = false,
+                    ReceivedOn = request.From?.AddMinutes(1) ?? DateTimeOffset.UtcNow,
+                }
+            ]);
     }
 }
 

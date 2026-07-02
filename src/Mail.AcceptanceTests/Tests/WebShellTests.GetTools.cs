@@ -18,8 +18,10 @@ public sealed partial class WebShellTests
         content.Should().Contain("mail-server-grid");
         content.Should().Contain("queued-email-grid");
         content.Should().Contain("sent-email-grid");
+        content.Should().Contain("received-email-grid");
         content.Should().Contain("Queued Emails");
         content.Should().Contain("Sent Emails");
+        content.Should().Contain("Received Emails");
         content.Should().Contain("/tools/api.js");
         content.Should().Contain("/tools/grids.js");
         content.Should().Contain("/tools/styles.css");
@@ -40,6 +42,8 @@ public sealed partial class WebShellTests
         content.Should().Contain("data-child-grid=\"EmailSendFailure\"");
         content.Should().Contain("loadMailServerDetails");
         content.Should().Contain("loadQueuedEmailDetails");
+        content.Should().Contain("receiveEmails");
+        content.Should().Contain("ReceivedEmail/Receive");
         content.Should().Contain("MailServerName eq");
         content.Should().Contain("$expand=");
     }
