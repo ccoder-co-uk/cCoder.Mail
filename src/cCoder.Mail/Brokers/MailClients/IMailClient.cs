@@ -10,4 +10,8 @@ public interface IMailClient
     Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);
+
+    Task<ReceivedEmail[]> ReceiveTopAsync(
+        int count,
+        CancellationToken cancellationToken = default);
 }

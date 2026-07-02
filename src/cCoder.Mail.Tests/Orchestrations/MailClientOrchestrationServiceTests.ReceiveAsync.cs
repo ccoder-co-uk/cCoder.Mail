@@ -33,4 +33,25 @@ public partial class MailClientOrchestrationServiceTests
         mailReceivingServiceMock.VerifyNoOtherCalls();
         mailSendingServiceMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldDelegateToReceivingServiceWhenReceiveTopAsync()
+    {
+        // Given
+        ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
+        CancellationToken cancellationToken = new();
+
+        mailReceivingServiceMock
+            .Setup(service => service.ReceiveTopAsync(1, cancellationToken))
+            .ReturnsAsync(expectedEmails);
+
+        // When
+        ReceivedEmail[] actualEmails = await mailClientOrchestrationService.ReceiveTopAsync(1, cancellationToken);
+
+        // Then
+        actualEmails.Should().BeSameAs(expectedEmails);
+        mailReceivingServiceMock.Verify(service => service.ReceiveTopAsync(1, cancellationToken), Times.Once);
+        mailReceivingServiceMock.VerifyNoOtherCalls();
+        mailSendingServiceMock.VerifyNoOtherCalls();
+    }
 }

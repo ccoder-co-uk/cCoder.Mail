@@ -21,4 +21,15 @@ public sealed class ReceivedEmailController(
 
         return Ok(await mailClientOrchestrationService.ReceiveAsync(request, cancellationToken));
     }
+
+    [HttpGet("ReceiveTop/{count:int}")]
+    public async Task<IActionResult> ReceiveTop(
+        [FromRoute] int count,
+        CancellationToken cancellationToken)
+    {
+        if (count <= 0)
+            return BadRequest("Count must be greater than zero.");
+
+        return Ok(await mailClientOrchestrationService.ReceiveTopAsync(count, cancellationToken));
+    }
 }

@@ -32,4 +32,24 @@ public partial class MailReceivingServiceTests
         mailClientBrokerMock.Verify(broker => broker.ReceiveAsync(request, cancellationToken), Times.Once);
         mailClientBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldDelegateToBrokerWhenReceiveTopAsync()
+    {
+        // Given
+        ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
+        CancellationToken cancellationToken = new();
+
+        mailClientBrokerMock
+            .Setup(broker => broker.ReceiveTopAsync(1, cancellationToken))
+            .ReturnsAsync(expectedEmails);
+
+        // When
+        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveTopAsync(1, cancellationToken);
+
+        // Then
+        actualEmails.Should().BeSameAs(expectedEmails);
+        mailClientBrokerMock.Verify(broker => broker.ReceiveTopAsync(1, cancellationToken), Times.Once);
+        mailClientBrokerMock.VerifyNoOtherCalls();
+    }
 }

@@ -28,4 +28,25 @@ public partial class MailClientBrokerTests
         microsoftGraphClientMock.VerifyNoOtherCalls();
         mailClientMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldDelegateToMicrosoftGraphClientWhenReceiveTopAsync()
+    {
+        // Given
+        ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
+        CancellationToken cancellationToken = new();
+
+        microsoftGraphClientMock
+            .Setup(client => client.ReceiveTopAsync(1, cancellationToken))
+            .ReturnsAsync(expectedEmails);
+
+        // When
+        ReceivedEmail[] actualEmails = await mailClientBroker.ReceiveTopAsync(1, cancellationToken);
+
+        // Then
+        actualEmails.Should().BeSameAs(expectedEmails);
+        microsoftGraphClientMock.Verify(client => client.ReceiveTopAsync(1, cancellationToken), Times.Once);
+        microsoftGraphClientMock.VerifyNoOtherCalls();
+        mailClientMock.VerifyNoOtherCalls();
+    }
 }

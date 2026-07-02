@@ -95,6 +95,21 @@ internal sealed partial class MailClient : IMailClient
         return [.. messages.OrderByDescending(message => message.ReceivedOn)];
     }
 
+    public Task<ReceivedEmail[]> ReceiveTopAsync(
+        int count,
+        CancellationToken cancellationToken = default) =>
+        ReceiveAsync(
+            new MailboxReceiveRequest
+            {
+                Host = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_HOST"),
+                Port = int.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_PORT"), out int port) ? port : 995,
+                EnableSSL = !bool.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_SSL"), out bool enableSsl) || enableSsl,
+                User = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_USER"),
+                Password = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_PASSWORD"),
+                MaximumMessages = count,
+            },
+            cancellationToken);
+
     private static async Task<Stream> CreateSslStreamAsync(
         Stream networkStream,
         string host,
@@ -337,6 +352,20 @@ internal sealed partial class MailClient : IMailClient
 
         if (string.IsNullOrWhiteSpace(request.Password))
             throw new InvalidOperationException("Mailbox password is required.");
+    }
+
+    private static string ReadRequiredEnvironment(string variableName) =>
+        ReadEnvironment(variableName)
+        ?? throw new InvalidOperationException($"{variableName} is required to receive mailbox messages.");
+
+    private static string ReadEnvironment(string variableName)
+    {
+        string value =
+            Environment.GetEnvironmentVariable(variableName)
+            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
+            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+
+        return string.IsNullOrWhiteSpace(value) ? null : value;
     }
 
     private readonly record struct ParsedBody(string Content, bool IsBodyHtml);

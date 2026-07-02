@@ -27,4 +27,15 @@ public sealed partial class ReceivedEmailControllerTests(WebAcceptanceFixture fi
         return JsonSerializer.Deserialize<ReceivedEmail[]>(content, JsonOptions)
             ?? throw new InvalidOperationException("Expected received email payload.");
     }
+
+    private async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(int count)
+    {
+        using HttpResponseMessage response = await Client.GetAsync($"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
+        string content = await response.Content.ReadAsStringAsync();
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
+
+        return JsonSerializer.Deserialize<ReceivedEmail[]>(content, JsonOptions)
+            ?? throw new InvalidOperationException("Expected received email payload.");
+    }
 }

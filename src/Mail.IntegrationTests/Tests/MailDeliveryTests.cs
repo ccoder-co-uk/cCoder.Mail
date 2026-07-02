@@ -151,6 +151,18 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             ?? throw new InvalidOperationException("Expected received email payload.");
     }
 
+    private static async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(
+        HttpClient client,
+        int count)
+    {
+        using HttpResponseMessage response = await client.GetAsync($"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
+        string content = await response.Content.ReadAsStringAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
+
+        return JsonSerializer.Deserialize<ReceivedEmail[]>(content, JsonOptions)
+            ?? throw new InvalidOperationException("Expected received email payload.");
+    }
+
     private static async Task<int> SeedAsync(IServiceProvider services, IntegrationSettings settings)
     {
         using IServiceScope scope = services.CreateScope();
@@ -197,11 +209,11 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         {
             AppId = app.Id,
             Name = MailServerName,
-            Host = settings.SmtpHost,
-            Port = settings.SmtpPort,
-            EnableSSL = settings.SmtpEnableSsl,
-            User = settings.SmtpUser,
-            Password = settings.SmtpPassword,
+            Host = settings.SendHost,
+            Port = 443,
+            EnableSSL = true,
+            User = settings.SendUser,
+            Password = string.Empty,
             FromEmail = settings.From,
         });
 
@@ -211,21 +223,24 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
     private static IntegrationSettings ReadSettings()
     {
+        string sendHost = ReadRequired("CCODER_MAIL_INTEGRATION_SEND_HOST");
+        string sendUser = ReadRequired(
+            "CCODER_MAIL_INTEGRATION_SEND_USER",
+            "CCODER_MAIL_INTEGRATION_SMTP_USER");
         string receiveUser = ReadRequired(
             "CCODER_MAIL_INTEGRATION_RECEIVE_USER",
-            "CCODER_MAIL_INTEGRATION_SMTP_USER");
+            "CCODER_MAIL_INTEGRATION_SEND_USER");
         string to = ReadRequired("CCODER_MAIL_INTEGRATION_TO");
+        string from = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_FROM");
+        receiveUser = string.IsNullOrWhiteSpace(receiveUser) ? sendUser : receiveUser;
 
         return new()
         {
             CoreConnectionString = AddDatabaseSuffix(CoreConnectionVariableName, "mail-integration"),
             SsoConnectionString = AddDatabaseSuffix(SsoConnectionVariableName, "mail-integration"),
-            SmtpHost = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_HOST"),
-            SmtpPort = ReadInt("CCODER_MAIL_INTEGRATION_SMTP_PORT", 587),
-            SmtpEnableSsl = ReadBool("CCODER_MAIL_INTEGRATION_SMTP_SSL", true),
-            SmtpUser = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_USER"),
-            SmtpPassword = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_PASSWORD"),
-            From = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_FROM", "CCODER_MAIL_INTEGRATION_SMTP_USER"),
+            SendHost = string.IsNullOrWhiteSpace(sendHost) ? "graph.microsoft.com" : sendHost,
+            SendUser = sendUser,
+            From = string.IsNullOrWhiteSpace(from) ? sendUser : from,
             ReceiveUser = receiveUser,
             To = string.IsNullOrWhiteSpace(to) ? receiveUser : to,
             MaximumMessages = ReadInt("CCODER_MAIL_INTEGRATION_MAX_MESSAGES", 50),
@@ -297,15 +312,9 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
         public string SsoConnectionString { get; init; }
 
-        public string SmtpHost { get; init; }
+        public string SendHost { get; init; }
 
-        public int SmtpPort { get; init; }
-
-        public bool SmtpEnableSsl { get; init; }
-
-        public string SmtpUser { get; init; }
-
-        public string SmtpPassword { get; init; }
+        public string SendUser { get; init; }
 
         public string From { get; init; }
 
@@ -321,7 +330,12 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
         public string[] MissingVariables() =>
         [
-            .. RequiredVariableNames().Where(name => string.IsNullOrWhiteSpace(ReadRequired(name)))
+            .. RequiredVariableNames().Where(name => string.IsNullOrWhiteSpace(ReadRequired(name))),
+            .. string.IsNullOrWhiteSpace(ReadRequired(
+                "CCODER_MAIL_INTEGRATION_SEND_USER",
+                "CCODER_MAIL_INTEGRATION_SMTP_USER"))
+                ? ["CCODER_MAIL_INTEGRATION_SEND_USER or CCODER_MAIL_INTEGRATION_SMTP_USER"]
+                : Array.Empty<string>(),
         ];
 
         public static string RequiredVariableSummary() =>
@@ -331,9 +345,6 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         [
             CoreConnectionVariableName,
             SsoConnectionVariableName,
-            "CCODER_MAIL_INTEGRATION_SMTP_HOST",
-            "CCODER_MAIL_INTEGRATION_SMTP_USER",
-            "CCODER_MAIL_INTEGRATION_SMTP_PASSWORD",
             "CCODER_MAIL_GRAPH_TENANT_ID",
             "CCODER_MAIL_GRAPH_CLIENT_ID",
             "CCODER_MAIL_GRAPH_CLIENT_SECRET",

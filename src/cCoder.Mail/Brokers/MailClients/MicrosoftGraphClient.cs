@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
@@ -14,6 +15,21 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
     private static readonly HttpClient HttpClient = new();
+
+    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    {
+        MailServer server = GetMailServer(email);
+        string accessToken = await GetAccessTokenAsync(cancellationToken);
+        using HttpRequestMessage message = new(HttpMethod.Post, BuildSendUrl(server));
+        message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        message.Content = JsonContent.Create(CreateSendPayload(email));
+
+        using HttpResponseMessage response = await HttpClient.SendAsync(message, cancellationToken);
+        string content = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+            throw new InvalidOperationException($"Microsoft Graph mail send failed: {content}");
+    }
 
     public async Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
@@ -32,6 +48,74 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
 
         return ParseMessages(content);
     }
+
+    public Task<ReceivedEmail[]> ReceiveTopAsync(
+        int count,
+        CancellationToken cancellationToken = default) =>
+        ReceiveAsync(
+            new MailboxReceiveRequest
+            {
+                User = ReadConfiguredReceiveUser(),
+                MaximumMessages = count,
+            },
+            cancellationToken);
+
+    private static MailServer GetMailServer(QueuedEmail email)
+    {
+        if (email == null)
+            throw new ArgumentNullException(nameof(email));
+
+        MailServer server = email.App?.MailServers?.FirstOrDefault(
+            mailServer => mailServer.Name == email.MailServerName);
+
+        if (server == null)
+            throw new InvalidOperationException("No mail server configuration could be found to send the email.");
+
+        if (string.IsNullOrWhiteSpace(server.User))
+            throw new InvalidOperationException("Microsoft Graph sender user is required.");
+
+        if (string.IsNullOrWhiteSpace(email.To))
+            throw new InvalidOperationException("Email recipient is required.");
+
+        return server;
+    }
+
+    private static string BuildSendUrl(MailServer server)
+    {
+        string graphBaseUrl = ReadEnvironment(GraphBaseUrlVariableName) ?? DefaultGraphBaseUrl;
+        return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(server.User)}/sendMail";
+    }
+
+    private static object CreateSendPayload(QueuedEmail email) =>
+        new
+        {
+            message = new
+            {
+                subject = email.Subject,
+                body = new
+                {
+                    contentType = email.IsBodyHtml ? "HTML" : "Text",
+                    content = email.Content ?? string.Empty,
+                },
+                toRecipients = Recipients(email.To),
+                ccRecipients = Recipients(email.CC),
+            },
+            saveToSentItems = true,
+        };
+
+    private static object[] Recipients(string addresses) =>
+        string.IsNullOrWhiteSpace(addresses)
+            ? []
+            : addresses
+                .Split([';', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(address => new
+                {
+                    emailAddress = new
+                    {
+                        address,
+                    },
+                })
+                .ToArray();
 
     private static async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {
@@ -165,6 +249,14 @@ internal sealed class MicrosoftGraphClient : IMicrosoftGraphClient
     private static string ReadRequiredEnvironment(string variableName) =>
         ReadEnvironment(variableName)
         ?? throw new InvalidOperationException($"{variableName} is required for Microsoft Graph mailbox receive.");
+
+    private static string ReadConfiguredReceiveUser() =>
+        ReadEnvironment("CCODER_MAIL_RECEIVE_USER")
+        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_RECEIVE_USER")
+        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SEND_USER")
+        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SMTP_USER")
+        ?? throw new InvalidOperationException(
+            "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
 
     private static string ReadEnvironment(string variableName)
     {

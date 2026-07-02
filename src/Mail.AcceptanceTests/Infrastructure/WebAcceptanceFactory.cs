@@ -85,6 +85,23 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
                     ReceivedOn = request.From?.AddMinutes(1) ?? DateTimeOffset.UtcNow,
                 }
             ]);
+
+        public Task<ReceivedEmail[]> ReceiveTopAsync(
+            int count,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<ReceivedEmail[]>(
+            [
+                new()
+                {
+                    MessageId = "<acceptance-top-message@example.test>",
+                    From = "configured@example.test",
+                    To = "recipient@example.test",
+                    Subject = $"Acceptance top {count}",
+                    Content = "Acceptance top receive content",
+                    IsBodyHtml = false,
+                    ReceivedOn = DateTimeOffset.UtcNow,
+                }
+            ]);
     }
 }
 

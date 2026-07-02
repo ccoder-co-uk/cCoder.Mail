@@ -16,4 +16,9 @@ internal sealed class MailClientOrchestrationService(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         mailReceivingService.ReceiveAsync(request, cancellationToken);
+
+    public Task<ReceivedEmail[]> ReceiveTopAsync(
+        int count,
+        CancellationToken cancellationToken = default) =>
+        mailReceivingService.ReceiveTopAsync(count, cancellationToken);
 }

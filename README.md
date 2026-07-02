@@ -7,7 +7,7 @@
 - Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
 - Queued email management: create and inspect pending outbound emails.
 - Sent email management: inspect emails that have been successfully dispatched.
-- Mail client abstraction: `IMailClient` sends queued mail; Microsoft Graph-backed receive support can fetch mailbox messages for a requested time period.
+- Mail client abstraction: `IMailClient` sends queued mail through SMTP; Microsoft Graph-backed send and receive support is used for Microsoft 365 mailboxes.
 - Received email inspection: `ReceivedEmailController` can fetch Microsoft 365 mailbox messages without persisting them.
 - Sender hosted service: checks the queue every minute and attempts SMTP delivery for pending messages.
 - App lifecycle event handling: listens for app add, update, and delete events so mail-owned app data stays aligned.
@@ -31,7 +31,7 @@
 - `src/Mail.HostedServices.AcceptanceTests`
   Acceptance tests for the hosted-services app.
 - `src/Mail.IntegrationTests`
-  End-to-end tests that send queued mail through SMTP and receive it back through Microsoft Graph.
+  End-to-end tests that send queued mail through Microsoft Graph and receive it back through Microsoft Graph.
 
 ## Build
 
@@ -91,25 +91,22 @@ The real send-and-receive integration test requires these variables on the runne
 
 - `CCODER_ACCEPTANCE_CORE_CONNECTION_STRING`
 - `CCODER_ACCEPTANCE_SSO_CONNECTION_STRING`
-- `CCODER_MAIL_INTEGRATION_SMTP_HOST`
-- `CCODER_MAIL_INTEGRATION_SMTP_PORT` (defaults to `587`)
-- `CCODER_MAIL_INTEGRATION_SMTP_SSL` (defaults to `true`)
-- `CCODER_MAIL_INTEGRATION_SMTP_USER`
-- `CCODER_MAIL_INTEGRATION_SMTP_PASSWORD`
-- `CCODER_MAIL_INTEGRATION_SMTP_FROM` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
 - `CCODER_MAIL_GRAPH_TENANT_ID`
 - `CCODER_MAIL_GRAPH_CLIENT_ID`
 - `CCODER_MAIL_GRAPH_CLIENT_SECRET`
 - `CCODER_MAIL_GRAPH_BASE_URL` (defaults to `https://graph.microsoft.com/v1.0`)
 - `CCODER_MAIL_GRAPH_LOGIN_BASE_URL` (defaults to `https://login.microsoftonline.com`)
-- `CCODER_MAIL_INTEGRATION_RECEIVE_USER` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
+- `CCODER_MAIL_INTEGRATION_SEND_USER` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
+- `CCODER_MAIL_INTEGRATION_SEND_HOST` (defaults to `graph.microsoft.com`)
+- `CCODER_MAIL_INTEGRATION_SMTP_FROM` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
+- `CCODER_MAIL_INTEGRATION_RECEIVE_USER` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
 - `CCODER_MAIL_INTEGRATION_TO` (defaults to `CCODER_MAIL_INTEGRATION_RECEIVE_USER`)
 - `CCODER_MAIL_INTEGRATION_MAX_MESSAGES` (defaults to `50`)
 - `CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS` (defaults to `120`)
 - `CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS` (defaults to `10`)
 
 The test creates disposable integration databases by appending `-mail-integration` to the acceptance Core and SSO database names.
-The Graph application registration must have mailbox read permission for the receive mailbox and admin consent applied.
+The Graph application registration must have `Mail.Send` and `Mail.Read` application permissions with admin consent applied.
 
 ## Package
 

@@ -15,7 +15,7 @@ public sealed partial class MailDeliveryTests
 
         string[] missingVariables = settings.MissingVariables();
         missingVariables.Should().BeEmpty(
-            "the mail end-to-end integration needs configured SMTP, Microsoft Graph, and acceptance database settings. "
+            "the mail end-to-end integration needs configured Microsoft Graph and acceptance database settings. "
             + $"Missing variables: {string.Join(", ", missingVariables)}");
 
         await using IntegrationApplication application = await StartApplicationAsync(settings);
@@ -34,6 +34,8 @@ public sealed partial class MailDeliveryTests
 
         await DispatchQueuedMailAsync(application.Factory.Services);
         IReadOnlyList<SentEmail> sentEmails = await GetSentEmailsAsync(application.Client, subject);
+        sentEmails.Should().ContainSingle(email => email.Subject == subject && email.To == settings.To);
+
         ReceivedEmail receivedEmail = await ReceiveEmailAsync(
             application.Client,
             settings,
@@ -43,7 +45,6 @@ public sealed partial class MailDeliveryTests
 
         // Then
         queuedEmail.Subject.Should().Be(subject);
-        sentEmails.Should().ContainSingle(email => email.Subject == subject && email.To == settings.To);
         receivedEmail.Subject.Should().Be(subject);
         receivedEmail.Content.Should().Contain(content);
     }

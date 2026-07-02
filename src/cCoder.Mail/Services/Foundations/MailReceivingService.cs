@@ -9,4 +9,9 @@ internal sealed class MailReceivingService(IMailClientBroker mailClientBroker) :
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         mailClientBroker.ReceiveAsync(request, cancellationToken);
+
+    public Task<ReceivedEmail[]> ReceiveTopAsync(
+        int count,
+        CancellationToken cancellationToken = default) =>
+        mailClientBroker.ReceiveTopAsync(count, cancellationToken);
 }
