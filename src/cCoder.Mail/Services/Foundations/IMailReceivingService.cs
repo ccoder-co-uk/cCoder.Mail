@@ -1,3 +1,4 @@
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;

@@ -68,13 +68,13 @@ internal sealed class MailSenderOrchestrationService(
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)
     {
-        MailServer server = email.App?.MailServers?.FirstOrDefault(mailServer => mailServer.Name == email.MailServerName);
+        MailSender sender = email.App?.MailSenders?.FirstOrDefault(mailSender => mailSender.Name == email.MailServerName);
 
-        if (server == null)
+        if (sender == null)
         {
             await queuedEmailService.RecordSendFailureAsync(
                 email.Id,
-                "No mail server configuration could be found to send the email.",
+                "No mail sender configuration could be found to send the email.",
                 cancellationToken);
             return false;
         }
@@ -82,7 +82,7 @@ internal sealed class MailSenderOrchestrationService(
         try
         {
             await mailClientOrchestrationService.SendAsync(email, cancellationToken);
-            await queuedEmailService.MarkAsSentAsync(email, server.User, cancellationToken);
+            await queuedEmailService.MarkAsSentAsync(email, sender.Id, sender.FromEmail ?? sender.User, cancellationToken);
             return true;
         }
         catch (Exception ex)

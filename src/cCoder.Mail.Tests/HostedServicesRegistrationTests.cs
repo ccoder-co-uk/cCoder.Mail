@@ -26,7 +26,15 @@ public class HostedServicesRegistrationTests
                 && descriptor.ImplementationType == typeof(MailSenderHostedService));
         Assert.Contains(
             services,
+            descriptor => descriptor.ServiceType == typeof(IMailReceiverHostedService)
+                && descriptor.ImplementationType == typeof(MailReceiverHostedService));
+        Assert.Contains(
+            services,
             descriptor => descriptor.ServiceType == typeof(IMailSenderOrchestrationService)
                 && descriptor.ImplementationType?.Name == "MailSenderOrchestrationService");
+        Assert.Contains(
+            services,
+            descriptor => descriptor.ServiceType == typeof(IMailReceiverOrchestrationService)
+                && descriptor.ImplementationType?.Name == "MailReceiverOrchestrationService");
     }
 }

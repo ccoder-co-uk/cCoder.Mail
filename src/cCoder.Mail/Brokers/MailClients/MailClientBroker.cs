@@ -28,9 +28,9 @@ internal sealed class MailClientBroker(
 
     private static string GetSenderProviderName(QueuedEmail email)
     {
-        MailServer server = email?.App?.MailServers?.FirstOrDefault(
-            mailServer => mailServer.Name == email.MailServerName);
+        MailSender sender = email?.App?.MailSenders?.FirstOrDefault(
+            mailSender => mailSender.Name == email.MailServerName);
 
-        return server?.Host;
+        return sender?.ProviderName;
     }
 }

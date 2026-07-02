@@ -23,15 +23,19 @@ public sealed partial class WebShellTests
         content.Should().Contain("<nav class=\"mail-section-tabs\"");
         content.Should().MatchRegex("</nav>\\s*<section class=\"mail-panel\">");
         content.Should().Contain("mail-server-grid");
+        content.Should().Contain("mail-sender-grid");
+        content.Should().Contain("mail-receiver-grid");
         content.Should().Contain("queued-email-grid");
         content.Should().Contain("sent-email-grid");
         content.Should().Contain("received-email-grid");
+        content.Should().Contain("Mail Senders");
+        content.Should().Contain("Mail Receivers");
         content.Should().Contain("Queued Emails");
         content.Should().Contain("Sent Emails");
         content.Should().Contain("Received Emails");
         content.Should().Contain("/tools/api.js");
         content.Should().Contain("/tools/grids.js");
-        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-auth");
+        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-providers");
     }
 
     [Fact]
@@ -63,7 +67,8 @@ public sealed partial class WebShellTests
         content.Should().Contain("data-child-grid=\"QueuedEmail\"");
         content.Should().Contain("data-child-grid=\"SentEmail\"");
         content.Should().Contain("data-child-grid=\"EmailSendFailure\"");
-        content.Should().Contain("loadMailServerDetails");
+        content.Should().Contain("loadProviders");
+        content.Should().Contain("loadMailSenderDetails");
         content.Should().Contain("loadQueuedEmailDetails");
         content.Should().Contain("receiveEmails");
         content.Should().Contain("ReceivedEmail/Receive");

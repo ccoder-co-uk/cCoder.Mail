@@ -71,9 +71,10 @@ internal class QueuedEmailService(
 
     public ValueTask MarkAsSentAsync(
         QueuedEmail queuedEmail,
+        Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default) =>
-        queuedEmailBroker.MarkQueuedEmailAsSentAsync(Copy(queuedEmail), fromAddress, cancellationToken);
+        queuedEmailBroker.MarkQueuedEmailAsSentAsync(Copy(queuedEmail), mailSenderId, fromAddress, cancellationToken);
 
     public async ValueTask DeleteAsync(int id, bool checkPrivileges = true)
     {

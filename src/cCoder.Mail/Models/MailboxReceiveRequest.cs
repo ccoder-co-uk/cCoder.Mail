@@ -4,6 +4,10 @@ public sealed class MailboxReceiveRequest
 {
     public string ProviderName { get; set; }
 
+    public int? AppId { get; set; }
+
+    public Guid? MailReceiverId { get; set; }
+
     public string Host { get; set; }
 
     public int Port { get; set; } = 995;

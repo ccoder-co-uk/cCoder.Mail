@@ -1,11 +1,13 @@
 window.MailGrids = {
     apiRoot: "/Api/Core",
     initialized: false,
+    senderProviders: [],
+    receiverProviders: [],
 
     configs: {
         MailServer: {
             name: "MailServer",
-            title: "Mail Server",
+            title: "Legacy Mail Server",
             key: "Id",
             fields: {
                 Id: { label: "Id", readonly: true, create: false, type: "number" },
@@ -20,6 +22,43 @@ window.MailGrids = {
             },
             columns: ["Name", "Host", "Port", "EnableSSL", "User", "FromEmail", "AppId", "Id"]
         },
+        MailSender: {
+            name: "MailSender",
+            title: "Mail Sender",
+            key: "Id",
+            fields: {
+                Id: { label: "Id", readonly: true, create: false, type: "number" },
+                AppId: { label: "App Id", type: "number" },
+                Name: { label: "Name" },
+                ProviderName: { label: "Provider", type: "select", source: "senderProviders", defaultValue: "Smtp" },
+                User: { label: "User" },
+                Password: { label: "Password", type: "password" },
+                Host: { label: "Host" },
+                FromEmail: { label: "From Email" },
+                Port: { label: "Port", type: "number" },
+                EnableSSL: { label: "Enable SSL", type: "checkbox" }
+            },
+            columns: ["Name", "ProviderName", "Host", "Port", "EnableSSL", "User", "FromEmail", "AppId", "Id"]
+        },
+        MailReceiver: {
+            name: "MailReceiver",
+            title: "Mail Receiver",
+            key: "Id",
+            fields: {
+                Id: { label: "Id", readonly: true, create: false, type: "number" },
+                AppId: { label: "App Id", type: "number" },
+                Name: { label: "Name" },
+                ProviderName: { label: "Provider", type: "select", source: "receiverProviders", defaultValue: "MicrosoftGraph" },
+                User: { label: "User" },
+                Password: { label: "Password", type: "password" },
+                Host: { label: "Host" },
+                Port: { label: "Port", type: "number" },
+                EnableSSL: { label: "Enable SSL", type: "checkbox" },
+                LastReceivedOn: { label: "Last Received On" },
+                IsEnabled: { label: "Enabled", type: "checkbox" }
+            },
+            columns: ["Name", "ProviderName", "Host", "Port", "EnableSSL", "User", "IsEnabled", "LastReceivedOn", "AppId", "Id"]
+        },
         QueuedEmail: {
             name: "QueuedEmail",
             title: "Queued Email",
@@ -28,7 +67,7 @@ window.MailGrids = {
             fields: {
                 Id: { label: "Id", readonly: true, create: false, type: "number" },
                 AppId: { label: "App Id", type: "number" },
-                MailServerName: { label: "Mail Server" },
+                MailServerName: { label: "Mail Sender" },
                 SentByUserId: { label: "Sent By" },
                 To: { label: "To" },
                 CC: { label: "CC" },
@@ -36,7 +75,7 @@ window.MailGrids = {
                 Content: { label: "Content", type: "textarea" },
                 IsBodyHtml: { label: "Is Body HTML", type: "checkbox" }
             },
-            columns: ["To", "Subject", "MailServerName", "SentByUserId", "IsBodyHtml", "Id"]
+            columns: ["To", "Subject", "MailServerName", "SentByUserId", "IsBodyHtml", "AppId", "Id"]
         },
         SentEmail: {
             name: "SentEmail",
@@ -54,7 +93,7 @@ window.MailGrids = {
                 SentOn: { label: "Sent On" },
                 IsBodyHtml: { label: "Is Body HTML", type: "checkbox" }
             },
-            columns: ["To", "Subject", "From", "SentOn", "SentByUserId", "Id"]
+            columns: ["To", "Subject", "From", "SentOn", "SentByUserId", "AppId", "Id"]
         },
         EmailSendFailure: {
             name: "EmailSendFailure",
@@ -72,19 +111,22 @@ window.MailGrids = {
         ReceivedEmail: {
             name: "ReceivedEmail",
             title: "Received Email",
-            key: "MessageId",
-            readonly: true,
+            key: "Id",
             fields: {
-                MessageId: { label: "Message Id", readonly: true },
-                From: { label: "From", readonly: true },
-                To: { label: "To", readonly: true },
-                CC: { label: "CC", readonly: true },
-                Subject: { label: "Subject", readonly: true },
-                Content: { label: "Content", readonly: true, type: "textarea" },
-                IsBodyHtml: { label: "Is Body HTML", readonly: true, type: "checkbox" },
-                ReceivedOn: { label: "Received On", readonly: true }
+                Id: { label: "Id", readonly: true, create: false, type: "number" },
+                AppId: { label: "App Id", type: "number" },
+                MailReceiverId: { label: "Mail Receiver Id", type: "number" },
+                SentByUserId: { label: "User Id" },
+                MessageId: { label: "Message Id" },
+                From: { label: "From" },
+                To: { label: "To" },
+                CC: { label: "CC" },
+                Subject: { label: "Subject" },
+                Content: { label: "Content", type: "textarea" },
+                IsBodyHtml: { label: "Is Body HTML", type: "checkbox" },
+                ReceivedOn: { label: "Received On" }
             },
-            columns: ["ReceivedOn", "From", "To", "Subject", "MessageId"]
+            columns: ["ReceivedOn", "From", "To", "Subject", "MessageId", "MailReceiverId", "AppId", "Id"]
         }
     },
 
@@ -98,6 +140,10 @@ window.MailGrids = {
         this.initialized = true;
         document.getElementById("create-mail-server")
             ?.addEventListener("click", () => this.openEditor(this.configs.MailServer, null, null));
+        document.getElementById("create-mail-sender")
+            ?.addEventListener("click", () => this.openEditor(this.configs.MailSender, null, null));
+        document.getElementById("create-mail-receiver")
+            ?.addEventListener("click", () => this.openEditor(this.configs.MailReceiver, null, null));
         document.getElementById("create-queued-email")
             ?.addEventListener("click", () => this.openEditor(this.configs.QueuedEmail, null, null));
         document.getElementById("create-sent-email")
@@ -111,36 +157,72 @@ window.MailGrids = {
     },
 
     loadAll: async function () {
+        await this.loadProviders();
         await this.loadMailServers();
+        await this.loadMailSenders();
+        await this.loadMailReceivers();
         await this.loadQueuedEmails();
         await this.loadSentEmails();
-        this.renderGrid("received-email-grid", this.configs.ReceivedEmail, [], "ReceivedEmail");
+        await this.loadReceivedEmails();
+    },
+
+    loadProviders: async function () {
+        this.senderProviders = await this.loadProviderList("Senders");
+        this.receiverProviders = await this.loadProviderList("Receivers");
+        this.populateReceiveProviderSelect();
+    },
+
+    loadProviderList: async function (direction) {
+        const providers = await MailApi.get(`${this.apiRoot}/MailProviders/${direction}`);
+        return (providers ?? []).map(provider => ({
+            value: provider.Name,
+            label: `${provider.Name} (${provider.ProviderName})`
+        }));
+    },
+
+    populateReceiveProviderSelect: function () {
+        const select = document.getElementById("receive-provider");
+
+        if (!select) {
+            return;
+        }
+
+        select.innerHTML = this.receiverProviders
+            .map(provider => {
+                const selected = provider.value === "MicrosoftGraph" ? "selected" : "";
+                return `<option value="${this.escape(provider.value)}" ${selected}>${this.escape(provider.label)}</option>`;
+            })
+            .join("");
     },
 
     loadMailServers: async function () {
-        try {
-            const rows = await this.read(this.configs.MailServer);
-            this.renderMailServerGrid(rows);
-            MailApi.notify("Ready");
-        } catch (error) {
-            MailApi.notify(error.message, true);
-        }
+        await this.loadGrid("mail-server-grid", this.configs.MailServer, "MailServer");
+    },
+
+    loadMailSenders: async function () {
+        await this.loadGrid("mail-sender-grid", this.configs.MailSender, "MailSender");
+    },
+
+    loadMailReceivers: async function () {
+        await this.loadGrid("mail-receiver-grid", this.configs.MailReceiver, "MailReceiver");
     },
 
     loadQueuedEmails: async function () {
-        try {
-            const rows = await this.read(this.configs.QueuedEmail);
-            this.renderGrid("queued-email-grid", this.configs.QueuedEmail, rows, "QueuedEmail");
-            MailApi.notify("Ready");
-        } catch (error) {
-            MailApi.notify(error.message, true);
-        }
+        await this.loadGrid("queued-email-grid", this.configs.QueuedEmail, "QueuedEmail");
     },
 
     loadSentEmails: async function () {
+        await this.loadGrid("sent-email-grid", this.configs.SentEmail, "SentEmail");
+    },
+
+    loadReceivedEmails: async function () {
+        await this.loadGrid("received-email-grid", this.configs.ReceivedEmail, "ReceivedEmail");
+    },
+
+    loadGrid: async function (elementId, config, scope) {
         try {
-            const rows = await this.read(this.configs.SentEmail);
-            this.renderGrid("sent-email-grid", this.configs.SentEmail, rows, "SentEmail");
+            const rows = await this.read(config);
+            this.renderGrid(elementId, config, rows, scope);
             MailApi.notify("Ready");
         } catch (error) {
             MailApi.notify(error.message, true);
@@ -162,6 +244,7 @@ window.MailGrids = {
 
     receiveRequest: function () {
         return {
+            providerName: document.getElementById("receive-provider")?.value || "MicrosoftGraph",
             user: document.getElementById("receive-user")?.value,
             from: this.dateInputValue("receive-from"),
             to: this.dateInputValue("receive-to"),
@@ -186,28 +269,24 @@ window.MailGrids = {
     },
 
     filtersFor: function (config, context) {
-        if (!context?.mailServer) {
+        if (!context?.mailSender) {
             return [];
         }
 
-        const server = context.mailServer;
+        const sender = context.mailSender;
 
         if (config.name === "QueuedEmail") {
             return [
-                `AppId eq ${server.AppId}`,
-                `MailServerName eq '${this.odataString(server.Name)}'`
+                `AppId eq ${sender.AppId}`,
+                `MailServerName eq '${this.odataString(sender.Name)}'`
             ];
         }
 
         if (config.name === "SentEmail") {
-            return [`AppId eq ${server.AppId}`];
+            return [`AppId eq ${sender.AppId}`];
         }
 
         return [];
-    },
-
-    renderMailServerGrid: function (rows) {
-        this.renderGrid("mail-server-grid", this.configs.MailServer, rows, "MailServer");
     },
 
     renderGrid: function (elementId, config, rows, scope, context = null) {
@@ -314,9 +393,9 @@ window.MailGrids = {
 
         const config = this.configForScope(button.dataset.scope);
 
-        if (config.name === "MailServer") {
-            detailRow.querySelector("td").innerHTML = this.detailShellHtml();
-            await this.loadMailServerDetails(detailRow, stored.row);
+        if (config.name === "MailSender") {
+            detailRow.querySelector("td").innerHTML = this.senderDetailShellHtml();
+            await this.loadMailSenderDetails(detailRow, stored.row);
             return;
         }
 
@@ -326,11 +405,11 @@ window.MailGrids = {
     },
 
     canExpand: function (config, row) {
-        return config.name === "MailServer"
+        return config.name === "MailSender"
             || (config.name === "QueuedEmail" && Array.isArray(row.FailedSends));
     },
 
-    detailShellHtml: function () {
+    senderDetailShellHtml: function () {
         return `<div class="mail-detail">` +
             `<div class="mail-tabs">` +
             `<button class="active" data-detail-tab="queued" type="button">Queued Mail</button>` +
@@ -347,8 +426,8 @@ window.MailGrids = {
             `</div>`;
     },
 
-    loadMailServerDetails: async function (detailRow, mailServer) {
-        const context = { mailServer };
+    loadMailSenderDetails: async function (detailRow, mailSender) {
+        const context = { mailSender };
 
         detailRow.querySelectorAll("[data-detail-tab]").forEach(tab =>
             tab.addEventListener("click", () => this.showDetailTab(detailRow, tab.dataset.detailTab)));
@@ -356,7 +435,7 @@ window.MailGrids = {
         detailRow.querySelectorAll("[data-create-child]").forEach(button =>
             button.addEventListener("click", () => {
                 const config = this.configs[button.dataset.createChild];
-                this.openEditor(config, null, context, () => this.loadMailServerDetails(detailRow, mailServer));
+                this.openEditor(config, null, context, () => this.loadMailSenderDetails(detailRow, mailSender));
             }));
 
         await this.renderChildGrid(detailRow, this.configs.QueuedEmail, context);
@@ -366,7 +445,7 @@ window.MailGrids = {
     renderChildGrid: async function (container, config, context) {
         const grid = container.querySelector(`[data-child-grid='${config.name}']`);
         const rows = await this.read(config, context);
-        const scope = `${config.name}-${context.mailServer.Id}`;
+        const scope = `${config.name}-${context.mailSender.Id}`;
         grid.innerHTML = this.tableHtml(config, rows, scope, context);
         this.bindGridActions(grid);
     },
@@ -431,12 +510,19 @@ window.MailGrids = {
     },
 
     fieldHtml: function (name, field, row, context, config) {
-        const value = this.contextValue(name, context, config) ?? row?.[name] ?? this.defaultValue(name, field);
-        const readonly = field.readonly || this.contextValue(name, context, config) !== null ? "readonly" : "";
+        const contextValue = this.contextValue(name, context, config);
+        const value = contextValue ?? row?.[name] ?? this.defaultValue(name, field);
+        const readonly = field.readonly || contextValue !== null ? "readonly" : "";
 
         if (field.type === "checkbox") {
             const checked = value === true || value === "true" ? "checked" : "";
             return `<label><span>${this.escape(field.label)}</span><input name="${name}" type="checkbox" ${checked} ${readonly}></label>`;
+        }
+
+        if (field.type === "select") {
+            return `<label><span>${this.escape(field.label)}</span>` +
+                `<select name="${name}" ${readonly}>${this.optionsHtml(field.source, value)}</select>` +
+                `</label>`;
         }
 
         const input = field.type === "textarea"
@@ -444,6 +530,16 @@ window.MailGrids = {
             : `<input name="${name}" value="${this.escape(value)}" ${field.type === "password" ? "type=\"password\"" : ""} ${readonly}>`;
 
         return `<label><span>${this.escape(field.label)}</span>${input}</label>`;
+    },
+
+    optionsHtml: function (source, value) {
+        const options = this[source] ?? [];
+        return options
+            .map(option => {
+                const selected = option.value === value ? "selected" : "";
+                return `<option value="${this.escape(option.value)}" ${selected}>${this.escape(option.label)}</option>`;
+            })
+            .join("");
     },
 
     saveEditor: async function (config, row, context) {
@@ -473,20 +569,25 @@ window.MailGrids = {
             payload[name] = this.coerceInput(input, field);
         });
 
-        if (context?.mailServer) {
-            payload.AppId = context.mailServer.AppId;
+        if (context?.mailSender) {
+            payload.AppId = context.mailSender.AppId;
 
             if (config.name === "QueuedEmail") {
-                payload.MailServerName = context.mailServer.Name;
+                payload.MailServerName = context.mailSender.Name;
             }
         }
 
-        if ((config.name === "QueuedEmail" || config.name === "SentEmail") && !payload.SentByUserId) {
+        if ((config.name === "QueuedEmail" || config.name === "SentEmail" || config.name === "ReceivedEmail")
+            && !payload.SentByUserId) {
             payload.SentByUserId = MailApi.currentUserId();
         }
 
         if (config.name === "SentEmail" && !payload.SentOn) {
             payload.SentOn = new Date().toISOString();
+        }
+
+        if (config.name === "ReceivedEmail" && !payload.ReceivedOn) {
+            payload.ReceivedOn = new Date().toISOString();
         }
 
         return payload;
@@ -503,16 +604,16 @@ window.MailGrids = {
     },
 
     contextValue: function (name, context, config) {
-        if (!context?.mailServer) {
+        if (!context?.mailSender) {
             return null;
         }
 
         if (name === "AppId" && (config.name === "QueuedEmail" || config.name === "SentEmail")) {
-            return context.mailServer.AppId;
+            return context.mailSender.AppId;
         }
 
         if (name === "MailServerName" && config.name === "QueuedEmail") {
-            return context.mailServer.Name;
+            return context.mailSender.Name;
         }
 
         return null;
@@ -534,6 +635,10 @@ window.MailGrids = {
     },
 
     defaultValue: function (name, field) {
+        if (field.defaultValue !== undefined) {
+            return field.defaultValue;
+        }
+
         if (field.type === "number") {
             return name === "Port" ? 587 : 0;
         }

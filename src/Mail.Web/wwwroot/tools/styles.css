@@ -317,6 +317,8 @@ body.mail-shell.is-authenticated .mail-login-gate {
 
 .mail-editor-fields input,
 .mail-editor-fields textarea,
+.mail-editor-fields select,
+.mail-receive-form select,
 .mail-receive-form input {
     width: 100%;
     box-sizing: border-box;

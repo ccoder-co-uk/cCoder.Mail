@@ -2,6 +2,7 @@ using System.Security;
 using Apps.Shared;
 using Apps.Shared.Models;
 using cCoder.Mail;
+using cCoder.Mail.Models;
 using cCoder.Security;
 using cCoder.Security.Data.EF;
 using cCoder.Eventing;
@@ -26,7 +27,7 @@ public class Program
         string ssoConnection = builder.Configuration.GetConnectionString("SSO")
             ?? throw new InvalidOperationException("ConnectionStrings:SSO is required.");
 
-        Config config = new();
+        Apps.Shared.Models.Config config = new();
         builder.Configuration.Bind(config);
         builder.Services.AddSingleton(config);
         builder.Services.AddSingleton(
@@ -52,7 +53,8 @@ public class Program
             builder.Services,
             coreConnection);
 
-        builder.Services.AddMailWeb();
+        builder.Services.AddMailWeb(mailConfiguration =>
+            ConfigureMailProviders(builder.Configuration, mailConfiguration));
 
         WebApplication app = builder.Build();
         log = app.Services.GetRequiredService<ILogger<Program>>();
@@ -94,6 +96,30 @@ public class Program
         log.LogError("{Message}\n{StackTrace}", exception.Message, exception.StackTrace);
         await context.Response.WriteAsync(
             "{ \"error\": \"" + exception.Message.Replace("\"", "\'") + "\" }");
+    }
+
+    private static void ConfigureMailProviders(
+        IConfiguration configuration,
+        MailConfiguration mailConfiguration)
+    {
+        mailConfiguration
+            .AddSmtpSender()
+            .AddPop3Receiver()
+            .AddImapReceiver()
+            .AddMicrosoftGraphSender(graphConfiguration => ConfigureGraph(configuration, graphConfiguration))
+            .AddMicrosoftGraphReceiver(graphConfiguration => ConfigureGraph(configuration, graphConfiguration));
+    }
+
+    private static void ConfigureGraph(
+        IConfiguration configuration,
+        MicrosoftGraphMailConfiguration graphConfiguration)
+    {
+        graphConfiguration.TenantId = configuration["CCODER_MAIL_GRAPH_TENANT_ID"] ?? graphConfiguration.TenantId;
+        graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
+        graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
+        graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
+        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_URL"] ?? graphConfiguration.LoginBaseUrl;
+        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"] ?? graphConfiguration.ReceiveUser;
     }
 }
 

@@ -71,14 +71,19 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
         services.AddHostedService(provider => provider.GetRequiredService<IMailSenderHostedService>());
+        services.AddSingleton<IMailReceiverHostedService, MailReceiverHostedService>();
+        services.AddHostedService(provider => provider.GetRequiredService<IMailReceiverHostedService>());
     }
 
     private static void AddEventingTypes(this IServiceCollection services)
     {
         services.AddEventingForType<App>();
         services.AddEventingForType<MailServer>();
+        services.AddEventingForType<MailSender>();
+        services.AddEventingForType<MailReceiver>();
         services.AddEventingForType<QueuedEmail>();
         services.AddEventingForType<SentEmail>();
+        services.AddEventingForType<ReceivedEmail>();
     }
 
     private static void AddBrokers(this IServiceCollection services)
@@ -91,14 +96,18 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMicrosoftGraphClient, MicrosoftGraphClient>();
         services.AddTransient<IMailSenderProvider, SmtpMailSenderProvider>();
         services.AddTransient<IMailReceiverProvider, Pop3MailReceiverProvider>();
+        services.AddTransient<IMailReceiverProvider, ImapMailReceiverProvider>();
         services.AddTransient<IMailSenderProvider, MicrosoftGraphClient>();
         services.AddTransient<IMailReceiverProvider, MicrosoftGraphClient>();
         services.AddTransient<IMailSenderFactory, MailSenderFactory>();
         services.AddTransient<IMailReceiverFactory, MailReceiverFactory>();
         services.AddTransient<IMailClientBroker, MailClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();
+        services.AddTransient<IMailSenderBroker, MailSenderBroker>();
+        services.AddTransient<IMailReceiverBroker, MailReceiverBroker>();
         services.AddTransient<IQueuedEmailBroker, QueuedEmailBroker>();
         services.AddTransient<ISentEmailBroker, SentEmailBroker>();
+        services.AddTransient<IReceivedEmailBroker, ReceivedEmailBroker>();
         services.AddTransient<IAuthorizationBroker, AuthorizationBroker>();
         services.AddTransient<IJsonBroker, JsonBroker>();
     }
@@ -110,10 +119,13 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailMetadataTypeService, MailMetadataTypeService>();
         services.AddTransient<Services.Foundations.Events.IEventHandlerService, Services.Foundations.Events.EventHandlerService>();
         services.AddTransient<IMailServerService, MailServerService>();
+        services.AddTransient<IMailSenderService, MailSenderService>();
+        services.AddTransient<IMailReceiverService, MailReceiverService>();
         services.AddTransient<IMailSendingService, MailSendingService>();
         services.AddTransient<IMailReceivingService, MailReceivingService>();
         services.AddTransient<IQueuedEmailService, QueuedEmailService>();
         services.AddTransient<ISentEmailService, SentEmailService>();
+        services.AddTransient<IReceivedEmailService, ReceivedEmailService>();
         services.AddTransient<IMailServerEventService, MailServerEventService>();
         services.AddTransient<IQueuedEmailEventService, QueuedEmailEventService>();
         services.AddTransient<ISentEmailEventService, SentEmailEventService>();
@@ -124,9 +136,13 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IAppOrchestrationService, AppOrchestrationService>();
         services.AddTransient<IMailClientOrchestrationService, MailClientOrchestrationService>();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
+        services.AddTransient<IMailReceiverOrchestrationService, MailReceiverOrchestrationService>();
         services.AddTransient<IMailServerOrchestrationService, MailServerOrchestrationService>();
+        services.AddTransient<IMailSenderConfigurationOrchestrationService, MailSenderConfigurationOrchestrationService>();
+        services.AddTransient<IMailReceiverConfigurationOrchestrationService, MailReceiverConfigurationOrchestrationService>();
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();
         services.AddTransient<ISentEmailOrchestrationService, SentEmailOrchestrationService>();
+        services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
     }
 
     private static void AddEventHandlers(this IServiceCollection services)
@@ -138,9 +154,12 @@ public static partial class IServiceCollectionExtensions
     {
         services.AddTransient<IMailServerEventProcessingService, MailServerEventProcessingService>();
         services.AddTransient<IMailServerProcessingService, MailServerProcessingService>();
+        services.AddTransient<IMailSenderProcessingService, MailSenderProcessingService>();
+        services.AddTransient<IMailReceiverProcessingService, MailReceiverProcessingService>();
         services.AddTransient<IQueuedEmailEventProcessingService, QueuedEmailEventProcessingService>();
         services.AddTransient<IQueuedEmailProcessingService, QueuedEmailProcessingService>();
         services.AddTransient<ISentEmailEventProcessingService, SentEmailEventProcessingService>();
         services.AddTransient<ISentEmailProcessingService, SentEmailProcessingService>();
+        services.AddTransient<IReceivedEmailProcessingService, ReceivedEmailProcessingService>();
     }
 }

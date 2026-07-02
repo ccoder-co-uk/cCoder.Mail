@@ -1,4 +1,4 @@
-using cCoder.Mail.Models;
+using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
 
@@ -24,6 +24,6 @@ public sealed partial class MailDeliveryTests
         // Then
         receivedEmails.Should().ContainSingle();
         receivedEmails[0].Subject.Should().NotBeNullOrWhiteSpace();
-        receivedEmails[0].ReceivedOn.Should().NotBeNull();
+        receivedEmails[0].ReceivedOn.Should().NotBe(default);
     }
 }

@@ -1,4 +1,5 @@
 using cCoder.Mail;
+using cCoder.Mail.Models;
 using cCoder.Eventing;
 using MailConfig = cCoder.Mail.Models.Config;
 
@@ -21,7 +22,8 @@ public class Program
         builder.Configuration.Bind(config);
         builder.Services.AddSingleton(config);
         builder.Services.AddEventing();
-        builder.Services.AddMailHostedServices();
+        builder.Services.AddMailHostedServices(mailConfiguration =>
+            ConfigureMailProviders(builder.Configuration, mailConfiguration));
 
         WebApplication app = builder.Build();
 
@@ -43,9 +45,34 @@ public class Program
             string.Empty,
             "Hosted background services:",
             "- MailSenderHostedService -> IMailSenderOrchestrationService.RunContinuouslyAsync every 1 minute",
+            "- MailReceiverHostedService -> IMailReceiverOrchestrationService.RunContinuouslyAsync every 1 minute",
             string.Empty,
             "Hosted event listeners:",
             "- app_add -> mail app setup",
             "- app_update -> mail app update",
             "- app_delete -> mail app cleanup");
+
+    private static void ConfigureMailProviders(
+        IConfiguration configuration,
+        MailConfiguration mailConfiguration)
+    {
+        mailConfiguration
+            .AddSmtpSender()
+            .AddPop3Receiver()
+            .AddImapReceiver()
+            .AddMicrosoftGraphSender(graphConfiguration => ConfigureGraph(configuration, graphConfiguration))
+            .AddMicrosoftGraphReceiver(graphConfiguration => ConfigureGraph(configuration, graphConfiguration));
+    }
+
+    private static void ConfigureGraph(
+        IConfiguration configuration,
+        MicrosoftGraphMailConfiguration graphConfiguration)
+    {
+        graphConfiguration.TenantId = configuration["CCODER_MAIL_GRAPH_TENANT_ID"] ?? graphConfiguration.TenantId;
+        graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
+        graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
+        graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
+        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_URL"] ?? graphConfiguration.LoginBaseUrl;
+        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"] ?? graphConfiguration.ReceiveUser;
+    }
 }

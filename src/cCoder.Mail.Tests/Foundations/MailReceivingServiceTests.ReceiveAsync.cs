@@ -1,3 +1,4 @@
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
 using Moq;

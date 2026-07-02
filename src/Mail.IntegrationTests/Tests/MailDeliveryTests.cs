@@ -199,16 +199,20 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             Name = "Mail Integration Administrators",
             Description = "Mail integration bootstrap role",
             Privs = "app_admin,mailserver_create,mailserver_read,mailserver_update,mailserver_delete,"
+                + "mailsender_create,mailsender_read,mailsender_update,mailsender_delete,"
+                + "mailreceiver_create,mailreceiver_read,mailreceiver_update,mailreceiver_delete,"
                 + "queuedemail_create,queuedemail_read,queuedemail_update,queuedemail_delete,"
-                + "sentemail_create,sentemail_read,sentemail_update,sentemail_delete",
+                + "sentemail_create,sentemail_read,sentemail_update,sentemail_delete,"
+                + "receivedemail_create,receivedemail_read,receivedemail_update,receivedemail_delete",
         };
 
         core.Set<Role>().Add(role);
         core.Set<UserRole>().Add(new UserRole { RoleId = role.Id, UserId = "Guest" });
-        core.Set<MailServer>().Add(new MailServer
+        core.Set<MailSender>().Add(new MailSender
         {
             AppId = app.Id,
             Name = MailServerName,
+            ProviderName = MailProviderNames.MicrosoftGraph,
             Host = settings.SendHost,
             Port = 443,
             EnableSSL = true,

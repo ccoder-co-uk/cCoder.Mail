@@ -34,7 +34,7 @@ public partial class MailClientBrokerTests
     }
 
     [Fact]
-    public async Task ShouldDelegateToProviderSelectedByMailServerHostWhenSendAsync()
+    public async Task ShouldDelegateToProviderSelectedByMailSenderProviderNameWhenSendAsync()
     {
         // Given
         QueuedEmail email = new()
@@ -43,12 +43,12 @@ public partial class MailClientBrokerTests
             Subject = "Send",
             App = new App
             {
-                MailServers =
+                MailSenders =
                 [
                     new()
                     {
                         Name = "Graph",
-                        Host = "graph.microsoft.com",
+                        ProviderName = "MicrosoftGraph",
                     }
                 ],
             },
@@ -56,7 +56,7 @@ public partial class MailClientBrokerTests
         CancellationToken cancellationToken = new();
 
         mailSenderFactoryMock
-            .Setup(factory => factory.GetSender("graph.microsoft.com"))
+            .Setup(factory => factory.GetSender("MicrosoftGraph"))
             .Returns(mailSenderProviderMock.Object);
         mailSenderProviderMock
             .Setup(provider => provider.SendAsync(email, cancellationToken))
@@ -66,7 +66,7 @@ public partial class MailClientBrokerTests
         await mailClientBroker.SendAsync(email, cancellationToken);
 
         // Then
-        mailSenderFactoryMock.Verify(factory => factory.GetSender("graph.microsoft.com"), Times.Once);
+        mailSenderFactoryMock.Verify(factory => factory.GetSender("MicrosoftGraph"), Times.Once);
         mailSenderProviderMock.Verify(provider => provider.SendAsync(email, cancellationToken), Times.Once);
         mailSenderFactoryMock.VerifyNoOtherCalls();
         mailSenderProviderMock.VerifyNoOtherCalls();

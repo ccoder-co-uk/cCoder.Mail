@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
 using Web.AcceptanceTests.Infrastructure;

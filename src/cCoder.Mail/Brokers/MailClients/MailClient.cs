@@ -13,19 +13,19 @@ internal sealed partial class MailClient : IMailClient
 {
     public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
     {
-        MailServer server = email.App?.MailServers?.FirstOrDefault(
-            mailServer => mailServer.Name == email.MailServerName);
+        MailSender sender = email.App?.MailSenders?.FirstOrDefault(
+            mailSender => mailSender.Name == email.MailServerName);
 
-        if (server == null)
-            throw new InvalidOperationException("No mail server configuration could be found to send the email.");
+        if (sender == null)
+            throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
 
         using SmtpClient client = new()
         {
-            Host = server.Host,
-            Port = server.Port,
-            EnableSsl = server.EnableSSL,
+            Host = sender.Host,
+            Port = sender.Port,
+            EnableSsl = sender.EnableSSL,
             UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(server.User, server.Password),
+            Credentials = new NetworkCredential(sender.User, sender.Password),
             DeliveryMethod = SmtpDeliveryMethod.Network,
         };
 
@@ -36,11 +36,11 @@ internal sealed partial class MailClient : IMailClient
             Body = email.Content
         };
 
-        if (!string.IsNullOrWhiteSpace(server.FromEmail))
-            message.From = new MailAddress(server.FromEmail);
+        if (!string.IsNullOrWhiteSpace(sender.FromEmail))
+            message.From = new MailAddress(sender.FromEmail);
 
-        message.From ??= server.User.Contains('@')
-            ? new MailAddress(server.User)
+        message.From ??= sender.User.Contains('@')
+            ? new MailAddress(sender.User)
             : null;
 
         message.To.Add(email.To);
@@ -316,18 +316,18 @@ internal sealed partial class MailClient : IMailClient
         });
     }
 
-    private static DateTimeOffset? ParseDate(string value) =>
+    private static DateTimeOffset ParseDate(string value) =>
         DateTimeOffset.TryParse(value, out DateTimeOffset parsed)
             ? parsed
-            : null;
+            : DateTimeOffset.MinValue;
 
-    private static bool IsWithinPeriod(DateTimeOffset? receivedOn, DateTimeOffset? from, DateTimeOffset? to)
+    private static bool IsWithinPeriod(DateTimeOffset receivedOn, DateTimeOffset? from, DateTimeOffset? to)
     {
-        if (receivedOn is null)
+        if (receivedOn == DateTimeOffset.MinValue)
             return from is null && to is null;
 
-        return (from is null || receivedOn >= from)
-            && (to is null || receivedOn <= to);
+        return (from is null || receivedOn >= from.Value)
+            && (to is null || receivedOn <= to.Value);
     }
 
     private static string Header(Dictionary<string, string> headers, string name) =>

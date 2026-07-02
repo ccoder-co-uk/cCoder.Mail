@@ -21,9 +21,9 @@ internal sealed class MicrosoftGraphClient(MailConfiguration mailConfiguration)
 
     public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
     {
-        MailServer server = GetMailServer(email);
+        MailSender sender = GetMailSender(email);
         string accessToken = await GetAccessTokenAsync(cancellationToken);
-        using HttpRequestMessage message = new(HttpMethod.Post, BuildSendUrl(server));
+        using HttpRequestMessage message = new(HttpMethod.Post, BuildSendUrl(sender));
         message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         message.Content = JsonContent.Create(CreateSendPayload(email));
 
@@ -63,34 +63,34 @@ internal sealed class MicrosoftGraphClient(MailConfiguration mailConfiguration)
             },
             cancellationToken);
 
-    private static MailServer GetMailServer(QueuedEmail email)
+    private static MailSender GetMailSender(QueuedEmail email)
     {
         if (email == null)
             throw new ArgumentNullException(nameof(email));
 
-        MailServer server = email.App?.MailServers?.FirstOrDefault(
-            mailServer => mailServer.Name == email.MailServerName);
+        MailSender sender = email.App?.MailSenders?.FirstOrDefault(
+            mailSender => mailSender.Name == email.MailServerName);
 
-        if (server == null)
-            throw new InvalidOperationException("No mail server configuration could be found to send the email.");
+        if (sender == null)
+            throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
 
-        if (string.IsNullOrWhiteSpace(server.User))
+        if (string.IsNullOrWhiteSpace(sender.User))
             throw new InvalidOperationException("Microsoft Graph sender user is required.");
 
         if (string.IsNullOrWhiteSpace(email.To))
             throw new InvalidOperationException("Email recipient is required.");
 
-        return server;
+        return sender;
     }
 
-    private string BuildSendUrl(MailServer server)
+    private string BuildSendUrl(MailSender sender)
     {
         string graphBaseUrl = ReadConfiguredValue(
             mailConfiguration.MicrosoftGraph.GraphBaseUrl,
             GraphBaseUrlVariableName)
             ?? DefaultGraphBaseUrl;
 
-        return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(server.User)}/sendMail";
+        return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(sender.User)}/sendMail";
     }
 
     private static object CreateSendPayload(QueuedEmail email) =>
@@ -229,10 +229,10 @@ internal sealed class MicrosoftGraphClient(MailConfiguration mailConfiguration)
         message.TryGetProperty("body", out JsonElement body)
         && string.Equals(GetString(body, "contentType"), "html", StringComparison.OrdinalIgnoreCase);
 
-    private static DateTimeOffset? GetReceivedOn(JsonElement message) =>
+    private static DateTimeOffset GetReceivedOn(JsonElement message) =>
         DateTimeOffset.TryParse(GetString(message, "receivedDateTime"), out DateTimeOffset receivedOn)
             ? receivedOn
-            : null;
+            : DateTimeOffset.MinValue;
 
     private static string GetEmailAddress(JsonElement message, string propertyName)
     {

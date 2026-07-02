@@ -9,6 +9,7 @@ public class MailConfiguration
         AddSmtpSender();
         AddMicrosoftGraphSender();
         AddPop3Receiver();
+        AddImapReceiver();
         AddMicrosoftGraphReceiver();
     }
 
@@ -34,6 +35,11 @@ public class MailConfiguration
     public MailConfiguration AddPop3Receiver(string name = MailProviderNames.Pop3)
     {
         return AddReceiverProvider(name, MailProviderNames.Pop3);
+    }
+
+    public MailConfiguration AddImapReceiver(string name = MailProviderNames.Imap)
+    {
+        return AddReceiverProvider(name, MailProviderNames.Imap);
     }
 
     public MailConfiguration AddMicrosoftGraphSender(

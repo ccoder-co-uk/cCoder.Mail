@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mail Management</title>
-    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-auth">
+    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-providers">
 </head>
 <body class="mail-shell">
     <header class="mail-header">
@@ -41,6 +41,8 @@
     <main class="mail-workbench">
         <nav class="mail-section-tabs" aria-label="Mail Management workspace tabs">
             <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
+            <button data-main-tab="senders" type="button">Mail Senders</button>
+            <button data-main-tab="receivers" type="button">Mail Receivers</button>
             <button data-main-tab="queued" type="button">Queued Emails</button>
             <button data-main-tab="sent" type="button">Sent Emails</button>
             <button data-main-tab="received" type="button">Received Emails</button>
@@ -50,11 +52,33 @@
                 <div class="mail-toolbar">
                     <div>
                         <h2>Mail Servers</h2>
-                        <span>SMTP configurations owned by an app.</span>
+                        <span>Legacy SMTP configurations retained for migration.</span>
                     </div>
                     <button id="create-mail-server" type="button">Create Mail Server</button>
                 </div>
                 <div id="mail-server-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="senders">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Senders</h2>
+                        <span>Configured outbound providers owned by an app.</span>
+                    </div>
+                    <button id="create-mail-sender" type="button">Create Mail Sender</button>
+                </div>
+                <div id="mail-sender-grid" class="mail-grid"></div>
+            </section>
+
+            <section class="mail-main-panel" data-main-panel="receivers">
+                <div class="mail-toolbar">
+                    <div>
+                        <h2>Mail Receivers</h2>
+                        <span>Configured inbound providers owned by an app.</span>
+                    </div>
+                    <button id="create-mail-receiver" type="button">Create Mail Receiver</button>
+                </div>
+                <div id="mail-receiver-grid" class="mail-grid"></div>
             </section>
 
             <section class="mail-main-panel" data-main-panel="queued">
@@ -83,11 +107,12 @@
                 <div class="mail-toolbar">
                     <div>
                         <h2>Received Emails</h2>
-                        <span>Fetch Microsoft Graph mailbox messages within a date range without storing them.</span>
+                        <span>Received mail persisted by configured receivers. The receive button fetches a direct mailbox sample.</span>
                     </div>
                     <button id="receive-email" type="button">Receive Emails</button>
                 </div>
                 <div class="mail-receive-form">
+                    <label><span>Provider</span><select id="receive-provider"><option value="MicrosoftGraph">MicrosoftGraph</option></select></label>
                     <label><span>Mailbox User</span><input id="receive-user" autocomplete="username" placeholder="user@example.com"></label>
                     <label><span>From</span><input id="receive-from" type="datetime-local"></label>
                     <label><span>To</span><input id="receive-to" type="datetime-local"></label>
@@ -111,7 +136,7 @@
         </form>
     </dialog>
 
-    <script src="/tools/api.js?v=mail-grid-20260702-auth"></script>
-    <script src="/tools/grids.js?v=mail-grid-20260702-auth"></script>
+    <script src="/tools/api.js?v=mail-grid-20260702-providers"></script>
+    <script src="/tools/grids.js?v=mail-grid-20260702-providers"></script>
 </body>
 </html>

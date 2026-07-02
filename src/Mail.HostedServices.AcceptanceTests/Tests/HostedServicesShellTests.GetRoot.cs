@@ -16,6 +16,7 @@ public sealed partial class HostedServicesShellTests
         // Then
         content.Should().Contain("cCoder.Mail Hosted Services");
         content.Should().Contain("MailSenderHostedService");
+        content.Should().Contain("MailReceiverHostedService");
         content.Should().Contain("app_add");
         content.Should().Contain("app_update");
         content.Should().Contain("app_delete");

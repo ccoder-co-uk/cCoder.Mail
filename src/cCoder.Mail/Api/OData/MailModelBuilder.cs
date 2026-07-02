@@ -39,8 +39,11 @@ internal class MailModelBuilder : ODataModelBuilder
     {
         AddCommonComplextypes();
         AddSet<MailServer, int>();
+        AddSet<MailSender, Guid>();
+        AddSet<MailReceiver, Guid>();
         AddSet<QueuedEmail, int>();
         AddSet<SentEmail, int>();
+        AddSet<ReceivedEmail, int>();
         base.Builder.Namespace = "";
     }
 }
