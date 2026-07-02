@@ -15,6 +15,8 @@ public sealed partial class WebShellTests
 
         // Then
         content.Should().Contain("Mail Management");
+        content.Should().Contain("/tools/company-logo.png");
+        content.Should().Contain("mail-logo");
         content.Should().Contain("mail-server-grid");
         content.Should().Contain("queued-email-grid");
         content.Should().Contain("sent-email-grid");
@@ -61,5 +63,8 @@ public sealed partial class WebShellTests
         content.Should().Contain(".mail-detail");
         content.Should().Contain(".mail-tab-panel");
         content.Should().Contain(".mail-section-tabs");
+        content.Should().Contain(".mail-section-tabs button.active");
+        content.Should().Contain(".mail-logo");
+        content.Should().Contain("border-radius: 4px 4px 0 0");
     }
 }

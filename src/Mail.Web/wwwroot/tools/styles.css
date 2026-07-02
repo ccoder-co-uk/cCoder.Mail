@@ -62,6 +62,14 @@ body.mail-shell {
     font-weight: 700;
 }
 
+.mail-logo {
+    width: 126px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 3px;
+    background: #000;
+}
+
 .mail-auth input {
     width: 150px;
 }
@@ -104,6 +112,8 @@ a:hover {
 
 .mail-workbench {
     height: calc(100% - 58px);
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
     overflow: auto;
     padding: 10px;
 }
@@ -115,16 +125,21 @@ a:hover {
 }
 
 .mail-section-tabs {
-    padding: 8px 10px 0;
-    border-bottom: 1px solid #d6dee8;
-    background: #f8fafc;
+    min-height: 38px;
+    border-bottom: 1px solid #c8d2df;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .mail-section-tabs button {
-    border-bottom: 0;
+    margin-bottom: -1px;
+    border-radius: 4px 4px 0 0;
+    background: #fff;
 }
 
 .mail-section-tabs button.active {
+    border-color: #b6c4d4;
+    border-bottom-color: #fff;
     background: #fff;
     color: #0b5cab;
     font-weight: 600;
