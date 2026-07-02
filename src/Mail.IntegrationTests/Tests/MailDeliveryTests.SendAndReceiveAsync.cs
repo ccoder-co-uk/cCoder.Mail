@@ -1,0 +1,57 @@
+using cCoder.Data.Models.Mail;
+using cCoder.Mail.Models;
+using FluentAssertions;
+using Xunit;
+
+namespace Mail.IntegrationTests.Tests;
+
+public sealed partial class MailDeliveryTests
+{
+    [Fact]
+    public async Task SendAndReceiveAsync_SendsQueuedMailAndReceivesItFromMailbox()
+    {
+        // Given
+        IntegrationSettings settings = ReadSettings();
+
+        if (!settings.Enabled)
+        {
+            Output.WriteLine(
+                "Mail end-to-end integration is disabled. Set CCODER_MAIL_INTEGRATION_ENABLED=true and configure: "
+                + IntegrationSettings.RequiredVariableSummary());
+            return;
+        }
+
+        string[] missingVariables = settings.MissingVariables();
+        missingVariables.Should().BeEmpty(
+            "the mail end-to-end integration needs configured SMTP, POP3, and acceptance database settings");
+
+        await using IntegrationApplication application = await StartApplicationAsync(settings);
+        string unique = Guid.NewGuid().ToString("N");
+        string subject = $"cCoder Mail integration {unique}";
+        string content = $"cCoder Mail integration content {unique}";
+        DateTimeOffset receiveFrom = DateTimeOffset.UtcNow.AddMinutes(-2);
+
+        // When
+        QueuedEmail queuedEmail = await QueueEmailAsync(
+            application.Client,
+            application.AppId,
+            subject,
+            content,
+            settings.To);
+
+        await DispatchQueuedMailAsync(application.Factory.Services);
+        IReadOnlyList<SentEmail> sentEmails = await GetSentEmailsAsync(application.Client, subject);
+        ReceivedEmail receivedEmail = await ReceiveEmailAsync(
+            application.Client,
+            settings,
+            subject,
+            content,
+            receiveFrom);
+
+        // Then
+        queuedEmail.Subject.Should().Be(subject);
+        sentEmails.Should().ContainSingle(email => email.Subject == subject && email.To == settings.To);
+        receivedEmail.Subject.Should().Be(subject);
+        receivedEmail.Content.Should().Contain(content);
+    }
+}
