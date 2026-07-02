@@ -13,7 +13,7 @@ internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker po
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default)
     {
-        string[][] rawMessages = await pop3MailReceiverBroker.ReceiveAsync(request, cancellationToken);
+        string[][] rawMessages = await ReceiveRawMessagesAsync(request, cancellationToken);
 
         return
         [
@@ -28,9 +28,104 @@ internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker po
         int count,
         CancellationToken cancellationToken = default)
     {
-        string[][] rawMessages = await pop3MailReceiverBroker.ReceiveTopAsync(count, cancellationToken);
+        string[][] rawMessages = await ReceiveRawMessagesAsync(
+            new MailboxReceiveRequest
+            {
+                ProviderName = MailProviderNames.Pop3,
+                Host = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_HOST"),
+                Port = int.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_PORT"), out int port) ? port : 995,
+                EnableSSL = !bool.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_SSL"), out bool enableSsl) || enableSsl,
+                User = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_USER"),
+                Password = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_PASSWORD"),
+                MaximumMessages = count,
+            },
+            cancellationToken);
 
         return [.. rawMessages.Select(ParseMessage).OrderByDescending(message => message.ReceivedOn)];
+    }
+
+    private async Task<string[][]> ReceiveRawMessagesAsync(
+        MailboxReceiveRequest request,
+        CancellationToken cancellationToken)
+    {
+        ValidateReceiveRequest(request);
+
+        using MailClientTextConnection connection = await OpenConnectionAsync(request, cancellationToken);
+        await ExpectOkAsync(connection, cancellationToken);
+        await SendCommandAsync(connection, $"USER {request.User}", cancellationToken);
+        await SendCommandAsync(connection, $"PASS {request.Password}", cancellationToken);
+
+        string stat = await SendCommandAsync(connection, "STAT", cancellationToken);
+        int count = ParseMessageCount(stat);
+        int maximumMessages = request.MaximumMessages <= 0
+            ? count
+            : Math.Min(request.MaximumMessages, count);
+
+        List<string[]> messages = [];
+
+        for (int index = count; index > 0 && messages.Count < maximumMessages; index--)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            messages.Add(await RetrieveMessageAsync(connection, index, cancellationToken));
+        }
+
+        await pop3MailReceiverBroker.WriteLineAsync(connection, "QUIT", cancellationToken);
+        return [.. messages];
+    }
+
+    private Task<MailClientTextConnection> OpenConnectionAsync(
+        MailboxReceiveRequest request,
+        CancellationToken cancellationToken) =>
+        request.EnableSSL
+            ? pop3MailReceiverBroker.OpenSslAsync(request.Host, request.Port, cancellationToken)
+            : pop3MailReceiverBroker.OpenAsync(request.Host, request.Port, cancellationToken);
+
+    private async Task<string> SendCommandAsync(
+        MailClientTextConnection connection,
+        string command,
+        CancellationToken cancellationToken)
+    {
+        await pop3MailReceiverBroker.WriteLineAsync(connection, command, cancellationToken);
+        return await ExpectOkAsync(connection, cancellationToken);
+    }
+
+    private async Task<string> ExpectOkAsync(
+        MailClientTextConnection connection,
+        CancellationToken cancellationToken)
+    {
+        string line = await pop3MailReceiverBroker.ReadLineAsync(connection, cancellationToken)
+            ?? throw new InvalidOperationException("The mail server closed the connection.");
+
+        if (!line.StartsWith("+OK", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException(line);
+
+        return line;
+    }
+
+    private async Task<string[]> RetrieveMessageAsync(
+        MailClientTextConnection connection,
+        int index,
+        CancellationToken cancellationToken)
+    {
+        await SendCommandAsync(connection, $"RETR {index}", cancellationToken);
+
+        List<string> lines = [];
+
+        while (await pop3MailReceiverBroker.ReadLineAsync(connection, cancellationToken) is { } line)
+        {
+            if (line == ".")
+                break;
+
+            lines.Add(line.StartsWith("..", StringComparison.Ordinal) ? line[1..] : line);
+        }
+
+        return [.. lines];
+    }
+
+    private static int ParseMessageCount(string stat)
+    {
+        string[] parts = stat.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return parts.Length >= 2 && int.TryParse(parts[1], out int count) ? count : 0;
     }
 
     private static ReceivedEmail ParseMessage(string[] lines)
@@ -199,6 +294,38 @@ internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker po
 
     private static string RemoveWhitespace(string value) =>
         string.Concat((value ?? string.Empty).Where(character => !char.IsWhiteSpace(character)));
+
+    private static void ValidateReceiveRequest(MailboxReceiveRequest request)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        if (string.IsNullOrWhiteSpace(request.Host))
+            throw new InvalidOperationException("Mailbox host is required.");
+
+        if (request.Port <= 0)
+            throw new InvalidOperationException("Mailbox port is required.");
+
+        if (string.IsNullOrWhiteSpace(request.User))
+            throw new InvalidOperationException("Mailbox user is required.");
+
+        if (string.IsNullOrWhiteSpace(request.Password))
+            throw new InvalidOperationException("Mailbox password is required.");
+    }
+
+    private static string ReadRequiredEnvironment(string variableName) =>
+        ReadEnvironment(variableName)
+        ?? throw new InvalidOperationException($"{variableName} is required to receive mailbox messages.");
+
+    private static string ReadEnvironment(string variableName)
+    {
+        string value =
+            Environment.GetEnvironmentVariable(variableName)
+            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
+            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
 
     private readonly record struct ParsedBody(string Content, bool IsBodyHtml);
 

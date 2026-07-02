@@ -43,20 +43,17 @@ public partial class SmtpMailSenderServiceTests
         await smtpMailSenderService.SendAsync(email, cancellationToken);
 
         // Then
-        actualRequest.Should().BeEquivalentTo(new SmtpMailSendRequest
-        {
-            Host = "smtp.example.test",
-            Port = 587,
-            EnableSsl = true,
-            User = "sender@example.test",
-            Password = "password",
-            From = "from@example.test",
-            To = "to@example.test",
-            CC = "cc@example.test",
-            Subject = "Send",
-            Content = "Body",
-            IsBodyHtml = true,
-        });
+        actualRequest.Host.Should().Be("smtp.example.test");
+        actualRequest.Port.Should().Be(587);
+        actualRequest.EnableSsl.Should().BeTrue();
+        actualRequest.User.Should().Be("sender@example.test");
+        actualRequest.Password.Should().Be("password");
+        actualRequest.Message.From.Address.Should().Be("from@example.test");
+        actualRequest.Message.To.Select(address => address.Address).Should().ContainSingle("to@example.test");
+        actualRequest.Message.CC.Select(address => address.Address).Should().ContainSingle("cc@example.test");
+        actualRequest.Message.Subject.Should().Be("Send");
+        actualRequest.Message.Body.Should().Be("Body");
+        actualRequest.Message.IsBodyHtml.Should().BeTrue();
         smtpMailSenderBrokerMock.Verify(
             broker => broker.SendAsync(
                 It.IsAny<SmtpMailSendRequest>(),

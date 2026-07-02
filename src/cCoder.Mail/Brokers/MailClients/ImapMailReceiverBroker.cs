@@ -5,7 +5,7 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-internal sealed class Pop3MailReceiverBroker : IPop3MailReceiverBroker
+internal sealed class ImapMailReceiverBroker : IImapMailReceiverBroker
 {
     public async Task<MailClientTextConnection> OpenAsync(
         string host,

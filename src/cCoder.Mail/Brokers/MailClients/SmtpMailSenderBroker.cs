@@ -18,25 +18,6 @@ internal sealed class SmtpMailSenderBroker : ISmtpMailSenderBroker
             DeliveryMethod = SmtpDeliveryMethod.Network,
         };
 
-        using MailMessage message = new()
-        {
-            IsBodyHtml = request.IsBodyHtml,
-            Subject = request.Subject,
-            Body = request.Content
-        };
-
-        if (!string.IsNullOrWhiteSpace(request.From))
-            message.From = new MailAddress(request.From);
-
-        message.From ??= request.User.Contains('@')
-            ? new MailAddress(request.User)
-            : null;
-
-        message.To.Add(request.To);
-
-        if (!string.IsNullOrWhiteSpace(request.CC))
-            message.CC.Add(request.CC);
-
-        await client.SendMailAsync(message, cancellationToken);
+        await client.SendMailAsync(request.Message, cancellationToken);
     }
 }

@@ -101,6 +101,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<ISmtpMailSenderBroker, SmtpMailSenderBroker>();
         services.AddTransient<IMicrosoftGraphBroker, MicrosoftGraphBroker>();
         services.AddTransient<IPop3MailReceiverBroker, Pop3MailReceiverBroker>();
+        services.AddTransient<IImapMailReceiverBroker, ImapMailReceiverBroker>();
         services.AddTransient<IMailSenderFactory, MailSenderFactory>();
         services.AddTransient<IMailReceiverFactory, MailReceiverFactory>();
         services.AddTransient<IMailSenderClientBroker, MailSenderClientBroker>();
@@ -128,6 +129,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMicrosoftGraphMailSenderService, MicrosoftGraphMailSenderService>();
         services.AddTransient<IMicrosoftGraphMailReceiverService, MicrosoftGraphMailReceiverService>();
         services.AddTransient<IPop3MailReceiverService, Pop3MailReceiverService>();
+        services.AddTransient<IImapMailReceiverService, ImapMailReceiverService>();
         services.AddTransient<IMailSendingService, MailSendingService>();
         services.AddTransient<IMailReceivingService, MailReceivingService>();
         services.AddTransient<IQueuedEmailService, QueuedEmailService>();

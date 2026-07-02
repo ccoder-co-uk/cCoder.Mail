@@ -7,30 +7,10 @@ internal sealed class MailSenderFactory(
     MailConfiguration mailConfiguration)
     : IMailSenderFactory
 {
-    public IMailSenderProvider GetSender(string providerName)
-    {
-        string name = string.IsNullOrWhiteSpace(providerName)
-            ? mailConfiguration.DefaultSenderProviderName
-            : providerName;
-        string resolvedName = ResolveProviderName(providerName, name);
+    private readonly IReadOnlyDictionary<string, IMailSenderProvider> senders =
+        senders.ToDictionary(sender => sender.ProviderName, StringComparer.OrdinalIgnoreCase);
 
-        return senders.FirstOrDefault(sender =>
-            string.Equals(sender.ProviderName, resolvedName, StringComparison.OrdinalIgnoreCase))
-            ?? throw new InvalidOperationException($"No mail sender provider named '{name}' is registered.");
-    }
-
-    private string ResolveProviderName(string providerName, string name)
-    {
-        if (mailConfiguration.SenderProviders.TryGetValue(name, out string configuredName))
-            return configuredName;
-
-        if (string.IsNullOrWhiteSpace(providerName)
-            || name.Contains('.', StringComparison.Ordinal)
-            || name.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-        {
-            return mailConfiguration.DefaultSenderProviderName;
-        }
-
-        return name;
-    }
+    public IMailSenderProvider GetSender(string providerName) =>
+        senders.GetValueOrDefault(mailConfiguration.ResolveSenderProviderName(providerName))
+        ?? throw new InvalidOperationException($"No mail sender provider named '{providerName}' is registered.");
 }

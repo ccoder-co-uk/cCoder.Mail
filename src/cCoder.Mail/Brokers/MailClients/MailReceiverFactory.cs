@@ -7,17 +7,10 @@ internal sealed class MailReceiverFactory(
     MailConfiguration mailConfiguration)
     : IMailReceiverFactory
 {
-    public IMailReceiverProvider GetReceiver(string providerName)
-    {
-        string name = string.IsNullOrWhiteSpace(providerName)
-            ? mailConfiguration.DefaultReceiverProviderName
-            : providerName;
-        string resolvedName = mailConfiguration.ReceiverProviders.TryGetValue(name, out string configuredName)
-            ? configuredName
-            : name;
+    private readonly IReadOnlyDictionary<string, IMailReceiverProvider> receivers =
+        receivers.ToDictionary(receiver => receiver.ProviderName, StringComparer.OrdinalIgnoreCase);
 
-        return receivers.FirstOrDefault(receiver =>
-            string.Equals(receiver.ProviderName, resolvedName, StringComparison.OrdinalIgnoreCase))
-            ?? throw new InvalidOperationException($"No mail receiver provider named '{name}' is registered.");
-    }
+    public IMailReceiverProvider GetReceiver(string providerName) =>
+        receivers.GetValueOrDefault(mailConfiguration.ResolveReceiverProviderName(providerName))
+        ?? throw new InvalidOperationException($"No mail receiver provider named '{providerName}' is registered.");
 }

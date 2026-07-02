@@ -2,7 +2,7 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-public interface IPop3MailReceiverBroker
+public interface IImapMailReceiverBroker
 {
     Task<MailClientTextConnection> OpenAsync(
         string host,

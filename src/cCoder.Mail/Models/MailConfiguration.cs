@@ -78,6 +78,36 @@ public class MailConfiguration
         return this;
     }
 
+    public string ResolveSenderProviderName(string providerName)
+    {
+        string name = string.IsNullOrWhiteSpace(providerName)
+            ? DefaultSenderProviderName
+            : providerName;
+
+        if (SenderProviders.TryGetValue(name, out string configuredName))
+            return configuredName;
+
+        if (string.IsNullOrWhiteSpace(providerName)
+            || name.Contains('.', StringComparison.Ordinal)
+            || name.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+        {
+            return DefaultSenderProviderName;
+        }
+
+        return name;
+    }
+
+    public string ResolveReceiverProviderName(string providerName)
+    {
+        string name = string.IsNullOrWhiteSpace(providerName)
+            ? DefaultReceiverProviderName
+            : providerName;
+
+        return ReceiverProviders.TryGetValue(name, out string configuredName)
+            ? configuredName
+            : name;
+    }
+
     public MailConfiguration WithEventProviders(params EventProvider[] eventProviders)
     {
         EventProviders = eventProviders ?? [];
