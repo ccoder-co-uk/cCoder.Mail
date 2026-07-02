@@ -42,8 +42,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         return coreDataContext.QueuedMail
             .IgnoreQueryFilters()
             .Include(email => email.FailedSends)
-            .Include(email => email.App)
-                .ThenInclude(app => app.MailSenders)
+            .Include(email => email.MailSender)
             .Where(email => email.FailedSends.Count < maxFailures)
             .Take(batchSize)
             .ToArray();

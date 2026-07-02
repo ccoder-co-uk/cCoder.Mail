@@ -68,7 +68,7 @@ internal sealed class MailSenderOrchestrationService(
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)
     {
-        MailSender sender = email.App?.MailSenders?.FirstOrDefault(mailSender => mailSender.Name == email.MailServerName);
+        MailSender sender = email.MailSender;
 
         if (sender == null)
         {

@@ -68,6 +68,7 @@ window.MailGrids = {
                 Id: { label: "Id", readonly: true, create: false, type: "number" },
                 AppId: { label: "App Id", type: "number" },
                 MailServerName: { label: "Mail Sender" },
+                MailSenderId: { label: "Mail Sender Id" },
                 SentByUserId: { label: "Sent By" },
                 To: { label: "To" },
                 CC: { label: "CC" },
@@ -75,7 +76,7 @@ window.MailGrids = {
                 Content: { label: "Content", type: "textarea" },
                 IsBodyHtml: { label: "Is Body HTML", type: "checkbox" }
             },
-            columns: ["To", "Subject", "MailServerName", "SentByUserId", "IsBodyHtml", "AppId", "Id"]
+            columns: ["To", "Subject", "MailServerName", "MailSenderId", "SentByUserId", "IsBodyHtml", "AppId", "Id"]
         },
         SentEmail: {
             name: "SentEmail",
@@ -278,7 +279,7 @@ window.MailGrids = {
         if (config.name === "QueuedEmail") {
             return [
                 `AppId eq ${sender.AppId}`,
-                `MailServerName eq '${this.odataString(sender.Name)}'`
+                `MailSenderId eq ${sender.Id}`
             ];
         }
 
@@ -574,6 +575,7 @@ window.MailGrids = {
 
             if (config.name === "QueuedEmail") {
                 payload.MailServerName = context.mailSender.Name;
+                payload.MailSenderId = context.mailSender.Id;
             }
         }
 
@@ -614,6 +616,10 @@ window.MailGrids = {
 
         if (name === "MailServerName" && config.name === "QueuedEmail") {
             return context.mailSender.Name;
+        }
+
+        if (name === "MailSenderId" && config.name === "QueuedEmail") {
+            return context.mailSender.Id;
         }
 
         return null;

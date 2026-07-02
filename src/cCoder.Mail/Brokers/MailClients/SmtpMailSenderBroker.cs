@@ -1,45 +1,42 @@
 using System.Net;
 using System.Net.Mail;
-using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
 internal sealed class SmtpMailSenderBroker : ISmtpMailSenderBroker
 {
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    public async Task SendAsync(SmtpMailSendRequest request, CancellationToken cancellationToken = default)
     {
-        MailSender sender = email.App?.MailSenders?.FirstOrDefault(
-            mailSender => mailSender.Name == email.MailServerName);
-
-        if (sender == null)
-            throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
-
         using SmtpClient client = new()
         {
-            Host = sender.Host,
-            Port = sender.Port,
-            EnableSsl = sender.EnableSSL,
+            Host = request.Host,
+            Port = request.Port,
+            EnableSsl = request.EnableSsl,
             UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(sender.User, sender.Password),
+            Credentials = new NetworkCredential(request.User, request.Password),
             DeliveryMethod = SmtpDeliveryMethod.Network,
         };
 
         using MailMessage message = new()
         {
-            IsBodyHtml = email.IsBodyHtml,
-            Subject = email.Subject,
-            Body = email.Content
+            IsBodyHtml = request.IsBodyHtml,
+            Subject = request.Subject,
+            Body = request.Content
         };
 
-        if (!string.IsNullOrWhiteSpace(sender.FromEmail))
-            message.From = new MailAddress(sender.FromEmail);
+        if (!string.IsNullOrWhiteSpace(request.From))
+            message.From = new MailAddress(request.From);
 
-        message.From ??= sender.User.Contains('@')
-            ? new MailAddress(sender.User)
+        message.From ??= request.User.Contains('@')
+            ? new MailAddress(request.User)
             : null;
 
-        message.To.Add(email.To);
+        message.To.Add(request.To);
+
+        if (!string.IsNullOrWhiteSpace(request.CC))
+            message.CC.Add(request.CC);
+
         await client.SendMailAsync(message, cancellationToken);
     }
 }

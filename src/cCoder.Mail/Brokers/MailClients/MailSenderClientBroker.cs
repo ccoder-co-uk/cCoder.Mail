@@ -7,14 +7,6 @@ internal sealed class MailSenderClientBroker(IMailSenderFactory mailSenderFactor
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         mailSenderFactory
-            .GetSender(GetSenderProviderName(email))
+            .GetSender(email?.MailSender?.ProviderName)
             .SendAsync(email, cancellationToken);
-
-    private static string GetSenderProviderName(QueuedEmail email)
-    {
-        MailSender sender = email?.App?.MailSenders?.FirstOrDefault(
-            mailSender => mailSender.Name == email.MailServerName);
-
-        return sender?.ProviderName;
-    }
 }

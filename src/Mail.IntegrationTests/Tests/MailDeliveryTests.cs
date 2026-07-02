@@ -40,19 +40,20 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
         await databaseManager.ResetDatabasesAsync();
 
-        int appId = await SeedAsync(factory.Services, settings);
+        IntegrationSeed seed = await SeedAsync(factory.Services, settings);
         HttpClient client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false,
             BaseAddress = new Uri("https://localhost"),
         });
 
-        return new IntegrationApplication(factory, databaseManager, client, appId);
+        return new IntegrationApplication(factory, databaseManager, client, seed.AppId, seed.MailSenderId);
     }
 
     private async Task<QueuedEmail> QueueEmailAsync(
         HttpClient client,
         int appId,
+        Guid mailSenderId,
         string subject,
         string content,
         string to)
@@ -69,6 +70,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
                 cc = string.Empty,
                 isBodyHtml = false,
                 mailServerName = MailServerName,
+                mailSenderId,
             });
 
         string responseContent = await response.Content.ReadAsStringAsync();
@@ -163,7 +165,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             ?? throw new InvalidOperationException("Expected received email payload.");
     }
 
-    private static async Task<int> SeedAsync(IServiceProvider services, IntegrationSettings settings)
+    private static async Task<IntegrationSeed> SeedAsync(IServiceProvider services, IntegrationSettings settings)
     {
         using IServiceScope scope = services.CreateScope();
         using CoreDataContext core = scope.ServiceProvider
@@ -208,7 +210,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
         core.Set<Role>().Add(role);
         core.Set<UserRole>().Add(new UserRole { RoleId = role.Id, UserId = "Guest" });
-        core.Set<MailSender>().Add(new MailSender
+        MailSender mailSender = new()
         {
             AppId = app.Id,
             Name = MailServerName,
@@ -219,10 +221,12 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             User = settings.SendUser,
             Password = string.Empty,
             FromEmail = settings.From,
-        });
+        };
+
+        core.Set<MailSender>().Add(mailSender);
 
         await core.SaveChangesAsync();
-        return app.Id;
+        return new IntegrationSeed(app.Id, mailSender.Id);
     }
 
     private static IntegrationSettings ReadSettings()
@@ -355,11 +359,14 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         ];
     }
 
+    private sealed record IntegrationSeed(int AppId, Guid MailSenderId);
+
     private sealed class IntegrationApplication(
         IntegrationWebApplicationFactory factory,
         IntegrationDatabaseManager databaseManager,
         HttpClient client,
-        int appId)
+        int appId,
+        Guid mailSenderId)
         : IAsyncDisposable
     {
         public IntegrationWebApplicationFactory Factory { get; } = factory;
@@ -367,6 +374,8 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         public HttpClient Client { get; } = client;
 
         public int AppId { get; } = appId;
+
+        public Guid MailSenderId { get; } = mailSenderId;
 
         public async ValueTask DisposeAsync()
         {

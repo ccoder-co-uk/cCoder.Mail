@@ -1,4 +1,3 @@
-using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using Moq;
 using Xunit;
@@ -37,18 +36,11 @@ public partial class MailSenderClientBrokerTests
         // Given
         QueuedEmail email = new()
         {
-            MailServerName = "Graph",
             Subject = "Send",
-            App = new App
+            MailSender = new MailSender
             {
-                MailSenders =
-                [
-                    new()
-                    {
-                        Name = "Graph",
-                        ProviderName = "MicrosoftGraph",
-                    }
-                ],
+                Name = "Graph",
+                ProviderName = "MicrosoftGraph",
             },
         };
         CancellationToken cancellationToken = new();

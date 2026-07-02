@@ -72,7 +72,7 @@ public sealed partial class WebShellTests
         content.Should().Contain("loadQueuedEmailDetails");
         content.Should().Contain("receiveEmails");
         content.Should().Contain("ReceivedEmail/Receive");
-        content.Should().Contain("MailServerName eq");
+        content.Should().Contain("MailSenderId eq");
         content.Should().Contain("$expand=");
     }
 

@@ -28,6 +28,7 @@ public sealed partial class MailDeliveryTests
         QueuedEmail queuedEmail = await QueueEmailAsync(
             application.Client,
             application.AppId,
+            application.MailSenderId,
             subject,
             content,
             settings.To);
