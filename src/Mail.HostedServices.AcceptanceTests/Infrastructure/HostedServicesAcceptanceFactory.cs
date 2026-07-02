@@ -19,11 +19,8 @@ internal sealed class HostedServicesAcceptanceFactory(AcceptanceSettings setting
             [
                 new KeyValuePair<string, string>("ConnectionStrings:Core", settings.CoreConnectionString),
                 new KeyValuePair<string, string>("Settings:enableExternalEventing", "false"),
+                new KeyValuePair<string, string>("MIGRATING", "1"),
             ]);
-        });
-        builder.ConfigureTestServices(_ =>
-        {
-            Environment.SetEnvironmentVariable("MIGRATING", "1");
         });
     }
 }

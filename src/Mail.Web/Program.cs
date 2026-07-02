@@ -102,6 +102,10 @@ public class Program
         IConfiguration configuration,
         MailConfiguration mailConfiguration)
     {
+        ConfigureRuntime(configuration, mailConfiguration);
+        ConfigureMailbox(configuration, mailConfiguration.Pop3, "POP", 995);
+        ConfigureMailbox(configuration, mailConfiguration.Imap, "IMAP", 993);
+
         mailConfiguration
             .AddSmtpSender()
             .AddPop3Receiver()
@@ -118,8 +122,50 @@ public class Program
         graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
         graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
         graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
-        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_URL"] ?? graphConfiguration.LoginBaseUrl;
-        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"] ?? graphConfiguration.ReceiveUser;
+        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_BASE_URL"]
+            ?? configuration["CCODER_MAIL_GRAPH_LOGIN_URL"]
+            ?? graphConfiguration.LoginBaseUrl;
+        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_RECEIVE_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_SEND_USER"]
+            ?? configuration["CCODER_MAIL_INTEGRATION_SMTP_USER"]
+            ?? graphConfiguration.ReceiveUser;
+    }
+
+    private static void ConfigureRuntime(
+        IConfiguration configuration,
+        MailConfiguration mailConfiguration)
+    {
+        mailConfiguration.IsMigrating =
+            int.TryParse(configuration["MIGRATING"], out int result) && result == 1;
+    }
+
+    private static void ConfigureMailbox(
+        IConfiguration configuration,
+        MailboxReceiveConfiguration mailboxConfiguration,
+        string providerPrefix,
+        int defaultPort)
+    {
+        mailboxConfiguration.Host = configuration[$"CCODER_MAIL_{providerPrefix}_HOST"]
+            ?? configuration["CCODER_MAIL_RECEIVE_HOST"]
+            ?? mailboxConfiguration.Host;
+        mailboxConfiguration.Port = int.TryParse(
+            configuration[$"CCODER_MAIL_{providerPrefix}_PORT"]
+            ?? configuration["CCODER_MAIL_RECEIVE_PORT"],
+            out int port)
+                ? port
+                : defaultPort;
+        mailboxConfiguration.EnableSSL = !bool.TryParse(
+            configuration[$"CCODER_MAIL_{providerPrefix}_SSL"]
+            ?? configuration["CCODER_MAIL_RECEIVE_SSL"],
+            out bool enableSsl)
+                || enableSsl;
+        mailboxConfiguration.User = configuration[$"CCODER_MAIL_{providerPrefix}_USER"]
+            ?? configuration["CCODER_MAIL_RECEIVE_USER"]
+            ?? mailboxConfiguration.User;
+        mailboxConfiguration.Password = configuration[$"CCODER_MAIL_{providerPrefix}_PASSWORD"]
+            ?? configuration["CCODER_MAIL_RECEIVE_PASSWORD"]
+            ?? mailboxConfiguration.Password;
     }
 }
 

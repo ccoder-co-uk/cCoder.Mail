@@ -23,8 +23,11 @@ public class MailConfiguration
     public bool LogSQL { get; set; }
     public string RootPath { get; set; } = "Api/Mail";
     public bool IncludeLegacyCoreContext { get; set; } = true;
+    public bool IsMigrating { get; set; }
     public string DefaultSenderProviderName { get; set; } = MailProviderNames.Smtp;
     public string DefaultReceiverProviderName { get; set; } = MailProviderNames.MicrosoftGraph;
+    public MailboxReceiveConfiguration Pop3 { get; } = new() { Port = 995 };
+    public MailboxReceiveConfiguration Imap { get; } = new() { Port = 993 };
     public EventProvider[] EventProviders { get; private set; } = [];
 
     public MailConfiguration AddSmtpSender(string name = MailProviderNames.Smtp)

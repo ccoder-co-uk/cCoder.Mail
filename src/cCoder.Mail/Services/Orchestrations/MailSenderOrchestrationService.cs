@@ -1,5 +1,6 @@
 using System.Text;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
 
 
@@ -8,12 +9,13 @@ namespace cCoder.Mail.Services.Orchestrations;
 internal sealed class MailSenderOrchestrationService(
     IQueuedEmailService queuedEmailService,
     IMailClientOrchestrationService mailClientOrchestrationService,
+    MailConfiguration mailConfiguration,
     ILogger<MailSenderOrchestrationService> log)
     : IMailSenderOrchestrationService
 {
     public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
     {
-        if (int.TryParse(Environment.GetEnvironmentVariable("MIGRATING"), out int result) && result == 1)
+        if (mailConfiguration.IsMigrating)
             return;
 
         using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));

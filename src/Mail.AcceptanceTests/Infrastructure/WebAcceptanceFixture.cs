@@ -51,10 +51,7 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
 
     private static string AddDatabaseSuffix(string variableName)
     {
-        string connectionString =
-            Environment.GetEnvironmentVariable(variableName)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine)
+        string connectionString = BuildConfiguration()[variableName]
             ?? ReadConfiguredConnectionString(variableName);
 
         if (string.IsNullOrWhiteSpace(connectionString))
@@ -87,10 +84,18 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.testing.json", optional: true)
+            .AddEnvironmentVariables()
             .Build();
 
         return configuration.GetConnectionString(connectionName) ?? string.Empty;
     }
+
+    private static IConfigurationRoot BuildConfiguration() =>
+        new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.testing.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
 }
 
 [CollectionDefinition(Name)]

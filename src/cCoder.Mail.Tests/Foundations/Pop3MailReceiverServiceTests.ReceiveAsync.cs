@@ -86,9 +86,9 @@ public partial class Pop3MailReceiverServiceTests
         // Given
         CancellationToken cancellationToken = new();
         MailClientTextConnection connection = new();
-        Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_HOST", "pop3.example.test");
-        Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_USER", "mail@example.test");
-        Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_PASSWORD", "password");
+        mailConfiguration.Pop3.Host = "pop3.example.test";
+        mailConfiguration.Pop3.User = "mail@example.test";
+        mailConfiguration.Pop3.Password = "password";
 
         pop3MailReceiverBrokerMock
             .Setup(broker => broker.OpenSslAsync("pop3.example.test", 995, cancellationToken))
@@ -114,18 +114,7 @@ public partial class Pop3MailReceiverServiceTests
             .Returns(Task.CompletedTask);
 
         // When
-        ReceivedEmail[] actualEmails;
-
-        try
-        {
-            actualEmails = await pop3MailReceiverService.ReceiveTopAsync(1, cancellationToken);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_HOST", null);
-            Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_USER", null);
-            Environment.SetEnvironmentVariable("CCODER_MAIL_RECEIVE_PASSWORD", null);
-        }
+        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveTopAsync(1, cancellationToken);
 
         // Then
         actualEmails.Should().ContainSingle();

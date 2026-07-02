@@ -30,6 +30,12 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     private const string SsoConnectionVariableName = "CCODER_ACCEPTANCE_SSO_CONNECTION_STRING";
 
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
+    private static IConfigurationRoot TestConfiguration { get; } =
+        new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.testing.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
 
     private ITestOutputHelper Output { get; } = output;
 
@@ -282,10 +288,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 
     private static string ReadRequired(string variableName, string fallbackVariableName = null)
     {
-        string value =
-            Environment.GetEnvironmentVariable(variableName)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+        string value = TestConfiguration[variableName];
 
         if (!string.IsNullOrWhiteSpace(value))
             return value;

@@ -6,7 +6,9 @@ using System.Text.RegularExpressions;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker pop3MailReceiverBroker)
+internal sealed partial class Pop3MailReceiverService(
+    IPop3MailReceiverBroker pop3MailReceiverBroker,
+    MailConfiguration mailConfiguration)
     : IPop3MailReceiverService
 {
     public async Task<ReceivedEmail[]> ReceiveAsync(
@@ -32,11 +34,11 @@ internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker po
             new MailboxReceiveRequest
             {
                 ProviderName = MailProviderNames.Pop3,
-                Host = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_HOST"),
-                Port = int.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_PORT"), out int port) ? port : 995,
-                EnableSSL = !bool.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_SSL"), out bool enableSsl) || enableSsl,
-                User = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_USER"),
-                Password = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_PASSWORD"),
+                Host = ReadRequiredConfiguration(mailConfiguration.Pop3.Host, "POP3 mailbox host"),
+                Port = mailConfiguration.Pop3.Port,
+                EnableSSL = mailConfiguration.Pop3.EnableSSL,
+                User = ReadRequiredConfiguration(mailConfiguration.Pop3.User, "POP3 mailbox user"),
+                Password = ReadRequiredConfiguration(mailConfiguration.Pop3.Password, "POP3 mailbox password"),
                 MaximumMessages = count,
             },
             cancellationToken);
@@ -313,19 +315,10 @@ internal sealed partial class Pop3MailReceiverService(IPop3MailReceiverBroker po
             throw new InvalidOperationException("Mailbox password is required.");
     }
 
-    private static string ReadRequiredEnvironment(string variableName) =>
-        ReadEnvironment(variableName)
-        ?? throw new InvalidOperationException($"{variableName} is required to receive mailbox messages.");
-
-    private static string ReadEnvironment(string variableName)
-    {
-        string value =
-            Environment.GetEnvironmentVariable(variableName)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
-
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
-    }
+    private static string ReadRequiredConfiguration(string value, string configurationName) =>
+        string.IsNullOrWhiteSpace(value)
+            ? throw new InvalidOperationException($"{configurationName} is required to receive mailbox messages.")
+            : value;
 
     private readonly record struct ParsedBody(string Content, bool IsBodyHtml);
 

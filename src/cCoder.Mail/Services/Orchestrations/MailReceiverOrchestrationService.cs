@@ -9,12 +9,13 @@ internal sealed class MailReceiverOrchestrationService(
     IMailReceiverProcessingService mailReceiverProcessingService,
     IReceivedEmailProcessingService receivedEmailProcessingService,
     IMailReceivingService mailReceivingService,
+    MailConfiguration mailConfiguration,
     ILogger<MailReceiverOrchestrationService> log)
     : IMailReceiverOrchestrationService
 {
     public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
     {
-        if (int.TryParse(Environment.GetEnvironmentVariable("MIGRATING"), out int result) && result == 1)
+        if (mailConfiguration.IsMigrating)
             return;
 
         using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));

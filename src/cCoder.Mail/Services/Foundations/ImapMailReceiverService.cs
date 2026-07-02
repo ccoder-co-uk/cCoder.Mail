@@ -6,7 +6,9 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed partial class ImapMailReceiverService(IImapMailReceiverBroker imapMailReceiverBroker)
+internal sealed partial class ImapMailReceiverService(
+    IImapMailReceiverBroker imapMailReceiverBroker,
+    MailConfiguration mailConfiguration)
     : IImapMailReceiverService
 {
     public async Task<ReceivedEmail[]> ReceiveAsync(
@@ -54,11 +56,11 @@ internal sealed partial class ImapMailReceiverService(IImapMailReceiverBroker im
             new MailboxReceiveRequest
             {
                 ProviderName = MailProviderNames.Imap,
-                Host = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_HOST"),
-                Port = int.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_PORT"), out int port) ? port : 993,
-                EnableSSL = !bool.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_SSL"), out bool enableSsl) || enableSsl,
-                User = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_USER"),
-                Password = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_PASSWORD"),
+                Host = ReadRequiredConfiguration(mailConfiguration.Imap.Host, "IMAP mailbox host"),
+                Port = mailConfiguration.Imap.Port,
+                EnableSSL = mailConfiguration.Imap.EnableSSL,
+                User = ReadRequiredConfiguration(mailConfiguration.Imap.User, "IMAP mailbox user"),
+                Password = ReadRequiredConfiguration(mailConfiguration.Imap.Password, "IMAP mailbox password"),
                 MaximumMessages = count,
             },
             cancellationToken);
@@ -220,19 +222,10 @@ internal sealed partial class ImapMailReceiverService(IImapMailReceiverBroker im
             throw new InvalidOperationException("Mailbox password is required.");
     }
 
-    private static string ReadRequiredEnvironment(string variableName) =>
-        ReadEnvironment(variableName)
-        ?? throw new InvalidOperationException($"{variableName} is required to receive mailbox messages.");
-
-    private static string ReadEnvironment(string variableName)
-    {
-        string value =
-            Environment.GetEnvironmentVariable(variableName)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
-
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
-    }
+    private static string ReadRequiredConfiguration(string value, string configurationName) =>
+        string.IsNullOrWhiteSpace(value)
+            ? throw new InvalidOperationException($"{configurationName} is required to receive mailbox messages.")
+            : value;
 
     [GeneratedRegex(@"^\* SEARCH (?<ids>.*)$", RegexOptions.Multiline)]
     private static partial Regex SearchRegex();

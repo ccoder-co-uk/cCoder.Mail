@@ -11,11 +11,6 @@ internal sealed class MicrosoftGraphMailReceiverService(
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailReceiverService
 {
-    private const string TenantIdVariableName = "CCODER_MAIL_GRAPH_TENANT_ID";
-    private const string ClientIdVariableName = "CCODER_MAIL_GRAPH_CLIENT_ID";
-    private const string ClientSecretVariableName = "CCODER_MAIL_GRAPH_CLIENT_SECRET";
-    private const string GraphBaseUrlVariableName = "CCODER_MAIL_GRAPH_BASE_URL";
-    private const string LoginBaseUrlVariableName = "CCODER_MAIL_GRAPH_LOGIN_BASE_URL";
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
 
@@ -55,10 +50,10 @@ internal sealed class MicrosoftGraphMailReceiverService(
             [
                 new KeyValuePair<string, string>(
                     "client_id",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientId, ClientIdVariableName)),
+                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientId, "Microsoft Graph client id")),
                 new KeyValuePair<string, string>(
                     "client_secret",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientSecret, ClientSecretVariableName)),
+                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientSecret, "Microsoft Graph client secret")),
                 new KeyValuePair<string, string>("scope", "https://graph.microsoft.com/.default"),
                 new KeyValuePair<string, string>("grant_type", "client_credentials"),
             ]),
@@ -79,10 +74,8 @@ internal sealed class MicrosoftGraphMailReceiverService(
     {
         string tenantId = ReadRequiredConfiguredValue(
             mailConfiguration.MicrosoftGraph.TenantId,
-            TenantIdVariableName);
-        string loginBaseUrl = ReadConfiguredValue(
-            mailConfiguration.MicrosoftGraph.LoginBaseUrl,
-            LoginBaseUrlVariableName)
+            "Microsoft Graph tenant id");
+        string loginBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.LoginBaseUrl)
             ?? DefaultLoginBaseUrl;
 
         return $"{loginBaseUrl.TrimEnd('/')}/{Uri.EscapeDataString(tenantId)}/oauth2/v2.0/token";
@@ -90,9 +83,7 @@ internal sealed class MicrosoftGraphMailReceiverService(
 
     private string BuildMessagesUrl(MailboxReceiveRequest request)
     {
-        string graphBaseUrl = ReadConfiguredValue(
-            mailConfiguration.MicrosoftGraph.GraphBaseUrl,
-            GraphBaseUrlVariableName)
+        string graphBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.GraphBaseUrl)
             ?? DefaultGraphBaseUrl;
         List<string> query =
         [
@@ -193,31 +184,16 @@ internal sealed class MicrosoftGraphMailReceiverService(
             : null;
 
     private string ReadConfiguredReceiveUser() =>
-        ReadConfiguredValue(mailConfiguration.MicrosoftGraph.ReceiveUser, "CCODER_MAIL_RECEIVE_USER")
-        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_RECEIVE_USER")
-        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SEND_USER")
-        ?? ReadEnvironment("CCODER_MAIL_INTEGRATION_SMTP_USER")
+        ReadConfiguredValue(mailConfiguration.MicrosoftGraph.ReceiveUser)
         ?? throw new InvalidOperationException(
             "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
 
-    private static string ReadRequiredConfiguredValue(string configuredValue, string variableName) =>
-        ReadConfiguredValue(configuredValue, variableName)
-        ?? throw new InvalidOperationException($"{variableName} is required for Microsoft Graph mail.");
+    private static string ReadRequiredConfiguredValue(string configuredValue, string configurationName) =>
+        ReadConfiguredValue(configuredValue)
+        ?? throw new InvalidOperationException($"{configurationName} is required for Microsoft Graph mail.");
 
-    private static string ReadConfiguredValue(string configuredValue, string variableName) =>
-        string.IsNullOrWhiteSpace(configuredValue)
-            ? ReadEnvironment(variableName)
-            : configuredValue;
-
-    private static string ReadEnvironment(string variableName)
-    {
-        string value =
-            Environment.GetEnvironmentVariable(variableName)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
-
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
-    }
+    private static string ReadConfiguredValue(string configuredValue) =>
+        string.IsNullOrWhiteSpace(configuredValue) ? null : configuredValue;
 
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
