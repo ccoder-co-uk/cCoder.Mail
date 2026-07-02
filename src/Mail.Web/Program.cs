@@ -3,9 +3,7 @@ using Apps.Shared;
 using Apps.Shared.Models;
 using cCoder.Mail;
 using cCoder.Security;
-using cCoder.Security.Api;
-using cCoder.Security.Data.EF.MSSQL;
-using cCoder.Security.Objects;
+using cCoder.Security.Data.EF;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.OData;
@@ -55,13 +53,13 @@ public class Program
             coreConnection);
 
         builder.Services.AddMailWeb();
-        builder.Services.AddMailHostedServices();
 
         WebApplication app = builder.Build();
         log = app.Services.GetRequiredService<ILogger<Program>>();
 
         app.UseHttpsRedirection();
         app.UseSession();
+        app.UseStaticFiles();
 
         app.UseSwagger()
             .UseSwaggerUI(options =>
@@ -74,6 +72,8 @@ public class Program
             .UseODataRouteDebug();
 
         app.UseDomainApiShell();
+        app.MapGet("/Health", () => Results.Text("OK"));
+        app.MapGet("/", () => Results.Redirect("/tools/index.html"));
         app.StartMailWeb(log);
         app.UseDomainDefaultCors();
         app.UseDomainExceptionHandling(HandleUnhandledException);

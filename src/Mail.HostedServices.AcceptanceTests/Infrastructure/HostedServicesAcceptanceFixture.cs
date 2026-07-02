@@ -1,53 +1,42 @@
+using HostedServices.AcceptanceTests.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Web.AcceptanceTests.Models;
 using Xunit;
 
+namespace HostedServices.AcceptanceTests.Infrastructure;
 
-namespace Web.AcceptanceTests.Infrastructure;
-
-public sealed class WebAcceptanceFixture : IAsyncLifetime
+public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
 {
-    private AcceptanceDatabaseManager databaseManager;
-
-    internal WebAcceptanceFactory Factory { get; private set; } = null!;
+    internal HostedServicesAcceptanceFactory Factory { get; private set; } = null!;
 
     public HttpClient Client { get; private set; } = null!;
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         AcceptanceSettings settings = new()
         {
             CoreConnectionString = AddDatabaseSuffix("CCODER_ACCEPTANCE_CORE_CONNECTION_STRING"),
-            SsoConnectionString = AddDatabaseSuffix("CCODER_ACCEPTANCE_SSO_CONNECTION_STRING"),
-            DecryptionKey = "000000000000000000000000000000000000000000000000",
         };
 
-        Factory = new WebAcceptanceFactory(settings);
-        databaseManager = new AcceptanceDatabaseManager(Factory.Services);
-        await databaseManager.ResetDatabasesAsync();
-        await SeedAsync();
+        Factory = new HostedServicesAcceptanceFactory(settings);
         Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false,
             BaseAddress = new Uri("https://localhost"),
         });
+
+        return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()
     {
         Client?.Dispose();
-
-        if (databaseManager is not null)
-            await databaseManager.DropDatabasesAsync();
+        Environment.SetEnvironmentVariable("MIGRATING", null);
 
         if (Factory is not null)
             await Factory.DisposeAsync();
     }
-
-    private Task SeedAsync() =>
-        new AcceptanceApplicationSeeder(Factory.Services).SeedAsync();
 
     private static string AddDatabaseSuffix(string variableName)
     {
@@ -70,32 +59,23 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
         if (string.IsNullOrWhiteSpace(databaseName))
             return connectionString;
 
-        string suffix = typeof(WebAcceptanceFixture).Assembly.GetName().Name!
-            .Replace(".AcceptanceTests", string.Empty, StringComparison.Ordinal)
-            .ToLowerInvariant();
-
-        builder.InitialCatalog = $"{databaseName}-{suffix}";
+        builder.InitialCatalog = $"{databaseName}-mail-hostedservices";
         return builder.ConnectionString;
     }
 
     private static string ReadConfiguredConnectionString(string variableName)
     {
-        string connectionName = variableName.Contains("CORE", StringComparison.OrdinalIgnoreCase)
-            ? "Core"
-            : "SSO";
-
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.testing.json", optional: true)
             .Build();
 
-        return configuration.GetConnectionString(connectionName) ?? string.Empty;
+        return configuration.GetConnectionString("Core") ?? string.Empty;
     }
 }
 
 [CollectionDefinition(Name)]
-public sealed class WebAcceptanceCollection : ICollectionFixture<WebAcceptanceFixture>
+public sealed class HostedServicesAcceptanceCollection : ICollectionFixture<HostedServicesAcceptanceFixture>
 {
-    public const string Name = "Web acceptance";
+    public const string Name = "Hosted Services acceptance";
 }
-

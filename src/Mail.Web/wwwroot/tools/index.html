@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mail Management</title>
+    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702">
+</head>
+<body class="mail-shell">
+    <header class="mail-header">
+        <div class="mail-brand">
+            <span class="mail-mark">M</span>
+            <div>
+                <h1>Mail Management</h1>
+                <span>Mail servers, queued mail, and sent mail</span>
+            </div>
+        </div>
+
+        <div class="mail-auth">
+            <span id="auth-user" class="mail-auth-user">Guest</span>
+            <input id="auth-username" autocomplete="username" placeholder="User">
+            <input id="auth-password" autocomplete="current-password" placeholder="Password" type="password">
+            <button id="auth-login" type="button">Login</button>
+            <button id="auth-logout" type="button" hidden>Logout</button>
+        </div>
+
+        <div class="mail-header-actions">
+            <span id="status-message" class="mail-status">Ready</span>
+            <a href="/swagger" target="_blank" rel="noreferrer">Swagger</a>
+            <button id="health-check" type="button">Health</button>
+        </div>
+    </header>
+
+    <main class="mail-workbench">
+        <section class="mail-panel">
+            <div class="mail-toolbar">
+                <div>
+                    <h2>Mail Servers</h2>
+                    <span>Expand a mail server to manage queued and sent mail for its app.</span>
+                </div>
+                <button id="create-mail-server" type="button">Create Mail Server</button>
+            </div>
+            <div id="mail-server-grid" class="mail-grid"></div>
+        </section>
+    </main>
+
+    <dialog id="editor-dialog" class="mail-dialog">
+        <form method="dialog">
+            <header>
+                <h3 id="editor-title">Edit</h3>
+                <button id="editor-close" value="cancel" type="submit">Close</button>
+            </header>
+            <div id="editor-fields" class="mail-editor-fields"></div>
+            <footer>
+                <button id="editor-save" value="default" type="submit">Save</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <script src="/tools/api.js?v=mail-grid-20260702"></script>
+    <script src="/tools/grids.js?v=mail-grid-20260702"></script>
+</body>
+</html>

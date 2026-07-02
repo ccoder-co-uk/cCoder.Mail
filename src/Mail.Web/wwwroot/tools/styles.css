@@ -1,0 +1,289 @@
+html,
+body {
+    height: 100%;
+}
+
+body.mail-shell {
+    margin: 0;
+    overflow: hidden;
+    background: #eef2f7;
+    color: #17202a;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+}
+
+.mail-header {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 12px;
+    border-bottom: 1px solid #c8d2df;
+    background: #f8fafc;
+}
+
+.mail-brand,
+.mail-auth,
+.mail-header-actions,
+.mail-toolbar,
+.mail-detail-toolbar,
+.mail-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mail-brand h1,
+.mail-toolbar h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.mail-brand span,
+.mail-toolbar span {
+    color: #607085;
+    font-size: 12px;
+}
+
+.mail-mark {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #7a8ea8;
+    border-radius: 4px;
+    background: #243b53;
+    color: #fff;
+    font-weight: 700;
+}
+
+.mail-auth input {
+    width: 150px;
+}
+
+.mail-auth-user,
+.mail-status {
+    max-width: 240px;
+    overflow: hidden;
+    color: #26384c;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mail-status {
+    color: #2f6f46;
+}
+
+.mail-status-error {
+    color: #a33131;
+}
+
+button,
+a {
+    min-height: 30px;
+    padding: 5px 10px;
+    border: 1px solid #b6c4d4;
+    border-radius: 3px;
+    background: #fff;
+    color: #243b53;
+    font: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+button:hover,
+a:hover {
+    background: #edf4fb;
+}
+
+.mail-workbench {
+    height: calc(100% - 58px);
+    overflow: auto;
+    padding: 10px;
+}
+
+.mail-panel {
+    min-height: 100%;
+    border: 1px solid #c8d2df;
+    background: #fff;
+}
+
+.mail-toolbar {
+    min-height: 54px;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid #d6dee8;
+    background: #f8fafc;
+}
+
+.mail-grid {
+    overflow: auto;
+}
+
+.mail-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mail-table th,
+.mail-table td {
+    padding: 8px;
+    border-bottom: 1px solid #d6dee8;
+    border-right: 1px solid #edf1f5;
+    text-align: left;
+    vertical-align: top;
+}
+
+.mail-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #f8fafc;
+    color: #26384c;
+    font-weight: 600;
+}
+
+.mail-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.mail-expand-column {
+    width: 42px;
+    text-align: center;
+}
+
+.mail-actions {
+    width: 150px;
+}
+
+.mail-actions button {
+    margin-right: 4px;
+}
+
+.mail-empty {
+    color: #607085;
+}
+
+.mail-detail-row > td {
+    padding: 0;
+    background: #fbfcfe;
+}
+
+.mail-detail {
+    padding: 10px;
+}
+
+.mail-tabs {
+    border-bottom: 1px solid #d6dee8;
+}
+
+.mail-tabs button {
+    border-bottom: 0;
+}
+
+.mail-tabs button.active {
+    background: #fff;
+    color: #0b5cab;
+    font-weight: 600;
+}
+
+.mail-tab-panel {
+    display: none;
+    padding-top: 10px;
+}
+
+.mail-tab-panel.active {
+    display: block;
+}
+
+.mail-detail-toolbar {
+    justify-content: flex-end;
+    padding-bottom: 8px;
+}
+
+.mail-dialog {
+    width: min(720px, calc(100vw - 32px));
+    border: 1px solid #9fb0c3;
+    border-radius: 4px;
+    padding: 0;
+}
+
+.mail-dialog header,
+.mail-dialog footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px;
+    background: #f8fafc;
+}
+
+.mail-dialog h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.mail-editor-fields {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+}
+
+.mail-editor-fields label {
+    display: grid;
+    gap: 4px;
+}
+
+.mail-editor-fields span {
+    color: #384b5f;
+    font-weight: 600;
+}
+
+.mail-editor-fields input,
+.mail-editor-fields textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px;
+    border: 1px solid #b6c4d4;
+    border-radius: 3px;
+    font: inherit;
+}
+
+.mail-editor-fields input[type="checkbox"] {
+    width: auto;
+    justify-self: start;
+}
+
+.mail-editor-fields textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+@media (max-width: 1000px) {
+    body.mail-shell {
+        overflow: auto;
+    }
+
+    .mail-header {
+        height: auto;
+        min-height: 58px;
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 8px 12px;
+    }
+
+    .mail-workbench {
+        height: auto;
+        min-height: calc(100vh - 58px);
+    }
+
+    .mail-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

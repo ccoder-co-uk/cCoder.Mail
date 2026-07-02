@@ -12,6 +12,30 @@ internal sealed class MailSenderOrchestrationService(
     ILogger<MailSenderOrchestrationService> log)
     : IMailSenderOrchestrationService
 {
+    public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
+    {
+        if (int.TryParse(Environment.GetEnvironmentVariable("MIGRATING"), out int result) && result == 1)
+            return;
+
+        using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));
+
+        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken))
+        {
+            try
+            {
+                await RunAsync(cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+            }
+        }
+    }
+
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
         QueuedEmail[] queue = queuedEmailService.GetDispatchBatch(batchSize: 10, maxFailures: 10);

@@ -19,6 +19,10 @@ public class HostedServicesRegistrationTests
         Assert.Contains(
             services,
             descriptor => descriptor.ServiceType == typeof(IHostedService)
+                && descriptor.ImplementationFactory is not null);
+        Assert.Contains(
+            services,
+            descriptor => descriptor.ServiceType == typeof(IMailSenderHostedService)
                 && descriptor.ImplementationType == typeof(MailSenderHostedService));
         Assert.Contains(
             services,

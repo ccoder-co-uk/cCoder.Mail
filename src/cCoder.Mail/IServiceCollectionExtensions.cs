@@ -63,7 +63,8 @@ public static partial class IServiceCollectionExtensions
         services.AddProcessings();
         services.AddOrchestrations();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
-        services.AddHostedService<MailSenderHostedService>();
+        services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
+        services.AddHostedService(provider => provider.GetRequiredService<IMailSenderHostedService>());
     }
 
     private static void AddEventingTypes(this IServiceCollection services)
