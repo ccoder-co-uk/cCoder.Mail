@@ -4,15 +4,15 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MailReceivingService(IMailClientBroker mailClientBroker) : IMailReceivingService
+internal sealed class MailReceivingService(IMailReceiverClientBroker mailReceiverClientBroker) : IMailReceivingService
 {
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        mailClientBroker.ReceiveAsync(request, cancellationToken);
+        mailReceiverClientBroker.ReceiveAsync(request, cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
-        mailClientBroker.ReceiveTopAsync(count, cancellationToken);
+        mailReceiverClientBroker.ReceiveTopAsync(count, cancellationToken);
 }

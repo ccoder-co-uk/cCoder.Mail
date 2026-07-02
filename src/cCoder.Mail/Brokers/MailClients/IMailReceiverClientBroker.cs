@@ -3,10 +3,8 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-public interface IMailClientBroker
+public interface IMailReceiverClientBroker
 {
-    Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default);
-
     Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);

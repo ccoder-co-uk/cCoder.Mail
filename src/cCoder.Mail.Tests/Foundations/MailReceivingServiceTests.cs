@@ -6,12 +6,12 @@ namespace cCoder.Core.Services.Tests.Mail.Foundations;
 
 public partial class MailReceivingServiceTests
 {
-    private readonly Mock<IMailClientBroker> mailClientBrokerMock;
+    private readonly Mock<IMailReceiverClientBroker> mailReceiverClientBrokerMock;
     private readonly MailReceivingService mailReceivingService;
 
     public MailReceivingServiceTests()
     {
-        mailClientBrokerMock = new Mock<IMailClientBroker>(MockBehavior.Strict);
-        mailReceivingService = new MailReceivingService(mailClientBrokerMock.Object);
+        mailReceiverClientBrokerMock = new Mock<IMailReceiverClientBroker>(MockBehavior.Strict);
+        mailReceivingService = new MailReceivingService(mailReceiverClientBrokerMock.Object);
     }
 }

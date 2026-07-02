@@ -3,8 +3,8 @@ using cCoder.Mail.Brokers.MailClients;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MailSendingService(IMailClientBroker mailClientBroker) : IMailSendingService
+internal sealed class MailSendingService(IMailSenderClientBroker mailSenderClientBroker) : IMailSendingService
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        mailClientBroker.SendAsync(email, cancellationToken);
+        mailSenderClientBroker.SendAsync(email, cancellationToken);
 }

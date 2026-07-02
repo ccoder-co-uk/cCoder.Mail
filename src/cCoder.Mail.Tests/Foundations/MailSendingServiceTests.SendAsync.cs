@@ -14,7 +14,7 @@ public partial class MailSendingServiceTests
         QueuedEmail email = Builder<QueuedEmail>.CreateNew().Build();
         CancellationToken cancellationToken = new();
 
-        mailClientBrokerMock
+        mailSenderClientBrokerMock
             .Setup(broker => broker.SendAsync(email, cancellationToken))
             .Returns(Task.CompletedTask);
 
@@ -22,7 +22,7 @@ public partial class MailSendingServiceTests
         await mailSendingService.SendAsync(email, cancellationToken);
 
         // Then
-        mailClientBrokerMock.Verify(broker => broker.SendAsync(email, cancellationToken), Times.Once);
-        mailClientBrokerMock.VerifyNoOtherCalls();
+        mailSenderClientBrokerMock.Verify(broker => broker.SendAsync(email, cancellationToken), Times.Once);
+        mailSenderClientBrokerMock.VerifyNoOtherCalls();
     }
 }

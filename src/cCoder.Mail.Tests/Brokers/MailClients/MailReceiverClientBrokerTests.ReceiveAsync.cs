@@ -6,7 +6,7 @@ using Xunit;
 
 namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;
 
-public partial class MailClientBrokerTests
+public partial class MailReceiverClientBrokerTests
 {
     [Fact]
     public async Task ShouldDelegateToConfiguredReceiverWhenReceiveAsync()
@@ -28,7 +28,7 @@ public partial class MailClientBrokerTests
             .ReturnsAsync(expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailClientBroker.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveAsync(request, cancellationToken);
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
@@ -36,8 +36,6 @@ public partial class MailClientBrokerTests
         mailReceiverProviderMock.Verify(provider => provider.ReceiveAsync(request, cancellationToken), Times.Once);
         mailReceiverFactoryMock.VerifyNoOtherCalls();
         mailReceiverProviderMock.VerifyNoOtherCalls();
-        mailSenderFactoryMock.VerifyNoOtherCalls();
-        mailSenderProviderMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -55,7 +53,7 @@ public partial class MailClientBrokerTests
             .ReturnsAsync(expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailClientBroker.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveTopAsync(1, cancellationToken);
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
@@ -63,7 +61,5 @@ public partial class MailClientBrokerTests
         mailReceiverProviderMock.Verify(provider => provider.ReceiveTopAsync(1, cancellationToken), Times.Once);
         mailReceiverFactoryMock.VerifyNoOtherCalls();
         mailReceiverProviderMock.VerifyNoOtherCalls();
-        mailSenderFactoryMock.VerifyNoOtherCalls();
-        mailSenderProviderMock.VerifyNoOtherCalls();
     }
 }

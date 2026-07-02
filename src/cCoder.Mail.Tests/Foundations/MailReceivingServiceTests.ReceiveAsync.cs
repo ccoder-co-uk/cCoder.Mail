@@ -21,7 +21,7 @@ public partial class MailReceivingServiceTests
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
-        mailClientBrokerMock
+        mailReceiverClientBrokerMock
             .Setup(broker => broker.ReceiveAsync(request, cancellationToken))
             .ReturnsAsync(expectedEmails);
 
@@ -30,8 +30,8 @@ public partial class MailReceivingServiceTests
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
-        mailClientBrokerMock.Verify(broker => broker.ReceiveAsync(request, cancellationToken), Times.Once);
-        mailClientBrokerMock.VerifyNoOtherCalls();
+        mailReceiverClientBrokerMock.Verify(broker => broker.ReceiveAsync(request, cancellationToken), Times.Once);
+        mailReceiverClientBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public partial class MailReceivingServiceTests
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
-        mailClientBrokerMock
+        mailReceiverClientBrokerMock
             .Setup(broker => broker.ReceiveTopAsync(1, cancellationToken))
             .ReturnsAsync(expectedEmails);
 
@@ -50,7 +50,7 @@ public partial class MailReceivingServiceTests
 
         // Then
         actualEmails.Should().BeSameAs(expectedEmails);
-        mailClientBrokerMock.Verify(broker => broker.ReceiveTopAsync(1, cancellationToken), Times.Once);
-        mailClientBrokerMock.VerifyNoOtherCalls();
+        mailReceiverClientBrokerMock.Verify(broker => broker.ReceiveTopAsync(1, cancellationToken), Times.Once);
+        mailReceiverClientBrokerMock.VerifyNoOtherCalls();
     }
 }
