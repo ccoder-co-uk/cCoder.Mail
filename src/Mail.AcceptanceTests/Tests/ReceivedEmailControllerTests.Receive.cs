@@ -8,7 +8,7 @@ namespace Web.AcceptanceTests.Tests.Mail;
 public sealed partial class ReceivedEmailControllerTests
 {
     [Fact]
-    public async Task Receive_ReturnsReceivedEmailsFromMailClient()
+    public async Task Receive_ReturnsReceivedEmailsFromConfiguredProvider()
     {
         // Given
         DateTimeOffset from = DateTimeOffset.UtcNow.AddMinutes(-5);

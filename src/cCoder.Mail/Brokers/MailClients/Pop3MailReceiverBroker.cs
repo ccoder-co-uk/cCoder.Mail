@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mail;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
@@ -9,44 +7,8 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-internal sealed partial class MailClient : IMailClient
+internal sealed partial class Pop3MailReceiverBroker : IPop3MailReceiverBroker
 {
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
-    {
-        MailSender sender = email.App?.MailSenders?.FirstOrDefault(
-            mailSender => mailSender.Name == email.MailServerName);
-
-        if (sender == null)
-            throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
-
-        using SmtpClient client = new()
-        {
-            Host = sender.Host,
-            Port = sender.Port,
-            EnableSsl = sender.EnableSSL,
-            UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(sender.User, sender.Password),
-            DeliveryMethod = SmtpDeliveryMethod.Network,
-        };
-
-        using MailMessage message = new()
-        {
-            IsBodyHtml = email.IsBodyHtml,
-            Subject = email.Subject,
-            Body = email.Content
-        };
-
-        if (!string.IsNullOrWhiteSpace(sender.FromEmail))
-            message.From = new MailAddress(sender.FromEmail);
-
-        message.From ??= sender.User.Contains('@')
-            ? new MailAddress(sender.User)
-            : null;
-
-        message.To.Add(email.To);
-        await client.SendMailAsync(message, cancellationToken);
-    }
-
     public async Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default)
@@ -101,6 +63,7 @@ internal sealed partial class MailClient : IMailClient
         ReceiveAsync(
             new MailboxReceiveRequest
             {
+                ProviderName = MailProviderNames.Pop3,
                 Host = ReadRequiredEnvironment("CCODER_MAIL_RECEIVE_HOST"),
                 Port = int.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_PORT"), out int port) ? port : 995,
                 EnableSSL = !bool.TryParse(ReadEnvironment("CCODER_MAIL_RECEIVE_SSL"), out bool enableSsl) || enableSsl,

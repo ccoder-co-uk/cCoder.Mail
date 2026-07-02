@@ -37,7 +37,6 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
         {
             services.RemoveAll<ICoreContextFactory>();
             services.RemoveAll<ISecurityDbContextFactory>();
-            services.RemoveAll<IMailClient>();
             services.RemoveAll<IMicrosoftGraphClient>();
             services.RemoveAll<IMailSenderProvider>();
             services.RemoveAll<IMailReceiverProvider>();
@@ -62,7 +61,6 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             );
             services.AddCoreData(settings.CoreConnectionString);
             services.AddTransient<AcceptanceMailClient>();
-            services.AddTransient<IMailClient>(provider => provider.GetRequiredService<AcceptanceMailClient>());
             services.AddTransient<IMicrosoftGraphClient>(provider => provider.GetRequiredService<AcceptanceMailClient>());
             services.AddTransient<IMailSenderProvider, AcceptanceSmtpMailSenderProvider>();
             services.AddTransient<IMailSenderProvider, AcceptanceGraphMailProvider>();
@@ -70,7 +68,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
         });
     }
 
-    private sealed class AcceptanceMailClient : IMailClient, IMicrosoftGraphClient
+    private sealed class AcceptanceMailClient : IMicrosoftGraphClient
     {
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
@@ -110,12 +108,12 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             ]);
     }
 
-    private sealed class AcceptanceSmtpMailSenderProvider(AcceptanceMailClient mailClient) : IMailSenderProvider
+    private sealed class AcceptanceSmtpMailSenderProvider : IMailSenderProvider
     {
         public string ProviderName => MailProviderNames.Smtp;
 
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-            mailClient.SendAsync(email, cancellationToken);
+            Task.CompletedTask;
     }
 
     private sealed class AcceptanceGraphMailProvider(AcceptanceMailClient mailClient)
