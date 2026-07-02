@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mail Management</title>
-    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702">
+    <link rel="stylesheet" href="/tools/styles.css?v=mail-grid-20260702-tabs">
 </head>
 <body class="mail-shell">
     <header class="mail-header">
@@ -32,14 +32,13 @@
     </header>
 
     <main class="mail-workbench">
+        <nav class="mail-section-tabs" aria-label="Mail Management workspace tabs">
+            <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
+            <button data-main-tab="queued" type="button">Queued Emails</button>
+            <button data-main-tab="sent" type="button">Sent Emails</button>
+            <button data-main-tab="received" type="button">Received Emails</button>
+        </nav>
         <section class="mail-panel">
-            <div class="mail-section-tabs">
-                <button class="active" data-main-tab="servers" type="button">Mail Servers</button>
-                <button data-main-tab="queued" type="button">Queued Emails</button>
-                <button data-main-tab="sent" type="button">Sent Emails</button>
-                <button data-main-tab="received" type="button">Received Emails</button>
-            </div>
-
             <section class="mail-main-panel active" data-main-panel="servers">
                 <div class="mail-toolbar">
                     <div>
@@ -109,7 +108,7 @@
         </form>
     </dialog>
 
-    <script src="/tools/api.js?v=mail-grid-20260702"></script>
-    <script src="/tools/grids.js?v=mail-grid-20260702"></script>
+    <script src="/tools/api.js?v=mail-grid-20260702-tabs"></script>
+    <script src="/tools/grids.js?v=mail-grid-20260702-tabs"></script>
 </body>
 </html>

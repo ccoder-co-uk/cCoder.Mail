@@ -17,6 +17,8 @@ public sealed partial class WebShellTests
         content.Should().Contain("Mail Management");
         content.Should().Contain("/tools/company-logo.png");
         content.Should().Contain("mail-logo");
+        content.Should().Contain("<nav class=\"mail-section-tabs\"");
+        content.Should().MatchRegex("</nav>\\s*<section class=\"mail-panel\">");
         content.Should().Contain("mail-server-grid");
         content.Should().Contain("queued-email-grid");
         content.Should().Contain("sent-email-grid");
@@ -26,7 +28,7 @@ public sealed partial class WebShellTests
         content.Should().Contain("Received Emails");
         content.Should().Contain("/tools/api.js");
         content.Should().Contain("/tools/grids.js");
-        content.Should().Contain("/tools/styles.css");
+        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-tabs");
     }
 
     [Fact]
