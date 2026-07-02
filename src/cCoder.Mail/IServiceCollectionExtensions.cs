@@ -1,6 +1,6 @@
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;
@@ -8,6 +8,7 @@ using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Exposures;
 using cCoder.Mail.Exposures.EventHandlers;
 using cCoder.Mail.Exposures.HostedServices;
+using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Services.Foundations.Events;
 using cCoder.Mail.Services.Orchestrations;

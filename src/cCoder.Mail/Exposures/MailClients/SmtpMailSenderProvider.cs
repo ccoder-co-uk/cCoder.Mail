@@ -2,7 +2,7 @@ using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
 
-namespace cCoder.Mail.Brokers.MailClients;
+namespace cCoder.Mail.Exposures.MailClients;
 
 internal sealed class SmtpMailSenderProvider(ISmtpMailSenderService smtpMailSenderService)
     : IMailSenderProvider

@@ -1,11 +1,11 @@
-using cCoder.Mail.Models;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Models;
 
-namespace cCoder.Mail.Brokers.MailClients;
+namespace cCoder.Mail.Exposures.MailClients;
 
-public interface IMicrosoftGraphClient
+public interface IMailReceiverProvider
 {
-    Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default);
+    string ProviderName { get; }
 
     Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,

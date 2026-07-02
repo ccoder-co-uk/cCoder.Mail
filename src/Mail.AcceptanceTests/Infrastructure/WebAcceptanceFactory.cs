@@ -1,6 +1,6 @@
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Interfaces;

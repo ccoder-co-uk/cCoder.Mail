@@ -1,4 +1,4 @@
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 
 
 namespace cCoder.Mail.Services.Foundations;

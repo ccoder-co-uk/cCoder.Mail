@@ -1,10 +1,10 @@
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OData.Edm;
 
 
-namespace cCoder.Mail.Api.OData
+namespace cCoder.Mail.Exposures.OData
 {
     public static class EdmModelExtensions
     {

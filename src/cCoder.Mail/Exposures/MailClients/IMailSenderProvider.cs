@@ -1,6 +1,6 @@
 using cCoder.Data.Models.Mail;
 
-namespace cCoder.Mail.Brokers.MailClients;
+namespace cCoder.Mail.Exposures.MailClients;
 
 public interface IMailSenderProvider
 {

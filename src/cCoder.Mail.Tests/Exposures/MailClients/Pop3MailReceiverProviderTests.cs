@@ -1,8 +1,8 @@
-using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
 using Moq;
 
-namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;
+namespace cCoder.Core.Services.Tests.Mail.Exposures.MailClients;
 
 public partial class Pop3MailReceiverProviderTests
 {

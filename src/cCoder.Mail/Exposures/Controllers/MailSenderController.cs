@@ -1,6 +1,6 @@
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +76,7 @@ public partial class MailSenderController(
     public async Task<IActionResult> Post([FromBody] MailSender entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Api.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
 
         return Ok(await service.AddAsync(entity));
     }
@@ -93,7 +93,7 @@ public partial class MailSenderController(
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailSender entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Api.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
 
         return Ok(await service.UpdateAsync(entity));
     }

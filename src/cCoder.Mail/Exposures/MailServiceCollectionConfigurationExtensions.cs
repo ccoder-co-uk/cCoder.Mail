@@ -1,4 +1,4 @@
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace cCoder.Mail.Api.OData;
+namespace cCoder.Mail.Exposures.OData;
 
 public class MetadataContainerSet
 {

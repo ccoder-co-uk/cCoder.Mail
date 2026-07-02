@@ -1,12 +1,12 @@
 using System.Linq.Expressions;
-using cCoder.Mail.Api.OData;
+using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using Microsoft.OData.ModelBuilder;
 
-namespace cCoder.Mail.Api.OData;
+namespace cCoder.Mail.Exposures.OData;
 
 public abstract class ODataModelBuilder
 {

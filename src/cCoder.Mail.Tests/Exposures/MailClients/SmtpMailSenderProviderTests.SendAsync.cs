@@ -4,7 +4,7 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;
+namespace cCoder.Core.Services.Tests.Mail.Exposures.MailClients;
 
 public partial class SmtpMailSenderProviderTests
 {

@@ -1,4 +1,5 @@
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures.MailClients;
 using Moq;
 
 namespace cCoder.Core.Services.Tests.Mail.Brokers.MailClients;

@@ -1,6 +1,6 @@
 using cCoder.Mail.Models;
 
-namespace cCoder.Mail.Brokers.MailClients;
+namespace cCoder.Mail.Exposures.MailClients;
 
 internal sealed class MailSenderFactory(
     IEnumerable<IMailSenderProvider> senders,

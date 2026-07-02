@@ -1,4 +1,4 @@
-namespace cCoder.Mail.Brokers.MailClients;
+namespace cCoder.Mail.Exposures.MailClients;
 
 public interface IMailReceiverFactory
 {
