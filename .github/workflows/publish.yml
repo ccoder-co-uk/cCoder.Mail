@@ -39,21 +39,7 @@ jobs:
         run: dotnet build src/cCoder.Mail.sln -c Release --no-restore -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false /p:Version="${{ steps.version.outputs.value }}"
 
       - name: Test
-        run: |
-          $secretEnvironment = @{
-            CCODER_MAIL_GRAPH_TENANT_ID = '${{ secrets.CCODER_MAIL_GRAPH_TENANT_ID }}'
-            CCODER_MAIL_GRAPH_CLIENT_ID = '${{ secrets.CCODER_MAIL_GRAPH_CLIENT_ID }}'
-            CCODER_MAIL_GRAPH_CLIENT_SECRET = '${{ secrets.CCODER_MAIL_GRAPH_CLIENT_SECRET }}'
-            CCODER_MAIL_INTEGRATION_SEND_USER = '${{ secrets.CCODER_MAIL_INTEGRATION_SEND_USER }}'
-          }
-
-          foreach ($item in $secretEnvironment.GetEnumerator()) {
-            if (-not [string]::IsNullOrWhiteSpace($item.Value)) {
-              Set-Item -Path "Env:$($item.Key)" -Value $item.Value.Trim()
-            }
-          }
-
-          dotnet test src/cCoder.Mail.sln -c Release --no-build -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
+        run: dotnet test src/cCoder.Mail.sln -c Release --no-build -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
 
       - name: Pack
         run: |
