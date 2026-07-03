@@ -3,8 +3,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace cCoder.Mail.Exposures.HostedServices;
 
-public interface IMailReceiverHostedService : IHostedService;
-
 public sealed class MailReceiverHostedService(
     IServiceScopeFactory serviceScopeFactory)
     : BackgroundService,

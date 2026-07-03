@@ -4,8 +4,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace cCoder.Mail.Exposures.HostedServices;
 
-public interface IMailSenderHostedService : IHostedService;
-
 public sealed class MailSenderHostedService(
     IServiceScopeFactory serviceScopeFactory)
     : BackgroundService,
