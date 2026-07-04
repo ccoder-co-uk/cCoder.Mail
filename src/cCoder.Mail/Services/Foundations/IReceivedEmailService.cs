@@ -12,4 +12,5 @@ public interface IReceivedEmailService
     ValueTask AddRangeAsync(IEnumerable<ReceivedEmail> entities, CancellationToken cancellationToken = default);
     bool Exists(Guid mailReceiverId, string messageId);
     ValueTask DeleteAllAsync(IEnumerable<ReceivedEmail> items);
+    ValueTask DeleteAllByAppIdAsync(int appId);
 }

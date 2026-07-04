@@ -76,6 +76,13 @@ internal class SentEmailService(
         _ = await sentEmailBroker.DeleteSentEmailAsync(Copy(sentEmail));
     }
 
+    public ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items) =>
+        sentEmailBroker.DeleteAllSentEmailsAsync(
+            items?.Select(Copy) ?? []);
+
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId);
+
     private static SentEmail Copy(SentEmail sentEmail) =>
         sentEmail == null
             ? null

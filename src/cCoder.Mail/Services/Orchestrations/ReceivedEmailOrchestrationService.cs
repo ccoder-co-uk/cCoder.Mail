@@ -20,6 +20,8 @@ internal class ReceivedEmailOrchestrationService(
 
     public ValueTask<int> DeleteAsync(int id) => processingService.DeleteAsync(id);
 
+    public ValueTask DeleteByAppIdAsync(int appId) => processingService.DeleteByAppIdAsync(appId);
+
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>

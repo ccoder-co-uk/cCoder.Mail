@@ -11,6 +11,7 @@ public interface IMailSenderBroker
     ValueTask<MailSender> UpdateMailSenderAsync(MailSender entity);
     ValueTask<int> DeleteMailSenderAsync(MailSender entity);
     ValueTask DeleteAllMailSendersAsync(IEnumerable<MailSender> items);
+    ValueTask DeleteAllMailSendersByAppIdAsync(int appId);
     int? GetAppId(MailSender entity);
 }
 
@@ -55,6 +56,16 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.MailSenders.RemoveRange(items);
         _ = await coreDataContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DeleteAllMailSendersByAppIdAsync(int appId)
+    {
+        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        await coreDataContext.MailSenders
+            .IgnoreQueryFilters()
+            .Where(sender => sender.AppId == appId)
+            .ExecuteDeleteAsync();
     }
 
     public int? GetAppId(MailSender entity) => entity.AppId;

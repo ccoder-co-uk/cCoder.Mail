@@ -13,6 +13,7 @@ public interface IReceivedEmailBroker
     ValueTask AddReceivedEmailsAsync(IEnumerable<ReceivedEmail> entities, CancellationToken cancellationToken = default);
     bool Exists(Guid mailReceiverId, string messageId);
     ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items);
+    ValueTask DeleteAllReceivedEmailsByAppIdAsync(int appId);
     int? GetAppId(ReceivedEmail entity);
 }
 
@@ -82,6 +83,16 @@ public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IRece
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.ReceivedMail.RemoveRange(items);
         _ = await coreDataContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DeleteAllReceivedEmailsByAppIdAsync(int appId)
+    {
+        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        await coreDataContext.ReceivedMail
+            .IgnoreQueryFilters()
+            .Where(email => email.AppId == appId)
+            .ExecuteDeleteAsync();
     }
 
     public int? GetAppId(ReceivedEmail entity) => entity.AppId;

@@ -49,6 +49,9 @@ internal class MailSenderService(
     public ValueTask DeleteAllAsync(IEnumerable<MailSender> items) =>
         mailSenderBroker.DeleteAllMailSendersAsync(items);
 
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        mailSenderBroker.DeleteAllMailSendersByAppIdAsync(appId);
+
     private static MailSender Copy(MailSender entity) =>
         entity is null
             ? null

@@ -33,6 +33,9 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
         return service.DeleteAsync(id);
     }
 
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        service.DeleteAllByAppIdAsync(appId);
+
     public async ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items)
     {
         List<Result<SentEmail>> results = new List<Result<SentEmail>>();

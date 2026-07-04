@@ -21,6 +21,7 @@ public interface IQueuedEmailBroker
         CancellationToken cancellationToken = default);
     ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items);
     ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> items);
+    ValueTask DeleteAllQueuedEmailsByAppIdAsync(int appId);
     int? GetAppId(QueuedEmail entity);
 }
 
@@ -154,6 +155,26 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.QueuedMail.RemoveRange(items);
         _ = await coreDataContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DeleteAllQueuedEmailsByAppIdAsync(int appId)
+    {
+        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        IQueryable<int> queuedEmailIds =
+            coreDataContext.QueuedMail
+                .IgnoreQueryFilters()
+                .Where(email => email.AppId == appId)
+                .Select(email => email.Id);
+
+        await coreDataContext.SendFailures
+            .IgnoreQueryFilters()
+            .Where(failure => queuedEmailIds.Contains(failure.EmailId))
+            .ExecuteDeleteAsync();
+
+        await coreDataContext.QueuedMail
+            .IgnoreQueryFilters()
+            .Where(email => email.AppId == appId)
+            .ExecuteDeleteAsync();
     }
 
     public int? GetAppId(QueuedEmail entity)

@@ -15,4 +15,6 @@ internal class MailReceiverConfigurationOrchestrationService(IMailReceiverProces
     public ValueTask<MailReceiver> UpdateAsync(MailReceiver entity) => processingService.UpdateAsync(entity);
 
     public ValueTask<int> DeleteAsync(Guid id) => processingService.DeleteAsync(id);
+
+    public ValueTask DeleteByAppIdAsync(int appId) => processingService.DeleteByAppIdAsync(appId);
 }

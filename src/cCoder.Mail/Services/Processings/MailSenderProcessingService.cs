@@ -15,5 +15,8 @@ internal class MailSenderProcessingService(IMailSenderService service) : IMailSe
 
     public ValueTask<int> DeleteAsync(Guid id) => service.DeleteAsync(id);
 
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        service.DeleteAllByAppIdAsync(appId);
+
     public ValueTask DeleteAllAsync(IEnumerable<MailSender> items) => service.DeleteAllAsync(items);
 }

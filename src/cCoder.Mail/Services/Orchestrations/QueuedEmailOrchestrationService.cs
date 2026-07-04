@@ -43,13 +43,8 @@ internal class QueuedEmailOrchestrationService(IQueuedEmailProcessingService pro
         await processingService.DeleteAsync(id);
     }
 
-    public async ValueTask DeleteByAppIdAsync(int appId)
-    {
-        QueuedEmail[] queuedEmails = [.. processingService.GetAll(ignoreFilters: true).Where(item => item.AppId == appId)];
-
-        foreach (QueuedEmail queuedEmail in queuedEmails)
-            await DeleteAsync(queuedEmail.Id);
-    }
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        processingService.DeleteByAppIdAsync(appId);
 
     public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
     {

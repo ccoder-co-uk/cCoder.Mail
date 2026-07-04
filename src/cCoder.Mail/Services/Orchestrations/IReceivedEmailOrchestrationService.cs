@@ -10,6 +10,7 @@ public interface IReceivedEmailOrchestrationService
     ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity);
     ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity);
     ValueTask<int> DeleteAsync(int id);
+    ValueTask DeleteByAppIdAsync(int appId);
     Task<ReceivedEmail[]> ReceiveAsync(MailboxReceiveRequest request, CancellationToken cancellationToken = default);
     Task<ReceivedEmail[]> ReceiveTopAsync(int count, CancellationToken cancellationToken = default);
 }

@@ -57,6 +57,9 @@ internal class ReceivedEmailService(
     public ValueTask DeleteAllAsync(IEnumerable<ReceivedEmail> items) =>
         receivedEmailBroker.DeleteAllReceivedEmailsAsync(items);
 
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        receivedEmailBroker.DeleteAllReceivedEmailsByAppIdAsync(appId);
+
     private static ReceivedEmail Copy(ReceivedEmail entity) =>
         entity is null
             ? null
