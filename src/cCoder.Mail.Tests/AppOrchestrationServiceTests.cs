@@ -38,25 +38,25 @@ public class AppOrchestrationServiceTests
     {
         mailServerOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
-        mailSenderConfigurationOrchestrationServiceMock.Setup(x => x.GetAll(true))
-            .Returns(Array.Empty<MailSender>().AsQueryable());
-        mailReceiverConfigurationOrchestrationServiceMock.Setup(x => x.GetAll(true))
-            .Returns(Array.Empty<MailReceiver>().AsQueryable());
+        mailSenderConfigurationOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
+            .Returns(ValueTask.CompletedTask);
+        mailReceiverConfigurationOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
+            .Returns(ValueTask.CompletedTask);
         queuedEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
         sentEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
             .Returns(ValueTask.CompletedTask);
-        receivedEmailOrchestrationServiceMock.Setup(x => x.GetAll(true))
-            .Returns(Array.Empty<ReceivedEmail>().AsQueryable());
+        receivedEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
+            .Returns(ValueTask.CompletedTask);
 
         await service.DeleteAsync(5);
 
         mailServerOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        mailSenderConfigurationOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
-        mailReceiverConfigurationOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
+        mailSenderConfigurationOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
+        mailReceiverConfigurationOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
         queuedEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
         sentEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        receivedEmailOrchestrationServiceMock.Verify(x => x.GetAll(true), Times.Once);
+        receivedEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
         mailServerOrchestrationServiceMock.VerifyNoOtherCalls();
         mailSenderConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
         mailReceiverConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
