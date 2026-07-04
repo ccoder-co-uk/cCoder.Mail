@@ -51,6 +51,9 @@ internal class MailReceiverService(
     public ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items) =>
         mailReceiverBroker.DeleteAllMailReceiversAsync(items);
 
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        mailReceiverBroker.DeleteAllMailReceiversByAppIdAsync(appId);
+
     private static MailReceiver Copy(MailReceiver entity) =>
         entity is null
             ? null

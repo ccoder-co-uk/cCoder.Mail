@@ -38,12 +38,12 @@ internal class AppOrchestrationService(
 
     public async ValueTask DeleteAsync(int appId)
     {
-        await mailServerOrchestrationService.DeleteByAppIdAsync(appId);
-        await mailSenderConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
-        await mailReceiverConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
         await queuedEmailOrchestrationService.DeleteByAppIdAsync(appId);
         await sentEmailOrchestrationService.DeleteByAppIdAsync(appId);
         await receivedEmailOrchestrationService.DeleteByAppIdAsync(appId);
+        await mailServerOrchestrationService.DeleteByAppIdAsync(appId);
+        await mailSenderConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
+        await mailReceiverConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
     }
 
     private static void StampMail(App app)

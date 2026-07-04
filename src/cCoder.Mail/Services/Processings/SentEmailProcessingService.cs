@@ -33,13 +33,8 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
         return service.DeleteAsync(id);
     }
 
-    public ValueTask DeleteByAppIdAsync(int appId)
-    {
-        return service.DeleteAllForAppAsync(
-            GetAll(ignoreFilters: true)
-                .Where(item => item.AppId == appId)
-                .ToArray());
-    }
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        service.DeleteAllByAppIdAsync(appId);
 
     public async ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items)
     {

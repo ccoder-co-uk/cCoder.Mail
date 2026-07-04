@@ -76,6 +76,9 @@ internal class MailServerService(
         mailServerBroker.DeleteAllMailServersAsync(
             items?.Select(Copy) ?? []);
 
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        mailServerBroker.DeleteAllMailServersByAppIdAsync(appId);
+
     private static MailServer Copy(MailServer mailServer) =>
         mailServer == null
             ? null

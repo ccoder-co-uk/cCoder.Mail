@@ -16,10 +16,7 @@ internal class ReceivedEmailProcessingService(IReceivedEmailService service) : I
     public ValueTask<int> DeleteAsync(int id) => service.DeleteAsync(id);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllAsync(
-            GetAll(ignoreFilters: true)
-                .Where(item => item.AppId == appId)
-                .ToArray());
+        service.DeleteAllByAppIdAsync(appId);
 
     public ValueTask AddRangeAsync(
         IEnumerable<ReceivedEmail> entities,

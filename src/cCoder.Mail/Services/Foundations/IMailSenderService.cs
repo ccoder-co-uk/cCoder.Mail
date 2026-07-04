@@ -10,4 +10,5 @@ public interface IMailSenderService
     ValueTask<MailSender> UpdateAsync(MailSender entity);
     ValueTask<int> DeleteAsync(Guid id);
     ValueTask DeleteAllAsync(IEnumerable<MailSender> items);
+    ValueTask DeleteAllByAppIdAsync(int appId);
 }

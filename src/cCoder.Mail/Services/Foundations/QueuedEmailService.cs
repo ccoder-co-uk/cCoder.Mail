@@ -102,6 +102,9 @@ internal class QueuedEmailService(
             await DeleteAsync(item.Id, checkPrivileges: false);
     }
 
+    public ValueTask DeleteAllByAppIdAsync(int appId) =>
+        queuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(appId);
+
     private static QueuedEmail Copy(QueuedEmail queuedEmail) =>
         queuedEmail == null
             ? null

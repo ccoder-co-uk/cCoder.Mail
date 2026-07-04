@@ -12,6 +12,7 @@ public interface ISentEmailBroker
     ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail entity);
     ValueTask<int> DeleteSentEmailAsync(SentEmail entity);
     ValueTask DeleteAllSentEmailsAsync(IEnumerable<SentEmail> items);
+    ValueTask DeleteAllSentEmailsByAppIdAsync(int appId);
     int? GetAppId(SentEmail entity);
 }
 
@@ -57,6 +58,16 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.SentMail.RemoveRange(items);
         _ = await coreDataContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DeleteAllSentEmailsByAppIdAsync(int appId)
+    {
+        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        await coreDataContext.SentMail
+            .IgnoreQueryFilters()
+            .Where(email => email.AppId == appId)
+            .ExecuteDeleteAsync();
     }
 
     public int? GetAppId(SentEmail entity)

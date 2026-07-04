@@ -33,13 +33,8 @@ internal class MailServerProcessingService(IMailServerService service) : IMailSe
         return service.DeleteAsync(id);
     }
 
-    public ValueTask DeleteByAppIdAsync(int appId)
-    {
-        return service.DeleteAllForAppAsync(
-            GetAll(ignoreFilters: true)
-                .Where(item => item.AppId == appId)
-                .ToArray());
-    }
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        service.DeleteAllByAppIdAsync(appId);
 
     public async ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items)
     {

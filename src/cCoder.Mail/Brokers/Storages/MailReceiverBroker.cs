@@ -12,6 +12,7 @@ public interface IMailReceiverBroker
     ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver entity);
     ValueTask<int> DeleteMailReceiverAsync(MailReceiver entity);
     ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> items);
+    ValueTask DeleteAllMailReceiversByAppIdAsync(int appId);
     int? GetAppId(MailReceiver entity);
 }
 
@@ -65,6 +66,16 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.MailReceivers.RemoveRange(items);
         _ = await coreDataContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DeleteAllMailReceiversByAppIdAsync(int appId)
+    {
+        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
+        await coreDataContext.MailReceivers
+            .IgnoreQueryFilters()
+            .Where(receiver => receiver.AppId == appId)
+            .ExecuteDeleteAsync();
     }
 
     public int? GetAppId(MailReceiver entity) => entity.AppId;
