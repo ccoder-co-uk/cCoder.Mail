@@ -39,11 +39,11 @@ internal class AppOrchestrationService(
     public async ValueTask DeleteAsync(int appId)
     {
         await mailServerOrchestrationService.DeleteByAppIdAsync(appId);
-        await DeleteAllAsync(mailSenderConfigurationOrchestrationService.GetAll(true).Where(item => item.AppId == appId), mailSenderConfigurationOrchestrationService);
-        await DeleteAllAsync(mailReceiverConfigurationOrchestrationService.GetAll(true).Where(item => item.AppId == appId), mailReceiverConfigurationOrchestrationService);
+        await mailSenderConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
+        await mailReceiverConfigurationOrchestrationService.DeleteByAppIdAsync(appId);
         await queuedEmailOrchestrationService.DeleteByAppIdAsync(appId);
         await sentEmailOrchestrationService.DeleteByAppIdAsync(appId);
-        await DeleteAllAsync(receivedEmailOrchestrationService.GetAll(true).Where(item => item.AppId == appId), receivedEmailOrchestrationService);
+        await receivedEmailOrchestrationService.DeleteByAppIdAsync(appId);
     }
 
     private static void StampMail(App app)
@@ -106,28 +106,5 @@ internal class AppOrchestrationService(
         }
     }
 
-    private static async ValueTask DeleteAllAsync(
-        IEnumerable<MailSender> items,
-        IMailSenderConfigurationOrchestrationService service)
-    {
-        foreach (MailSender item in items)
-            await service.DeleteAsync(item.Id);
-    }
-
-    private static async ValueTask DeleteAllAsync(
-        IEnumerable<MailReceiver> items,
-        IMailReceiverConfigurationOrchestrationService service)
-    {
-        foreach (MailReceiver item in items)
-            await service.DeleteAsync(item.Id);
-    }
-
-    private static async ValueTask DeleteAllAsync(
-        IEnumerable<ReceivedEmail> items,
-        IReceivedEmailOrchestrationService service)
-    {
-        foreach (ReceivedEmail item in items)
-            await service.DeleteAsync(item.Id);
-    }
 }
 

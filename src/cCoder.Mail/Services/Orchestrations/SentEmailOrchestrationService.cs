@@ -43,13 +43,8 @@ internal class SentEmailOrchestrationService(ISentEmailProcessingService process
         await processingService.DeleteAsync(id);
     }
 
-    public async ValueTask DeleteByAppIdAsync(int appId)
-    {
-        SentEmail[] sentEmails = [.. processingService.GetAll(ignoreFilters: true).Where(item => item.AppId == appId)];
-
-        foreach (SentEmail sentEmail in sentEmails)
-            await DeleteAsync(sentEmail.Id);
-    }
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        processingService.DeleteByAppIdAsync(appId);
 
     public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items)
     {

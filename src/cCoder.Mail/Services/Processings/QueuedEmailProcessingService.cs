@@ -46,6 +46,14 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
         await service.DeleteAsync(queuedEmail.Id, checkPrivileges: false);
     }
 
+    public ValueTask DeleteByAppIdAsync(int appId)
+    {
+        return service.DeleteAllForAppAsync(
+            GetAll(ignoreFilters: true)
+                .Where(item => item.AppId == appId)
+                .ToArray());
+    }
+
     public async ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
     {
         List<Result<QueuedEmail>> results = new List<Result<QueuedEmail>>();

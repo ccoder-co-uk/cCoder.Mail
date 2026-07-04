@@ -13,6 +13,7 @@ public interface IMailServerService
     ValueTask<MailServer> AddAsync(MailServer mailServer);
     ValueTask<MailServer> UpdateAsync(MailServer mailServer);
     ValueTask DeleteAsync(int id);
+    ValueTask DeleteAllForAppAsync(IEnumerable<MailServer> items);
 }
 
 

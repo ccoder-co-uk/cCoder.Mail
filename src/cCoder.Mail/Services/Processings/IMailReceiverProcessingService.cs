@@ -10,5 +10,6 @@ public interface IMailReceiverProcessingService
     ValueTask<MailReceiver> AddAsync(MailReceiver entity);
     ValueTask<MailReceiver> UpdateAsync(MailReceiver entity);
     ValueTask<int> DeleteAsync(Guid id);
+    ValueTask DeleteByAppIdAsync(int appId);
     ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items);
 }

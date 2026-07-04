@@ -17,5 +17,11 @@ internal class MailReceiverProcessingService(IMailReceiverService service) : IMa
 
     public ValueTask<int> DeleteAsync(Guid id) => service.DeleteAsync(id);
 
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        service.DeleteAllAsync(
+            GetAll(ignoreFilters: true)
+                .Where(item => item.AppId == appId)
+                .ToArray());
+
     public ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items) => service.DeleteAllAsync(items);
 }

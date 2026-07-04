@@ -13,6 +13,7 @@ public interface ISentEmailService
     ValueTask<SentEmail> AddAsync(SentEmail sentEmail);
     ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail);
     ValueTask DeleteAsync(int id);
+    ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items);
 }
 
 

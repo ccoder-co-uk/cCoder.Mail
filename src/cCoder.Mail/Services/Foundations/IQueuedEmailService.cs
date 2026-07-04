@@ -20,6 +20,7 @@ public interface IQueuedEmailService
         string fromAddress,
         CancellationToken cancellationToken = default);
     ValueTask DeleteAsync(int id, bool checkPrivileges = true);
+    ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items);
 }
 
 

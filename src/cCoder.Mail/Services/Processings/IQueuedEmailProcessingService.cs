@@ -17,6 +17,8 @@ public interface IQueuedEmailProcessingService
 
     ValueTask DeleteAsync(int id);
 
+    ValueTask DeleteByAppIdAsync(int appId);
+
     ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items);
 
     ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items);
