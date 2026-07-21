@@ -36,7 +36,7 @@ public partial class MailServerController : ODataController
             ? Ok(
                 new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Core", typeof(MailServer))
+                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(MailServer))
             )
             : Ok(new MetadataContainer(typeof(MailServer), true, true));
     }

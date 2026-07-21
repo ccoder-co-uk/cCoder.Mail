@@ -10,8 +10,8 @@ internal sealed class MailMetadataTypeService : IMailMetadataTypeService
     [
         new MetadataContainerSet
         {
-            Name = "Core",
-            UriBase = "Core",
+            Name = "Mail",
+            UriBase = "Mail",
             Types =
             [
                 Entity<MailServer>(),
@@ -24,7 +24,7 @@ internal sealed class MailMetadataTypeService : IMailMetadataTypeService
     private static ExtendedMetadataContainer Entity<T>() =>
         new(typeof(T), isEntity: true, hasEndpoint: true)
         {
-            Category = "Core",
+            Category = "Mail",
         };
 }
 
