@@ -36,7 +36,7 @@ public partial class SentEmailController : ODataController
             ? Ok(
                 new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Core", typeof(SentEmail))
+                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(SentEmail))
             )
             : Ok(new MetadataContainer(typeof(SentEmail), true, true));
     }

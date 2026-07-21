@@ -36,7 +36,7 @@ public partial class QueuedEmailController : ODataController
             ? Ok(
                 new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Core", typeof(QueuedEmail))
+                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(QueuedEmail))
             )
             : Ok(new MetadataContainer(typeof(QueuedEmail), true, true));
     }

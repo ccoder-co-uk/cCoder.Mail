@@ -24,7 +24,7 @@ public partial class MailReceiverController(
             ? Ok(
                 new MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Core", typeof(MailReceiver))
+                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(MailReceiver))
             )
             : Ok(new MetadataContainer(typeof(MailReceiver), true, true));
     }
