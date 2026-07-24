@@ -9,7 +9,7 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal sealed class MailReceiverOrchestrationService(
+internal sealed partial class MailReceiverOrchestrationService(
     IMailReceiverProcessingService mailReceiverProcessingService,
     IReceivedEmailProcessingService receivedEmailProcessingService,
     IMailReceivingService mailReceivingService,
@@ -17,8 +17,12 @@ internal sealed class MailReceiverOrchestrationService(
     ILogger<MailReceiverOrchestrationService> log)
     : IMailReceiverOrchestrationService
 {
-    public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
+    public Task RunContinuouslyAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRunContinuouslyAsync(inputs: [cancellationToken]);
+
         if (mailConfiguration.IsMigrating)
         {
             return;
@@ -41,10 +45,13 @@ internal sealed class MailReceiverOrchestrationService(
                 log.LogError(exception: ex, message: ex.Message);
             }
         }
-    }
+    }, isTask: true);
 
-    public async Task RunAsync(CancellationToken cancellationToken = default)
+    public Task RunAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+        ValidateRunAsync(inputs: [cancellationToken]);
+
         MailReceiver[] receivers = mailReceiverProcessingService.GetEnabled();
 
         foreach (MailReceiver receiver in receivers)
@@ -52,7 +59,7 @@ internal sealed class MailReceiverOrchestrationService(
             cancellationToken.ThrowIfCancellationRequested();
             await ReceiveAsync(receiver: receiver, cancellationToken: cancellationToken);
         }
-    }
+    }, isTask: true);
 
     private async Task ReceiveAsync(MailReceiver receiver, CancellationToken cancellationToken)
     {

@@ -7,24 +7,54 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal class MailSenderConfigurationOrchestrationService(IMailSenderProcessingService processingService)
+internal partial class MailSenderConfigurationOrchestrationService(IMailSenderProcessingService processingService)
     : IMailSenderConfigurationOrchestrationService
 {
     public MailSender Get(Guid id) =>
-        processingService.Get(id: id);
+        TryCatch<MailSender>(operation: () =>
+        {
+            ValidateGet(inputs: [id]);
+
+            return processingService.Get(id: id);
+        });
 
     public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
-        processingService.GetAll(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<MailSender>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
+
+            return processingService.GetAll(ignoreFilters: ignoreFilters);
+        });
 
     public ValueTask<MailSender> AddAsync(MailSender entity) =>
-        processingService.AddAsync(entity: entity);
+        TryCatch<MailSender>(operation: () =>
+        {
+            ValidateAddAsync(inputs: [entity]);
+
+            return processingService.AddAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<MailSender> UpdateAsync(MailSender entity) =>
-        processingService.UpdateAsync(entity: entity);
+        TryCatch<MailSender>(operation: () =>
+        {
+            ValidateUpdateAsync(inputs: [entity]);
+
+            return processingService.UpdateAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid id) =>
-        processingService.DeleteAsync(id: id);
+        TryCatch<int>(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [id]);
+
+            return processingService.DeleteAsync(id: id);
+        }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        processingService.DeleteByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteByAppIdAsync(inputs: [appId]);
+
+            return processingService.DeleteByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 }

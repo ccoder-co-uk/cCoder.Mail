@@ -11,14 +11,29 @@ using cCoder.Mail.Services.Foundations.Events;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class SentEmailEventProcessingService(ISentEmailEventService eventService) : ISentEmailEventProcessingService
+internal partial class SentEmailEventProcessingService(ISentEmailEventService eventService) : ISentEmailEventProcessingService
 {
     public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) =>
-        eventService.RaiseSentEmailAddEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailAddEventAsync(inputs: [entity]);
+
+            return eventService.RaiseSentEmailAddEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity) =>
-        eventService.RaiseSentEmailUpdateEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailUpdateEventAsync(inputs: [entity]);
+
+            return eventService.RaiseSentEmailUpdateEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity) =>
-        eventService.RaiseSentEmailDeleteEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailDeleteEventAsync(inputs: [entity]);
+
+            return eventService.RaiseSentEmailDeleteEventAsync(entity: entity);
+        }, isValueTask: true);
 }

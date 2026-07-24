@@ -12,37 +12,56 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
+internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
 {
-    public QueuedEmail Get(int id)
+    public QueuedEmail Get(int id) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+        ValidateGet(inputs: [id]);
+
         return service.Get(id: id);
-    }
+    });
 
-    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false)
+    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
+        ValidateGetAll(inputs: [ignoreFilters]);
+
         return service.GetAll(ignoreFilters: ignoreFilters);
-    }
+    });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity)
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+        ValidateAddAsync(inputs: [entity]);
+
         return AddAsync(email: entity, checkPrivs: false);
-    }
+    }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivs)
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivs) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+        ValidateAddAsync(inputs: [email, checkPrivs]);
+
         return service.AddAsync(queuedEmail: email, checkPrivileges: checkPrivs);
-    }
+    }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity)
+    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+        ValidateUpdateAsync(inputs: [entity]);
+
         return service.UpdateAsync(queuedEmail: entity);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAsync(int id)
+    public ValueTask DeleteAsync(int id) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAsync(inputs: [id]);
+
         QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == id);
+                                                       .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == id);
 
         if (queuedEmail == null)
         {
@@ -51,13 +70,21 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
 
         authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: "queuedemail_delete");
         await service.DeleteAsync(id: queuedEmail.Id, checkPrivileges: false);
-    }
+    }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteByAppIdAsync(inputs: [appId]);
 
-    public async ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
+            return service.DeleteAllByAppIdAsync(appId: appId);
+        }, isValueTask: true);
+
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items) =>
+        TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: async () =>
     {
+        ValidateAddOrUpdate(inputs: [items]);
+
         List<Result<QueuedEmail>> results = new List<Result<QueuedEmail>>();
 
         foreach (QueuedEmail item in items)
@@ -88,13 +115,17 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
         }
 
         return results;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items)
+    public ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAllAsync(inputs: [items]);
+
         foreach (QueuedEmail item in items)
         {
             await DeleteAsync(id: item.Id);
         }
-    }
+    }, isValueTask: true);
 }

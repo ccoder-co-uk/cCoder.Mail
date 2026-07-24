@@ -8,14 +8,17 @@ using cCoder.Mail.Services.Orchestrations;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class EventHandlerService(IEventHubBroker eventHubBroker) : IEventHandlerService
+internal partial class EventHandlerService(IEventHubBroker eventHubBroker) : IEventHandlerService
 {
-    public void ListenToAllEvents()
+    public void ListenToAllEvents() =>
+        TryCatch(operation: () =>
     {
+        ValidateListenToAllEvents(inputs: []);
+
         ListenToAppAddEvents();
         ListenToAppUpdateEvents();
         ListenToAppDeleteEvents();
-    }
+    });
 
     private void ListenToAppAddEvents() =>
         eventHubBroker.ListenToEvent<App, IAppOrchestrationService>(

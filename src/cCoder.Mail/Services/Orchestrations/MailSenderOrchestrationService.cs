@@ -10,15 +10,19 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal sealed class MailSenderOrchestrationService(
+internal sealed partial class MailSenderOrchestrationService(
     IQueuedEmailService queuedEmailService,
     IMailClientOrchestrationService mailClientOrchestrationService,
     MailConfiguration mailConfiguration,
     ILogger<MailSenderOrchestrationService> log)
     : IMailSenderOrchestrationService
 {
-    public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
+    public Task RunContinuouslyAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRunContinuouslyAsync(inputs: [cancellationToken]);
+
         if (mailConfiguration.IsMigrating)
         {
             return;
@@ -41,10 +45,13 @@ internal sealed class MailSenderOrchestrationService(
                 log.LogError(exception: ex, message: ex.Message);
             }
         }
-    }
+    }, isTask: true);
 
-    public async Task RunAsync(CancellationToken cancellationToken = default)
+    public Task RunAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+        ValidateRunAsync(inputs: [cancellationToken]);
+
         QueuedEmail[] queue = queuedEmailService.GetDispatchBatch(batchSize: 10, maxFailures: 10);
 
         if (queue.Length == 0)
@@ -76,7 +83,7 @@ internal sealed class MailSenderOrchestrationService(
         log.LogInformation(
             message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
             args: [success + failures, success, failures]);
-    }
+    }, isTask: true);
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)
     {

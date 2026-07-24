@@ -15,61 +15,70 @@ internal sealed partial class ImapMailReceiverService(
     MailConfiguration mailConfiguration)
     : IImapMailReceiverService
 {
-    public async Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        ValidateReceiveRequest(request: request);
-
-        using MailClientTextConnection connection = await OpenConnectionAsync(request: request, cancellationToken: cancellationToken);
-        _ = await imapMailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken);
-        await SendCommandAsync(connection: connection, tag: "a1", command: $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"", cancellationToken: cancellationToken);
-        await SendCommandAsync(connection: connection, tag: "a2", command: "SELECT INBOX", cancellationToken: cancellationToken);
-
-        string searchResponse = await SendCommandAsync(
-connection: connection,
-tag: "a3",
-command: BuildSearchCommand(request: request),
-cancellationToken: cancellationToken);
-
-        int[] messageIds = ParseSearchIds(response: searchResponse)
-            .Reverse()
-            .Take(count: Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100))
-            .ToArray();
-
-        List<ReceivedEmail> messages = [];
-
-        foreach (int messageId in messageIds)
+        CancellationToken cancellationToken = default) =>
+        TryCatch<ReceivedEmail[]>(operation: async () =>
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            string rawMessage = await FetchMessageAsync(connection: connection, messageId: messageId, cancellationToken: cancellationToken);
-            ReceivedEmail receivedEmail = ParseMessage(rawMessage: rawMessage);
+            ValidateReceiveAsync(inputs: [request, cancellationToken]);
 
-            if (IsWithinPeriod(receivedOn: receivedEmail.ReceivedOn, from: request.From, to: request.To))
+            ValidateReceiveRequest(request: request);
+
+            using MailClientTextConnection connection = await OpenConnectionAsync(request: request, cancellationToken: cancellationToken);
+            _ = await imapMailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken);
+            await SendCommandAsync(connection: connection, tag: "a1", command: $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"", cancellationToken: cancellationToken);
+            await SendCommandAsync(connection: connection, tag: "a2", command: "SELECT INBOX", cancellationToken: cancellationToken);
+
+            string searchResponse = await SendCommandAsync(
+    connection: connection,
+    tag: "a3",
+    command: BuildSearchCommand(request: request),
+    cancellationToken: cancellationToken);
+
+            int[] messageIds = ParseSearchIds(response: searchResponse)
+                .Reverse()
+                .Take(count: Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100))
+                .ToArray();
+
+            List<ReceivedEmail> messages = [];
+
+            foreach (int messageId in messageIds)
             {
-                messages.Add(item: receivedEmail);
-            }
-        }
+                cancellationToken.ThrowIfCancellationRequested();
+                string rawMessage = await FetchMessageAsync(connection: connection, messageId: messageId, cancellationToken: cancellationToken);
+                ReceivedEmail receivedEmail = ParseMessage(rawMessage: rawMessage);
 
-        await SendCommandAsync(connection: connection, tag: "az", command: "LOGOUT", cancellationToken: cancellationToken);
-        return [.. messages.OrderByDescending(keySelector: message => message.ReceivedOn)];
-    }
+                if (IsWithinPeriod(receivedOn: receivedEmail.ReceivedOn, from: request.From, to: request.To))
+                {
+                    messages.Add(item: receivedEmail);
+                }
+            }
+
+            await SendCommandAsync(connection: connection, tag: "az", command: "LOGOUT", cancellationToken: cancellationToken);
+            return [.. messages.OrderByDescending(keySelector: message => message.ReceivedOn)];
+        }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
-        ReceiveAsync(
-request: new MailboxReceiveRequest
-{
-    ProviderName = MailProviderNames.Imap,
-    Host = ReadRequiredConfiguration(value: mailConfiguration.Imap.Host, configurationName: "IMAP mailbox host"),
-    Port = mailConfiguration.Imap.Port,
-    EnableSSL = mailConfiguration.Imap.EnableSSL,
-    User = ReadRequiredConfiguration(value: mailConfiguration.Imap.User, configurationName: "IMAP mailbox user"),
-    Password = ReadRequiredConfiguration(value: mailConfiguration.Imap.Password, configurationName: "IMAP mailbox password"),
-    MaximumMessages = count,
-},
-cancellationToken: cancellationToken);
+        TryCatch<ReceivedEmail[]>(operation: () =>
+        {
+
+            ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
+
+            return ReceiveAsync(
+            request: new MailboxReceiveRequest
+            {
+                ProviderName = MailProviderNames.Imap,
+                Host = ReadRequiredConfiguration(value: mailConfiguration.Imap.Host, configurationName: "IMAP mailbox host"),
+                Port = mailConfiguration.Imap.Port,
+                EnableSSL = mailConfiguration.Imap.EnableSSL,
+                User = ReadRequiredConfiguration(value: mailConfiguration.Imap.User, configurationName: "IMAP mailbox user"),
+                Password = ReadRequiredConfiguration(value: mailConfiguration.Imap.Password, configurationName: "IMAP mailbox password"),
+                MaximumMessages = count,
+            },
+            cancellationToken: cancellationToken);
+        }, isTask: true);
 
     private Task<MailClientTextConnection> OpenConnectionAsync(
         MailboxReceiveRequest request,
@@ -162,7 +171,7 @@ cancellationToken: cancellationToken);
             CC = Header(headers: headers, name: "Cc"),
             Subject = DecodeHeader(value: Header(headers: headers, name: "Subject")),
             Content = string.Join(separator: "\n", value: bodyLines)
-                .TrimEnd(trimChars: [')', '\r', '\n']),
+            .TrimEnd(trimChars: [')', '\r', '\n']),
             IsBodyHtml = Header(headers: headers, name: "Content-Type")?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true,
             ReceivedOn = ParseDate(value: Header(headers: headers, name: "Date")),
         };

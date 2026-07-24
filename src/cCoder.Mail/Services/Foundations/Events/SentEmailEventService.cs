@@ -14,13 +14,17 @@ using DataSentEmail = cCoder.Data.Models.Mail.SentEmail;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class SentEmailEventService(
+internal partial class SentEmailEventService(
     ISentEmailEventBroker sentEmailEventBroker,
     ICoreAuthInfo authInfo
 ) : ISentEmailEventService
 {
-    public async ValueTask RaiseSentEmailAddEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailAddEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -28,10 +32,14 @@ internal class SentEmailEventService(
         };
 
         await sentEmailEventBroker.RaiseSentEmailAddEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -39,10 +47,14 @@ internal class SentEmailEventService(
         };
 
         await sentEmailEventBroker.RaiseSentEmailUpdateEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -50,7 +62,7 @@ internal class SentEmailEventService(
         };
 
         await sentEmailEventBroker.RaiseSentEmailDeleteEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
     private static DataSentEmail ToExternalSentEmail(SentEmail entity) =>
         entity == null ? null : new DataSentEmail

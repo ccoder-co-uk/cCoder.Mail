@@ -11,14 +11,29 @@ using cCoder.Mail.Services.Foundations.Events;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class MailServerEventProcessingService(IMailServerEventService eventService) : IMailServerEventProcessingService
+internal partial class MailServerEventProcessingService(IMailServerEventService eventService) : IMailServerEventProcessingService
 {
     public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
-        eventService.RaiseMailServerAddEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseMailServerAddEventAsync(inputs: [entity]);
+
+            return eventService.RaiseMailServerAddEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
-        eventService.RaiseMailServerUpdateEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseMailServerUpdateEventAsync(inputs: [entity]);
+
+            return eventService.RaiseMailServerUpdateEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
-        eventService.RaiseMailServerDeleteEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseMailServerDeleteEventAsync(inputs: [entity]);
+
+            return eventService.RaiseMailServerDeleteEventAsync(entity: entity);
+        }, isValueTask: true);
 }

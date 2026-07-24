@@ -10,36 +10,52 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal class QueuedEmailOrchestrationService(IQueuedEmailProcessingService processingService, IQueuedEmailEventProcessingService eventService) : IQueuedEmailOrchestrationService
+internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingService processingService, IQueuedEmailEventProcessingService eventService) : IQueuedEmailOrchestrationService
 {
-    public QueuedEmail Get(int id)
+    public QueuedEmail Get(int id) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+        ValidateGet(inputs: [id]);
+
         return processingService.Get(id: id);
-    }
+    });
 
-    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false)
+    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
+        ValidateGetAll(inputs: [ignoreFilters]);
+
         return processingService.GetAll(ignoreFilters: ignoreFilters);
-    }
+    });
 
-    public async ValueTask<QueuedEmail> AddAsync(QueuedEmail entity)
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity) =>
+        TryCatch<QueuedEmail>(operation: async () =>
     {
+        ValidateAddAsync(inputs: [entity]);
+
         QueuedEmail result = await processingService.AddAsync(entity: entity);
         await eventService.RaiseQueuedEmailAddEventAsync(entity: result);
         return result;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity)
+    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity) =>
+        TryCatch<QueuedEmail>(operation: async () =>
     {
+        ValidateUpdateAsync(inputs: [entity]);
+
         QueuedEmail result = await processingService.UpdateAsync(entity: entity);
         await eventService.RaiseQueuedEmailUpdateEventAsync(entity: result);
         return result;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAsync(int id)
+    public ValueTask DeleteAsync(int id) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAsync(inputs: [id]);
+
         QueuedEmail entity = processingService.GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: item => item.Id == id);
+                                                       .FirstOrDefault(predicate: item => item.Id == id);
 
         if (entity is null)
         {
@@ -48,25 +64,39 @@ internal class QueuedEmailOrchestrationService(IQueuedEmailProcessingService pro
 
         await eventService.RaiseQueuedEmailDeleteEventAsync(entity: entity);
         await processingService.DeleteAsync(id: id);
-    }
+    }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        processingService.DeleteByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteByAppIdAsync(inputs: [appId]);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
+            return processingService.DeleteByAppIdAsync(appId: appId);
+        }, isValueTask: true);
+
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items) =>
+        TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: () =>
     {
+        ValidateAddOrUpdate(inputs: [items]);
+
         return processingService.AddOrUpdate(items: items);
-    }
+    }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items)
+    public ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items) =>
+        TryCatch(operation: () =>
     {
+        ValidateDeleteAllAsync(inputs: [items]);
+
         return processingService.DeleteAllAsync(items: items);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask<QueuedEmail> AddAsync(QueuedEmail entity, bool checkPrivs)
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity, bool checkPrivs) =>
+        TryCatch<QueuedEmail>(operation: async () =>
     {
+        ValidateAddAsync(inputs: [entity, checkPrivs]);
+
         QueuedEmail result = await processingService.AddAsync(entity: entity, checkPrivs: checkPrivs);
         await eventService.RaiseQueuedEmailAddEventAsync(entity: result);
         return result;
-    }
+    }, isValueTask: true);
 }

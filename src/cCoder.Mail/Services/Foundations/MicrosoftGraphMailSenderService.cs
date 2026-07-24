@@ -10,16 +10,20 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MicrosoftGraphMailSenderService(
+internal sealed partial class MicrosoftGraphMailSenderService(
     MailConfiguration mailConfiguration,
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailSenderService
 {
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
+
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
 
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+        ValidateSendAsync(inputs: [email, cancellationToken]);
+
         MailSender sender = GetMailSender(email: email);
         string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);
         using HttpRequestMessage message = new(method: HttpMethod.Post, requestUri: BuildSendUrl(sender: sender));
@@ -32,7 +36,7 @@ internal sealed class MicrosoftGraphMailSenderService(
         {
             throw new InvalidOperationException(message: $"Microsoft Graph mail send failed: {response.Content}");
         }
-    }
+    }, isTask: true);
 
     private static MailSender GetMailSender(QueuedEmail email)
     {

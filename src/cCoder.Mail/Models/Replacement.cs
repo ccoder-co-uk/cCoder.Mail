@@ -11,6 +11,7 @@ public class Replacement
     public string Old { get; }
     public string New =>
         newString ?? ReplaceFunction(arg: Old);
+
     public Func<string, string> ReplaceFunction { get; }
 
     public Replacement(string old, string @new)

@@ -14,13 +14,17 @@ using DataQueuedEmail = cCoder.Data.Models.Mail.QueuedEmail;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class QueuedEmailEventService(
+internal partial class QueuedEmailEventService(
     IQueuedEmailEventBroker queuedEmailEventBroker,
     ICoreAuthInfo authInfo
 ) : IQueuedEmailEventService
 {
-    public async ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailAddEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -28,10 +32,14 @@ internal class QueuedEmailEventService(
         };
 
         await queuedEmailEventBroker.RaiseQueuedEmailAddEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -39,10 +47,14 @@ internal class QueuedEmailEventService(
         };
 
         await queuedEmailEventBroker.RaiseQueuedEmailUpdateEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -50,7 +62,7 @@ internal class QueuedEmailEventService(
         };
 
         await queuedEmailEventBroker.RaiseQueuedEmailDeleteEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
     private static DataQueuedEmail ToExternalQueuedEmail(QueuedEmail entity) =>
         entity == null ? null : new DataQueuedEmail

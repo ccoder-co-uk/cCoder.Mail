@@ -2756,6 +2756,24 @@
       "Methods": []
     },
     {
+      "Name": "cCoder.Mail.Models.Exceptions.MailDependencyException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Models.Exceptions.MailServiceException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Models.Exceptions.MailValidationException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Models.MailConfiguration",
       "StandardElementType": "Model",
       "Properties": [
@@ -3045,18 +3063,7 @@
           "Type": "T"
         }
       ],
-      "Methods": [
-        {
-          "Name": "ToNew",
-          "Inputs": [
-            {
-              "Name": "item",
-              "Type": "TNew"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.Result\u003CTNew\u003E"
-        }
-      ]
+      "Methods": []
     },
     {
       "Name": "cCoder.Mail.Models.SmtpMailSendRequest",
@@ -6033,21 +6040,7 @@
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.MailAppExposure",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXFORMAT004",
-      "Description": "Adjacent methods must have exactly one empty line between them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailAppExposure",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXFORMAT004",
-      "Description": "Adjacent methods must have exactly one empty line between them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailAppExposure",
-      "LineNumber": 19
+      "LineNumber": 18
     },
     {
       "Code": "STXAPP001",
@@ -6064,157 +6057,10 @@
       "LineNumber": 155
     },
     {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Result\u003CT\u003E",
-      "LineNumber": 46
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
       "Code": "STXF002",
       "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
       "LineNumber": 17
     },
     {
@@ -6225,109 +6071,11 @@
       "LineNumber": 17
     },
     {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
       "Code": "STXF002",
       "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
       "LineNumber": 17
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
     },
     {
       "Code": "STXF002",
@@ -6348,91 +6096,7 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STXFORMAT012",
-      "Description": "Expression-bodied methods must return awaitable calls directly instead of adding redundant async and await keywords.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 110
-    },
-    {
-      "Code": "STXFORMAT005",
-      "Description": "Method call arguments must declare their parameter names.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 160
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
+      "LineNumber": 69
     },
     {
       "Code": "STX0012",
@@ -6449,27 +6113,6 @@
       "LineNumber": 11
     },
     {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
@@ -6481,53 +6124,25 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 18
+      "LineNumber": 22
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 26
+      "LineNumber": 30
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 43
+      "LineNumber": 57
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 43
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 55
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
       "LineNumber": 57
@@ -6537,70 +6152,42 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 64
+      "LineNumber": 66
+    },
+    {
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
+      "LineNumber": 66
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
+      "LineNumber": 75
+    },
+    {
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
+      "LineNumber": 81
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
+      "LineNumber": 88
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 64
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 11
+      "LineNumber": 88
     },
     {
       "Code": "STX0018",
@@ -6608,34 +6195,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
     },
     {
       "Code": "STX0012",
@@ -6647,27 +6206,6 @@
     {
       "Code": "STX0023",
       "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
       "LineNumber": 11
@@ -6684,154 +6222,70 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 18
+      "LineNumber": 22
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 26
+      "LineNumber": 30
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 40
+      "LineNumber": 49
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 40
+      "LineNumber": 49
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 46
+      "LineNumber": 58
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 46
+      "LineNumber": 58
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 52
+      "LineNumber": 67
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 54
+      "LineNumber": 73
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 61
+      "LineNumber": 80
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSendingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
+      "LineNumber": 80
     },
     {
       "Code": "STX0012",
@@ -6843,27 +6297,6 @@
     {
       "Code": "STX0023",
       "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
       "LineNumber": 15
@@ -6880,119 +6313,70 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 22
+      "LineNumber": 26
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 30
+      "LineNumber": 34
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 44
+      "LineNumber": 53
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 44
+      "LineNumber": 53
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 60
+      "LineNumber": 72
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 60
+      "LineNumber": 72
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 76
+      "LineNumber": 91
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 78
+      "LineNumber": 97
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 90
+      "LineNumber": 109
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 90
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
+      "LineNumber": 109
     },
     {
       "Code": "STXF002",
@@ -7006,118 +6390,20 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 21
+      "LineNumber": 22
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 43
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
+      "LineNumber": 52
     },
     {
       "Code": "STXF002",
       "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
       "LineNumber": 13
     },
     {
@@ -7135,41 +6421,6 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT005",
-      "Description": "Method call arguments must declare their parameter names.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 227
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
       "Code": "STX0012",
       "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
       "Severity": "Warning",
@@ -7179,27 +6430,6 @@
     {
       "Code": "STX0023",
       "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
       "LineNumber": 12
@@ -7216,63 +6446,35 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 19
+      "LineNumber": 23
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 27
+      "LineNumber": 31
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 97
+      "LineNumber": 128
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 99
+      "LineNumber": 134
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 123
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
+      "LineNumber": 162
     },
     {
       "Code": "STX0012",
@@ -7284,27 +6486,6 @@
     {
       "Code": "STX0023",
       "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
       "LineNumber": 11
@@ -7321,56 +6502,28 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 18
+      "LineNumber": 22
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 26
+      "LineNumber": 30
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 52
+      "LineNumber": 67
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 54
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
+      "LineNumber": 73
     },
     {
       "Code": "STX0012",
@@ -7387,27 +6540,6 @@
       "LineNumber": 15
     },
     {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
@@ -7419,137 +6551,39 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 22
+      "LineNumber": 26
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 30
+      "LineNumber": 34
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 80
+      "LineNumber": 95
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 82
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 12
+      "LineNumber": 101
     },
     {
       "Code": "STX0022",
       "Description": "Creation method names must include the concrete type they create.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 55
+      "LineNumber": 59
     },
     {
       "Code": "STX0004",
       "Description": "A service must not depend on another service at the same layer.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
       "LineNumber": 12
@@ -7580,133 +6614,21 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 32
+      "LineNumber": 35
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 32
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 11
+      "LineNumber": 35
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 19
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
+      "LineNumber": 24
     },
     {
       "Code": "STXO001",
@@ -7727,84 +6649,35 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 19
+      "LineNumber": 29
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 19
+      "LineNumber": 29
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 22
+      "LineNumber": 37
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 22
+      "LineNumber": 37
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 12
+      "LineNumber": 45
     },
     {
       "Code": "STXO001",
@@ -7818,63 +6691,7 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
+      "LineNumber": 37
     },
     {
       "Code": "STXO001",
@@ -7895,35 +6712,35 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 19
+      "LineNumber": 29
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 19
+      "LineNumber": 29
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 22
+      "LineNumber": 37
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 22
+      "LineNumber": 37
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 25
+      "LineNumber": 45
     },
     {
       "Code": "STX0004",
@@ -7933,55 +6750,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
-    },
-    {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
@@ -7993,14 +6761,7 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STXFORMAT005",
-      "Description": "Method call arguments must declare their parameter names.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 76
+      "LineNumber": 37
     },
     {
       "Code": "STX0007",
@@ -8010,55 +6771,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 13
-    },
-    {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
@@ -8070,105 +6782,56 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 25
+      "LineNumber": 31
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 25
+      "LineNumber": 31
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 32
+      "LineNumber": 41
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 32
+      "LineNumber": 41
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 39
+      "LineNumber": 51
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 56
+      "LineNumber": 77
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 61
+      "LineNumber": 85
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 13
+      "LineNumber": 85
     },
     {
       "Code": "STX0017",
@@ -8182,63 +6845,7 @@
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 39
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
+      "LineNumber": 51
     },
     {
       "Code": "STXO001",
@@ -8259,63 +6866,14 @@
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 29
+      "LineNumber": 49
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 13
+      "LineNumber": 65
     },
     {
       "Code": "STX0017",
@@ -8329,63 +6887,7 @@
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 39
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 10
+      "LineNumber": 51
     },
     {
       "Code": "STX0017",
@@ -8399,504 +6901,231 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 21
+      "LineNumber": 36
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 21
+      "LineNumber": 36
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 27
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 18
-    },
-    {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 18
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 21
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 21
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0007",
-      "Description": "A service public API must use one model contract or primitive types.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 43
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 53
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 54
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 81
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STX0017",
-      "Description": "Identifier parameters must be named for their type, for example studentId.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 42
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
       "LineNumber": 44
     },
     {
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
+      "LineNumber": 44
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
+      "LineNumber": 52
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
+      "LineNumber": 68
+    },
+    {
+      "Code": "STX0021",
+      "Description": "delete model parameters must use the deleted prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
+      "LineNumber": 68
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 12
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 28
+    },
+    {
+      "Code": "STX0019",
+      "Description": "create model parameters must use the new prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 28
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 36
+    },
+    {
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 36
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 44
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STX0021",
+      "Description": "delete model parameters must use the deleted prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STX0007",
+      "Description": "A service public API must use one model contract or primitive types.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 13
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 15
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 31
+    },
+    {
+      "Code": "STX0019",
+      "Description": "create model parameters must use the new prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 31
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 39
+    },
+    {
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 39
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 47
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 63
+    },
+    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 76
+    },
+    {
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 77
+    },
+    {
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 100
+    },
+    {
+      "Code": "STX0021",
+      "Description": "delete model parameters must use the deleted prefix.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 100
+    },
+    {
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
+      "LineNumber": 108
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 69
+      "LineNumber": 17
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 70
+      "LineNumber": 38
+    },
+    {
+      "Code": "STX0017",
+      "Description": "Identifier parameters must be named for their type, for example studentId.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
+      "LineNumber": 57
+    },
+    {
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
+      "LineNumber": 63
+    },
+    {
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
+      "LineNumber": 96
     },
     {
       "Code": "STX0005",
@@ -8906,60 +7135,11 @@
       "LineNumber": 97
     },
     {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 10
+      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
+      "LineNumber": 128
     },
     {
       "Code": "STX0017",
@@ -8973,112 +7153,7 @@
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STX0003",
-      "Description": "A service containing only pass-through methods is redundant and should be retired.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailEventProcessingService",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0008",
-      "Description": "A service must declare its validations in a Validations partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0009",
-      "Description": "A service must declare TryCatch handling in an Exceptions partial.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0010",
-      "Description": "Every public service method must enter through a local TryCatch operation.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0011",
-      "Description": "Every service input must be validated inside TryCatch before business work.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX001",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve validation exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX002",
-      "Description": "Every TryCatch overload must classify, wrap, and preserve dependency exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXEX003",
-      "Description": "Every TryCatch overload must wrap and preserve unclassified exceptions.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 13
+      "LineNumber": 44
     },
     {
       "Code": "STX0017",
@@ -9092,28 +7167,28 @@
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 35
+      "LineNumber": 47
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 53
+      "LineNumber": 76
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 54
+      "LineNumber": 77
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 81
+      "LineNumber": 108
     }
   ]
 }

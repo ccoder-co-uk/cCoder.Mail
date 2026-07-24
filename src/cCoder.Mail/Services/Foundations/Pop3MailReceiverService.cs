@@ -15,41 +15,48 @@ internal sealed partial class Pop3MailReceiverService(
     MailConfiguration mailConfiguration)
     : IPop3MailReceiverService
 {
-    public async Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        string[][] rawMessages = await ReceiveRawMessagesAsync(request: request, cancellationToken: cancellationToken);
+        CancellationToken cancellationToken = default) =>
+        TryCatch<ReceivedEmail[]>(operation: async () =>
+        {
+            ValidateReceiveAsync(inputs: [request, cancellationToken]);
 
-        return
-        [
-            .. rawMessages
+            string[][] rawMessages = await ReceiveRawMessagesAsync(request: request, cancellationToken: cancellationToken);
+
+            return
+            [
+                .. rawMessages
                 .Select(selector: ParseMessage)
-            .Where(predicate: message => IsWithinPeriod(receivedOn: message.ReceivedOn, from: request.From, to: request.To))
-            .OrderByDescending(keySelector: message => message.ReceivedOn)
-        ];
-    }
+                .Where(predicate: message => IsWithinPeriod(receivedOn: message.ReceivedOn, from: request.From, to: request.To))
+                .OrderByDescending(keySelector: message => message.ReceivedOn)
+            ];
+        }, isTask: true);
 
-    public async Task<ReceivedEmail[]> ReceiveTopAsync(
+    public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
-        CancellationToken cancellationToken = default)
-    {
-        string[][] rawMessages = await ReceiveRawMessagesAsync(
-request: new MailboxReceiveRequest
-{
-    ProviderName = MailProviderNames.Pop3,
-    Host = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Host, configurationName: "POP3 mailbox host"),
-    Port = mailConfiguration.Pop3.Port,
-    EnableSSL = mailConfiguration.Pop3.EnableSSL,
-    User = ReadRequiredConfiguration(value: mailConfiguration.Pop3.User, configurationName: "POP3 mailbox user"),
-    Password = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Password, configurationName: "POP3 mailbox password"),
-    MaximumMessages = count,
-},
-cancellationToken: cancellationToken);
+        CancellationToken cancellationToken = default) =>
+        TryCatch<ReceivedEmail[]>(operation: async () =>
+        {
 
-        return [.. rawMessages.Select(selector: ParseMessage)
-            .OrderByDescending(keySelector: message => message.ReceivedOn)];
-    }
+            ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
+
+            string[][] rawMessages = await ReceiveRawMessagesAsync(
+                                                                   request: new MailboxReceiveRequest
+                                                                   {
+                                                                       ProviderName = MailProviderNames.Pop3,
+                                                                       Host = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Host, configurationName: "POP3 mailbox host"),
+                                                                       Port = mailConfiguration.Pop3.Port,
+                                                                       EnableSSL = mailConfiguration.Pop3.EnableSSL,
+                                                                       User = ReadRequiredConfiguration(value: mailConfiguration.Pop3.User, configurationName: "POP3 mailbox user"),
+                                                                       Password = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Password, configurationName: "POP3 mailbox password"),
+                                                                       MaximumMessages = count,
+                                                                   },
+                                                                   cancellationToken: cancellationToken);
+
+            return [.. rawMessages.Select(selector: ParseMessage)
+                .OrderByDescending(keySelector: message => message.ReceivedOn)];
+        }, isTask: true);
 
     private async Task<string[][]> ReceiveRawMessagesAsync(
         MailboxReceiveRequest request,

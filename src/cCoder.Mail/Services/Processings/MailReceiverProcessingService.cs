@@ -7,29 +7,69 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class MailReceiverProcessingService(IMailReceiverService service) : IMailReceiverProcessingService
+internal partial class MailReceiverProcessingService(IMailReceiverService service) : IMailReceiverProcessingService
 {
     public MailReceiver Get(Guid id) =>
-        service.Get(id: id);
+        TryCatch<MailReceiver>(operation: () =>
+        {
+            ValidateGet(inputs: [id]);
+
+            return service.Get(id: id);
+        });
 
     public IQueryable<MailReceiver> GetAll(bool ignoreFilters = false) =>
-        service.GetAll(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<MailReceiver>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
+
+            return service.GetAll(ignoreFilters: ignoreFilters);
+        });
 
     public MailReceiver[] GetEnabled() =>
-        service.GetEnabled();
+        TryCatch<MailReceiver[]>(operation: () =>
+        {
+            ValidateGetEnabled(inputs: []);
+
+            return service.GetEnabled();
+        });
 
     public ValueTask<MailReceiver> AddAsync(MailReceiver entity) =>
-        service.AddAsync(entity: entity);
+        TryCatch<MailReceiver>(operation: () =>
+        {
+            ValidateAddAsync(inputs: [entity]);
+
+            return service.AddAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<MailReceiver> UpdateAsync(MailReceiver entity) =>
-        service.UpdateAsync(entity: entity);
+        TryCatch<MailReceiver>(operation: () =>
+        {
+            ValidateUpdateAsync(inputs: [entity]);
+
+            return service.UpdateAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid id) =>
-        service.DeleteAsync(id: id);
+        TryCatch<int>(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [id]);
+
+            return service.DeleteAsync(id: id);
+        }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteByAppIdAsync(inputs: [appId]);
+
+            return service.DeleteAllByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     public ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items) =>
-        service.DeleteAllAsync(items: items);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAllAsync(inputs: [items]);
+
+            return service.DeleteAllAsync(items: items);
+        }, isValueTask: true);
 }

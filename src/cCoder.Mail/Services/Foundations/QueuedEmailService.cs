@@ -9,15 +9,19 @@ using cCoder.Mail.Brokers.Storages;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal class QueuedEmailService(
+internal partial class QueuedEmailService(
     IQueuedEmailBroker queuedEmailBroker,
     IAuthorizationBroker authorizationBroker
 ) : IQueuedEmailService
 {
-    public QueuedEmail Get(int id)
+    public QueuedEmail Get(int id) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
+
+        ValidateGet(inputs: [id]);
+
         QueuedEmail queuedEmail = GetAll()
-            .FirstOrDefault(predicate: i => i.Id == id);
+                                               .FirstOrDefault(predicate: i => i.Id == id);
 
         if (queuedEmail is not null)
         {
@@ -33,16 +37,30 @@ internal class QueuedEmailService(
         }
 
         return null;
-    }
+    });
 
     public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
-        queuedEmailBroker.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<QueuedEmail>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
+
+            return queuedEmailBroker.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
+        });
 
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
-        queuedEmailBroker.GetDispatchBatch(batchSize: batchSize, maxFailures: maxFailures);
+        TryCatch<QueuedEmail[]>(operation: () =>
+        {
+            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
 
-    public async ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true)
+            return queuedEmailBroker.GetDispatchBatch(batchSize: batchSize, maxFailures: maxFailures);
+        });
+
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true) =>
+        TryCatch<QueuedEmail>(operation: async () =>
     {
+
+        ValidateAddAsync(inputs: [queuedEmail, checkPrivileges]);
+
         if (checkPrivileges)
         {
             authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
@@ -61,10 +79,13 @@ internal class QueuedEmailService(
         queuedEmail.MailSenderId = result.MailSenderId;
         queuedEmail.MailSender = result.MailSender;
         return queuedEmail;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail)
+    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail) =>
+        TryCatch<QueuedEmail>(operation: async () =>
     {
+        ValidateUpdateAsync(inputs: [queuedEmail]);
+
         authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
         QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
         queuedEmail.Id = result.Id;
@@ -79,25 +100,39 @@ internal class QueuedEmailService(
         queuedEmail.MailSenderId = result.MailSenderId;
         queuedEmail.MailSender = result.MailSender;
         return queuedEmail;
-    }
+    }, isValueTask: true);
 
     public ValueTask RecordSendFailureAsync(
         int emailId,
         string reason,
         CancellationToken cancellationToken = default) =>
-        queuedEmailBroker.AddQueuedEmailSendFailureAsync(emailId: emailId, reason: reason, cancellationToken: cancellationToken);
+        TryCatch(operation: () =>
+        {
+            ValidateRecordSendFailureAsync(inputs: [emailId, reason, cancellationToken]);
+
+            return queuedEmailBroker.AddQueuedEmailSendFailureAsync(emailId: emailId, reason: reason, cancellationToken: cancellationToken);
+        }, isValueTask: true);
 
     public ValueTask MarkAsSentAsync(
         QueuedEmail queuedEmail,
         Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default) =>
-        queuedEmailBroker.MarkQueuedEmailAsSentAsync(entity: Copy(queuedEmail: queuedEmail), mailSenderId: mailSenderId, fromAddress: fromAddress, cancellationToken: cancellationToken);
+        TryCatch(operation: () =>
+        {
+            ValidateMarkAsSentAsync(inputs: [queuedEmail, mailSenderId, fromAddress, cancellationToken]);
 
-    public async ValueTask DeleteAsync(int id, bool checkPrivileges = true)
+            return queuedEmailBroker.MarkQueuedEmailAsSentAsync(entity: Copy(queuedEmail: queuedEmail), mailSenderId: mailSenderId, fromAddress: fromAddress, cancellationToken: cancellationToken);
+        }, isValueTask: true);
+
+    public ValueTask DeleteAsync(int id, bool checkPrivileges = true) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAsync(inputs: [id, checkPrivileges]);
+
         QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: item => item.Id == id);
+                                                                        .FirstOrDefault(predicate: item => item.Id == id);
 
         if (queuedEmail is null)
         {
@@ -114,18 +149,27 @@ items: queuedEmail.FailedSends?.Select(selector: Copy)
             .ToArray() ?? []);
 
         _ = await queuedEmailBroker.DeleteQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items)
+    public ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAllForAppAsync(inputs: [items]);
+
         foreach (QueuedEmail item in items ?? [])
         {
             await DeleteAsync(id: item.Id, checkPrivileges: false);
         }
-    }
+    }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        queuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+
+            return queuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     private static QueuedEmail Copy(QueuedEmail queuedEmail) =>
         queuedEmail == null

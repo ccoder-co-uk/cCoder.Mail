@@ -8,11 +8,16 @@ using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MailMetadataTypeService : IMailMetadataTypeService
+internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
 {
     public IEnumerable<MetadataContainerSet> GetKnownMetadata() =>
-        [
-        new MetadataContainerSet
+        TryCatch<IEnumerable<MetadataContainerSet>>(operation: () =>
+    {
+
+        ValidateGetKnownMetadata(inputs: []);
+
+        return [
+                new MetadataContainerSet
         {
             Name = "Mail",
             UriBase = "Mail",
@@ -24,6 +29,7 @@ internal sealed class MailMetadataTypeService : IMailMetadataTypeService
             ],
         },
     ];
+    });
 
     private static ExtendedMetadataContainer Entity<T>() =>
         new(type: typeof(T), isEntity: true, hasEndpoint: true)

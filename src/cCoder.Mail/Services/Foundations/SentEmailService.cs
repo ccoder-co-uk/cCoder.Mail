@@ -12,15 +12,19 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal class SentEmailService(
+internal partial class SentEmailService(
     ISentEmailBroker sentEmailBroker,
     IAuthorizationBroker authorizationBroker
 ) : ISentEmailService
 {
-    public SentEmail Get(int id)
+    public SentEmail Get(int id) =>
+        TryCatch<SentEmail>(operation: () =>
     {
+
+        ValidateGet(inputs: [id]);
+
         SentEmail sentEmail = GetAll()
-            .FirstOrDefault(predicate: i => i.Id == id);
+                                               .FirstOrDefault(predicate: i => i.Id == id);
 
         if (sentEmail is not null)
         {
@@ -36,13 +40,21 @@ internal class SentEmailService(
         }
 
         return null;
-    }
+    });
 
     public IQueryable<SentEmail> GetAll(bool ignoreFilters = false) =>
-        sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<SentEmail>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
 
-    public async ValueTask<SentEmail> AddAsync(SentEmail sentEmail)
+            return sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
+        });
+
+    public ValueTask<SentEmail> AddAsync(SentEmail sentEmail) =>
+        TryCatch<SentEmail>(operation: async () =>
     {
+        ValidateAddAsync(inputs: [sentEmail]);
+
         authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
         SentEmail result = await sentEmailBroker.AddSentEmailAsync(entity: Copy(sentEmail: sentEmail));
         sentEmail.Id = result.Id;
@@ -57,10 +69,13 @@ internal class SentEmailService(
         sentEmail.From = result.From;
         sentEmail.MailSenderId = result.MailSenderId;
         return sentEmail;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail)
+    public ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail) =>
+        TryCatch<SentEmail>(operation: async () =>
     {
+        ValidateUpdateAsync(inputs: [sentEmail]);
+
         authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
         SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(entity: Copy(sentEmail: sentEmail));
         sentEmail.Id = result.Id;
@@ -75,12 +90,16 @@ internal class SentEmailService(
         sentEmail.From = result.From;
         sentEmail.MailSenderId = result.MailSenderId;
         return sentEmail;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAsync(int id)
+    public ValueTask DeleteAsync(int id) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAsync(inputs: [id]);
+
         SentEmail sentEmail = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: item => item.Id == id);
+                                                       .FirstOrDefault(predicate: item => item.Id == id);
 
         if (sentEmail is null)
         {
@@ -89,14 +108,25 @@ internal class SentEmailService(
 
         authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
         _ = await sentEmailBroker.DeleteSentEmailAsync(entity: Copy(sentEmail: sentEmail));
-    }
+    }, isValueTask: true);
 
     public ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items) =>
-        sentEmailBroker.DeleteAllSentEmailsAsync(
-items: items?.Select(selector: Copy) ?? []);
+        TryCatch(operation: () =>
+    {
+
+        ValidateDeleteAllForAppAsync(inputs: [items]);
+
+        return sentEmailBroker.DeleteAllSentEmailsAsync(
+        items: items?.Select(selector: Copy) ?? []);
+    }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+
+            return sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     private static SentEmail Copy(SentEmail sentEmail) =>
         sentEmail == null

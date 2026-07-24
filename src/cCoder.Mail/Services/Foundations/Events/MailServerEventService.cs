@@ -14,13 +14,17 @@ using DataMailServer = cCoder.Data.Models.Mail.MailServer;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class MailServerEventService(
+internal partial class MailServerEventService(
     IMailServerEventBroker mailServerEventBroker,
     ICoreAuthInfo authInfo
 ) : IMailServerEventService
 {
-    public async ValueTask RaiseMailServerAddEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerAddEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -28,10 +32,14 @@ internal class MailServerEventService(
         };
 
         await mailServerEventBroker.RaiseMailServerAddEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseMailServerUpdateEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -39,10 +47,14 @@ internal class MailServerEventService(
         };
 
         await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
-    public async ValueTask RaiseMailServerDeleteEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
@@ -50,7 +62,7 @@ internal class MailServerEventService(
         };
 
         await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message: message);
-    }
+    }, isValueTask: true);
 
     private static DataMailServer ToExternalMailServer(MailServer entity) =>
         entity == null ? null : new DataMailServer

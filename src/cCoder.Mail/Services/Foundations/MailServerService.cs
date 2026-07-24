@@ -12,15 +12,19 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal class MailServerService(
+internal partial class MailServerService(
     IMailServerBroker mailServerBroker,
     IAuthorizationBroker authorizationBroker
 ) : IMailServerService
 {
-    public MailServer Get(int id)
+    public MailServer Get(int id) =>
+        TryCatch<MailServer>(operation: () =>
     {
+
+        ValidateGet(inputs: [id]);
+
         MailServer mailServer = GetAll()
-            .FirstOrDefault(predicate: i => i.Id == id);
+                                               .FirstOrDefault(predicate: i => i.Id == id);
 
         if (mailServer is not null)
         {
@@ -36,13 +40,21 @@ internal class MailServerService(
         }
 
         return null;
-    }
+    });
 
     public IQueryable<MailServer> GetAll(bool ignoreFilters = false) =>
-        mailServerBroker.GetAllMailServers(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<MailServer>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
 
-    public async ValueTask<MailServer> AddAsync(MailServer mailServer)
+            return mailServerBroker.GetAllMailServers(ignoreFilters: ignoreFilters);
+        });
+
+    public ValueTask<MailServer> AddAsync(MailServer mailServer) =>
+        TryCatch<MailServer>(operation: async () =>
     {
+        ValidateAddAsync(inputs: [mailServer]);
+
         authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_create");
         MailServer result = await mailServerBroker.AddMailServerAsync(entity: Copy(mailServer: mailServer));
         mailServer.Id = result.Id;
@@ -55,10 +67,13 @@ internal class MailServerService(
         mailServer.Port = result.Port;
         mailServer.EnableSSL = result.EnableSSL;
         return mailServer;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask<MailServer> UpdateAsync(MailServer mailServer)
+    public ValueTask<MailServer> UpdateAsync(MailServer mailServer) =>
+        TryCatch<MailServer>(operation: async () =>
     {
+        ValidateUpdateAsync(inputs: [mailServer]);
+
         authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_update");
         MailServer result = await mailServerBroker.UpdateMailServerAsync(entity: Copy(mailServer: mailServer));
         mailServer.Id = result.Id;
@@ -71,12 +86,16 @@ internal class MailServerService(
         mailServer.Port = result.Port;
         mailServer.EnableSSL = result.EnableSSL;
         return mailServer;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAsync(int id)
+    public ValueTask DeleteAsync(int id) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateDeleteAsync(inputs: [id]);
+
         MailServer mailServer = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: item => item.Id == id);
+                                                       .FirstOrDefault(predicate: item => item.Id == id);
 
         if (mailServer is null)
         {
@@ -85,14 +104,25 @@ internal class MailServerService(
 
         authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
         _ = await mailServerBroker.DeleteMailServerAsync(entity: Copy(mailServer: mailServer));
-    }
+    }, isValueTask: true);
 
     public ValueTask DeleteAllForAppAsync(IEnumerable<MailServer> items) =>
-        mailServerBroker.DeleteAllMailServersAsync(
-items: items?.Select(selector: Copy) ?? []);
+        TryCatch(operation: () =>
+    {
+
+        ValidateDeleteAllForAppAsync(inputs: [items]);
+
+        return mailServerBroker.DeleteAllMailServersAsync(
+        items: items?.Select(selector: Copy) ?? []);
+    }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        mailServerBroker.DeleteAllMailServersByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+
+            return mailServerBroker.DeleteAllMailServersByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     private static MailServer Copy(MailServer mailServer) =>
         mailServer == null

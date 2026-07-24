@@ -11,14 +11,29 @@ using cCoder.Mail.Services.Foundations.Events;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class QueuedEmailEventProcessingService(IQueuedEmailEventService eventService) : IQueuedEmailEventProcessingService
+internal partial class QueuedEmailEventProcessingService(IQueuedEmailEventService eventService) : IQueuedEmailEventProcessingService
 {
     public ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity) =>
-        eventService.RaiseQueuedEmailAddEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseQueuedEmailAddEventAsync(inputs: [entity]);
+
+            return eventService.RaiseQueuedEmailAddEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity) =>
-        eventService.RaiseQueuedEmailUpdateEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseQueuedEmailUpdateEventAsync(inputs: [entity]);
+
+            return eventService.RaiseQueuedEmailUpdateEventAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity) =>
-        eventService.RaiseQueuedEmailDeleteEventAsync(entity: entity);
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseQueuedEmailDeleteEventAsync(inputs: [entity]);
+
+            return eventService.RaiseQueuedEmailDeleteEventAsync(entity: entity);
+        }, isValueTask: true);
 }

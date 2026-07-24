@@ -9,36 +9,76 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal class ReceivedEmailOrchestrationService(
+internal partial class ReceivedEmailOrchestrationService(
     IReceivedEmailProcessingService processingService,
     IMailReceivingService mailReceivingService)
     : IReceivedEmailOrchestrationService
 {
     public ReceivedEmail Get(int id) =>
-        processingService.Get(id: id);
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateGet(inputs: [id]);
+
+            return processingService.Get(id: id);
+        });
 
     public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) =>
-        processingService.GetAll(ignoreFilters: ignoreFilters);
+        TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
+        {
+            ValidateGetAll(inputs: [ignoreFilters]);
+
+            return processingService.GetAll(ignoreFilters: ignoreFilters);
+        });
 
     public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity) =>
-        processingService.AddAsync(entity: entity);
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateAddAsync(inputs: [entity]);
+
+            return processingService.AddAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity) =>
-        processingService.UpdateAsync(entity: entity);
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateUpdateAsync(inputs: [entity]);
+
+            return processingService.UpdateAsync(entity: entity);
+        }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(int id) =>
-        processingService.DeleteAsync(id: id);
+        TryCatch<int>(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [id]);
+
+            return processingService.DeleteAsync(id: id);
+        }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        processingService.DeleteByAppIdAsync(appId: appId);
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteByAppIdAsync(inputs: [appId]);
+
+            return processingService.DeleteByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        mailReceivingService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        TryCatch<ReceivedEmail[]>(operation: () =>
+        {
+            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+
+            return mailReceivingService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
-        mailReceivingService.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
+        TryCatch<ReceivedEmail[]>(operation: () =>
+        {
+            ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
+
+            return mailReceivingService.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
+        }, isTask: true);
 }

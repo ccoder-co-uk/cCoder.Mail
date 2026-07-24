@@ -7,8 +7,13 @@ using cCoder.Mail.Brokers.MailClients;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MailSendingService(IMailSenderClientBroker mailSenderClientBroker) : IMailSendingService
+internal sealed partial class MailSendingService(IMailSenderClientBroker mailSenderClientBroker) : IMailSendingService
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        mailSenderClientBroker.SendAsync(email: email, cancellationToken: cancellationToken);
+        TryCatch(operation: () =>
+        {
+            ValidateSendAsync(inputs: [email, cancellationToken]);
+
+            return mailSenderClientBroker.SendAsync(email: email, cancellationToken: cancellationToken);
+        }, isTask: true);
 }

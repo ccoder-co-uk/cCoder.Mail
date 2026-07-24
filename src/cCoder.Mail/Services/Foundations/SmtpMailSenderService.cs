@@ -9,13 +9,17 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class SmtpMailSenderService(ISmtpMailSenderBroker smtpMailSenderBroker)
+internal sealed partial class SmtpMailSenderService(ISmtpMailSenderBroker smtpMailSenderBroker)
     : ISmtpMailSenderService
 {
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateSendAsync(inputs: [email, cancellationToken]);
+
         MailSender sender = email.MailSender
-            ?? throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
+                                                                                                                ?? throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
 
         using MailMessage message = CreateMailMessage(email: email, sender: sender);
 
@@ -30,7 +34,7 @@ request: new SmtpMailSendRequest
     Message = message,
 },
 cancellationToken: cancellationToken);
-    }
+    }, isTask: true);
 
     private static MailMessage CreateMailMessage(QueuedEmail email, MailSender sender)
     {
