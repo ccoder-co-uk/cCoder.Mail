@@ -21,18 +21,18 @@ public partial class MailServerProcessingServiceTests
         // Given
         MailServer entity = CreateRandomMailServer();
 
-        mailServerServiceMock.Setup(expression: x => x.UpdateAsync(mailServer: entity))
+        mailServerServiceMock.Setup(expression: x => x.UpdateMailServerAsync(updatedMailServer: entity))
             .ReturnsAsync(value: entity);
 
         // When
-        MailServer result = await mailServerProcessingService.UpdateAsync(entity: entity);
+        MailServer result = await mailServerProcessingService.UpdateMailServerAsync(updatedMailServer: entity);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        mailServerServiceMock.Verify(expression: x => x.UpdateAsync(mailServer: entity), times: Times.Once);
+        mailServerServiceMock.Verify(expression: x => x.UpdateMailServerAsync(updatedMailServer: entity), times: Times.Once);
         mailServerServiceMock.VerifyNoOtherCalls();
     }
 

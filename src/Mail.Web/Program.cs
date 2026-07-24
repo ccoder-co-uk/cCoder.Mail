@@ -60,7 +60,7 @@ decryptionKey: builder.Configuration.GetSection(key: "Settings")["DecryptionKey"
 services: builder.Services,
 connectionString: coreConnection);
 
-        builder.Services.AddMailWeb(configure: mailConfiguration =>
+        builder.Services.AddMailWeb(newMailConfiguration: mailConfiguration =>
             ConfigureMailProviders(configuration: builder.Configuration, mailConfiguration: mailConfiguration));
 
         WebApplication app = builder.Build();
@@ -119,8 +119,8 @@ text: "{ \"error\": \"" + exception.Message.Replace(oldValue: "\"", newValue: "\
             .AddSmtpSender()
             .AddPop3Receiver()
             .AddImapReceiver()
-            .AddMicrosoftGraphSender(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration))
-            .AddMicrosoftGraphReceiver(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration));
+            .AddMicrosoftGraphSender(newMicrosoftGraphMailConfiguration: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration))
+            .AddMicrosoftGraphReceiver(newMicrosoftGraphMailConfiguration: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration));
     }
 
     private static void ConfigureGraph(

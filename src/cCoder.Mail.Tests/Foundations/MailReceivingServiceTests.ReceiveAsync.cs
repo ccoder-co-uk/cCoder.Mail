@@ -31,7 +31,7 @@ public partial class MailReceivingServiceTests
             .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
 

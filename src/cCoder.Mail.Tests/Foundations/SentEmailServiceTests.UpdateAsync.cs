@@ -20,7 +20,7 @@ public partial class SentEmailServiceTests
     public async Task ShouldDelegateToBrokerWhenUserIsAuthorizedForUpdateAsync()
     {
         // Given
-        SentEmail sentEmail = CreateRandomSentEmail(appId: 7);
+        SentEmail sentEmail = CreateRandomSentEmail(id: 7);
 
         cCoder.Data.Models.Mail.SentEmail submitted = null;
 
@@ -30,12 +30,12 @@ public partial class SentEmailServiceTests
         authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"));
 
         sentEmailBrokerMock
-            .Setup(expression: x => x.UpdateSentEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
+            .Setup(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
             .Callback<cCoder.Data.Models.Mail.SentEmail>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.SentEmail value) => value);
 
         // When
-        SentEmail result = await sentEmailService.UpdateAsync(sentEmail: sentEmail);
+        SentEmail result = await sentEmailService.UpdateSentEmailAsync(updatedSentEmail: sentEmail);
 
         // Then
 
@@ -57,7 +57,7 @@ public partial class SentEmailServiceTests
         result.Should()
             .BeEquivalentTo(expectation: sentEmail);
 
-        sentEmailBrokerMock.Verify(expression: x => x.UpdateSentEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.Once);
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"), times: Times.Once);
@@ -68,14 +68,14 @@ public partial class SentEmailServiceTests
     public async Task ShouldThrowSecurityExceptionWhenUserLacksUpdatePrivilegeForUpdateAsync()
     {
         // Given
-        SentEmail sentEmail = CreateRandomSentEmail(appId: 7);
+        SentEmail sentEmail = CreateRandomSentEmail(id: 7);
 
         authorizationBrokerMock
             .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"))
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await sentEmailService.UpdateAsync(sentEmail: sentEmail);
+        Func<Task> action = async () => await sentEmailService.UpdateSentEmailAsync(updatedSentEmail: sentEmail);
 
         // Then
 

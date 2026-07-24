@@ -21,7 +21,7 @@ public partial class SentEmailOrchestrationServiceTests
         // Given
         SentEmail entity = CreateRandomSentEmail();
 
-        sentEmailProcessingServiceMock.Setup(expression: x => x.UpdateAsync(entity: entity))
+        sentEmailProcessingServiceMock.Setup(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: entity))
             .ReturnsAsync(value: entity);
 
         sentEmailEventProcessingServiceMock
@@ -29,14 +29,14 @@ public partial class SentEmailOrchestrationServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        SentEmail result = await orchestrationService.UpdateAsync(entity: entity);
+        SentEmail result = await orchestrationService.UpdateSentEmailAsync(updatedSentEmail: entity);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        sentEmailProcessingServiceMock.Verify(expression: x => x.UpdateAsync(entity: entity), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: entity), times: Times.Once);
         sentEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseSentEmailUpdateEventAsync(entity: entity), times: Times.Once);
     }
 

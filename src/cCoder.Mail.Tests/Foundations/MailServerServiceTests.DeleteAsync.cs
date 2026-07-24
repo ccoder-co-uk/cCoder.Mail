@@ -33,7 +33,7 @@ public partial class MailServerServiceTests
         mailServerBrokerMock
             .Setup(expression: x =>
                 x.DeleteMailServerAsync(
-entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
+deletedMailServer: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
                         candidate.Id == mailServer.Id
                         && candidate.AppId == mailServer.AppId
                         && candidate.Name == mailServer.Name
@@ -43,7 +43,7 @@ entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
             .ReturnsAsync(value: 1);
 
         // When
-        await mailServerService.DeleteAsync(id: 9);
+        await mailServerService.DeleteAsync(mailServerId: 9);
 
         // Then
         mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: true), times: Times.Once);
@@ -51,7 +51,7 @@ entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
         mailServerBrokerMock.Verify(
 expression: x =>
                 x.DeleteMailServerAsync(
-entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
+deletedMailServer: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
                         candidate.Id == mailServer.Id
                         && candidate.AppId == mailServer.AppId
                         && candidate.Name == mailServer.Name
@@ -80,7 +80,7 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await mailServerService.DeleteAsync(id: 9);
+        Func<Task> action = async () => await mailServerService.DeleteAsync(mailServerId: 9);
 
         // Then
 

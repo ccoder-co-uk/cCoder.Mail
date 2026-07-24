@@ -32,14 +32,14 @@ public partial class MailServerServiceTests
         mailServerBrokerMock
             .Setup(expression: x =>
                 x.AddMailServerAsync(
-entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
+newMailServer: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
                 )
             )
             .Callback<cCoder.Data.Models.Mail.MailServer>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.MailServer value) => value);
 
         // When
-        MailServer result = await mailServerService.AddAsync(mailServer: mailServer);
+        MailServer result = await mailServerService.AddMailServerAsync(newMailServer: mailServer);
 
         // Then
 
@@ -66,7 +66,7 @@ entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !Reference
         mailServerBrokerMock.Verify(
 expression: x =>
                 x.AddMailServerAsync(
-entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
+newMailServer: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
                 ),
 times: Times.Once
         );
@@ -88,7 +88,7 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await mailServerService.AddAsync(mailServer: mailServer);
+        Func<Task> action = async () => await mailServerService.AddMailServerAsync(newMailServer: mailServer);
 
         // Then
 

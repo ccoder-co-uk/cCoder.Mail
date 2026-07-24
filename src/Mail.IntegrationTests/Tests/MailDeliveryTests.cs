@@ -12,6 +12,7 @@ using cCoder.Data.Models.Security;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Orchestrations;
 using cCoder.Security.Data.EF;
+using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
 using FluentAssertions;
 using Mail.Web;

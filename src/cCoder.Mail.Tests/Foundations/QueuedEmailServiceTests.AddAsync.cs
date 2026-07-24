@@ -32,14 +32,14 @@ public partial class QueuedEmailServiceTests
         queuedEmailBrokerMock
             .Setup(expression: x =>
                 x.AddQueuedEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
+newQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
                 )
             )
             .Callback<cCoder.Data.Models.Mail.QueuedEmail>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.QueuedEmail value) => value);
 
         // When
-        QueuedEmail result = await queuedEmailService.AddAsync(queuedEmail: queuedEmail);
+        QueuedEmail result = await queuedEmailService.AddQueuedEmailAsync(newQueuedEmail: queuedEmail);
 
         // Then
 
@@ -70,7 +70,7 @@ config: options => options.Excluding(expression: candidate => candidate.Id)
         queuedEmailBrokerMock.Verify(
 expression: x =>
                 x.AddQueuedEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
+newQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
                 ),
 times: Times.Once
         );
@@ -92,7 +92,7 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await queuedEmailService.AddAsync(queuedEmail: queuedEmail);
+        Func<Task> action = async () => await queuedEmailService.AddQueuedEmailAsync(newQueuedEmail: queuedEmail);
 
         // Then
 

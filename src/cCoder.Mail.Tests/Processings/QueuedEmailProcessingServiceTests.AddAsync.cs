@@ -21,18 +21,18 @@ public partial class QueuedEmailProcessingServiceTests
         // Given
         QueuedEmail email = CreateRandomQueuedEmail();
 
-        queuedEmailServiceMock.Setup(expression: x => x.AddAsync(queuedEmail: email, checkPrivileges: false))
+        queuedEmailServiceMock.Setup(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false))
             .ReturnsAsync(value: email);
 
         // When
-        QueuedEmail result = await queuedEmailProcessingService.AddAsync(email: email, checkPrivs: false);
+        QueuedEmail result = await queuedEmailProcessingService.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivs: false);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: email);
 
-        queuedEmailServiceMock.Verify(expression: x => x.AddAsync(queuedEmail: email, checkPrivileges: false), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
@@ -43,18 +43,18 @@ public partial class QueuedEmailProcessingServiceTests
         // Given
         QueuedEmail email = CreateRandomQueuedEmail();
 
-        queuedEmailServiceMock.Setup(expression: x => x.AddAsync(queuedEmail: email, checkPrivileges: false))
+        queuedEmailServiceMock.Setup(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false))
             .ReturnsAsync(value: email);
 
         // When
-        QueuedEmail result = await queuedEmailProcessingService.AddAsync(entity: email);
+        QueuedEmail result = await queuedEmailProcessingService.AddQueuedEmailAsync(newQueuedEmail: email);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: email);
 
-        queuedEmailServiceMock.Verify(expression: x => x.AddAsync(queuedEmail: email, checkPrivileges: false), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();
     }

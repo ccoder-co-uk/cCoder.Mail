@@ -27,7 +27,7 @@ connectionString: coreConnection);
         builder.Services.AddSingleton(implementationInstance: config);
         builder.Services.AddEventing();
 
-        builder.Services.AddMailHostedServices(configure: mailConfiguration =>
+        builder.Services.AddMailHostedServices(newMailConfiguration: mailConfiguration =>
             ConfigureMailProviders(configuration: builder.Configuration, mailConfiguration: mailConfiguration));
 
         WebApplication app = builder.Build();
@@ -70,8 +70,8 @@ separator: Environment.NewLine,
             .AddSmtpSender()
             .AddPop3Receiver()
             .AddImapReceiver()
-            .AddMicrosoftGraphSender(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration))
-            .AddMicrosoftGraphReceiver(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration));
+            .AddMicrosoftGraphSender(newMicrosoftGraphMailConfiguration: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration))
+            .AddMicrosoftGraphReceiver(newMicrosoftGraphMailConfiguration: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration));
     }
 
     private static void ConfigureGraph(

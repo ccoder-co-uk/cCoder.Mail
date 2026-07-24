@@ -21,15 +21,15 @@ public partial class SentEmailProcessingServiceTests
         // Given
         SentEmail sentEmail = CreateRandomSentEmail();
 
-        sentEmailServiceMock.Setup(expression: x => x.AddAsync(sentEmail: sentEmail))
+        sentEmailServiceMock.Setup(expression: x => x.AddSentEmailAsync(newSentEmail: sentEmail))
             .ReturnsAsync(value: sentEmail);
 
         // When
-        SentEmail result = await sentEmailProcessingService.AddAsync(entity: sentEmail);
+        SentEmail result = await sentEmailProcessingService.AddSentEmailAsync(newSentEmail: sentEmail);
 
         // Then
         Assert.Same(expected: sentEmail, actual: result);
-        sentEmailServiceMock.Verify(expression: x => x.AddAsync(sentEmail: sentEmail), times: Times.Once);
+        sentEmailServiceMock.Verify(expression: x => x.AddSentEmailAsync(newSentEmail: sentEmail), times: Times.Once);
     }
 
     [Fact]
@@ -39,13 +39,13 @@ public partial class SentEmailProcessingServiceTests
         SentEmail sentEmail = CreateRandomSentEmail();
 
         sentEmailServiceMock
-            .Setup(expression: x => x.AddAsync(sentEmail: sentEmail))
+            .Setup(expression: x => x.AddSentEmailAsync(newSentEmail: sentEmail))
             .ThrowsAsync(exception: new SecurityException(message: "Access Denied!"));
 
         // When
 
         await Assert.ThrowsAsync<SecurityException>(testCode: async () =>
-            await sentEmailProcessingService.AddAsync(entity: sentEmail)
+            await sentEmailProcessingService.AddSentEmailAsync(newSentEmail: sentEmail)
         );
 
         // Then

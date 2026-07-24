@@ -20,14 +20,14 @@ public partial class MailServerOrchestrationServiceTests
         // Given
         MailServer[] entities = [CreateRandomMailServer()];
 
-        mailServerProcessingServiceMock.Setup(expression: x => x.DeleteAllAsync(items: entities))
+        mailServerProcessingServiceMock.Setup(expression: x => x.DeleteAllMailServerAsync(deletedMailServer: entities))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAllAsync(items: entities);
+        await orchestrationService.DeleteAllMailServerAsync(deletedMailServer: entities);
 
         // Then
-        mailServerProcessingServiceMock.Verify(expression: x => x.DeleteAllAsync(items: entities), times: Times.Once);
+        mailServerProcessingServiceMock.Verify(expression: x => x.DeleteAllMailServerAsync(deletedMailServer: entities), times: Times.Once);
         mailServerProcessingServiceMock.VerifyNoOtherCalls();
         mailServerEventProcessingServiceMock.VerifyNoOtherCalls();
     }

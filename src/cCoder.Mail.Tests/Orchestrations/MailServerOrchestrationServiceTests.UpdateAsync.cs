@@ -21,7 +21,7 @@ public partial class MailServerOrchestrationServiceTests
         // Given
         MailServer entity = CreateRandomMailServer();
 
-        mailServerProcessingServiceMock.Setup(expression: x => x.UpdateAsync(entity: entity))
+        mailServerProcessingServiceMock.Setup(expression: x => x.UpdateMailServerAsync(updatedMailServer: entity))
             .ReturnsAsync(value: entity);
 
         mailServerEventProcessingServiceMock
@@ -29,14 +29,14 @@ public partial class MailServerOrchestrationServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        MailServer result = await orchestrationService.UpdateAsync(entity: entity);
+        MailServer result = await orchestrationService.UpdateMailServerAsync(updatedMailServer: entity);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        mailServerProcessingServiceMock.Verify(expression: x => x.UpdateAsync(entity: entity), times: Times.Once);
+        mailServerProcessingServiceMock.Verify(expression: x => x.UpdateMailServerAsync(updatedMailServer: entity), times: Times.Once);
         mailServerEventProcessingServiceMock.Verify(expression: x => x.RaiseMailServerUpdateEventAsync(entity: entity), times: Times.Once);
     }
 

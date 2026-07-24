@@ -56,7 +56,7 @@ public partial class Pop3MailReceiverServiceTests
             .Returns(value: Task.CompletedTask);
 
         // When
-        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
 

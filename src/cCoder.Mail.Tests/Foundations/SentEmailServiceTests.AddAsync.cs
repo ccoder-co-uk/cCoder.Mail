@@ -32,14 +32,14 @@ public partial class SentEmailServiceTests
         sentEmailBrokerMock
             .Setup(expression: x =>
                 x.AddSentEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: sentEmail))
+newSentEmail: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: sentEmail))
                 )
             )
             .Callback<cCoder.Data.Models.Mail.SentEmail>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.SentEmail value) => value);
 
         // When
-        SentEmail result = await sentEmailService.AddAsync(sentEmail: sentEmail);
+        SentEmail result = await sentEmailService.AddSentEmailAsync(newSentEmail: sentEmail);
 
         // Then
 
@@ -66,7 +66,7 @@ entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate => !ReferenceE
         sentEmailBrokerMock.Verify(
 expression: x =>
                 x.AddSentEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: sentEmail))
+newSentEmail: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: sentEmail))
                 ),
 times: Times.Once
         );
@@ -88,7 +88,7 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await sentEmailService.AddAsync(sentEmail: sentEmail);
+        Func<Task> action = async () => await sentEmailService.AddSentEmailAsync(newSentEmail: sentEmail);
 
         // Then
 

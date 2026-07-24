@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures.MailClients;
+using cCoder.Mail.Dependencies.MailClients;
 using cCoder.Mail.Services.Foundations;
 using Moq;
 

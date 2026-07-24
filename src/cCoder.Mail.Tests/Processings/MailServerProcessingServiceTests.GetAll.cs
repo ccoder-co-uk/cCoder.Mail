@@ -21,18 +21,18 @@ public partial class MailServerProcessingServiceTests
         // Given
         IQueryable<MailServer> entities = new[] { CreateRandomMailServer() }.AsQueryable();
 
-        mailServerServiceMock.Setup(expression: x => x.GetAll())
+        mailServerServiceMock.Setup(expression: x => x.GetAllMailServer())
             .Returns(value: entities);
 
         // When
-        IQueryable<MailServer> result = mailServerProcessingService.GetAll();
+        IQueryable<MailServer> result = mailServerProcessingService.GetAllMailServer();
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entities);
 
-        mailServerServiceMock.Verify(expression: x => x.GetAll(), times: Times.Once);
+        mailServerServiceMock.Verify(expression: x => x.GetAllMailServer(), times: Times.Once);
         mailServerServiceMock.VerifyNoOtherCalls();
     }
 

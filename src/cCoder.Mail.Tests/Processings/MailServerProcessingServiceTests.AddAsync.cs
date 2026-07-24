@@ -21,15 +21,15 @@ public partial class MailServerProcessingServiceTests
         // Given
         MailServer mailServer = CreateRandomMailServer();
 
-        mailServerServiceMock.Setup(expression: x => x.AddAsync(mailServer: mailServer))
+        mailServerServiceMock.Setup(expression: x => x.AddMailServerAsync(newMailServer: mailServer))
             .ReturnsAsync(value: mailServer);
 
         // When
-        MailServer result = await mailServerProcessingService.AddAsync(entity: mailServer);
+        MailServer result = await mailServerProcessingService.AddMailServerAsync(newMailServer: mailServer);
 
         // Then
         Assert.Same(expected: mailServer, actual: result);
-        mailServerServiceMock.Verify(expression: x => x.AddAsync(mailServer: mailServer), times: Times.Once);
+        mailServerServiceMock.Verify(expression: x => x.AddMailServerAsync(newMailServer: mailServer), times: Times.Once);
     }
 
     [Fact]
@@ -39,13 +39,13 @@ public partial class MailServerProcessingServiceTests
         MailServer mailServer = CreateRandomMailServer();
 
         mailServerServiceMock
-            .Setup(expression: x => x.AddAsync(mailServer: mailServer))
+            .Setup(expression: x => x.AddMailServerAsync(newMailServer: mailServer))
             .ThrowsAsync(exception: new SecurityException(message: "Access Denied!"));
 
         // When
 
         await Assert.ThrowsAsync<SecurityException>(testCode: async () =>
-            await mailServerProcessingService.AddAsync(entity: mailServer)
+            await mailServerProcessingService.AddMailServerAsync(newMailServer: mailServer)
         );
 
         // Then

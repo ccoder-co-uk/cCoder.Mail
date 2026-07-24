@@ -21,18 +21,18 @@ public partial class SentEmailProcessingServiceTests
         // Given
         SentEmail entity = CreateRandomSentEmail();
 
-        sentEmailServiceMock.Setup(expression: x => x.UpdateAsync(sentEmail: entity))
+        sentEmailServiceMock.Setup(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: entity))
             .ReturnsAsync(value: entity);
 
         // When
-        SentEmail result = await sentEmailProcessingService.UpdateAsync(entity: entity);
+        SentEmail result = await sentEmailProcessingService.UpdateSentEmailAsync(updatedSentEmail: entity);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        sentEmailServiceMock.Verify(expression: x => x.UpdateAsync(sentEmail: entity), times: Times.Once);
+        sentEmailServiceMock.Verify(expression: x => x.UpdateSentEmailAsync(updatedSentEmail: entity), times: Times.Once);
         sentEmailServiceMock.VerifyNoOtherCalls();
     }
 

@@ -20,7 +20,7 @@ public partial class QueuedEmailServiceTests
     public async Task ShouldDelegateToBrokerWhenUserIsAuthorizedForUpdateAsync()
     {
         // Given
-        QueuedEmail queuedEmail = CreateRandomQueuedEmail(appId: 7);
+        QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 7);
 
         cCoder.Data.Models.Mail.QueuedEmail submitted = null;
 
@@ -30,12 +30,12 @@ public partial class QueuedEmailServiceTests
         authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_update"));
 
         queuedEmailBrokerMock
-            .Setup(expression: x => x.UpdateQueuedEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()))
+            .Setup(expression: x => x.UpdateQueuedEmailAsync(updatedQueuedEmail: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()))
             .Callback<cCoder.Data.Models.Mail.QueuedEmail>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.QueuedEmail value) => value);
 
         // When
-        QueuedEmail result = await queuedEmailService.UpdateAsync(queuedEmail: queuedEmail);
+        QueuedEmail result = await queuedEmailService.UpdateQueuedEmailAsync(updatedQueuedEmail: queuedEmail);
 
         // Then
 
@@ -61,7 +61,7 @@ config: options => options.Excluding(expression: candidate => candidate.FailedSe
             .BeEquivalentTo(expectation: queuedEmail);
 
         queuedEmailBrokerMock.Verify(
-expression: x => x.UpdateQueuedEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()),
+expression: x => x.UpdateQueuedEmailAsync(updatedQueuedEmail: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()),
 times: Times.Once
         );
 
@@ -75,14 +75,14 @@ times: Times.Once
     public async Task ShouldThrowSecurityExceptionWhenUserLacksUpdatePrivilegeForUpdateAsync()
     {
         // Given
-        QueuedEmail queuedEmail = CreateRandomQueuedEmail(appId: 7);
+        QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 7);
 
         authorizationBrokerMock
             .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_update"))
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await queuedEmailService.UpdateAsync(queuedEmail: queuedEmail);
+        Func<Task> action = async () => await queuedEmailService.UpdateQueuedEmailAsync(updatedQueuedEmail: queuedEmail);
 
         // Then
 

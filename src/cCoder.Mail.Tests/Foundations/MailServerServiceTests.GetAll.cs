@@ -26,7 +26,7 @@ public partial class MailServerServiceTests
             .Returns(value: mailServers);
 
         // When
-        IQueryable<MailServer> result = mailServerService.GetAll();
+        IQueryable<MailServer> result = mailServerService.GetAllMailServer();
 
         // Then
 

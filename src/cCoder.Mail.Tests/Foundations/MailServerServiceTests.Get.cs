@@ -25,7 +25,7 @@ public partial class MailServerServiceTests
             .Returns(value: new[] { ToExternalMailServer(item: mailServer) }.AsQueryable());
 
         // When
-        MailServer result = mailServerService.Get(id: 7);
+        MailServer result = mailServerService.GetMailServer(mailServerId: 7);
 
         // Then
 

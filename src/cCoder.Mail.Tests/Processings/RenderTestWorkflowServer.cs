@@ -30,10 +30,14 @@ internal static class RenderTestWorkflowServer
                 string line = await reader.ReadLineAsync();
 
                 if (string.IsNullOrEmpty(value: line))
+                {
                     break;
+                }
 
                 if (line.StartsWith(value: "Content-Length:", comparisonType: StringComparison.OrdinalIgnoreCase))
+                {
                     int.TryParse(s: line["Content-Length:".Length..].Trim(), result: out contentLength);
+                }
             }
 
             if (contentLength > 0)

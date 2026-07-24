@@ -25,7 +25,7 @@ public partial class SentEmailServiceTests
             .Returns(value: new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable());
 
         // When
-        SentEmail result = sentEmailService.Get(id: 7);
+        SentEmail result = sentEmailService.GetSentEmail(sentEmailId: 7);
 
         // Then
 

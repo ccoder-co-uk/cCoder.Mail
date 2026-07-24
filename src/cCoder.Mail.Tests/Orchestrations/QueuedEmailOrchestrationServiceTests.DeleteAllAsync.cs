@@ -20,14 +20,14 @@ public partial class QueuedEmailOrchestrationServiceTests
         // Given
         QueuedEmail[] entities = [CreateRandomQueuedEmail()];
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.DeleteAllAsync(items: entities))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.DeleteAllQueuedEmailAsync(deletedQueuedEmail: entities))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAllAsync(items: entities);
+        await orchestrationService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: entities);
 
         // Then
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.DeleteAllAsync(items: entities), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.DeleteAllQueuedEmailAsync(deletedQueuedEmail: entities), times: Times.Once);
         queuedEmailProcessingServiceMock.VerifyNoOtherCalls();
         queuedEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }

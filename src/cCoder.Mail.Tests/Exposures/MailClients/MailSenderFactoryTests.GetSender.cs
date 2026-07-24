@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Mail;
+using cCoder.Mail.Dependencies.MailClients;
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
 using FluentAssertions;

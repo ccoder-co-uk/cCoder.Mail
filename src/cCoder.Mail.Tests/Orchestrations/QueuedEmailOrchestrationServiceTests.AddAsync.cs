@@ -21,7 +21,7 @@ public partial class QueuedEmailOrchestrationServiceTests
         // Given
         QueuedEmail entity = CreateRandomQueuedEmail();
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddAsync(entity: entity))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: entity))
             .ReturnsAsync(value: entity);
 
         queuedEmailEventProcessingServiceMock
@@ -29,14 +29,14 @@ public partial class QueuedEmailOrchestrationServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        QueuedEmail result = await orchestrationService.AddAsync(entity: entity);
+        QueuedEmail result = await orchestrationService.AddQueuedEmailAsync(newQueuedEmail: entity);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddAsync(entity: entity), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: entity), times: Times.Once);
         queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity), times: Times.Once);
     }
 
@@ -45,19 +45,19 @@ public partial class QueuedEmailOrchestrationServiceTests
     {
         QueuedEmail entity = CreateRandomQueuedEmail();
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddAsync(entity: entity, checkPrivs: false))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: entity, checkPrivs: false))
             .ReturnsAsync(value: entity);
 
         queuedEmailEventProcessingServiceMock
             .Setup(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity))
             .Returns(value: ValueTask.CompletedTask);
 
-        QueuedEmail result = await orchestrationService.AddAsync(entity: entity, checkPrivs: false);
+        QueuedEmail result = await orchestrationService.AddQueuedEmailAsync(newQueuedEmail: entity, checkPrivs: false);
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddAsync(entity: entity, checkPrivs: false), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: entity, checkPrivs: false), times: Times.Once);
         queuedEmailProcessingServiceMock.VerifyNoOtherCalls();
         queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity), times: Times.Once);
         queuedEmailEventProcessingServiceMock.VerifyNoOtherCalls();

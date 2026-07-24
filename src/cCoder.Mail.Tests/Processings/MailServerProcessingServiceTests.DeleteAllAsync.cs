@@ -21,14 +21,14 @@ public partial class MailServerProcessingServiceTests
         MailServer entity = CreateRandomMailServer();
         var id = entity.Id;
 
-        mailServerServiceMock.Setup(expression: x => x.DeleteAsync(id: id))
+        mailServerServiceMock.Setup(expression: x => x.DeleteAsync(iMailServerId: id))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await mailServerProcessingService.DeleteAllAsync(items: new[] { entity });
+        await mailServerProcessingService.DeleteAllMailServerAsync(deletedMailServer: new[] { entity });
 
         // Then
-        mailServerServiceMock.Verify(expression: x => x.DeleteAsync(id: id), times: Times.Once);
+        mailServerServiceMock.Verify(expression: x => x.DeleteAsync(iMailServerId: id), times: Times.Once);
         mailServerServiceMock.VerifyNoOtherCalls();
     }
 

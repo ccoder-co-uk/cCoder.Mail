@@ -45,7 +45,7 @@ cancellationToken: cancellationToken))
             .Returns(value: Task.CompletedTask);
 
         // When
-        await smtpMailSenderService.SendAsync(email: email, cancellationToken: cancellationToken);
+        await smtpMailSenderService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
 

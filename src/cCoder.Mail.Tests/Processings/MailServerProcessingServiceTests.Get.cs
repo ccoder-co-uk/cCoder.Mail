@@ -22,18 +22,18 @@ public partial class MailServerProcessingServiceTests
         MailServer entity = CreateRandomMailServer();
         var id = entity.Id;
 
-        mailServerServiceMock.Setup(expression: x => x.Get(id: id))
+        mailServerServiceMock.Setup(expression: x => x.GetMailServer(iMailServerId: id))
             .Returns(value: entity);
 
         // When
-        MailServer result = mailServerProcessingService.Get(id: id);
+        MailServer result = mailServerProcessingService.GetMailServer(mailServerId: id);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        mailServerServiceMock.Verify(expression: x => x.Get(id: id), times: Times.Once);
+        mailServerServiceMock.Verify(expression: x => x.GetMailServer(iMailServerId: id), times: Times.Once);
         mailServerServiceMock.VerifyNoOtherCalls();
     }
 

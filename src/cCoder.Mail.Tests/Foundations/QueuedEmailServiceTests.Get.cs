@@ -25,7 +25,7 @@ public partial class QueuedEmailServiceTests
             .Returns(value: new[] { ToExternalQueuedEmail(item: queuedEmail) }.AsQueryable());
 
         // When
-        QueuedEmail result = queuedEmailService.Get(id: 7);
+        QueuedEmail result = queuedEmailService.GetQueuedEmail(queuedEmailId: 7);
 
         // Then
 

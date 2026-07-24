@@ -21,14 +21,14 @@ public partial class SentEmailProcessingServiceTests
         SentEmail entity = CreateRandomSentEmail();
         var id = entity.Id;
 
-        sentEmailServiceMock.Setup(expression: x => x.DeleteAsync(id: id))
+        sentEmailServiceMock.Setup(expression: x => x.DeleteAsync(iSentEmailId: id))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await sentEmailProcessingService.DeleteAsync(id: id);
+        await sentEmailProcessingService.DeleteAsync(sentEmailId: id);
 
         // Then
-        sentEmailServiceMock.Verify(expression: x => x.DeleteAsync(id: id), times: Times.Once);
+        sentEmailServiceMock.Verify(expression: x => x.DeleteAsync(iSentEmailId: id), times: Times.Once);
         sentEmailServiceMock.VerifyNoOtherCalls();
     }
 

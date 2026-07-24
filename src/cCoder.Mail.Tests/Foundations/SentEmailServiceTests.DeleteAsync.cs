@@ -33,7 +33,7 @@ public partial class SentEmailServiceTests
         sentEmailBrokerMock
             .Setup(expression: x =>
                 x.DeleteSentEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
+deletedSentEmail: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
                         candidate.Id == sentEmail.Id
                         && candidate.AppId == sentEmail.AppId
                         && candidate.Subject == sentEmail.Subject
@@ -43,7 +43,7 @@ entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
             .ReturnsAsync(value: 1);
 
         // When
-        await sentEmailService.DeleteAsync(id: 9);
+        await sentEmailService.DeleteAsync(sentEmailId: 9);
 
         // Then
         sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
@@ -51,7 +51,7 @@ entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
         sentEmailBrokerMock.Verify(
 expression: x =>
                 x.DeleteSentEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
+deletedSentEmail: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
                         candidate.Id == sentEmail.Id
                         && candidate.AppId == sentEmail.AppId
                         && candidate.Subject == sentEmail.Subject
@@ -80,7 +80,7 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await sentEmailService.DeleteAsync(id: 9);
+        Func<Task> action = async () => await sentEmailService.DeleteAsync(sentEmailId: 9);
 
         // Then
 

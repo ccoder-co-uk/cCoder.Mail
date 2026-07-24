@@ -31,13 +31,13 @@ public partial class QueuedEmailServiceTests
         authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_delete"));
 
         queuedEmailBrokerMock
-            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(items: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
+            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
             .Returns(value: ValueTask.CompletedTask);
 
         queuedEmailBrokerMock
             .Setup(expression: x =>
                 x.DeleteQueuedEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
+deletedQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
                         candidate.Id == queuedEmail.Id
                         && candidate.AppId == queuedEmail.AppId
                         && candidate.Subject == queuedEmail.Subject
@@ -47,7 +47,7 @@ entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
             .ReturnsAsync(value: 1);
 
         // When
-        await queuedEmailService.DeleteAsync(id: 9);
+        await queuedEmailService.DeleteAsync(queuedEmailId: 9);
 
         // Then
         queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
@@ -55,7 +55,7 @@ entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
         queuedEmailBrokerMock.Verify(
 expression: x =>
                 x.DeleteQueuedEmailAsync(
-entity: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
+deletedQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
                         candidate.Id == queuedEmail.Id
                         && candidate.AppId == queuedEmail.AppId
                         && candidate.Subject == queuedEmail.Subject
@@ -66,7 +66,7 @@ times: Times.Once
 
         queuedEmailBrokerMock.Verify(
 expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(
-items: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()
+deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()
             ),
 times: Times.Once
         );
@@ -91,11 +91,11 @@ times: Times.Once
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         queuedEmailBrokerMock
-            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(items: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
+            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        Func<Task> action = async () => await queuedEmailService.DeleteAsync(id: 9);
+        Func<Task> action = async () => await queuedEmailService.DeleteAsync(queuedEmailId: 9);
 
         // Then
 

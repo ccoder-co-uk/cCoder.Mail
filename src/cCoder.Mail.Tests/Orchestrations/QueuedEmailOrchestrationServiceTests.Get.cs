@@ -22,18 +22,18 @@ public partial class QueuedEmailOrchestrationServiceTests
         int id = 1;
         QueuedEmail entity = CreateRandomQueuedEmail();
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.Get(id: id))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.GetQueuedEmail(iQueuedEmailId: id))
             .Returns(value: entity);
 
         // When
-        QueuedEmail result = orchestrationService.Get(id: id);
+        QueuedEmail result = orchestrationService.GetQueuedEmail(queuedEmailId: id);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.Get(id: id), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.GetQueuedEmail(iQueuedEmailId: id), times: Times.Once);
         queuedEmailProcessingServiceMock.VerifyNoOtherCalls();
         queuedEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }

@@ -21,18 +21,18 @@ public partial class QueuedEmailOrchestrationServiceTests
         // Given
         IQueryable<QueuedEmail> entities = new[] { CreateRandomQueuedEmail() }.AsQueryable();
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.GetAll(ignoreFilters: true))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.GetAllQueuedEmail(ignoreFilters: true))
             .Returns(value: entities);
 
         // When
-        IQueryable<QueuedEmail> result = orchestrationService.GetAll(ignoreFilters: true);
+        IQueryable<QueuedEmail> result = orchestrationService.GetAllQueuedEmail(ignoreFilters: true);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entities);
 
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
         queuedEmailProcessingServiceMock.VerifyNoOtherCalls();
         queuedEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }

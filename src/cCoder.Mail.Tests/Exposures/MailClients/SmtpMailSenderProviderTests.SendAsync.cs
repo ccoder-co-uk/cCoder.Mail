@@ -20,7 +20,7 @@ public partial class SmtpMailSenderProviderTests
         CancellationToken cancellationToken = new();
 
         smtpMailSenderServiceMock
-            .Setup(expression: service => service.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Setup(expression: service => service.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken))
             .Returns(value: Task.CompletedTask);
 
         // When
@@ -31,7 +31,7 @@ public partial class SmtpMailSenderProviderTests
         smtpMailSenderProvider.ProviderName.Should()
             .Be(expected: MailProviderNames.Smtp);
 
-        smtpMailSenderServiceMock.Verify(expression: service => service.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
+        smtpMailSenderServiceMock.Verify(expression: service => service.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
         smtpMailSenderServiceMock.VerifyNoOtherCalls();
     }
 }

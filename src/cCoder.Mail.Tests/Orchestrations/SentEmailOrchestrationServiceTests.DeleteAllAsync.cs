@@ -20,14 +20,14 @@ public partial class SentEmailOrchestrationServiceTests
         // Given
         SentEmail[] entities = [CreateRandomSentEmail()];
 
-        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAllAsync(items: entities))
+        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAllSentEmailAsync(deletedSentEmail: entities))
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAllAsync(items: entities);
+        await orchestrationService.DeleteAllSentEmailAsync(deletedSentEmail: entities);
 
         // Then
-        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAllAsync(items: entities), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAllSentEmailAsync(deletedSentEmail: entities), times: Times.Once);
         sentEmailProcessingServiceMock.VerifyNoOtherCalls();
         sentEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }

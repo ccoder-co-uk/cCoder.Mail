@@ -26,7 +26,7 @@ public partial class QueuedEmailServiceTests
             .Returns(value: queuedEmails);
 
         // When
-        IQueryable<QueuedEmail> result = queuedEmailService.GetAll();
+        IQueryable<QueuedEmail> result = queuedEmailService.GetAllQueuedEmail();
 
         // Then
 

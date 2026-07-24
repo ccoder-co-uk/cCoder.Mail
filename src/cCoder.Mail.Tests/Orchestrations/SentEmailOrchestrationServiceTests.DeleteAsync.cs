@@ -21,10 +21,10 @@ public partial class SentEmailOrchestrationServiceTests
         int id = 1;
         SentEmail entity = CreateRandomSentEmail();
 
-        sentEmailProcessingServiceMock.Setup(expression: x => x.GetAll(ignoreFilters: true))
+        sentEmailProcessingServiceMock.Setup(expression: x => x.GetAllSentEmail(ignoreFilters: true))
             .Returns(value: new[] { entity }.AsQueryable());
 
-        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAsync(id: id))
+        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAsync(iSentEmailId: id))
             .Returns(value: ValueTask.CompletedTask);
 
         sentEmailEventProcessingServiceMock
@@ -32,11 +32,11 @@ public partial class SentEmailOrchestrationServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAsync(id: id);
+        await orchestrationService.DeleteAsync(sentEmailId: id);
 
         // Then
-        sentEmailProcessingServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
-        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAsync(id: id), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.GetAllSentEmail(ignoreFilters: true), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAsync(iSentEmailId: id), times: Times.Once);
         sentEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseSentEmailDeleteEventAsync(entity: entity), times: Times.Once);
     }
 

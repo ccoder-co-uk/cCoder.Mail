@@ -25,7 +25,7 @@ public partial class MailSendingServiceTests
             .Returns(value: Task.CompletedTask);
 
         // When
-        await mailSendingService.SendAsync(email: email, cancellationToken: cancellationToken);
+        await mailSendingService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
         mailSenderClientBrokerMock.Verify(expression: broker => broker.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);

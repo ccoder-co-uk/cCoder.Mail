@@ -26,7 +26,7 @@ public partial class SentEmailServiceTests
             .Returns(value: sentEmails);
 
         // When
-        IQueryable<SentEmail> result = sentEmailService.GetAll();
+        IQueryable<SentEmail> result = sentEmailService.GetAllSentEmail();
 
         // Then
 

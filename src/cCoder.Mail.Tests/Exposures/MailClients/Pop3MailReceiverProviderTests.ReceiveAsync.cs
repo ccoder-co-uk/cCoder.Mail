@@ -21,7 +21,7 @@ public partial class Pop3MailReceiverProviderTests
         CancellationToken cancellationToken = new();
 
         pop3MailReceiverServiceMock
-            .Setup(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken))
+            .Setup(expression: service => service.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken))
             .ReturnsAsync(value: expectedEmails);
 
         // When
@@ -35,7 +35,7 @@ public partial class Pop3MailReceiverProviderTests
         actualEmails.Should()
             .BeSameAs(expected: expectedEmails);
 
-        pop3MailReceiverServiceMock.Verify(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
+        pop3MailReceiverServiceMock.Verify(expression: service => service.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
         pop3MailReceiverServiceMock.VerifyNoOtherCalls();
     }
 

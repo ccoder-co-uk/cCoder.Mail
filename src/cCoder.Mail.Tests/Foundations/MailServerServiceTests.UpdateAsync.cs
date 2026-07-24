@@ -20,7 +20,7 @@ public partial class MailServerServiceTests
     public async Task ShouldDelegateToBrokerWhenUserIsAuthorizedForUpdateAsync()
     {
         // Given
-        MailServer mailServer = CreateRandomMailServer(appId: 7);
+        MailServer mailServer = CreateRandomMailServer(id: 7);
 
         cCoder.Data.Models.Mail.MailServer submitted = null;
 
@@ -30,12 +30,12 @@ public partial class MailServerServiceTests
         authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_update"));
 
         mailServerBrokerMock
-            .Setup(expression: x => x.UpdateMailServerAsync(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()))
+            .Setup(expression: x => x.UpdateMailServerAsync(updatedMailServer: It.IsAny<cCoder.Data.Models.Mail.MailServer>()))
             .Callback<cCoder.Data.Models.Mail.MailServer>(action: candidate => submitted = candidate)
             .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.MailServer value) => value);
 
         // When
-        MailServer result = await mailServerService.UpdateAsync(mailServer: mailServer);
+        MailServer result = await mailServerService.UpdateMailServerAsync(updatedMailServer: mailServer);
 
         // Then
 
@@ -58,7 +58,7 @@ public partial class MailServerServiceTests
             .BeEquivalentTo(expectation: mailServer);
 
         mailServerBrokerMock.Verify(
-expression: x => x.UpdateMailServerAsync(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()),
+expression: x => x.UpdateMailServerAsync(updatedMailServer: It.IsAny<cCoder.Data.Models.Mail.MailServer>()),
 times: Times.Once
         );
 
@@ -72,14 +72,14 @@ times: Times.Once
     public async Task ShouldThrowSecurityExceptionWhenUserLacksUpdatePrivilegeForUpdateAsync()
     {
         // Given
-        MailServer mailServer = CreateRandomMailServer(appId: 7);
+        MailServer mailServer = CreateRandomMailServer(id: 7);
 
         authorizationBrokerMock
             .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_update"))
             .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await mailServerService.UpdateAsync(mailServer: mailServer);
+        Func<Task> action = async () => await mailServerService.UpdateMailServerAsync(updatedMailServer: mailServer);
 
         // Then
 

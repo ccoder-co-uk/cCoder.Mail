@@ -22,18 +22,18 @@ public partial class QueuedEmailProcessingServiceTests
         QueuedEmail entity = CreateRandomQueuedEmail();
         var id = entity.Id;
 
-        queuedEmailServiceMock.Setup(expression: x => x.Get(id: id))
+        queuedEmailServiceMock.Setup(expression: x => x.GetQueuedEmail(iQueuedEmailId: id))
             .Returns(value: entity);
 
         // When
-        QueuedEmail result = queuedEmailProcessingService.Get(id: id);
+        QueuedEmail result = queuedEmailProcessingService.GetQueuedEmail(queuedEmailId: id);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        queuedEmailServiceMock.Verify(expression: x => x.Get(id: id), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetQueuedEmail(iQueuedEmailId: id), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
     }
 

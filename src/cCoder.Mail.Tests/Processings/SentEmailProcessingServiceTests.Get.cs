@@ -22,18 +22,18 @@ public partial class SentEmailProcessingServiceTests
         SentEmail entity = CreateRandomSentEmail();
         var id = entity.Id;
 
-        sentEmailServiceMock.Setup(expression: x => x.Get(id: id))
+        sentEmailServiceMock.Setup(expression: x => x.GetSentEmail(iSentEmailId: id))
             .Returns(value: entity);
 
         // When
-        SentEmail result = sentEmailProcessingService.Get(id: id);
+        SentEmail result = sentEmailProcessingService.GetSentEmail(sentEmailId: id);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entity);
 
-        sentEmailServiceMock.Verify(expression: x => x.Get(id: id), times: Times.Once);
+        sentEmailServiceMock.Verify(expression: x => x.GetSentEmail(iSentEmailId: id), times: Times.Once);
         sentEmailServiceMock.VerifyNoOtherCalls();
     }
 
