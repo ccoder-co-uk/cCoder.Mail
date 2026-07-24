@@ -9,6 +9,7 @@ using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Brokers.Storages;
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Exposures;
 using cCoder.Mail.Exposures.EventHandlers;
 using cCoder.Mail.Exposures.HostedServices;
@@ -95,6 +96,8 @@ public static partial class IServiceCollectionExtensions
     private static void AddBrokers(this IServiceCollection services)
     {
         services.AddTransient<IEventHubBroker, EventHubBroker>();
+        services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
+        services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();

@@ -1,6 +1,18 @@
 {
   "Classes": [
     {
+      "Name": "cCoder.Mail.Brokers.AuthInfoBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetSsoUserId",
+          "Inputs": [],
+          "ReturnType": "System.String"
+        }
+      ]
+    },
+    {
       "Name": "cCoder.Mail.Brokers.AuthorizationBroker",
       "StandardElementType": "Broker",
       "Properties": [],
@@ -2341,6 +2353,18 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Exposures.MailConfigurationExposure",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetMailConfiguration",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
         }
       ]
     },
@@ -5203,6 +5227,10 @@
       "ToType": "cCoder.Mail.Services.Aggregations.AppAggregationService"
     },
     {
+      "FromType": "cCoder.Mail.Exposures.MailConfigurationExposure",
+      "ToType": "cCoder.Mail.Models.MailConfiguration"
+    },
+    {
       "FromType": "cCoder.Mail.Exposures.MailManagerExposure",
       "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
     },
@@ -5236,11 +5264,23 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
+      "ToType": "cCoder.Mail.Brokers.AuthInfoBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
       "ToType": "cCoder.Mail.Brokers.Events.MailServerEventBroker"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
+      "ToType": "cCoder.Mail.Brokers.AuthInfoBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
       "ToType": "cCoder.Mail.Brokers.Events.QueuedEmailEventBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
+      "ToType": "cCoder.Mail.Brokers.AuthInfoBroker"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
@@ -5252,7 +5292,7 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
+      "ToType": "cCoder.Mail.Exposures.MailConfigurationExposure"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.MailReceiverService",
@@ -5292,7 +5332,7 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
+      "ToType": "cCoder.Mail.Exposures.MailConfigurationExposure"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
@@ -5300,7 +5340,7 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
+      "ToType": "cCoder.Mail.Exposures.MailConfigurationExposure"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
@@ -5308,7 +5348,7 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
+      "ToType": "cCoder.Mail.Exposures.MailConfigurationExposure"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.QueuedEmailService",
@@ -5607,55 +5647,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Aggregations.AppAggregationService",
       "LineNumber": 14
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.QueuedEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Events.SentEmailEventService",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXF002",
-      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 13
     },
     {
       "Code": "STXO001",

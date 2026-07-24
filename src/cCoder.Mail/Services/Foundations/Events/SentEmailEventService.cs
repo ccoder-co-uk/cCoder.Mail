@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Data;
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -16,7 +16,7 @@ namespace cCoder.Mail.Services.Foundations.Events;
 
 internal partial class SentEmailEventService(
     ISentEmailEventBroker sentEmailEventBroker,
-    ICoreAuthInfo authInfo
+    IAuthInfoBroker authInfoBroker
 ) : ISentEmailEventService
 {
     public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) =>
@@ -27,7 +27,7 @@ internal partial class SentEmailEventService(
 
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
             Data = ToExternalSentEmail(entity: entity),
         };
 
@@ -42,7 +42,7 @@ internal partial class SentEmailEventService(
 
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
             Data = ToExternalSentEmail(entity: entity),
         };
 
@@ -57,7 +57,7 @@ internal partial class SentEmailEventService(
 
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
             Data = ToExternalSentEmail(entity: entity),
         };
 

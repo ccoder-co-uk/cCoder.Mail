@@ -6,15 +6,19 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailReceiverService(
-    MailConfiguration mailConfiguration,
+    IMailConfigurationExposure mailConfigurationExposure,
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailReceiverService
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
 
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";

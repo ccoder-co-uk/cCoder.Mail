@@ -6,15 +6,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class ImapMailReceiverService(
     IImapMailReceiverBroker imapMailReceiverBroker,
-    MailConfiguration mailConfiguration)
+    IMailConfigurationExposure mailConfigurationExposure)
     : IImapMailReceiverService
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     private static readonly Regex searchRegex = new(
         pattern: @"^\* SEARCH (?<ids>.*)$",
         options: RegexOptions.Multiline);

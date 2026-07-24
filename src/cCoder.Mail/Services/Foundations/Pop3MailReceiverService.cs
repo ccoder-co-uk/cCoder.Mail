@@ -4,6 +4,7 @@
 
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Models;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,9 +13,12 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class Pop3MailReceiverService(
     IPop3MailReceiverBroker pop3MailReceiverBroker,
-    MailConfiguration mailConfiguration)
+    IMailConfigurationExposure mailConfigurationExposure)
     : IPop3MailReceiverService
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     private static readonly Regex boundaryRegex = new(
         pattern: "boundary=\"?(?<boundary>[^\";]+)\"?",
         options: RegexOptions.IgnoreCase);
