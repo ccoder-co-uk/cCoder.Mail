@@ -1809,20 +1809,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Guid"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -1842,6 +1828,20 @@
             {
               "Name": "updatedMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
@@ -1889,20 +1889,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Guid"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -1922,6 +1908,20 @@
             {
               "Name": "updatedMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
@@ -1969,20 +1969,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -2002,6 +1988,20 @@
             {
               "Name": "updatedMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
@@ -2049,20 +2049,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -2082,6 +2068,20 @@
             {
               "Name": "updatedQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
@@ -2129,20 +2129,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -2165,6 +2151,20 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
         }
       ]
     },
@@ -2174,11 +2174,11 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "Receive",
+          "Name": "Get",
           "Inputs": [
             {
-              "Name": "request",
-              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
+              "Name": "count",
+              "Type": "System.Int32"
             },
             {
               "Name": "cancellationToken",
@@ -2188,11 +2188,11 @@
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
         },
         {
-          "Name": "ReceiveTop",
+          "Name": "Post",
           "Inputs": [
             {
-              "Name": "count",
-              "Type": "System.Int32"
+              "Name": "request",
+              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
             },
             {
               "Name": "cancellationToken",
@@ -2244,20 +2244,6 @@
           "ReturnType": "IActionResult"
         },
         {
-          "Name": "Patch",
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "delta",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
-        },
-        {
           "Name": "Post",
           "Inputs": [
             {
@@ -2277,6 +2263,20 @@
             {
               "Name": "updatedSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
+        },
+        {
+          "Name": "Put",
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "delta",
+              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E"
@@ -5847,67 +5847,32 @@
       "LineNumber": 10
     },
     {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 112
+      "LineNumber": 113
     },
     {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 112
+      "LineNumber": 113
     },
     {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
+      "Code": "STX0020",
+      "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 116
+      "LineNumber": 117
     },
     {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 116
-    },
-    {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 112
-    },
-    {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
+      "Code": "STX0019",
+      "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 18
-    },
-    {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STXAPI004",
-      "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 116
-    },
-    {
-      "Code": "STXAPP001",
-      "Description": "Program.cs, IServiceCollectionExtensions.cs, and WebApplicationExtensions.cs must live at the project root.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.IServiceCollectionExtensions",
-      "LineNumber": 17
+      "LineNumber": 20
     },
     {
       "Code": "STXAPP003",

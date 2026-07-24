@@ -110,7 +110,7 @@ value: new MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] Guid key, Delta<MailSender> delta)
+    public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailSender> updatedMailSender)
     {
         MailSender originalEntity = service.GetMailSender(iMailSenderConfigurationId: key);
 
@@ -119,7 +119,7 @@ value: new MailModelBuilder()
             return NotFound();
         }
 
-        delta.Patch(original: originalEntity);
+        updatedMailSender.Patch(original: originalEntity);
         return Ok(value: await service.UpdateMailSenderAsync(updatedMailSender: originalEntity));
     }
 

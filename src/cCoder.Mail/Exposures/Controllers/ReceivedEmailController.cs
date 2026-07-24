@@ -110,7 +110,7 @@ value: new MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] int key, Delta<ReceivedEmail> delta)
+    public async Task<IActionResult> Put([FromRoute] int key, Delta<ReceivedEmail> updatedReceivedEmail)
     {
         ReceivedEmail originalEntity = service.GetReceivedEmail(iReceivedEmailId: key);
 
@@ -119,7 +119,7 @@ value: new MailModelBuilder()
             return NotFound();
         }
 
-        delta.Patch(original: originalEntity);
+        updatedReceivedEmail.Patch(original: originalEntity);
         return Ok(value: await service.UpdateReceivedEmailAsync(updatedReceivedEmail: originalEntity));
     }
 

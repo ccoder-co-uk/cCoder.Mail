@@ -114,7 +114,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] int key, Delta<MailServer> delta)
+    public async Task<IActionResult> Put([FromRoute] int key, Delta<MailServer> updatedMailServer)
     {
         MailServer originalEntity = service.GetMailServer(iMailServerId: key);
 
@@ -123,7 +123,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return NotFound();
         }
 
-        delta.Patch(original: originalEntity);
+        updatedMailServer.Patch(original: originalEntity);
         return Ok(value: await service.UpdateMailServerAsync(updatedMailServer: originalEntity));
     }
 
