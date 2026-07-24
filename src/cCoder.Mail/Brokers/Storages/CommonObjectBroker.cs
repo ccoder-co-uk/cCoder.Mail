@@ -4,7 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using cCoder.Mail.Dependencies;
 
 
 namespace cCoder.Mail.Brokers.Storages;
@@ -16,40 +16,8 @@ public interface ICommonObjectBroker
 
 internal sealed class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommonObjectBroker
 {
-    public CommonObject[] GetLatestCommonObjectsPaged(int pageSize = 500)
-    {
-        using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        int skip = 0;
-        CommonObject[] page;
-        List<CommonObject> result = [];
-
-        do
-        {
-            page = coreDataContext
-                .CommonObjects
-                .AsNoTracking()
-                .GroupBy(keySelector: c => new
-                {
-                    c.Name,
-                    c.Culture,
-                    c.Key,
-                    c.Type,
-                })
-                .Select(selector: c => c.OrderByDescending(keySelector: v => v.Version)
-                .First())
-                .Skip(count: skip)
-                .Take(count: pageSize)
-                .ToArray();
-
-            if (page.Length == 0)
-            {
-                break;
-            }
-
-            result.AddRange(collection: page);
-            skip += pageSize;
-        } while (true);
-
-        return result.ToArray();
-    }
+    public CommonObject[] GetLatestCommonObjectsPaged(int pageSize = 500) =>
+        CommonObjectStorageDependency.SelectLatestCommonObjectsPaged(
+            coreContextFactory: coreContextFactory,
+            pageSize: pageSize);
 }

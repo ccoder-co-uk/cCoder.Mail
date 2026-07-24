@@ -2,10 +2,10 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using System.Security;
 using cCoder.Data;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Security;
+using cCoder.Mail.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -30,7 +30,12 @@ internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAu
     public bool IsAdminOfApp(int? appId)
     {
         User user = GetCurrentUser();
-        return user != null && appId.HasValue && HasAppAdminPrivilege(user: user, appId: appId.Value);
+
+        return user != null
+            && appId.HasValue
+            && AuthorizationDependency.HasAppAdminPrivilege(
+                user: user,
+                appId: appId.Value);
     }
 
     public bool IsAdmin(int appId, string userName)
@@ -52,24 +57,9 @@ internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAu
     {
         User user = GetCurrentUser();
 
-        if (user == null || !(HasAppAdminPrivilege(user: user, appId: appId) || HasPrivilege(user: user, appId: appId, privilege: privilege)))
-        {
-            throw new SecurityException(message: "Access Denied!");
-        }
+        AuthorizationDependency.Authorize(
+            user: user,
+            appId: appId,
+            privilege: privilege);
     }
-
-    private static bool HasPrivilege(User user, int? appId, string privilege)
-    {
-        string normalizedPrivilege = privilege.ToLower();
-
-        return (appId != null && HasAppAdminPrivilege(user: user, appId: appId.Value))
-            || (user.Roles?.Any(predicate: role =>
-                (appId == null || role.Role.AppId == appId)
-                && role.Role.Privileges.Contains(item: normalizedPrivilege))
-                ?? false);
-    }
-
-    private static bool HasAppAdminPrivilege(User user, int? appId) =>
-        appId.HasValue
-        && (user.Roles?.Any(predicate: role => role.Role.AppId == appId.Value && role.Role.Allows(user: user, privilege: "app_admin")) ?? false);
 }

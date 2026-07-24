@@ -4,6 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -27,9 +28,9 @@ internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) :
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        return ignoreFilters
-            ? coreDataContext.MailServers.IgnoreQueryFilters()
-            : coreDataContext.MailServers;
+        return StorageBrokerDependency.SelectAll(
+            entities: coreDataContext.MailServers,
+            ignoreFilters: ignoreFilters);
     }
 
     public async ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer)
@@ -60,13 +61,12 @@ internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) :
 
     public async ValueTask DeleteAllMailServersAsync(IEnumerable<MailServer> deletedMailServer)
     {
-        if (deletedMailServer == null || !deletedMailServer.Any())
-        {
-            return;
-        }
-
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailServers.RemoveRange(entities: deletedMailServer);
+
+        MailServer[] entities = StorageBrokerDependency.Normalize(
+            entities: deletedMailServer);
+
+        coreDataContext.MailServers.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();
     }
 

@@ -1056,6 +1056,18 @@
       ]
     },
     {
+      "Name": "cCoder.Mail.Dependencies.AuthorizationDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.CommonObjectStorageDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Dependencies.MailClients.ImapMailReceiverProvider",
       "StandardElementType": "Dependency",
       "Properties": [
@@ -1744,6 +1756,18 @@
           "Type": "System.String"
         }
       ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.QueuedEmailStorageDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.StorageBrokerDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
       "Methods": []
     },
     {
@@ -5480,153 +5504,6 @@
     }
   ],
   "AnalysisItems": [
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.AuthorizationBroker",
-      "LineNumber": 55
-    },
-    {
-      "Code": "STXB003",
-      "Description": "A broker must not contain loops.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
-      "LineNumber": 44
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 72
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 63
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 39
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 84
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 124
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 145
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 156
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 168
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 67
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 79
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 93
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.SentEmailBroker",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.SentEmailBroker",
-      "LineNumber": 63
-    },
     {
       "Code": "STXAPI001",
       "Description": "An API controller must have exactly one business dependency.",

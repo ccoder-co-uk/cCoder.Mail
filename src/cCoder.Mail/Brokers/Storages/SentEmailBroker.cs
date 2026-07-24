@@ -4,6 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -27,9 +28,9 @@ internal sealed class SentEmailBroker(ICoreContextFactory coreContextFactory) : 
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        return ignoreFilters
-            ? coreDataContext.SentMail.IgnoreQueryFilters()
-            : coreDataContext.SentMail;
+        return StorageBrokerDependency.SelectAll(
+            entities: coreDataContext.SentMail,
+            ignoreFilters: ignoreFilters);
     }
 
     public async ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail)
@@ -60,13 +61,12 @@ internal sealed class SentEmailBroker(ICoreContextFactory coreContextFactory) : 
 
     public async ValueTask DeleteAllSentEmailsAsync(IEnumerable<SentEmail> deletedSentEmail)
     {
-        if (deletedSentEmail == null || !deletedSentEmail.Any())
-        {
-            return;
-        }
-
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.SentMail.RemoveRange(entities: deletedSentEmail);
+
+        SentEmail[] entities = StorageBrokerDependency.Normalize(
+            entities: deletedSentEmail);
+
+        coreDataContext.SentMail.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
