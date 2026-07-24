@@ -35,7 +35,9 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
     {
         ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail]);
 
-        return AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivs: false);
+        return service.AddQueuedEmailAsync(
+            newQueuedEmail: newQueuedEmail,
+            checkPrivileges: false);
     }, isValueTask: true);
 
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
@@ -60,7 +62,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
 
         ValidateDeleteAsync(inputs: [queuedEmailId]);
 
-        QueuedEmail queuedEmail = GetAllQueuedEmail(ignoreFilters: true)
+        QueuedEmail queuedEmail = service.GetAllQueuedEmail(ignoreFilters: true)
             .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == queuedEmailId);
 
         if (queuedEmail == null)
@@ -93,8 +95,11 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             {
                 QueuedEmail savedItem =
                     item.Id == 0
-                        ? await AddQueuedEmailAsync(newQueuedEmail: item)
-                        : await UpdateQueuedEmailAsync(updatedQueuedEmail: item);
+                        ? await service.AddQueuedEmailAsync(
+                            newQueuedEmail: item,
+                            checkPrivileges: true)
+                        : await service.UpdateQueuedEmailAsync(
+                            updatedQueuedEmail: item);
 
                 results.Add(item: new Result<QueuedEmail>
                 {
@@ -125,7 +130,9 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
 
         foreach (QueuedEmail item in deletedQueuedEmail)
         {
-            await DeleteAsync(queuedEmailId: item.Id);
+            await service.DeleteAsync(
+                iQueuedEmailId: item.Id,
+                checkPrivileges: true);
         }
     }, isValueTask: true);
 }

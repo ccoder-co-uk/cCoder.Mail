@@ -34,7 +34,7 @@ internal sealed partial class MailReceiverOrchestrationService(
         {
             try
             {
-                await RunAsync(cancellationToken: cancellationToken);
+                await RunOnceAsync(cancellationToken: cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -52,6 +52,11 @@ internal sealed partial class MailReceiverOrchestrationService(
     {
         ValidateRunAsync(inputs: [cancellationToken]);
 
+        await RunOnceAsync(cancellationToken: cancellationToken);
+    }, isTask: true);
+
+    private async Task RunOnceAsync(CancellationToken cancellationToken)
+    {
         MailReceiver[] receivers = mailReceiverProcessingService.GetEnabled();
 
         foreach (MailReceiver receiver in receivers)
@@ -59,7 +64,7 @@ internal sealed partial class MailReceiverOrchestrationService(
             cancellationToken.ThrowIfCancellationRequested();
             await ReceiveAsync(receiver: receiver, cancellationToken: cancellationToken);
         }
-    }, isTask: true);
+    }
 
     private async Task ReceiveAsync(MailReceiver receiver, CancellationToken cancellationToken)
     {

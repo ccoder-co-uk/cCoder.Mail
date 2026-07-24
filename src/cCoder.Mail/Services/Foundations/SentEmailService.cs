@@ -23,7 +23,8 @@ internal partial class SentEmailService(
 
         ValidateSentEmailOnGet(inputs: [sentEmailId]);
 
-        SentEmail sentEmail = GetAllSentEmail()
+        SentEmail sentEmail = sentEmailBroker
+            .GetAllSentEmails(ignoreFilters: false)
             .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (sentEmail is not null)
@@ -31,7 +32,8 @@ internal partial class SentEmailService(
             return sentEmail;
         }
 
-        SentEmail unrestrictedSentEmail = GetAllSentEmail(ignoreFilters: true)
+        SentEmail unrestrictedSentEmail = sentEmailBroker
+            .GetAllSentEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (unrestrictedSentEmail is not null)
@@ -98,7 +100,8 @@ internal partial class SentEmailService(
 
         ValidateDeleteAsync(inputs: [sentEmailId]);
 
-        SentEmail sentEmail = GetAllSentEmail(ignoreFilters: true)
+        SentEmail sentEmail = sentEmailBroker
+            .GetAllSentEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == sentEmailId);
 
         if (sentEmail is null)

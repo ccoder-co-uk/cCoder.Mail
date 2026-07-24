@@ -1840,7 +1840,7 @@
               "Type": "System.Guid"
             },
             {
-              "Name": "delta",
+              "Name": "updatedMailReceiver",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
@@ -1920,7 +1920,7 @@
               "Type": "System.Guid"
             },
             {
-              "Name": "delta",
+              "Name": "updatedMailSender",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
@@ -2000,7 +2000,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "delta",
+              "Name": "updatedMailServer",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -2080,7 +2080,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "delta",
+              "Name": "updatedQueuedEmail",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -2160,7 +2160,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "delta",
+              "Name": "updatedReceivedEmail",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             }
           ],
@@ -2191,7 +2191,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "newMailboxReceiveRequest",
               "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
             },
             {
@@ -2275,7 +2275,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "delta",
+              "Name": "updatedSentEmail",
               "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -5847,34 +5847,6 @@
       "LineNumber": 10
     },
     {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 113
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 113
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 117
-    },
-    {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 20
-    },
-    {
       "Code": "STXAPP003",
       "Description": "Configuration objects should be registered as singletons.",
       "Severity": "Warning",
@@ -5917,69 +5889,6 @@
       "LineNumber": 69
     },
     {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 22
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 81
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 22
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 73
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 34
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 97
-    },
-    {
       "Code": "STXF002",
       "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
@@ -6012,70 +5921,7 @@
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 23
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 134
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 162
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 22
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 73
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 34
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 101
+      "LineNumber": 165
     },
     {
       "Code": "STX0022",
@@ -6167,83 +6013,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 76
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 108
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 38
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 63
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 96
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 97
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
-      "LineNumber": 128
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 76
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.SentEmailProcessingService",
-      "LineNumber": 108
     }
   ]
 }

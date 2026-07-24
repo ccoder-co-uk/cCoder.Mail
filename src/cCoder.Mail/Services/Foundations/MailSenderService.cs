@@ -19,7 +19,8 @@ internal partial class MailSenderService(
 
         ValidateMailSenderOnGet(inputs: [mailSenderId]);
 
-        MailSender mailSender = GetAllMailSender()
+        MailSender mailSender = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: false)
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (mailSender is not null)
@@ -27,7 +28,8 @@ internal partial class MailSenderService(
             return mailSender;
         }
 
-        MailSender unrestrictedMailSender = GetAllMailSender(ignoreFilters: true)
+        MailSender unrestrictedMailSender = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (unrestrictedMailSender is not null)
@@ -70,7 +72,8 @@ internal partial class MailSenderService(
 
         ValidateDeleteAsync(inputs: [mailSenderId]);
 
-        MailSender entity = GetAllMailSender(ignoreFilters: true)
+        MailSender entity = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");

@@ -19,7 +19,8 @@ internal partial class MailReceiverService(
 
         ValidateMailReceiverOnGet(inputs: [mailReceiverId]);
 
-        MailReceiver mailReceiver = GetAllMailReceiver()
+        MailReceiver mailReceiver = mailReceiverBroker
+            .GetAllMailReceivers(ignoreFilters: false)
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         if (mailReceiver is not null)
@@ -27,7 +28,8 @@ internal partial class MailReceiverService(
             return mailReceiver;
         }
 
-        MailReceiver unrestrictedMailReceiver = GetAllMailReceiver(ignoreFilters: true)
+        MailReceiver unrestrictedMailReceiver = mailReceiverBroker
+            .GetAllMailReceivers(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         if (unrestrictedMailReceiver is not null)
@@ -78,7 +80,8 @@ internal partial class MailReceiverService(
 
         ValidateDeleteAsync(inputs: [mailReceiverId]);
 
-        MailReceiver entity = GetAllMailReceiver(ignoreFilters: true)
+        MailReceiver entity = mailReceiverBroker
+            .GetAllMailReceivers(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailReceiver)}_delete");

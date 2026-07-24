@@ -23,7 +23,8 @@ internal partial class MailServerService(
 
         ValidateMailServerOnGet(inputs: [mailServerId]);
 
-        MailServer mailServer = GetAllMailServer()
+        MailServer mailServer = mailServerBroker
+            .GetAllMailServers(ignoreFilters: false)
             .FirstOrDefault(predicate: i => i.Id == mailServerId);
 
         if (mailServer is not null)
@@ -31,7 +32,8 @@ internal partial class MailServerService(
             return mailServer;
         }
 
-        MailServer unrestrictedMailServer = GetAllMailServer(ignoreFilters: true)
+        MailServer unrestrictedMailServer = mailServerBroker
+            .GetAllMailServers(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == mailServerId);
 
         if (unrestrictedMailServer is not null)
@@ -94,7 +96,8 @@ internal partial class MailServerService(
 
         ValidateDeleteAsync(inputs: [mailServerId]);
 
-        MailServer mailServer = GetAllMailServer(ignoreFilters: true)
+        MailServer mailServer = mailServerBroker
+            .GetAllMailServers(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailServerId);
 
         if (mailServer is null)

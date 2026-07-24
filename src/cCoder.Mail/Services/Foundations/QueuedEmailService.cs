@@ -20,7 +20,8 @@ internal partial class QueuedEmailService(
 
         ValidateQueuedEmailOnGet(inputs: [queuedEmailId]);
 
-        QueuedEmail queuedEmail = GetAllQueuedEmail()
+        QueuedEmail queuedEmail = queuedEmailBroker
+            .GetAllQueuedEmails(ignoreFilters: false)
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (queuedEmail is not null)
@@ -28,7 +29,8 @@ internal partial class QueuedEmailService(
             return queuedEmail;
         }
 
-        QueuedEmail unrestrictedQueuedEmail = GetAllQueuedEmail(ignoreFilters: true)
+        QueuedEmail unrestrictedQueuedEmail = queuedEmailBroker
+            .GetAllQueuedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (unrestrictedQueuedEmail is not null)
@@ -131,7 +133,8 @@ internal partial class QueuedEmailService(
 
         ValidateDeleteAsync(inputs: [queuedEmailId, checkPrivileges]);
 
-        QueuedEmail queuedEmail = GetAllQueuedEmail(ignoreFilters: true)
+        QueuedEmail queuedEmail = queuedEmailBroker
+            .GetAllQueuedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
 
         if (queuedEmail is null)

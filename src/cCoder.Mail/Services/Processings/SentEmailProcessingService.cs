@@ -73,8 +73,8 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
             {
                 SentEmail savedItem =
                     item.Id == 0
-                        ? await AddSentEmailAsync(newSentEmail: item)
-                        : await UpdateSentEmailAsync(updatedSentEmail: item);
+                        ? await service.AddSentEmailAsync(newSentEmail: item)
+                        : await service.UpdateSentEmailAsync(updatedSentEmail: item);
 
                 results.Add(item: new Result<SentEmail>
                 {
@@ -105,7 +105,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
 
         foreach (SentEmail item in deletedSentEmail)
         {
-            await DeleteAsync(sentEmailId: item.Id);
+            await service.DeleteAsync(iSentEmailId: item.Id);
         }
     }, isValueTask: true);
 }

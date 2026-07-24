@@ -34,7 +34,7 @@ internal sealed partial class MailSenderOrchestrationService(
         {
             try
             {
-                await RunAsync(cancellationToken: cancellationToken);
+                await RunOnceAsync(cancellationToken: cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -52,6 +52,11 @@ internal sealed partial class MailSenderOrchestrationService(
     {
         ValidateRunAsync(inputs: [cancellationToken]);
 
+        await RunOnceAsync(cancellationToken: cancellationToken);
+    }, isTask: true);
+
+    private async Task RunOnceAsync(CancellationToken cancellationToken)
+    {
         QueuedEmail[] queue = queuedEmailService.GetDispatchBatch(batchSize: 10, maxFailures: 10);
 
         if (queue.Length == 0)
@@ -83,7 +88,7 @@ internal sealed partial class MailSenderOrchestrationService(
         log.LogInformation(
             message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
             args: [success + failures, success, failures]);
-    }, isTask: true);
+    }
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)
     {

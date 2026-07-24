@@ -73,8 +73,8 @@ internal partial class MailServerProcessingService(IMailServerService service) :
             {
                 MailServer savedItem =
                     item.Id == 0
-                        ? await AddMailServerAsync(newMailServer: item)
-                        : await UpdateMailServerAsync(updatedMailServer: item);
+                        ? await service.AddMailServerAsync(newMailServer: item)
+                        : await service.UpdateMailServerAsync(updatedMailServer: item);
 
                 results.Add(item: new Result<MailServer>
                 {
@@ -105,7 +105,7 @@ internal partial class MailServerProcessingService(IMailServerService service) :
 
         foreach (MailServer item in deletedMailServer)
         {
-            await DeleteAsync(mailServerId: item.Id);
+            await service.DeleteAsync(iMailServerId: item.Id);
         }
     }, isValueTask: true);
 }

@@ -19,7 +19,8 @@ internal partial class ReceivedEmailService(
 
         ValidateReceivedEmailOnGet(inputs: [receivedEmailId]);
 
-        ReceivedEmail receivedEmail = GetAllReceivedEmail()
+        ReceivedEmail receivedEmail = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: false)
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (receivedEmail is not null)
@@ -27,7 +28,8 @@ internal partial class ReceivedEmailService(
             return receivedEmail;
         }
 
-        ReceivedEmail unrestrictedReceivedEmail = GetAllReceivedEmail(ignoreFilters: true)
+        ReceivedEmail unrestrictedReceivedEmail = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (unrestrictedReceivedEmail is not null)
@@ -70,7 +72,8 @@ internal partial class ReceivedEmailService(
 
         ValidateDeleteAsync(inputs: [receivedEmailId]);
 
-        ReceivedEmail entity = GetAllReceivedEmail(ignoreFilters: true)
+        ReceivedEmail entity = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(ReceivedEmail)}_delete");
