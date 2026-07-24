@@ -15,6 +15,18 @@ internal sealed partial class Pop3MailReceiverService(
     MailConfiguration mailConfiguration)
     : IPop3MailReceiverService
 {
+    private static readonly Regex boundaryRegex = new(
+        pattern: "boundary=\"?(?<boundary>[^\";]+)\"?",
+        options: RegexOptions.IgnoreCase);
+
+    private static readonly Regex quotedPrintableRegex = new(
+        pattern: "=([0-9A-F]{2})",
+        options: RegexOptions.IgnoreCase);
+
+    private static readonly Regex encodedWordRegex = new(
+        pattern: @"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=",
+        options: RegexOptions.IgnoreCase);
+
     public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
@@ -216,7 +228,7 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
 
     private static ParsedBody ParseMultipartBody(string[] bodyLines, string contentType)
     {
-        string boundary = BoundaryRegex()
+        string boundary = boundaryRegex
             .Match(input: contentType ?? string.Empty)
             .Groups["boundary"].Value;
 
@@ -296,7 +308,7 @@ transferEncoding: partTransferEncoding);
         string unfolded = content.Replace(oldValue: "=\r\n", newValue: string.Empty)
             .Replace(oldValue: "=\n", newValue: string.Empty);
 
-        return QuotedPrintableRegex()
+        return quotedPrintableRegex
             .Replace(
 input: unfolded,
 evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase: 16)).ToString());
@@ -309,7 +321,7 @@ evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase
             return value;
         }
 
-        return EncodedWordRegex()
+        return encodedWordRegex
             .Replace(input: value, evaluator: match =>
         {
             string encoding = match.Groups["encoding"].Value;
@@ -378,12 +390,4 @@ evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase
 
     private readonly record struct ParsedBody(string Content, bool IsBodyHtml);
 
-    [GeneratedRegex("boundary=\"?(?<boundary>[^\";]+)\"?", RegexOptions.IgnoreCase)]
-    private static partial Regex BoundaryRegex();
-
-    [GeneratedRegex("=([0-9A-F]{2})", RegexOptions.IgnoreCase)]
-    private static partial Regex QuotedPrintableRegex();
-
-    [GeneratedRegex(@"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=", RegexOptions.IgnoreCase)]
-    private static partial Regex EncodedWordRegex();
 }

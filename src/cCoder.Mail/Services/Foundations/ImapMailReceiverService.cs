@@ -15,6 +15,14 @@ internal sealed partial class ImapMailReceiverService(
     MailConfiguration mailConfiguration)
     : IImapMailReceiverService
 {
+    private static readonly Regex searchRegex = new(
+        pattern: @"^\* SEARCH (?<ids>.*)$",
+        options: RegexOptions.Multiline);
+
+    private static readonly Regex encodedWordRegex = new(
+        pattern: @"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=",
+        options: RegexOptions.IgnoreCase);
+
     public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
@@ -186,7 +194,7 @@ internal sealed partial class ImapMailReceiverService(
     }
 
     private static int[] ParseSearchIds(string response) =>
-        SearchRegex()
+        searchRegex
         .Match(input: response)
         .Groups["ids"].Value
             .Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries)
@@ -259,7 +267,7 @@ internal sealed partial class ImapMailReceiverService(
     private static string DecodeHeader(string value) =>
         string.IsNullOrWhiteSpace(value: value)
             ? value
-            : EncodedWordRegex()
+            : encodedWordRegex
         .Replace(input: value, evaluator: match =>
             {
                 string encoding = match.Groups["encoding"].Value;
@@ -323,9 +331,4 @@ internal sealed partial class ImapMailReceiverService(
             ? throw new InvalidOperationException(message: $"{configurationName} is required to receive mailbox messages.")
             : value;
 
-    [GeneratedRegex(@"^\* SEARCH (?<ids>.*)$", RegexOptions.Multiline)]
-    private static partial Regex SearchRegex();
-
-    [GeneratedRegex(@"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=", RegexOptions.IgnoreCase)]
-    private static partial Regex EncodedWordRegex();
 }
