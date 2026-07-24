@@ -73,7 +73,9 @@ internal sealed partial class MailSenderOrchestrationService(
                 mailSendingProcessingService.LogError(exception: ex);
             }
         }
-    }, isTask: true);
+    },
+    isTask: true,
+    cancellationToken: cancellationToken);
 
     public Task RunAsync(CancellationToken cancellationToken = default) =>
         TryCatch(operation: async () =>
@@ -81,7 +83,9 @@ internal sealed partial class MailSenderOrchestrationService(
         ValidateRunAsync(inputs: [cancellationToken]);
 
         await RunOnceAsync(cancellationToken: cancellationToken);
-    }, isTask: true);
+    },
+    isTask: true,
+    cancellationToken: cancellationToken);
 
     private async Task RunOnceAsync(CancellationToken cancellationToken)
     {

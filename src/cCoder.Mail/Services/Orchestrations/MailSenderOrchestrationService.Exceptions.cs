@@ -58,11 +58,16 @@ internal sealed partial class MailSenderOrchestrationService
 
     private static async Task TryCatch(
         Func<Task> operation,
-        bool isTask)
+        bool isTask,
+        CancellationToken cancellationToken)
     {
         try
         {
             await operation();
+        }
+        catch (OperationCanceledException)
+            when (cancellationToken.IsCancellationRequested)
+        {
         }
         catch (MailValidationException innerException)
         {
