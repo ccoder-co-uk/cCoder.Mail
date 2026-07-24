@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -21,11 +25,12 @@ public partial class MailServerServiceTests
 
     public MailServerServiceTests()
     {
-        mailServerBrokerMock = new Mock<IMailServerBroker>(MockBehavior.Strict);
-        authorizationBrokerMock = new Mock<IAuthorizationBroker>(MockBehavior.Strict);
+        mailServerBrokerMock = new Mock<IMailServerBroker>(behavior: MockBehavior.Strict);
+        authorizationBrokerMock = new Mock<IAuthorizationBroker>(behavior: MockBehavior.Strict);
+
         mailServerService = new MailServerService(
-            mailServerBrokerMock.Object,
-            authorizationBrokerMock.Object
+mailServerBroker: mailServerBrokerMock.Object,
+authorizationBroker: authorizationBrokerMock.Object
         );
     }
 
@@ -33,15 +38,15 @@ public partial class MailServerServiceTests
     {
         MailServer mailServer = Builder<MailServer>
             .CreateNew()
-            .With(x => x.Id = id)
-            .With(x => x.AppId = appId)
-            .With(x => x.Name = $"MailServer-{Guid.NewGuid():N}")
-            .With(x => x.User = $"user-{Guid.NewGuid():N}")
-            .With(x => x.Password = $"password-{Guid.NewGuid():N}")
-            .With(x => x.Host = $"smtp-{Guid.NewGuid():N}.test")
-            .With(x => x.FromEmail = $"mail-{Guid.NewGuid():N}@test.local")
-            .With(x => x.Port = 25)
-            .With(x => x.EnableSSL = true)
+            .With(func: x => x.Id = id)
+            .With(func: x => x.AppId = appId)
+            .With(func: x => x.Name = $"MailServer-{Guid.NewGuid():N}")
+            .With(func: x => x.User = $"user-{Guid.NewGuid():N}")
+            .With(func: x => x.Password = $"password-{Guid.NewGuid():N}")
+            .With(func: x => x.Host = $"smtp-{Guid.NewGuid():N}.test")
+            .With(func: x => x.FromEmail = $"mail-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.Port = 25)
+            .With(func: x => x.EnableSSL = true)
             .Build();
 
         return mailServer;
@@ -64,16 +69,3 @@ public partial class MailServerServiceTests
                 App = item.App == null ? null : new DataApp { Id = item.App.Id, Name = item.App.Name },
             };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,18 +16,26 @@ public sealed partial class MailDeliveryTests
         // Given
         IntegrationSettings settings = ReadSettings();
         string[] missingVariables = settings.MissingVariables();
-        missingVariables.Should().BeEmpty(
-            "the mail receive integration needs configured Microsoft Graph and acceptance database settings. "
-            + $"Missing variables: {string.Join(", ", missingVariables)}");
 
-        await using IntegrationApplication application = await StartApplicationAsync(settings);
+        missingVariables.Should()
+            .BeEmpty(
+because: "the mail receive integration needs configured Microsoft Graph and acceptance database settings. "
+            + $"Missing variables: {string.Join(separator: ", ", value: missingVariables)}");
+
+        await using IntegrationApplication application = await StartApplicationAsync(settings: settings);
 
         // When
-        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(application.Client, 1);
+        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(client: application.Client, count: 1);
 
         // Then
-        receivedEmails.Should().ContainSingle();
-        receivedEmails[0].Subject.Should().NotBeNullOrWhiteSpace();
-        receivedEmails[0].ReceivedOn.Should().NotBe(default);
+
+        receivedEmails.Should()
+            .ContainSingle();
+
+        receivedEmails[0].Subject.Should()
+            .NotBeNullOrWhiteSpace();
+
+        receivedEmails[0].ReceivedOn.Should()
+            .NotBe(unexpected: default);
     }
 }

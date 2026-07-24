@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -7,18 +11,18 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface ISentEmailOrchestrationService
 {
-    SentEmail Get(int id);
+    SentEmail GetSentEmail(int iSentEmailId);
 
-    IQueryable<SentEmail> GetAll(bool ignoreFilters = false);
+    IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
 
-    ValueTask<SentEmail> AddAsync(SentEmail entity);
+    ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
 
-    ValueTask<SentEmail> UpdateAsync(SentEmail entity);
+    ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask DeleteAsync(int iSentEmailId);
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items);
+    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail);
 
-    ValueTask DeleteAllAsync(IEnumerable<SentEmail> items);
+    ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
 }

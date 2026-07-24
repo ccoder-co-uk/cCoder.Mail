@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -8,6 +12,7 @@ using cCoder.Data.Models.Security;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Orchestrations;
 using cCoder.Security.Data.EF;
+using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
 using FluentAssertions;
 using Mail.Web;
@@ -32,28 +37,29 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
     private static IConfigurationRoot TestConfiguration { get; } =
         new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.testing.json", optional: true)
-            .AddEnvironmentVariables()
-            .Build();
+            .SetBasePath(basePath: AppContext.BaseDirectory)
+        .AddJsonFile(path: "appsettings.testing.json", optional: true)
+        .AddEnvironmentVariables()
+        .Build();
 
     private ITestOutputHelper Output { get; } = output;
 
     private static async Task<IntegrationApplication> StartApplicationAsync(IntegrationSettings settings)
     {
-        IntegrationWebApplicationFactory factory = new(settings);
-        IntegrationDatabaseManager databaseManager = new(factory.Services);
+        IntegrationWebApplicationFactory factory = new(settings: settings);
+        IntegrationDatabaseManager databaseManager = new(services: factory.Services);
 
         await databaseManager.ResetDatabasesAsync();
 
-        IntegrationSeed seed = await SeedAsync(factory.Services, settings);
-        HttpClient client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        IntegrationSeed seed = await SeedAsync(services: factory.Services, settings: settings);
+
+        HttpClient client = factory.CreateClient(options: new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false,
-            BaseAddress = new Uri("https://localhost"),
+            BaseAddress = new Uri(uriString: "https://localhost"),
         });
 
-        return new IntegrationApplication(factory, databaseManager, client, seed.AppId, seed.MailSenderId);
+        return new IntegrationApplication(factory: factory, databaseManager: databaseManager, client: client, appId: seed.AppId, mailSenderId: seed.MailSenderId);
     }
 
     private async Task<QueuedEmail> QueueEmailAsync(
@@ -65,30 +71,33 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         string to)
     {
         using HttpResponseMessage response = await client.PostAsJsonAsync(
-            "/Api/Core/QueuedEmail",
-            new
-            {
-                appId,
-                sentByUserId = "Guest",
-                subject,
-                content,
-                to,
-                cc = string.Empty,
-                isBodyHtml = false,
-                mailServerName = MailServerName,
-                mailSenderId,
-            });
+requestUri: "/Api/Core/QueuedEmail",
+value: new
+{
+    appId,
+    sentByUserId = "Guest",
+    subject,
+    content,
+    to,
+    cc = string.Empty,
+    isBodyHtml = false,
+    mailServerName = MailServerName,
+    mailSenderId,
+});
 
         string responseContent = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK, responseContent);
 
-        return JsonSerializer.Deserialize<QueuedEmail>(responseContent, JsonOptions)
-            ?? throw new InvalidOperationException("Expected queued email payload.");
+        response.StatusCode.Should()
+            .Be(expected: HttpStatusCode.OK, because: responseContent);
+
+        return JsonSerializer.Deserialize<QueuedEmail>(json: responseContent, options: JsonOptions)
+            ?? throw new InvalidOperationException(message: "Expected queued email payload.");
     }
 
     private static async Task DispatchQueuedMailAsync(IServiceProvider services)
     {
         using IServiceScope scope = services.CreateScope();
+
         IMailSenderOrchestrationService mailSender =
             scope.ServiceProvider.GetRequiredService<IMailSenderOrchestrationService>();
 
@@ -98,13 +107,15 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     private static async Task<IReadOnlyList<SentEmail>> GetSentEmailsAsync(HttpClient client, string subject)
     {
         using HttpResponseMessage response = await client.GetAsync(
-            $"/Api/Core/SentEmail?$top=10&$filter={Uri.EscapeDataString($"Subject eq '{ODataString(subject)}'")}");
+requestUri: $"/Api/Core/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringToEscape: $"Subject eq '{ODataString(value: subject)}'")}");
 
         string content = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
 
-        return JsonSerializer.Deserialize<ODataEnvelope<SentEmail>>(content, JsonOptions)?.Value
-            ?? throw new InvalidOperationException("Expected sent email OData payload.");
+        response.StatusCode.Should()
+            .Be(expected: HttpStatusCode.OK, because: content);
+
+        return JsonSerializer.Deserialize<ODataEnvelope<SentEmail>>(json: content, options: JsonOptions)?.Value
+            ?? throw new InvalidOperationException(message: "Expected sent email OData payload.");
     }
 
     private async Task<ReceivedEmail> ReceiveEmailAsync(
@@ -114,27 +125,32 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         string content,
         DateTimeOffset from)
     {
-        DateTimeOffset deadline = DateTimeOffset.UtcNow.Add(settings.ReceiveTimeout);
+        DateTimeOffset deadline = DateTimeOffset.UtcNow.Add(timeSpan: settings.ReceiveTimeout);
         List<string> observedSubjects = [];
 
         do
         {
-            ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(client, settings, from);
-            ReceivedEmail receivedEmail = receivedEmails.FirstOrDefault(email =>
-                string.Equals(email.Subject, subject, StringComparison.Ordinal)
-                && (email.Content ?? string.Empty).Contains(content, StringComparison.Ordinal));
+            ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(client: client, settings: settings, from: from);
+
+            ReceivedEmail receivedEmail = receivedEmails.FirstOrDefault(predicate: email =>
+                string.Equals(a: email.Subject, b: subject, comparisonType: StringComparison.Ordinal)
+                && (email.Content ?? string.Empty).Contains(value: content, comparisonType: StringComparison.Ordinal));
 
             if (receivedEmail is not null)
+            {
                 return receivedEmail;
+            }
 
-            observedSubjects = [.. receivedEmails.Select(email => email.Subject).Where(value => !string.IsNullOrWhiteSpace(value))];
-            await Task.Delay(settings.ReceivePollDelay);
+            observedSubjects = [.. receivedEmails.Select(selector: email => email.Subject)
+                .Where(predicate: value => !string.IsNullOrWhiteSpace(value: value))];
+
+            await Task.Delay(delay: settings.ReceivePollDelay);
         }
         while (DateTimeOffset.UtcNow < deadline);
 
         throw new InvalidOperationException(
-            $"The sent email was not received within {settings.ReceiveTimeout}. " +
-            $"Observed subjects: {string.Join(", ", observedSubjects)}");
+message: $"The sent email was not received within {settings.ReceiveTimeout}. " +
+            $"Observed subjects: {string.Join(separator: ", ", values: observedSubjects)}");
     }
 
     private static async Task<ReceivedEmail[]> ReceiveEmailsAsync(
@@ -143,37 +159,42 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         DateTimeOffset from)
     {
         using HttpResponseMessage response = await client.PostAsJsonAsync(
-            "/Api/Core/ReceivedEmail/Receive",
-            new MailboxReceiveRequest
-            {
-                User = settings.ReceiveUser,
-                From = from,
-                To = DateTimeOffset.UtcNow.AddMinutes(5),
-                MaximumMessages = settings.MaximumMessages,
-            });
+requestUri: "/Api/Core/ReceivedEmail/Receive",
+value: new MailboxReceiveRequest
+{
+    User = settings.ReceiveUser,
+    From = from,
+    To = DateTimeOffset.UtcNow.AddMinutes(minutes: 5),
+    MaximumMessages = settings.MaximumMessages,
+});
 
         string content = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
 
-        return JsonSerializer.Deserialize<ReceivedEmail[]>(content, JsonOptions)
-            ?? throw new InvalidOperationException("Expected received email payload.");
+        response.StatusCode.Should()
+            .Be(expected: HttpStatusCode.OK, because: content);
+
+        return JsonSerializer.Deserialize<ReceivedEmail[]>(json: content, options: JsonOptions)
+            ?? throw new InvalidOperationException(message: "Expected received email payload.");
     }
 
     private static async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(
         HttpClient client,
         int count)
     {
-        using HttpResponseMessage response = await client.GetAsync($"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
+        using HttpResponseMessage response = await client.GetAsync(requestUri: $"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
         string content = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
 
-        return JsonSerializer.Deserialize<ReceivedEmail[]>(content, JsonOptions)
-            ?? throw new InvalidOperationException("Expected received email payload.");
+        response.StatusCode.Should()
+            .Be(expected: HttpStatusCode.OK, because: content);
+
+        return JsonSerializer.Deserialize<ReceivedEmail[]>(json: content, options: JsonOptions)
+            ?? throw new InvalidOperationException(message: "Expected received email payload.");
     }
 
     private static async Task<IntegrationSeed> SeedAsync(IServiceProvider services, IntegrationSettings settings)
     {
         using IServiceScope scope = services.CreateScope();
+
         using CoreDataContext core = scope.ServiceProvider
             .GetRequiredService<ICoreContextFactory>()
             .CreateCoreContext();
@@ -188,17 +209,20 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             ConfigJson = "{}",
         };
 
-        core.Set<App>().Add(app);
+        core.Set<App>()
+            .Add(entity: app);
+
         await core.SaveChangesAsync();
 
-        core.Set<User>().Add(new User
-        {
-            Id = "Guest",
-            DefaultCultureId = string.Empty,
-            DisplayName = "Guest",
-            Email = settings.To,
-            IsActive = true,
-        });
+        core.Set<User>()
+            .Add(entity: new User
+            {
+                Id = "Guest",
+                DefaultCultureId = string.Empty,
+                DisplayName = "Guest",
+                Email = settings.To,
+                IsActive = true,
+            });
 
         Role role = new()
         {
@@ -214,8 +238,12 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
                 + "receivedemail_create,receivedemail_read,receivedemail_update,receivedemail_delete",
         };
 
-        core.Set<Role>().Add(role);
-        core.Set<UserRole>().Add(new UserRole { RoleId = role.Id, UserId = "Guest" });
+        core.Set<Role>()
+            .Add(entity: role);
+
+        core.Set<UserRole>()
+            .Add(entity: new UserRole { RoleId = role.Id, UserId = "Guest" });
+
         MailSender mailSender = new()
         {
             AppId = app.Id,
@@ -229,58 +257,66 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             FromEmail = settings.From,
         };
 
-        core.Set<MailSender>().Add(mailSender);
+        core.Set<MailSender>()
+            .Add(entity: mailSender);
 
         await core.SaveChangesAsync();
-        return new IntegrationSeed(app.Id, mailSender.Id);
+        return new IntegrationSeed(AppId: app.Id, MailSenderId: mailSender.Id);
     }
 
     private static IntegrationSettings ReadSettings()
     {
-        string sendHost = ReadRequired("CCODER_MAIL_INTEGRATION_SEND_HOST");
+        string sendHost = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_SEND_HOST");
+
         string sendUser = ReadRequired(
-            "CCODER_MAIL_INTEGRATION_SEND_USER",
-            "CCODER_MAIL_INTEGRATION_SMTP_USER");
+variableName: "CCODER_MAIL_INTEGRATION_SEND_USER",
+fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER");
+
         string receiveUser = ReadRequired(
-            "CCODER_MAIL_INTEGRATION_RECEIVE_USER",
-            "CCODER_MAIL_INTEGRATION_SEND_USER");
-        string to = ReadRequired("CCODER_MAIL_INTEGRATION_TO");
-        string from = ReadRequired("CCODER_MAIL_INTEGRATION_SMTP_FROM");
-        receiveUser = string.IsNullOrWhiteSpace(receiveUser) ? sendUser : receiveUser;
+variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_USER",
+fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
+
+        string to = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_TO");
+        string from = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_SMTP_FROM");
+        receiveUser = string.IsNullOrWhiteSpace(value: receiveUser) ? sendUser : receiveUser;
 
         return new()
         {
-            CoreConnectionString = AddDatabaseSuffix(CoreConnectionVariableName, "mail-integration"),
-            SsoConnectionString = AddDatabaseSuffix(SsoConnectionVariableName, "mail-integration"),
-            SendHost = string.IsNullOrWhiteSpace(sendHost) ? "graph.microsoft.com" : sendHost,
+            CoreConnectionString = AddDatabaseSuffix(variableName: CoreConnectionVariableName, suffix: "mail-integration"),
+            SsoConnectionString = AddDatabaseSuffix(variableName: SsoConnectionVariableName, suffix: "mail-integration"),
+            SendHost = string.IsNullOrWhiteSpace(value: sendHost) ? "graph.microsoft.com" : sendHost,
             SendUser = sendUser,
-            From = string.IsNullOrWhiteSpace(from) ? sendUser : from,
+            From = string.IsNullOrWhiteSpace(value: from) ? sendUser : from,
             ReceiveUser = receiveUser,
-            To = string.IsNullOrWhiteSpace(to) ? receiveUser : to,
-            MaximumMessages = ReadInt("CCODER_MAIL_INTEGRATION_MAX_MESSAGES", 50),
-            ReceiveTimeout = TimeSpan.FromSeconds(ReadInt("CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS", 120)),
-            ReceivePollDelay = TimeSpan.FromSeconds(ReadInt("CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS", 10)),
+            To = string.IsNullOrWhiteSpace(value: to) ? receiveUser : to,
+            MaximumMessages = ReadInt(variableName: "CCODER_MAIL_INTEGRATION_MAX_MESSAGES", defaultValue: 50),
+            ReceiveTimeout = TimeSpan.FromSeconds(seconds: ReadInt(variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS", defaultValue: 120)),
+            ReceivePollDelay = TimeSpan.FromSeconds(seconds: ReadInt(variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS", defaultValue: 10)),
         };
     }
 
     private static string ODataString(string value) =>
-        (value ?? string.Empty).Replace("'", "''", StringComparison.Ordinal);
+        (value ?? string.Empty).Replace(oldValue: "'", newValue: "''", comparisonType: StringComparison.Ordinal);
 
     private static string AddDatabaseSuffix(string variableName, string suffix)
     {
-        string connectionString = ReadRequired(variableName);
+        string connectionString = ReadRequired(variableName: variableName);
 
-        if (string.IsNullOrWhiteSpace(connectionString))
+        if (string.IsNullOrWhiteSpace(value: connectionString))
+        {
             return string.Empty;
+        }
 
-        SqlConnectionStringBuilder builder = new(connectionString)
+        SqlConnectionStringBuilder builder = new(connectionString: connectionString)
         {
             Encrypt = true,
             TrustServerCertificate = true,
         };
 
-        if (string.IsNullOrWhiteSpace(builder.InitialCatalog))
+        if (string.IsNullOrWhiteSpace(value: builder.InitialCatalog))
+        {
             return builder.ConnectionString;
+        }
 
         builder.InitialCatalog = $"{builder.InitialCatalog}-{suffix}";
         return builder.ConnectionString;
@@ -290,29 +326,35 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     {
         string value = TestConfiguration[variableName];
 
-        if (!string.IsNullOrWhiteSpace(value))
+        if (!string.IsNullOrWhiteSpace(value: value))
+        {
             return value;
+        }
 
-        return fallbackVariableName is null ? string.Empty : ReadRequired(fallbackVariableName);
+        return fallbackVariableName is null ? string.Empty : ReadRequired(variableName: fallbackVariableName);
     }
 
     private static bool ReadBool(string variableName, bool defaultValue = false)
     {
-        string value = ReadRequired(variableName);
+        string value = ReadRequired(variableName: variableName);
 
-        if (string.IsNullOrWhiteSpace(value))
+        if (string.IsNullOrWhiteSpace(value: value))
+        {
             return defaultValue;
+        }
 
-        if (int.TryParse(value, out int numericValue))
+        if (int.TryParse(s: value, result: out int numericValue))
+        {
             return numericValue != 0;
+        }
 
-        return bool.Parse(value);
+        return bool.Parse(value: value);
     }
 
     private static int ReadInt(string variableName, int defaultValue)
     {
-        string value = ReadRequired(variableName);
-        return string.IsNullOrWhiteSpace(value) ? defaultValue : int.Parse(value);
+        string value = ReadRequired(variableName: variableName);
+        return string.IsNullOrWhiteSpace(value: value) ? defaultValue : int.Parse(s: value);
     }
 
     private sealed record ODataEnvelope<T>(List<T> Value);
@@ -340,20 +382,21 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         public TimeSpan ReceivePollDelay { get; init; }
 
         public string[] MissingVariables() =>
-        [
-            .. RequiredVariableNames().Where(name => string.IsNullOrWhiteSpace(ReadRequired(name))),
-            .. string.IsNullOrWhiteSpace(ReadRequired(
-                "CCODER_MAIL_INTEGRATION_SEND_USER",
-                "CCODER_MAIL_INTEGRATION_SMTP_USER"))
+            [
+            .. RequiredVariableNames()
+            .Where(predicate: name => string.IsNullOrWhiteSpace(value: ReadRequired(variableName: name))),
+            .. string.IsNullOrWhiteSpace(value: ReadRequired(
+variableName: "CCODER_MAIL_INTEGRATION_SEND_USER",
+fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
                 ? ["CCODER_MAIL_INTEGRATION_SEND_USER or CCODER_MAIL_INTEGRATION_SMTP_USER"]
                 : Array.Empty<string>(),
         ];
 
         public static string RequiredVariableSummary() =>
-            string.Join(", ", RequiredVariableNames());
+            string.Join(separator: ", ", value: RequiredVariableNames());
 
         private static string[] RequiredVariableNames() =>
-        [
+            [
             CoreConnectionVariableName,
             SsoConnectionVariableName,
             "CCODER_MAIL_GRAPH_TENANT_ID",
@@ -393,39 +436,44 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseEnvironment("Acceptance");
-            builder.ConfigureAppConfiguration((_, config) =>
+            builder.UseEnvironment(environment: "Acceptance");
+
+            builder.ConfigureAppConfiguration(configureDelegate: (_, config) =>
             {
                 config.AddInMemoryCollection(
-                [
-                    new KeyValuePair<string, string>("ConnectionStrings:Core", settings.CoreConnectionString),
-                    new KeyValuePair<string, string>("ConnectionStrings:SSO", settings.SsoConnectionString),
-                    new KeyValuePair<string, string>("Settings:DecryptionKey", "000000000000000000000000000000000000000000000000"),
-                    new KeyValuePair<string, string>("Settings:enableExternalEventing", "false"),
+initialData: [
+                    new KeyValuePair<string, string>(key: "ConnectionStrings:Core", value: settings.CoreConnectionString),
+                    new KeyValuePair<string, string>(key: "ConnectionStrings:SSO", value: settings.SsoConnectionString),
+                    new KeyValuePair<string, string>(key: "Settings:DecryptionKey", value: "000000000000000000000000000000000000000000000000"),
+                    new KeyValuePair<string, string>(key: "Settings:enableExternalEventing", value: "false"),
                 ]);
             });
-            builder.ConfigureTestServices(services =>
+
+            builder.ConfigureTestServices(servicesConfiguration: services =>
             {
                 services.RemoveAll<ICoreContextFactory>();
                 services.RemoveAll<ISecurityDbContextFactory>();
+
                 services.AddSingleton(
-                    new cCoder.Data.Config
-                    {
-                        ConnectionStrings = new Dictionary<string, string>
-                        {
-                            ["Core"] = settings.CoreConnectionString,
-                            ["SSO"] = settings.SsoConnectionString,
-                        },
-                        Settings = new Dictionary<string, string>
-                        {
-                            ["DecryptionKey"] = "000000000000000000000000000000000000000000000000",
-                            ["enableExternalEventing"] = "false",
-                        },
-                        Services = new Dictionary<string, string>(),
-                    });
+implementationInstance: new cCoder.Data.Config
+{
+    ConnectionStrings = new Dictionary<string, string>
+    {
+        ["Core"] = settings.CoreConnectionString,
+        ["SSO"] = settings.SsoConnectionString,
+    },
+    Settings = new Dictionary<string, string>
+    {
+        ["DecryptionKey"] = "000000000000000000000000000000000000000000000000",
+        ["enableExternalEventing"] = "false",
+    },
+    Services = new Dictionary<string, string>(),
+});
+
                 services.AddSingleton<ISecurityDbContextFactory>(
-                    _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString));
-                services.AddCoreData(settings.CoreConnectionString);
+implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString));
+
+                services.AddCoreData(connectionString: settings.CoreConnectionString);
             });
         }
     }
@@ -435,16 +483,18 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         public Task ResetDatabasesAsync()
         {
             using IServiceScope scope = services.CreateScope();
+
             using var sso = scope.ServiceProvider.GetRequiredService<ISecurityDbContextFactory>()
-                .CreateDbContext(true);
+                .CreateDbContext(ignoreAuthInfo: true);
+
             using var core = scope.ServiceProvider.GetRequiredService<ICoreContextFactory>()
                 .CreateCoreContext();
 
-            EnsureSafeIntegrationDatabase(sso.Database.GetConnectionString(), "dev-Members");
-            EnsureSafeIntegrationDatabase(core.Database.GetConnectionString(), "dev-Core");
+            EnsureSafeIntegrationDatabase(connectionString: sso.Database.GetConnectionString(), protectedDatabaseName: "dev-Members");
+            EnsureSafeIntegrationDatabase(connectionString: core.Database.GetConnectionString(), protectedDatabaseName: "dev-Core");
 
-            ForceDropDatabase(sso.Database.GetConnectionString());
-            ForceDropDatabase(core.Database.GetConnectionString());
+            ForceDropDatabase(connectionString: sso.Database.GetConnectionString());
+            ForceDropDatabase(connectionString: core.Database.GetConnectionString());
 
             sso.Migrate();
             core.Migrate();
@@ -455,60 +505,73 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         public Task DropDatabasesAsync()
         {
             using IServiceScope scope = services.CreateScope();
+
             using var sso = scope.ServiceProvider.GetRequiredService<ISecurityDbContextFactory>()
-                .CreateDbContext(true);
+                .CreateDbContext(ignoreAuthInfo: true);
+
             using var core = scope.ServiceProvider.GetRequiredService<ICoreContextFactory>()
                 .CreateCoreContext();
 
-            EnsureSafeIntegrationDatabase(sso.Database.GetConnectionString(), "dev-Members");
-            EnsureSafeIntegrationDatabase(core.Database.GetConnectionString(), "dev-Core");
+            EnsureSafeIntegrationDatabase(connectionString: sso.Database.GetConnectionString(), protectedDatabaseName: "dev-Members");
+            EnsureSafeIntegrationDatabase(connectionString: core.Database.GetConnectionString(), protectedDatabaseName: "dev-Core");
 
-            ForceDropDatabase(sso.Database.GetConnectionString());
-            ForceDropDatabase(core.Database.GetConnectionString());
+            ForceDropDatabase(connectionString: sso.Database.GetConnectionString());
+            ForceDropDatabase(connectionString: core.Database.GetConnectionString());
 
             return Task.CompletedTask;
         }
 
         private static void EnsureSafeIntegrationDatabase(string connectionString, string protectedDatabaseName)
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new InvalidOperationException("Integration database connection string is empty.");
+            if (string.IsNullOrWhiteSpace(value: connectionString))
+            {
+                throw new InvalidOperationException(message: "Integration database connection string is empty.");
+            }
 
-            SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString);
+            SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString: connectionString);
             string databaseName = builder.InitialCatalog ?? string.Empty;
 
-            if (string.IsNullOrWhiteSpace(databaseName))
-                throw new InvalidOperationException("Integration database name is empty.");
+            if (string.IsNullOrWhiteSpace(value: databaseName))
+            {
+                throw new InvalidOperationException(message: "Integration database name is empty.");
+            }
 
-            if (databaseName.Equals(protectedDatabaseName, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException(
-                    $"Refusing to run integration database operations against protected database '{protectedDatabaseName}'.");
-
-            if (!databaseName.Contains("integration", StringComparison.OrdinalIgnoreCase)
-                && !databaseName.Contains("accept", StringComparison.OrdinalIgnoreCase))
+            if (databaseName.Equals(value: protectedDatabaseName, comparisonType: StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException(
-                    $"Refusing to run integration database operations against non-integration database '{databaseName}'.");
+            message: $"Refusing to run integration database operations against protected database '{protectedDatabaseName}'.");
+            }
+
+            if (!databaseName.Contains(value: "integration", comparisonType: StringComparison.OrdinalIgnoreCase)
+                && !databaseName.Contains(value: "accept", comparisonType: StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+message: $"Refusing to run integration database operations against non-integration database '{databaseName}'.");
             }
         }
 
         private static void ForceDropDatabase(string connectionString)
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(value: connectionString))
+            {
                 return;
+            }
 
-            SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString);
+            SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString: connectionString);
             string databaseName = builder.InitialCatalog ?? string.Empty;
 
-            if (string.IsNullOrWhiteSpace(databaseName))
+            if (string.IsNullOrWhiteSpace(value: databaseName))
+            {
                 return;
+            }
 
             builder.InitialCatalog = "master";
 
-            using SqlConnection connection = new(builder.ConnectionString);
+            using SqlConnection connection = new(connectionString: builder.ConnectionString);
             connection.Open();
 
             using SqlCommand command = connection.CreateCommand();
+
             command.CommandText = @"
 IF DB_ID(@databaseName) IS NOT NULL
 BEGIN
@@ -517,12 +580,13 @@ BEGIN
         + N'DROP DATABASE [' + REPLACE(@databaseName, ']', ']]') + N']';
     EXEC(@sql);
 END";
-            _ = command.Parameters.AddWithValue("@databaseName", databaseName);
+
+            _ = command.Parameters.AddWithValue(parameterName: "@databaseName", value: databaseName);
             command.ExecuteNonQuery();
         }
 
         private static SqlConnectionStringBuilder CreateConnectionStringBuilder(string connectionString) =>
-            new(connectionString)
+            new(connectionString: connectionString)
             {
                 Encrypt = true,
                 TrustServerCertificate = true,

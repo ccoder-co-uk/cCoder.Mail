@@ -1,7 +1,11 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.OData;
-using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -12,7 +16,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class MailSenderController(
-    IMailSenderConfigurationOrchestrationService service)
+    IMailSenderProcessingService service)
     : ODataController
 {
     [HttpGet]
@@ -22,11 +26,11 @@ public partial class MailSenderController(
 
         return isExtendedMetaRequest
             ? Ok(
-                new MailModelBuilder()
+value: new MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(MailSender))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(MailSender))
             )
-            : Ok(new MetadataContainer(typeof(MailSender), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(MailSender), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -39,7 +43,8 @@ public partial class MailSenderController(
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<MailSender> queryOptions) => Ok(service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<MailSender> queryOptions) =>
+        Ok(value: service.GetAllMailSender());
 
     [HttpGet]
     [AllowAnonymous]
@@ -55,8 +60,10 @@ public partial class MailSenderController(
     {
         try
         {
-            IQueryable<MailSender> result = service.GetAll().Where(mailSender => mailSender.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<MailSender> result = service.GetAllMailSender()
+                .Where(predicate: mailSender => mailSender.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -73,12 +80,14 @@ public partial class MailSenderController(
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] MailSender entity)
+    public async Task<IActionResult> Post([FromBody] MailSender newMailSender)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await service.AddAsync(entity));
+        return Ok(value: await service.AddMailSenderAsync(newMailSender: newMailSender));
     }
 
     [HttpPut]
@@ -90,30 +99,35 @@ public partial class MailSenderController(
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailSender entity)
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailSender updatedMailSender)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await service.UpdateAsync(entity));
+        return Ok(value: await service.UpdateMailSenderAsync(updatedMailSender: updatedMailSender));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] Guid key, Delta<MailSender> delta)
+    [ActionName("Patch")]
+    public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailSender> updatedMailSender)
     {
-        MailSender originalEntity = service.Get(key);
+        MailSender originalEntity = service.GetMailSender(iMailSenderId: key);
 
         if (originalEntity == null)
+        {
             return NotFound();
+        }
 
-        delta.Patch(originalEntity);
-        return Ok(await service.UpdateAsync(originalEntity));
+        updatedMailSender.Patch(original: originalEntity);
+        return Ok(value: await service.UpdateMailSenderAsync(updatedMailSender: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] Guid key)
     {
-        await service.DeleteAsync(key);
+        await service.DeleteAsync(iMailSenderId: key);
         return Ok();
     }
 }

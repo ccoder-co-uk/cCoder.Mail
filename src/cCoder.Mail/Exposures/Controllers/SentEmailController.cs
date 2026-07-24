@@ -1,4 +1,8 @@
-using cCoder.Mail.Exposures.OData;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.CMS;
@@ -15,18 +19,10 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class SentEmailController : ODataController
+public partial class SentEmailController(
+    ISentEmailOrchestrationService service)
+        : ODataController
 {
-    protected ISentEmailOrchestrationService Service { get; }
-
-    public SentEmailController(
-        ISentEmailOrchestrationService service,
-        ILogger<SentEmailController> log
-    )
-    {
-        Service = service;
-    }
-
     [HttpGet]
     public IActionResult GetMetadata()
     {
@@ -34,11 +30,11 @@ public partial class SentEmailController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-                new cCoder.Mail.Exposures.OData.MailModelBuilder()
+value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(SentEmail))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(SentEmail))
             )
-            : Ok(new MetadataContainer(typeof(SentEmail), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(SentEmail), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -51,7 +47,8 @@ public partial class SentEmailController : ODataController
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) => Ok(Service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) =>
+        Ok(value: service.GetAllSentEmail());
 
     [HttpGet]
     [AllowAnonymous]
@@ -67,8 +64,10 @@ public partial class SentEmailController : ODataController
     {
         try
         {
-            IQueryable<SentEmail> result = Service.GetAll().Where(sentEmail => sentEmail.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<SentEmail> result = service.GetAllSentEmail()
+                .Where(predicate: sentEmail => sentEmail.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -85,12 +84,14 @@ public partial class SentEmailController : ODataController
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] SentEmail entity)
+    public async Task<IActionResult> Post([FromBody] SentEmail newSentEmail)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await Service.AddAsync(entity));
+        return Ok(value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
     }
 
     [HttpPut]
@@ -102,46 +103,35 @@ public partial class SentEmailController : ODataController
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] SentEmail entity)
+    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] SentEmail updatedSentEmail)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await Service.UpdateAsync(entity));
+        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: updatedSentEmail));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] int key, Delta<SentEmail> delta)
+    [ActionName("Patch")]
+    public async Task<IActionResult> Put([FromRoute] int key, Delta<SentEmail> updatedSentEmail)
     {
-        SentEmail originalEntity = Service.Get(key);
-        if (originalEntity == null)
-            return NotFound();
+        SentEmail originalEntity = service.GetSentEmail(iSentEmailId: key);
 
-        delta.Patch(originalEntity);
-        return Ok(await Service.UpdateAsync(originalEntity));
+        if (originalEntity == null)
+        {
+            return NotFound();
+        }
+
+        updatedSentEmail.Patch(original: originalEntity);
+        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await Service.DeleteAsync(key);
+        await service.DeleteAsync(iSentEmailId: key);
         return Ok();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

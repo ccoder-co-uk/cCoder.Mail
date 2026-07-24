@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Exposures.MailClients;
 using Moq;
@@ -12,8 +16,8 @@ public partial class MailSenderClientBrokerTests
 
     public MailSenderClientBrokerTests()
     {
-        mailSenderFactoryMock = new Mock<IMailSenderFactory>(MockBehavior.Strict);
-        mailSenderProviderMock = new Mock<IMailSenderProvider>(MockBehavior.Strict);
-        mailSenderClientBroker = new MailSenderClientBroker(mailSenderFactoryMock.Object);
+        mailSenderFactoryMock = new Mock<IMailSenderFactory>(behavior: MockBehavior.Strict);
+        mailSenderProviderMock = new Mock<IMailSenderProvider>(behavior: MockBehavior.Strict);
+        mailSenderClientBroker = new MailSenderClientBroker(mailSenderFactory: mailSenderFactoryMock.Object);
     }
 }

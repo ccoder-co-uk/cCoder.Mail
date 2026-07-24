@@ -1,15 +1,19 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Processings;
 
 public interface IMailReceiverProcessingService
 {
-    MailReceiver Get(Guid id);
-    IQueryable<MailReceiver> GetAll(bool ignoreFilters = false);
+    MailReceiver GetMailReceiver(Guid iMailReceiverId);
+    IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false);
     MailReceiver[] GetEnabled();
-    ValueTask<MailReceiver> AddAsync(MailReceiver entity);
-    ValueTask<MailReceiver> UpdateAsync(MailReceiver entity);
-    ValueTask<int> DeleteAsync(Guid id);
+    ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
+    ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);
+    ValueTask<int> DeleteAsync(Guid iMailReceiverId);
     ValueTask DeleteByAppIdAsync(int appId);
-    ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items);
+    ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver);
 }

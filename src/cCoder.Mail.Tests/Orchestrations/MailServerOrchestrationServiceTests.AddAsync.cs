@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,27 +20,24 @@ public partial class MailServerOrchestrationServiceTests
     {
         // Given
         MailServer entity = CreateRandomMailServer();
-        mailServerProcessingServiceMock.Setup(x => x.AddAsync(entity)).ReturnsAsync(entity);
+
+        mailServerProcessingServiceMock.Setup(expression: x => x.AddMailServerAsync(newMailServer: entity))
+            .ReturnsAsync(value: entity);
 
         mailServerEventProcessingServiceMock
-            .Setup(x => x.RaiseMailServerAddEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseMailServerAddEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        MailServer result = await orchestrationService.AddAsync(entity);
+        MailServer result = await orchestrationService.AddMailServerAsync(newMailServer: entity);
 
         // Then
-        result.Should().BeSameAs(entity);
-        mailServerProcessingServiceMock.Verify(x => x.AddAsync(entity), Times.Once);
-        mailServerEventProcessingServiceMock.Verify(x => x.RaiseMailServerAddEventAsync(entity), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entity);
+
+        mailServerProcessingServiceMock.Verify(expression: x => x.AddMailServerAsync(newMailServer: entity), times: Times.Once);
+        mailServerEventProcessingServiceMock.Verify(expression: x => x.RaiseMailServerAddEventAsync(entity: entity), times: Times.Once);
     }
 
 }
-
-
-
-
-
-
-
-

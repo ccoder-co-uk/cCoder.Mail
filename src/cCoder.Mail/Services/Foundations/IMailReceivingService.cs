@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 
@@ -5,7 +9,7 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface IMailReceivingService
 {
-    Task<ReceivedEmail[]> ReceiveAsync(
+    Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);
 

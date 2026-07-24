@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,21 +10,29 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/MailProviders")]
 [Route("Api/Core/MailProviders")]
-public sealed class MailProvidersController(MailConfiguration mailConfiguration) : ControllerBase
+public sealed class MailProvidersController(
+    IMailConfigurationExposure mailConfigurationExposure) : ControllerBase
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     [HttpGet]
     public IActionResult Get() =>
-        Ok(GetSenderProviders().Concat(GetReceiverProviders()).ToArray());
+        Ok(value: GetSenderProviders()
+        .Concat(second: GetReceiverProviders())
+        .ToArray());
 
     [HttpGet("Senders")]
-    public IActionResult GetSenders() => Ok(GetSenderProviders());
+    public IActionResult GetSenders() =>
+        Ok(value: GetSenderProviders());
 
     [HttpGet("Receivers")]
-    public IActionResult GetReceivers() => Ok(GetReceiverProviders());
+    public IActionResult GetReceivers() =>
+        Ok(value: GetReceiverProviders());
 
     private MailProviderSummary[] GetSenderProviders() =>
-    [
-        .. mailConfiguration.SenderProviders.Select(provider => new MailProviderSummary
+        [
+        .. mailConfiguration.SenderProviders.Select(selector: provider => new MailProviderSummary
         {
             Name = provider.Key,
             ProviderName = provider.Value,
@@ -29,8 +41,8 @@ public sealed class MailProvidersController(MailConfiguration mailConfiguration)
     ];
 
     private MailProviderSummary[] GetReceiverProviders() =>
-    [
-        .. mailConfiguration.ReceiverProviders.Select(provider => new MailProviderSummary
+        [
+        .. mailConfiguration.ReceiverProviders.Select(selector: provider => new MailProviderSummary
         {
             Name = provider.Key,
             ProviderName = provider.Value,

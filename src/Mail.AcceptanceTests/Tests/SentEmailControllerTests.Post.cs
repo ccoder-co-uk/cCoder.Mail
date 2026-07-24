@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,12 +16,13 @@ public sealed partial class SentEmailControllerTests
     {
         // Given
         SeededSentEmailContext seededContext = await SeedDatabase();
-        string subject = Unique("SentEmail");
+        string subject = Unique(prefix: "SentEmail");
         SentEmail expectedSentEmail;
         SentEmail actualSentEmail;
 
         // When
-        expectedSentEmail = await CreateSentEmailAsync(new
+
+        expectedSentEmail = await CreateSentEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
@@ -30,17 +35,14 @@ public sealed partial class SentEmailControllerTests
             sentOn = DateTimeOffset.UtcNow,
         });
 
-        actualSentEmail = await GetSentEmailAsync(expectedSentEmail.Id);
+        actualSentEmail = await GetSentEmailAsync(id: expectedSentEmail.Id);
 
         // Then
-        actualSentEmail.Subject.Should().Be(subject);
 
-        await DeleteSentEmailAsync(expectedSentEmail.Id);
-        await Teardown(seededContext);
+        actualSentEmail.Subject.Should()
+            .Be(expected: subject);
+
+        await DeleteSentEmailAsync(id: expectedSentEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

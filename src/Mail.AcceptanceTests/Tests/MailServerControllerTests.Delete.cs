@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,10 +16,11 @@ public sealed partial class MailServerControllerTests
     {
         // Given
         SeededMailServerContext seededContext = await SeedDatabase();
-        MailServer createdMailServer = await CreateMailServerAsync(new
+
+        MailServer createdMailServer = await CreateMailServerAsync(payload: new
         {
             appId = seededContext.AppId,
-            name = Unique("MailServer"),
+            name = Unique(prefix: "MailServer"),
             user = "acceptance",
             password = "password",
             host = "smtp.acceptance.local",
@@ -23,21 +28,21 @@ public sealed partial class MailServerControllerTests
             port = 25,
             enableSSL = false,
         });
+
         int actualReadStatusCode;
 
         // When
-        int actualStatusCode = await DeleteMailServerAsync(createdMailServer.Id);
-        actualReadStatusCode = await GetMailServerStatusCodeAsync(createdMailServer.Id);
+        int actualStatusCode = await DeleteMailServerAsync(id: createdMailServer.Id);
+        actualReadStatusCode = await GetMailServerStatusCodeAsync(id: createdMailServer.Id);
 
         // Then
-        actualStatusCode.Should().Be(200);
-        actualReadStatusCode.Should().Be(404);
 
-        await Teardown(seededContext);
+        actualStatusCode.Should()
+            .Be(expected: 200);
+
+        actualReadStatusCode.Should()
+            .Be(expected: 404);
+
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

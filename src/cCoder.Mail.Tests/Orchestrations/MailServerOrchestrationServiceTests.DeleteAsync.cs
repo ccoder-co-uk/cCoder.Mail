@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,28 +20,24 @@ public partial class MailServerOrchestrationServiceTests
         // Given
         int id = 1;
         MailServer entity = CreateRandomMailServer();
-        mailServerProcessingServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { entity }.AsQueryable());
-        mailServerProcessingServiceMock.Setup(x => x.DeleteAsync(id)).Returns(ValueTask.CompletedTask);
+
+        mailServerProcessingServiceMock.Setup(expression: x => x.GetAllMailServer(ignoreFilters: true))
+            .Returns(value: new[] { entity }.AsQueryable());
+
+        mailServerProcessingServiceMock.Setup(expression: x => x.DeleteAsync(iMailServerId: id))
+            .Returns(value: ValueTask.CompletedTask);
 
         mailServerEventProcessingServiceMock
-            .Setup(x => x.RaiseMailServerDeleteEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseMailServerDeleteEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAsync(id);
+        await orchestrationService.DeleteAsync(mailServerId: id);
 
         // Then
-        mailServerProcessingServiceMock.Verify(x => x.GetAll(true), Times.Once);
-        mailServerProcessingServiceMock.Verify(x => x.DeleteAsync(id), Times.Once);
-        mailServerEventProcessingServiceMock.Verify(x => x.RaiseMailServerDeleteEventAsync(entity), Times.Once);
+        mailServerProcessingServiceMock.Verify(expression: x => x.GetAllMailServer(ignoreFilters: true), times: Times.Once);
+        mailServerProcessingServiceMock.Verify(expression: x => x.DeleteAsync(iMailServerId: id), times: Times.Once);
+        mailServerEventProcessingServiceMock.Verify(expression: x => x.RaiseMailServerDeleteEventAsync(entity: entity), times: Times.Once);
     }
 
 }
-
-
-
-
-
-
-
-

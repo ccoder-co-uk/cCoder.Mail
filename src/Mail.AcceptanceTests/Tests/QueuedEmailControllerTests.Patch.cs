@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,39 +16,41 @@ public sealed partial class QueuedEmailControllerTests
     {
         // Given
         SeededQueuedEmailContext seededContext = await SeedDatabase();
-        QueuedEmail createdQueuedEmail = await CreateQueuedEmailAsync(new
+
+        QueuedEmail createdQueuedEmail = await CreateQueuedEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
-            subject = Unique("QueuedEmail"),
+            subject = Unique(prefix: "QueuedEmail"),
             content = "Acceptance email content",
             to = "acceptance@example.com",
             cc = string.Empty,
             isBodyHtml = true,
             mailServerName = "Default",
         });
-        string updatedSubject = Unique("PatchedQueuedEmail");
+
+        string updatedSubject = Unique(prefix: "PatchedQueuedEmail");
         QueuedEmail actualQueuedEmail;
 
         // When
-        await PatchQueuedEmailAsync(createdQueuedEmail.Id, new
+
+        await PatchQueuedEmailAsync(id: createdQueuedEmail.Id, payload: new
         {
             subject = updatedSubject,
             cc = "patched@example.com",
         });
 
-        actualQueuedEmail = await GetQueuedEmailAsync(createdQueuedEmail.Id);
+        actualQueuedEmail = await GetQueuedEmailAsync(id: createdQueuedEmail.Id);
 
         // Then
-        actualQueuedEmail.Subject.Should().Be(updatedSubject);
-        actualQueuedEmail.CC.Should().Be("patched@example.com");
 
-        await DeleteQueuedEmailAsync(createdQueuedEmail.Id);
-        await Teardown(seededContext);
+        actualQueuedEmail.Subject.Should()
+            .Be(expected: updatedSubject);
+
+        actualQueuedEmail.CC.Should()
+            .Be(expected: "patched@example.com");
+
+        await DeleteQueuedEmailAsync(id: createdQueuedEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

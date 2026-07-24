@@ -1,5 +1,10 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Dependencies;
 using Microsoft.EntityFrameworkCore;
 
 namespace cCoder.Mail.Brokers.Storages;
@@ -7,81 +12,85 @@ namespace cCoder.Mail.Brokers.Storages;
 public interface IReceivedEmailBroker
 {
     IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters);
-    ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask AddReceivedEmailsAsync(IEnumerable<ReceivedEmail> entities, CancellationToken cancellationToken = default);
+    ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail);
+    ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail);
+    ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail deletedReceivedEmail);
+    ValueTask AddReceivedEmailsAsync(IEnumerable<ReceivedEmail> newReceivedEmail, CancellationToken cancellationToken = default);
     bool Exists(Guid mailReceiverId, string messageId);
-    ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items);
+    ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail);
     ValueTask DeleteAllReceivedEmailsByAppIdAsync(int appId);
     int? GetAppId(ReceivedEmail entity);
 }
 
-public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IReceivedEmailBroker
+internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IReceivedEmailBroker
 {
     public IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        return ignoreFilters
-            ? coreDataContext.ReceivedMail.IgnoreQueryFilters()
-            : coreDataContext.ReceivedMail;
+
+        return StorageBrokerDependency.SelectAll(
+            entities: coreDataContext.ReceivedMail,
+            ignoreFilters: ignoreFilters);
     }
 
-    public async ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        ReceivedEmail result = (await coreDataContext.ReceivedMail.AddAsync(entity)).Entity;
+        ReceivedEmail result = (await coreDataContext.ReceivedMail.AddAsync(entity: newReceivedEmail)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        ReceivedEmail result = coreDataContext.ReceivedMail.Update(entity).Entity;
+
+        ReceivedEmail result = coreDataContext.ReceivedMail.Update(entity: updatedReceivedEmail)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail deletedReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.ReceivedMail.Remove(entity);
+        coreDataContext.ReceivedMail.Remove(entity: deletedReceivedEmail);
         return await coreDataContext.SaveChangesAsync();
     }
 
     public async ValueTask AddReceivedEmailsAsync(
-        IEnumerable<ReceivedEmail> entities,
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default)
     {
-        ReceivedEmail[] items = entities?.ToArray() ?? [];
-
-        if (items.Length == 0)
-            return;
+        ReceivedEmail[] items = StorageBrokerDependency.Normalize(
+            entities: newReceivedEmail);
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        await coreDataContext.ReceivedMail.AddRangeAsync(items, cancellationToken);
-        _ = await coreDataContext.SaveChangesAsync(cancellationToken);
+        await coreDataContext.ReceivedMail.AddRangeAsync(entities: items, cancellationToken: cancellationToken);
+        _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
     public bool Exists(Guid mailReceiverId, string messageId)
     {
-        if (string.IsNullOrWhiteSpace(messageId))
-            return false;
-
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        return coreDataContext.ReceivedMail
-            .IgnoreQueryFilters()
-            .Any(email => email.MailReceiverId == mailReceiverId && email.MessageId == messageId);
+
+        return !string.IsNullOrWhiteSpace(value: messageId)
+            && coreDataContext.ReceivedMail
+                .IgnoreQueryFilters()
+            .Any(predicate: email =>
+                    email.MailReceiverId == mailReceiverId
+                    && email.MessageId == messageId);
     }
 
-    public async ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items)
+    public async ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail)
     {
-        if (items == null || !items.Any())
-            return;
-
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.ReceivedMail.RemoveRange(items);
+
+        ReceivedEmail[] entities = StorageBrokerDependency.Normalize(
+            entities: deletedReceivedEmail);
+
+        coreDataContext.ReceivedMail.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -91,9 +100,10 @@ public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IRece
 
         await coreDataContext.ReceivedMail
             .IgnoreQueryFilters()
-            .Where(email => email.AppId == appId)
+            .Where(predicate: email => email.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(ReceivedEmail entity) => entity.AppId;
+    public int? GetAppId(ReceivedEmail entity) =>
+        entity.AppId;
 }

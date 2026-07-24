@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using FluentAssertions;
 using Xunit;
 
@@ -11,31 +15,75 @@ public sealed partial class WebShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/tools/index.html");
+        string content = await GetOkContentAsync(path: "/tools/index.html");
 
         // Then
-        content.Should().Contain("Mail Management");
-        content.Should().Contain("/tools/company-logo.png");
-        content.Should().Contain("mail-logo");
-        content.Should().Contain("Sign in required");
-        content.Should().Contain("mail-login-gate");
-        content.Should().Contain("mail-workbench");
-        content.Should().Contain("<nav class=\"mail-section-tabs\"");
-        content.Should().MatchRegex("</nav>\\s*<section class=\"mail-panel\">");
-        content.Should().Contain("mail-server-grid");
-        content.Should().Contain("mail-sender-grid");
-        content.Should().Contain("mail-receiver-grid");
-        content.Should().Contain("queued-email-grid");
-        content.Should().Contain("sent-email-grid");
-        content.Should().Contain("received-email-grid");
-        content.Should().Contain("Mail Senders");
-        content.Should().Contain("Mail Receivers");
-        content.Should().Contain("Queued Emails");
-        content.Should().Contain("Sent Emails");
-        content.Should().Contain("Received Emails");
-        content.Should().Contain("/tools/api.js");
-        content.Should().Contain("/tools/grids.js");
-        content.Should().Contain("/tools/styles.css?v=mail-grid-20260702-providers");
+
+        content.Should()
+            .Contain(expected: "Mail Management");
+
+        content.Should()
+            .Contain(expected: "/tools/company-logo.png");
+
+        content.Should()
+            .Contain(expected: "mail-logo");
+
+        content.Should()
+            .Contain(expected: "Sign in required");
+
+        content.Should()
+            .Contain(expected: "mail-login-gate");
+
+        content.Should()
+            .Contain(expected: "mail-workbench");
+
+        content.Should()
+            .Contain(expected: "<nav class=\"mail-section-tabs\"");
+
+        content.Should()
+            .MatchRegex(regularExpression: "</nav>\\s*<section class=\"mail-panel\">");
+
+        content.Should()
+            .Contain(expected: "mail-server-grid");
+
+        content.Should()
+            .Contain(expected: "mail-sender-grid");
+
+        content.Should()
+            .Contain(expected: "mail-receiver-grid");
+
+        content.Should()
+            .Contain(expected: "queued-email-grid");
+
+        content.Should()
+            .Contain(expected: "sent-email-grid");
+
+        content.Should()
+            .Contain(expected: "received-email-grid");
+
+        content.Should()
+            .Contain(expected: "Mail Senders");
+
+        content.Should()
+            .Contain(expected: "Mail Receivers");
+
+        content.Should()
+            .Contain(expected: "Queued Emails");
+
+        content.Should()
+            .Contain(expected: "Sent Emails");
+
+        content.Should()
+            .Contain(expected: "Received Emails");
+
+        content.Should()
+            .Contain(expected: "/tools/api.js");
+
+        content.Should()
+            .Contain(expected: "/tools/grids.js");
+
+        content.Should()
+            .Contain(expected: "/tools/styles.css?v=mail-grid-20260702-providers");
     }
 
     [Fact]
@@ -44,12 +92,18 @@ public sealed partial class WebShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/tools/api.js");
+        string content = await GetOkContentAsync(path: "/tools/api.js");
 
         // Then
-        content.Should().Contain("mail-auth-changed");
-        content.Should().Contain("isAuthenticated: function");
-        content.Should().Contain("document.body.classList.toggle(\"is-authenticated\"");
+
+        content.Should()
+            .Contain(expected: "mail-auth-changed");
+
+        content.Should()
+            .Contain(expected: "isAuthenticated: function");
+
+        content.Should()
+            .Contain(expected: "document.body.classList.toggle(\"is-authenticated\"");
     }
 
     [Fact]
@@ -58,22 +112,48 @@ public sealed partial class WebShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/tools/grids.js");
+        string content = await GetOkContentAsync(path: "/tools/grids.js");
 
         // Then
-        content.Should().Contain("MailGrids");
-        content.Should().Contain("MailApi.isAuthenticated()");
-        content.Should().Contain("mail-auth-changed");
-        content.Should().Contain("data-child-grid=\"QueuedEmail\"");
-        content.Should().Contain("data-child-grid=\"SentEmail\"");
-        content.Should().Contain("data-child-grid=\"EmailSendFailure\"");
-        content.Should().Contain("loadProviders");
-        content.Should().Contain("loadMailSenderDetails");
-        content.Should().Contain("loadQueuedEmailDetails");
-        content.Should().Contain("receiveEmails");
-        content.Should().Contain("ReceivedEmail/Receive");
-        content.Should().Contain("MailSenderId eq");
-        content.Should().Contain("$expand=");
+
+        content.Should()
+            .Contain(expected: "MailGrids");
+
+        content.Should()
+            .Contain(expected: "MailApi.isAuthenticated()");
+
+        content.Should()
+            .Contain(expected: "mail-auth-changed");
+
+        content.Should()
+            .Contain(expected: "data-child-grid=\"QueuedEmail\"");
+
+        content.Should()
+            .Contain(expected: "data-child-grid=\"SentEmail\"");
+
+        content.Should()
+            .Contain(expected: "data-child-grid=\"EmailSendFailure\"");
+
+        content.Should()
+            .Contain(expected: "loadProviders");
+
+        content.Should()
+            .Contain(expected: "loadMailSenderDetails");
+
+        content.Should()
+            .Contain(expected: "loadQueuedEmailDetails");
+
+        content.Should()
+            .Contain(expected: "receiveEmails");
+
+        content.Should()
+            .Contain(expected: "ReceivedEmail/Receive");
+
+        content.Should()
+            .Contain(expected: "MailSenderId eq");
+
+        content.Should()
+            .Contain(expected: "$expand=");
     }
 
     [Fact]
@@ -82,17 +162,35 @@ public sealed partial class WebShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/tools/styles.css");
+        string content = await GetOkContentAsync(path: "/tools/styles.css");
 
         // Then
-        content.Should().Contain(".mail-table");
-        content.Should().Contain(".mail-detail");
-        content.Should().Contain(".mail-tab-panel");
-        content.Should().Contain(".mail-section-tabs");
-        content.Should().Contain(".mail-section-tabs button.active");
-        content.Should().Contain(".mail-logo");
-        content.Should().Contain("body.mail-shell:not(.is-authenticated) .mail-workbench");
-        content.Should().Contain("body.mail-shell.is-authenticated .mail-login-gate");
-        content.Should().Contain("border-radius: 4px 4px 0 0");
+
+        content.Should()
+            .Contain(expected: ".mail-table");
+
+        content.Should()
+            .Contain(expected: ".mail-detail");
+
+        content.Should()
+            .Contain(expected: ".mail-tab-panel");
+
+        content.Should()
+            .Contain(expected: ".mail-section-tabs");
+
+        content.Should()
+            .Contain(expected: ".mail-section-tabs button.active");
+
+        content.Should()
+            .Contain(expected: ".mail-logo");
+
+        content.Should()
+            .Contain(expected: "body.mail-shell:not(.is-authenticated) .mail-workbench");
+
+        content.Should()
+            .Contain(expected: "body.mail-shell.is-authenticated .mail-login-gate");
+
+        content.Should()
+            .Contain(expected: "border-radius: 4px 4px 0 0");
     }
 }

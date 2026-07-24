@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -16,7 +20,9 @@ public sealed partial class SentEmailControllerTests
         int actualCount = await GetSentEmailCountAsync();
 
         // Then
-        actualCount.Should().BeGreaterThanOrEqualTo(0);
+
+        actualCount.Should()
+            .BeGreaterThanOrEqualTo(expected: 0);
     }
 
     [Fact]
@@ -25,10 +31,12 @@ public sealed partial class SentEmailControllerTests
         // Given
 
         // When
-        IReadOnlyList<SentEmail> actualSentEmails = await GetSentEmailsAsync(1);
+        IReadOnlyList<SentEmail> actualSentEmails = await GetSentEmailsAsync(top: 1);
 
         // Then
-        actualSentEmails.Should().NotBeNull();
+
+        actualSentEmails.Should()
+            .NotBeNull();
     }
 
     [Fact]
@@ -36,8 +44,9 @@ public sealed partial class SentEmailControllerTests
     {
         // Given
         SeededSentEmailContext seededContext = await SeedDatabase();
-        string subject = Unique("SentEmail");
-        SentEmail expectedSentEmail = await CreateSentEmailAsync(new
+        string subject = Unique(prefix: "SentEmail");
+
+        SentEmail expectedSentEmail = await CreateSentEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
@@ -49,21 +58,21 @@ public sealed partial class SentEmailControllerTests
             from = "acceptance@example.com",
             sentOn = DateTimeOffset.UtcNow,
         });
+
         SentEmail actualSentEmail;
 
         // When
-        actualSentEmail = await GetSentEmailAsync(expectedSentEmail.Id);
+        actualSentEmail = await GetSentEmailAsync(id: expectedSentEmail.Id);
 
         // Then
-        actualSentEmail.Id.Should().Be(expectedSentEmail.Id);
-        actualSentEmail.Subject.Should().Be(subject);
 
-        await DeleteSentEmailAsync(expectedSentEmail.Id);
-        await Teardown(seededContext);
+        actualSentEmail.Id.Should()
+            .Be(expected: expectedSentEmail.Id);
+
+        actualSentEmail.Subject.Should()
+            .Be(expected: subject);
+
+        await DeleteSentEmailAsync(id: expectedSentEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

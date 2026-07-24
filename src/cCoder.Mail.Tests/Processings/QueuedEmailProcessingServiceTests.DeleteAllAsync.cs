@@ -1,5 +1,10 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
+using cCoder.Mail.Models.Exceptions;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
@@ -17,58 +22,45 @@ public partial class QueuedEmailProcessingServiceTests
     public async Task ShouldDeleteEachEmailWhenUserHasDeletePrivilegeForDeleteAllAsync()
     {
         // Given
-        authorizationBrokerMock
-            .Setup(x => x.Authorize(It.IsAny<int?>(), It.IsAny<string>()))
-            .Callback((int? appId, string privilege) =>
-            {
-                if (!(currentUser?.Can(appId, privilege) ?? false))
-                    throw new SecurityException("Access Denied!");
-            });
-
         QueuedEmail email = CreateRandomQueuedEmail();
-        DataUser actor = TestUsers.WithPrivilege("queuedemail_delete", email.AppId);
-        currentUser = actor;
 
-        queuedEmailServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { email }.AsQueryable());
-        queuedEmailServiceMock.Setup(x => x.DeleteAsync(email.Id, false)).Returns(ValueTask.CompletedTask);
+        queuedEmailServiceMock.Setup(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await queuedEmailProcessingService.DeleteAllAsync([email]);
+        await queuedEmailProcessingService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: [email]);
 
         // Then
-        queuedEmailServiceMock.Verify(x => x.GetAll(true), Times.Once);
-        queuedEmailServiceMock.Verify(x => x.DeleteAsync(email.Id, false), Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize(email.AppId, "queuedemail_delete"), Times.Once);
+        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
     public async Task ShouldThrowSecurityExceptionWhenAnEmailIsUnauthorizedForDeleteAllAsync()
     {
         // Given
-        authorizationBrokerMock
-            .Setup(x => x.Authorize(It.IsAny<int?>(), It.IsAny<string>()))
-            .Callback((int? appId, string privilege) =>
-            {
-                if (!(currentUser?.Can(appId, privilege) ?? false))
-                    throw new SecurityException("Access Denied!");
-            });
-
         QueuedEmail email = CreateRandomQueuedEmail();
-        currentUser = TestUsers.WithoutPrivileges();
-        queuedEmailServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { email }.AsQueryable());
+
+        queuedEmailServiceMock
+            .Setup(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true))
+            .ThrowsAsync(exception: new MailServiceException(
+innerException: new SecurityException(message: "Access Denied!")));
 
         // When
-        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAllAsync([email]);
+        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: [email]);
 
         // Then
-        await act.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        queuedEmailServiceMock.Verify(x => x.GetAll(true), Times.Once);
+
+        await act.Should()
+            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .WithMessage(expectedWildcardPattern: "The mail service failed.");
+
+        queuedEmailServiceMock.Verify(
+expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true),
+times: Times.Once);
+
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize(email.AppId, "queuedemail_delete"), Times.Once);
+        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 }
-
-
-
-

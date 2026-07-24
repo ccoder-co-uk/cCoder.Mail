@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -17,21 +21,11 @@ public partial class SentEmailEventProcessingServiceTests
 
     public SentEmailEventProcessingServiceTests()
     {
-        sentEmailEventServiceMock = new Mock<ISentEmailEventService>(MockBehavior.Strict);
-        service = new SentEmailEventProcessingService(sentEmailEventServiceMock.Object);
+        sentEmailEventServiceMock = new Mock<ISentEmailEventService>(behavior: MockBehavior.Strict);
+        service = new SentEmailEventProcessingService(eventService: sentEmailEventServiceMock.Object);
     }
 
     private static SentEmail CreateRandomSentEmail() =>
-        Builder<SentEmail>.CreateNew().Build();
+        Builder<SentEmail>.CreateNew()
+        .Build();
 }
-
-
-
-
-
-
-
-
-
-
-

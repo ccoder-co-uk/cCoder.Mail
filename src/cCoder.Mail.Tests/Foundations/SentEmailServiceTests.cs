@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -22,11 +26,12 @@ public partial class SentEmailServiceTests
 
     public SentEmailServiceTests()
     {
-        sentEmailBrokerMock = new Mock<ISentEmailBroker>(MockBehavior.Strict);
-        authorizationBrokerMock = new Mock<IAuthorizationBroker>(MockBehavior.Strict);
+        sentEmailBrokerMock = new Mock<ISentEmailBroker>(behavior: MockBehavior.Strict);
+        authorizationBrokerMock = new Mock<IAuthorizationBroker>(behavior: MockBehavior.Strict);
+
         sentEmailService = new SentEmailService(
-            sentEmailBrokerMock.Object,
-            authorizationBrokerMock.Object
+sentEmailBroker: sentEmailBrokerMock.Object,
+authorizationBroker: authorizationBrokerMock.Object
         );
     }
 
@@ -34,16 +39,16 @@ public partial class SentEmailServiceTests
     {
         SentEmail sentEmail = Builder<SentEmail>
             .CreateNew()
-            .With(x => x.Id = id)
-            .With(x => x.AppId = appId)
-            .With(x => x.SentByUserId = $"user-{Guid.NewGuid():N}")
-            .With(x => x.Subject = $"Subject-{Guid.NewGuid():N}")
-            .With(x => x.Content = "Email body")
-            .With(x => x.To = $"to-{Guid.NewGuid():N}@test.local")
-            .With(x => x.CC = $"cc-{Guid.NewGuid():N}@test.local")
-            .With(x => x.IsBodyHtml = true)
-            .With(x => x.SentOn = DateTimeOffset.UtcNow)
-            .With(x => x.From = $"from-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.Id = id)
+            .With(func: x => x.AppId = appId)
+            .With(func: x => x.SentByUserId = $"user-{Guid.NewGuid():N}")
+            .With(func: x => x.Subject = $"Subject-{Guid.NewGuid():N}")
+            .With(func: x => x.Content = "Email body")
+            .With(func: x => x.To = $"to-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.CC = $"cc-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.IsBodyHtml = true)
+            .With(func: x => x.SentOn = DateTimeOffset.UtcNow)
+            .With(func: x => x.From = $"from-{Guid.NewGuid():N}@test.local")
             .Build();
 
         return sentEmail;
@@ -69,16 +74,3 @@ public partial class SentEmailServiceTests
                 SentBy = item.SentBy == null ? null : new DataUser { Id = item.SentBy.Id, DisplayName = item.SentBy.DisplayName, Email = item.SentBy.Email },
             };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

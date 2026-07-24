@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -15,23 +19,17 @@ public partial class SentEmailOrchestrationServiceTests
     {
         // Given
         SentEmail[] entities = [CreateRandomSentEmail()];
-        sentEmailProcessingServiceMock.Setup(x => x.DeleteAllAsync(entities)).Returns(ValueTask.CompletedTask);
+
+        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAllSentEmailAsync(deletedSentEmail: entities))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAllAsync(entities);
+        await orchestrationService.DeleteAllSentEmailAsync(deletedSentEmail: entities);
 
         // Then
-        sentEmailProcessingServiceMock.Verify(x => x.DeleteAllAsync(entities), Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAllSentEmailAsync(deletedSentEmail: entities), times: Times.Once);
         sentEmailProcessingServiceMock.VerifyNoOtherCalls();
         sentEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

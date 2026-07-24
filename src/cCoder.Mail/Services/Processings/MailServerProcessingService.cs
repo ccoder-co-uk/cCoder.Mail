@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -6,50 +10,75 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class MailServerProcessingService(IMailServerService service) : IMailServerProcessingService
+internal partial class MailServerProcessingService(IMailServerService service) : IMailServerProcessingService
 {
-    public MailServer Get(int id)
+    public MailServer GetMailServer(int mailServerId) =>
+        TryCatch<MailServer>(operation: () =>
     {
-        return service.Get(id);
-    }
+        ValidateMailServerOnGet(inputs: [mailServerId]);
 
-    public IQueryable<MailServer> GetAll(bool ignoreFilters = false)
-    {
-        return service.GetAll(ignoreFilters);
-    }
+        return service.GetMailServer(iMailServerId: mailServerId);
+    });
 
-    public ValueTask<MailServer> AddAsync(MailServer entity)
+    public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<MailServer>>(operation: () =>
     {
-        return service.AddAsync(entity);
-    }
+        ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
 
-    public ValueTask<MailServer> UpdateAsync(MailServer entity)
-    {
-        return service.UpdateAsync(entity);
-    }
+        return service.GetAllMailServer(ignoreFilters: ignoreFilters);
+    });
 
-    public ValueTask DeleteAsync(int id)
+    public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
+        TryCatch<MailServer>(operation: () =>
     {
-        return service.DeleteAsync(id);
-    }
+        ValidateMailServerOnAdd(inputs: [newMailServer]);
+
+        return service.AddMailServerAsync(newMailServer: newMailServer);
+    }, isValueTask: true);
+
+    public ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer) =>
+        TryCatch<MailServer>(operation: () =>
+    {
+        ValidateMailServerOnUpdate(inputs: [updatedMailServer]);
+
+        return service.UpdateMailServerAsync(updatedMailServer: updatedMailServer);
+    }, isValueTask: true);
+
+    public ValueTask DeleteAsync(int mailServerId) =>
+        TryCatch(operation: () =>
+    {
+        ValidateDeleteAsync(inputs: [mailServerId]);
+
+        return service.DeleteAsync(iMailServerId: mailServerId);
+    }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId);
+        TryCatch(operation: () =>
+        {
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
-    public async ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items)
+            return service.DeleteAllByAppIdAsync(appId: appId);
+        }, isValueTask: true);
+
+    ValueTask<IEnumerable<Result<MailServer>>>
+        IMailServerProcessingService.AddOrUpdateMailServerResult(
+            IEnumerable<MailServer> newMailServer) =>
+        TryCatch<IEnumerable<Result<MailServer>>>(operation: async () =>
     {
+        ValidateOrUpdateMailServerResultOnAdd(inputs: [newMailServer]);
+
         List<Result<MailServer>> results = new List<Result<MailServer>>();
 
-        foreach (MailServer item in items)
+        foreach (MailServer item in newMailServer)
         {
             try
             {
                 MailServer savedItem =
                     item.Id == 0
-                        ? await AddAsync(item)
-                        : await UpdateAsync(item);
+                        ? await service.AddMailServerAsync(newMailServer: item)
+                        : await service.UpdateMailServerAsync(updatedMailServer: item);
 
-                results.Add(new Result<MailServer>
+                results.Add(item: new Result<MailServer>
                 {
                     Success = true,
                     Item = savedItem,
@@ -58,7 +87,7 @@ internal class MailServerProcessingService(IMailServerService service) : IMailSe
             }
             catch (Exception ex)
             {
-                results.Add(new Result<MailServer>
+                results.Add(item: new Result<MailServer>
                 {
                     Success = false,
                     Item = item,
@@ -68,13 +97,17 @@ internal class MailServerProcessingService(IMailServerService service) : IMailSe
         }
 
         return results;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAllAsync(IEnumerable<MailServer> items)
+    public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer) =>
+        TryCatch(operation: async () =>
     {
-        foreach (MailServer item in items)
+
+        ValidateAllMailServerOnDelete(inputs: [deletedMailServer]);
+
+        foreach (MailServer item in deletedMailServer)
         {
-            await DeleteAsync(item.Id);
+            await service.DeleteAsync(iMailServerId: item.Id);
         }
-    }
+    }, isValueTask: true);
 }

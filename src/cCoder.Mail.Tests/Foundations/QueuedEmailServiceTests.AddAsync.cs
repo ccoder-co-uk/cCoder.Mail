@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -20,49 +24,60 @@ public partial class QueuedEmailServiceTests
 
         cCoder.Data.Models.Mail.QueuedEmail submitted = null;
 
-        queuedEmailBrokerMock.Setup(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>())).Returns((int?)7);
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()))
+            .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(x => x.Authorize((int?)7, "QueuedEmail_create"));
+        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"));
 
         queuedEmailBrokerMock
-            .Setup(x =>
+            .Setup(expression: x =>
                 x.AddQueuedEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.QueuedEmail>(candidate => !ReferenceEquals(candidate, queuedEmail))
+newQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
                 )
             )
-            .Callback<cCoder.Data.Models.Mail.QueuedEmail>(candidate => submitted = candidate)
-            .ReturnsAsync((cCoder.Data.Models.Mail.QueuedEmail value) => value);
+            .Callback<cCoder.Data.Models.Mail.QueuedEmail>(action: candidate => submitted = candidate)
+            .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.QueuedEmail value) => value);
 
         // When
-        QueuedEmail result = await queuedEmailService.AddAsync(queuedEmail);
+        QueuedEmail result = await queuedEmailService.AddQueuedEmailAsync(newQueuedEmail: queuedEmail);
 
         // Then
-        result.Should().BeSameAs(queuedEmail);
-        submitted.Should().NotBeNull();
-        submitted.Should().NotBeSameAs(queuedEmail);
-        result.Should().NotBeSameAs(submitted);
+
+        result.Should()
+            .BeSameAs(expected: queuedEmail);
+
+        submitted.Should()
+            .NotBeNull();
+
+        submitted.Should()
+            .NotBeSameAs(unexpected: queuedEmail);
+
+        result.Should()
+            .NotBeSameAs(unexpected: submitted);
 
         submitted
             .Should()
             .BeEquivalentTo(
-                queuedEmail,
-                options => options.Excluding(candidate => candidate.Id).Excluding(candidate => candidate.FailedSends)
+expectation: queuedEmail,
+config: options => options.Excluding(expression: candidate => candidate.Id)
+            .Excluding(expression: candidate => candidate.FailedSends)
             );
 
         result
             .Should()
-            .BeEquivalentTo(queuedEmail, options => options.Excluding(candidate => candidate.Id));
+            .BeEquivalentTo(expectation: queuedEmail, config: options => options.Excluding(expression: candidate => candidate.Id));
 
         queuedEmailBrokerMock.Verify(
-            x =>
+expression: x =>
                 x.AddQueuedEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.QueuedEmail>(candidate => !ReferenceEquals(candidate, queuedEmail))
+newQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate => !ReferenceEquals(objA: candidate, objB: queuedEmail))
                 ),
-            Times.Once
+times: Times.Once
         );
-        queuedEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), Times.AtMostOnce());
+
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "QueuedEmail_create"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -73,27 +88,22 @@ public partial class QueuedEmailServiceTests
         QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 0, appId: 7);
 
         authorizationBrokerMock
-            .Setup(x => x.Authorize((int?)7, "QueuedEmail_create"))
-            .Throws(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"))
+            .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await queuedEmailService.AddAsync(queuedEmail);
+        Func<Task> action = async () => await queuedEmailService.AddQueuedEmailAsync(newQueuedEmail: queuedEmail);
 
         // Then
-        await action.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        queuedEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), Times.AtMostOnce());
+
+        await action.Should()
+            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .WithMessage(expectedWildcardPattern: "The mail service failed.");
+
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "QueuedEmail_create"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-

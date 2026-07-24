@@ -1,14 +1,23 @@
-using cCoder.Mail.Exposures.OData;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Data.Models.Mail;
 
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MailMetadataTypeService : IMailMetadataTypeService
+internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
 {
     public IEnumerable<MetadataContainerSet> GetKnownMetadata() =>
-    [
-        new MetadataContainerSet
+        TryCatch<IEnumerable<MetadataContainerSet>>(operation: () =>
+    {
+
+        ValidateKnownMetadataOnGet(inputs: []);
+
+        return [
+                new MetadataContainerSet
         {
             Name = "Mail",
             UriBase = "Mail",
@@ -20,11 +29,11 @@ internal sealed class MailMetadataTypeService : IMailMetadataTypeService
             ],
         },
     ];
+    });
 
     private static ExtendedMetadataContainer Entity<T>() =>
-        new(typeof(T), isEntity: true, hasEndpoint: true)
+        new(type: typeof(T), isEntity: true, hasEndpoint: true)
         {
             Category = "Mail",
         };
 }
-

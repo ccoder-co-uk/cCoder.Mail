@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -19,25 +23,15 @@ public partial class MailServerProcessingServiceTests
 
     public MailServerProcessingServiceTests()
     {
-        mailServerProcessingService = new MailServerProcessingService(mailServerServiceMock.Object);
+        mailServerProcessingService = new MailServerProcessingService(service: mailServerServiceMock.Object);
     }
 
     private static MailServer CreateRandomMailServer() =>
         Builder<MailServer>
             .CreateNew()
-            .With(x => x.Id = Random.Shared.Next(1, 10000))
-            .With(x => x.AppId = 1)
-            .With(x => x.Name = $"MailServer-{Guid.NewGuid():N}")
-            .With(x => x.App = null)
-            .Build();
+        .With(func: x => x.Id = Random.Shared.Next(minValue: 1, maxValue: 10000))
+        .With(func: x => x.AppId = 1)
+        .With(func: x => x.Name = $"MailServer-{Guid.NewGuid():N}")
+        .With(func: x => x.App = null)
+        .Build();
 }
-
-
-
-
-
-
-
-
-
-

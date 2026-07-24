@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -7,19 +11,29 @@ using cCoder.Mail.Services.Foundations.Events;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class SentEmailEventProcessingService(ISentEmailEventService eventService) : ISentEmailEventProcessingService
+internal partial class SentEmailEventProcessingService(ISentEmailEventService eventService) : ISentEmailEventProcessingService
 {
-    public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) => eventService.RaiseSentEmailAddEventAsync(entity);
+    public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) =>
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailAddEventAsync(inputs: [entity]);
 
-    public ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity) => eventService.RaiseSentEmailUpdateEventAsync(entity);
+            return eventService.RaiseSentEmailAddEventAsync(entity: entity);
+        }, isValueTask: true);
 
-    public ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity) => eventService.RaiseSentEmailDeleteEventAsync(entity);
+    public ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity) =>
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailUpdateEventAsync(inputs: [entity]);
+
+            return eventService.RaiseSentEmailUpdateEventAsync(entity: entity);
+        }, isValueTask: true);
+
+    public ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity) =>
+        TryCatch(operation: () =>
+        {
+            ValidateRaiseSentEmailDeleteEventAsync(inputs: [entity]);
+
+            return eventService.RaiseSentEmailDeleteEventAsync(entity: entity);
+        }, isValueTask: true);
 }
-
-
-
-
-
-
-
-

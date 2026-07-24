@@ -1,30 +1,68 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Text;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
-using cCoder.Mail.Services.Foundations;
+using cCoder.Mail.Services.Processings;
+using cCoder.Mail.Services.Orchestrations;
 
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal sealed class MailSenderOrchestrationService(
-    IQueuedEmailService queuedEmailService,
-    IMailClientOrchestrationService mailClientOrchestrationService,
-    MailConfiguration mailConfiguration,
-    ILogger<MailSenderOrchestrationService> log)
+internal sealed partial class MailSenderOrchestrationService(
+    IQueuedEmailProcessingService queuedEmailProcessingService,
+    IMailSendingProcessingService mailSendingProcessingService,
+    IMailSenderProcessingService mailSenderProcessingService)
     : IMailSenderOrchestrationService
 {
-    public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
+    public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
+        TryCatch<MailSender>(operation: () =>
+        {
+            ValidateMailSenderOnAdd(inputs: [newMailSender]);
+
+            return mailSenderProcessingService.AddMailSenderAsync(
+                newMailSender: newMailSender);
+        }, isValueTask: true);
+
+    public ValueTask<MailSender> UpdateMailSenderAsync(
+        MailSender updatedMailSender) =>
+        TryCatch<MailSender>(operation: () =>
+        {
+            ValidateMailSenderOnUpdate(inputs: [updatedMailSender]);
+
+            return mailSenderProcessingService.UpdateMailSenderAsync(
+                updatedMailSender: updatedMailSender);
+        }, isValueTask: true);
+
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        TryCatch(operation: () =>
+        {
+            ValidateByAppIdOnDelete(inputs: [appId]);
+
+            return mailSenderProcessingService.DeleteByAppIdAsync(
+                appId: appId);
+        }, isValueTask: true);
+
+    public Task RunContinuouslyAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
-        if (mailConfiguration.IsMigrating)
+
+        ValidateRunContinuouslyAsync(inputs: [cancellationToken]);
+
+        if (mailSendingProcessingService.IsMigrationInProgress())
+        {
             return;
+        }
 
-        using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));
+        using PeriodicTimer timer = new(period: TimeSpan.FromMinutes(minutes: 1));
 
-        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken))
+        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken: cancellationToken))
         {
             try
             {
-                await RunAsync(cancellationToken);
+                await RunOnceAsync(cancellationToken: cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -32,19 +70,31 @@ internal sealed class MailSenderOrchestrationService(
             }
             catch (Exception ex)
             {
-                log.LogError(ex, ex.Message);
+                mailSendingProcessingService.LogError(exception: ex);
             }
         }
-    }
+    }, isTask: true);
 
-    public async Task RunAsync(CancellationToken cancellationToken = default)
+    public Task RunAsync(CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
-        QueuedEmail[] queue = queuedEmailService.GetDispatchBatch(batchSize: 10, maxFailures: 10);
+        ValidateRunAsync(inputs: [cancellationToken]);
+
+        await RunOnceAsync(cancellationToken: cancellationToken);
+    }, isTask: true);
+
+    private async Task RunOnceAsync(CancellationToken cancellationToken)
+    {
+        QueuedEmail[] queue = queuedEmailProcessingService.GetDispatchBatch(
+            batchSize: 10,
+            maxFailures: 10);
 
         if (queue.Length == 0)
+        {
             return;
+        }
 
-        log.LogInformation("Picked up a batch of {Count} emails.", queue.Length);
+        mailSendingProcessingService.LogDispatch(count: queue.Length);
 
         int success = 0;
         int failures = 0;
@@ -53,19 +103,22 @@ internal sealed class MailSenderOrchestrationService(
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (await ProcessEmailAsync(email, cancellationToken))
+            if (await ProcessEmailAsync(email: email, cancellationToken: cancellationToken))
+            {
                 success++;
+            }
             else
+            {
                 failures++;
+            }
 
-            await Task.Delay(500, cancellationToken);
+            await Task.Delay(millisecondsDelay: 500, cancellationToken: cancellationToken);
         }
 
-        log.LogInformation(
-            "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
-            success + failures,
-            success,
-            failures);
+        mailSendingProcessingService.LogSummary(
+            count: success + failures,
+            success: success,
+            failures: failures);
     }
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)
@@ -74,30 +127,45 @@ internal sealed class MailSenderOrchestrationService(
 
         if (sender == null)
         {
-            await queuedEmailService.RecordSendFailureAsync(
-                email.Id,
-                "No mail sender configuration could be found to send the email.",
-                cancellationToken);
+            await queuedEmailProcessingService.RecordSendFailureAsync(
+emailId: email.Id,
+reason: "No mail sender configuration could be found to send the email.",
+cancellationToken: cancellationToken);
+
             return false;
         }
 
         try
         {
-            await mailClientOrchestrationService.SendAsync(email, cancellationToken);
-            await queuedEmailService.MarkAsSentAsync(email, sender.Id, sender.FromEmail ?? sender.User, cancellationToken);
+            await mailSendingProcessingService.SendQueuedEmailAsync(
+                email: email,
+                cancellationToken: cancellationToken);
+
+            await queuedEmailProcessingService.MarkAsSentQueuedEmailAsync(
+                queuedEmail: email,
+                mailSenderId: sender.Id,
+                fromAddress: sender.FromEmail ?? sender.User,
+                cancellationToken: cancellationToken);
+
             return true;
         }
         catch (Exception ex)
         {
-            StringBuilder reason = new(ex.Message);
+            StringBuilder reason = new(value: ex.Message);
 
             while (ex.InnerException != null)
             {
                 ex = ex.InnerException;
-                _ = reason.Append('\n').Append(ex.Message);
+
+                _ = reason.Append(value: '\n')
+                    .Append(value: ex.Message);
             }
 
-            await queuedEmailService.RecordSendFailureAsync(email.Id, reason.ToString(), cancellationToken);
+            await queuedEmailProcessingService.RecordSendFailureAsync(
+                emailId: email.Id,
+                reason: reason.ToString(),
+                cancellationToken: cancellationToken);
+
             return false;
         }
     }

@@ -1,64 +1,118 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal class ReceivedEmailService(
+internal partial class ReceivedEmailService(
     IReceivedEmailBroker receivedEmailBroker,
     IAuthorizationBroker authorizationBroker)
     : IReceivedEmailService
 {
-    public ReceivedEmail Get(int id)
+    public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
+        TryCatch<ReceivedEmail>(operation: () =>
     {
-        ReceivedEmail receivedEmail = GetAll().FirstOrDefault(item => item.Id == id);
+
+        ValidateReceivedEmailOnGet(inputs: [receivedEmailId]);
+
+        ReceivedEmail receivedEmail = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: false)
+            .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (receivedEmail is not null)
+        {
             return receivedEmail;
+        }
 
-        ReceivedEmail unrestrictedReceivedEmail = GetAll(true).FirstOrDefault(item => item.Id == id);
+        ReceivedEmail unrestrictedReceivedEmail = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (unrestrictedReceivedEmail is not null)
-            authorizationBroker.Authorize(unrestrictedReceivedEmail.AppId, $"{nameof(ReceivedEmail)}_read");
+        {
+            authorizationBroker.Authorize(appId: unrestrictedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_read");
+        }
 
         return unrestrictedReceivedEmail;
-    }
+    });
 
-    public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) =>
-        receivedEmailBroker.GetAllReceivedEmails(ignoreFilters);
+    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
+        {
+            ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
 
-    public async ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity)
+            return receivedEmailBroker.GetAllReceivedEmails(ignoreFilters: ignoreFilters);
+        });
+
+    public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
+        TryCatch<ReceivedEmail>(operation: async () =>
     {
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(ReceivedEmail)}_create");
-        return await receivedEmailBroker.AddReceivedEmailAsync(Copy(entity));
-    }
+        ValidateReceivedEmailOnAdd(inputs: [newReceivedEmail]);
 
-    public async ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity)
+        authorizationBroker.Authorize(appId: newReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_create");
+        return await receivedEmailBroker.AddReceivedEmailAsync(newReceivedEmail: Copy(entity: newReceivedEmail));
+    }, isValueTask: true);
+
+    public ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail) =>
+        TryCatch<ReceivedEmail>(operation: async () =>
     {
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(ReceivedEmail)}_update");
-        return await receivedEmailBroker.UpdateReceivedEmailAsync(Copy(entity));
-    }
+        ValidateReceivedEmailOnUpdate(inputs: [updatedReceivedEmail]);
 
-    public async ValueTask<int> DeleteAsync(int id)
+        authorizationBroker.Authorize(appId: updatedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_update");
+        return await receivedEmailBroker.UpdateReceivedEmailAsync(updatedReceivedEmail: Copy(entity: updatedReceivedEmail));
+    }, isValueTask: true);
+
+    public ValueTask<int> DeleteAsync(int receivedEmailId) =>
+        TryCatch<int>(operation: async () =>
     {
-        ReceivedEmail entity = GetAll(ignoreFilters: true).FirstOrDefault(item => item.Id == id);
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(ReceivedEmail)}_delete");
-        return await receivedEmailBroker.DeleteReceivedEmailAsync(Copy(entity));
-    }
 
-    public ValueTask AddRangeAsync(
-        IEnumerable<ReceivedEmail> entities,
+        ValidateDeleteAsync(inputs: [receivedEmailId]);
+
+        ReceivedEmail entity = receivedEmailBroker
+            .GetAllReceivedEmails(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
+
+        authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(ReceivedEmail)}_delete");
+        return await receivedEmailBroker.DeleteReceivedEmailAsync(deletedReceivedEmail: Copy(entity: entity));
+    }, isValueTask: true);
+
+    public ValueTask AddRangeReceivedEmailAsync(
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default) =>
-        receivedEmailBroker.AddReceivedEmailsAsync(entities?.Select(Copy), cancellationToken);
+        TryCatch(operation: () =>
+        {
+            ValidateRangeReceivedEmailOnAdd(inputs: [newReceivedEmail, cancellationToken]);
+
+            return receivedEmailBroker.AddReceivedEmailsAsync(newReceivedEmail: newReceivedEmail?.Select(selector: Copy), cancellationToken: cancellationToken);
+        }, isValueTask: true);
 
     public bool Exists(Guid mailReceiverId, string messageId) =>
-        receivedEmailBroker.Exists(mailReceiverId, messageId);
+        TryCatch<bool>(operation: () =>
+        {
+            ValidateExists(inputs: [mailReceiverId, messageId]);
 
-    public ValueTask DeleteAllAsync(IEnumerable<ReceivedEmail> items) =>
-        receivedEmailBroker.DeleteAllReceivedEmailsAsync(items);
+            return receivedEmailBroker.Exists(mailReceiverId: mailReceiverId, messageId: messageId);
+        });
+
+    public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail) =>
+        TryCatch(operation: () =>
+        {
+            ValidateAllReceivedEmailOnDelete(inputs: [deletedReceivedEmail]);
+
+            return receivedEmailBroker.DeleteAllReceivedEmailsAsync(deletedReceivedEmail: deletedReceivedEmail);
+        }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        receivedEmailBroker.DeleteAllReceivedEmailsByAppIdAsync(appId);
+        TryCatch(operation: () =>
+        {
+            ValidateAllByAppIdOnDelete(inputs: [appId]);
+
+            return receivedEmailBroker.DeleteAllReceivedEmailsByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     private static ReceivedEmail Copy(ReceivedEmail entity) =>
         entity is null

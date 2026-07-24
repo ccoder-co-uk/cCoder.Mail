@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,24 +20,21 @@ public partial class MailServerOrchestrationServiceTests
     {
         // Given
         IQueryable<MailServer> entities = new[] { CreateRandomMailServer() }.AsQueryable();
-        mailServerProcessingServiceMock.Setup(x => x.GetAll(true)).Returns(entities);
+
+        mailServerProcessingServiceMock.Setup(expression: x => x.GetAllMailServer(ignoreFilters: true))
+            .Returns(value: entities);
 
         // When
-        IQueryable<MailServer> result = orchestrationService.GetAll(true);
+        IQueryable<MailServer> result = orchestrationService.GetAllMailServer(ignoreFilters: true);
 
         // Then
-        result.Should().BeSameAs(entities);
-        mailServerProcessingServiceMock.Verify(x => x.GetAll(true), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entities);
+
+        mailServerProcessingServiceMock.Verify(expression: x => x.GetAllMailServer(ignoreFilters: true), times: Times.Once);
         mailServerProcessingServiceMock.VerifyNoOtherCalls();
         mailServerEventProcessingServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

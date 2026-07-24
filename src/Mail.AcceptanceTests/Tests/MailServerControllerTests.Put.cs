@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,10 +16,11 @@ public sealed partial class MailServerControllerTests
     {
         // Given
         SeededMailServerContext seededContext = await SeedDatabase();
-        MailServer createdMailServer = await CreateMailServerAsync(new
+
+        MailServer createdMailServer = await CreateMailServerAsync(payload: new
         {
             appId = seededContext.AppId,
-            name = Unique("MailServer"),
+            name = Unique(prefix: "MailServer"),
             user = "acceptance",
             password = "password",
             host = "smtp.acceptance.local",
@@ -23,11 +28,13 @@ public sealed partial class MailServerControllerTests
             port = 25,
             enableSSL = false,
         });
-        string updatedName = Unique("UpdatedMailServer");
+
+        string updatedName = Unique(prefix: "UpdatedMailServer");
         MailServer actualMailServer;
 
         // When
-        await UpdateMailServerAsync(createdMailServer.Id, new
+
+        await UpdateMailServerAsync(id: createdMailServer.Id, payload: new
         {
             id = createdMailServer.Id,
             appId = seededContext.AppId,
@@ -40,19 +47,20 @@ public sealed partial class MailServerControllerTests
             enableSSL = true,
         });
 
-        actualMailServer = await GetMailServerAsync(createdMailServer.Id);
+        actualMailServer = await GetMailServerAsync(id: createdMailServer.Id);
 
         // Then
-        actualMailServer.Should().NotBeNull();
-        actualMailServer.Name.Should().Be(updatedName);
-        actualMailServer.Port.Should().Be(587);
 
-        await DeleteMailServerAsync(createdMailServer.Id);
-        await Teardown(seededContext);
+        actualMailServer.Should()
+            .NotBeNull();
+
+        actualMailServer.Name.Should()
+            .Be(expected: updatedName);
+
+        actualMailServer.Port.Should()
+            .Be(expected: 587);
+
+        await DeleteMailServerAsync(id: createdMailServer.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

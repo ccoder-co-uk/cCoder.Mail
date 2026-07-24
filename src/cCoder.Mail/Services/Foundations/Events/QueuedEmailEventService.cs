@@ -1,4 +1,8 @@
-using cCoder.Data;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -10,43 +14,55 @@ using DataQueuedEmail = cCoder.Data.Models.Mail.QueuedEmail;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class QueuedEmailEventService(
+internal partial class QueuedEmailEventService(
     IQueuedEmailEventBroker queuedEmailEventBroker,
-    ICoreAuthInfo authInfo
+    IAuthInfoBroker authInfoBroker
 ) : IQueuedEmailEventService
 {
-    public async ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailAddEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailAddEventAsync(message);
-    }
+        await queuedEmailEventBroker.RaiseQueuedEmailAddEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailUpdateEventAsync(message);
-    }
+        await queuedEmailEventBroker.RaiseQueuedEmailUpdateEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity)
+    public ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseQueuedEmailDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataQueuedEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailDeleteEventAsync(message);
-    }
+        await queuedEmailEventBroker.RaiseQueuedEmailDeleteEventAsync(message: message);
+    }, isValueTask: true);
 
     private static DataQueuedEmail ToExternalQueuedEmail(QueuedEmail entity) =>
         entity == null ? null : new DataQueuedEmail
@@ -62,13 +78,3 @@ internal class QueuedEmailEventService(
             MailServerName = entity.MailServerName,
         };
 }
-
-
-
-
-
-
-
-
-
-

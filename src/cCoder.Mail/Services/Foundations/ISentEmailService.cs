@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -8,20 +12,11 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface ISentEmailService
 {
-    SentEmail Get(int id);
-    IQueryable<SentEmail> GetAll(bool ignoreFilters = false);
-    ValueTask<SentEmail> AddAsync(SentEmail sentEmail);
-    ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail);
-    ValueTask DeleteAsync(int id);
-    ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items);
+    SentEmail GetSentEmail(int iSentEmailId);
+    IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
+    ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
+    ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
+    ValueTask DeleteAsync(int iSentEmailId);
+    ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }
-
-
-
-
-
-
-
-
-

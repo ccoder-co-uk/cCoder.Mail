@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,23 +20,20 @@ public partial class SentEmailProcessingServiceTests
     {
         // Given
         IQueryable<SentEmail> entities = new[] { CreateRandomSentEmail() }.AsQueryable();
-        sentEmailServiceMock.Setup(x => x.GetAll()).Returns(entities);
+
+        sentEmailServiceMock.Setup(expression: x => x.GetAllSentEmail())
+            .Returns(value: entities);
 
         // When
-        IQueryable<SentEmail> result = sentEmailProcessingService.GetAll();
+        IQueryable<SentEmail> result = sentEmailProcessingService.GetAllSentEmail();
 
         // Then
-        result.Should().BeSameAs(entities);
-        sentEmailServiceMock.Verify(x => x.GetAll(), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entities);
+
+        sentEmailServiceMock.Verify(expression: x => x.GetAllSentEmail(), times: Times.Once);
         sentEmailServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

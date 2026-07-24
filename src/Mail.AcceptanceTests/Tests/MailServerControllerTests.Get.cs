@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net;
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
@@ -20,7 +24,9 @@ public sealed partial class MailServerControllerTests
         int actualCount = await GetMailServerCountAsync();
 
         // Then
-        actualCount.Should().BeGreaterThanOrEqualTo(0);
+
+        actualCount.Should()
+            .BeGreaterThanOrEqualTo(expected: 0);
     }
 
     [Fact]
@@ -29,10 +35,12 @@ public sealed partial class MailServerControllerTests
         // Given
 
         // When
-        IReadOnlyList<MailServer> actualMailServers = await GetMailServersAsync(1);
+        IReadOnlyList<MailServer> actualMailServers = await GetMailServersAsync(top: 1);
 
         // Then
-        actualMailServers.Should().NotBeNull();
+
+        actualMailServers.Should()
+            .NotBeNull();
     }
 
     [Fact]
@@ -40,8 +48,9 @@ public sealed partial class MailServerControllerTests
     {
         // Given
         SeededMailServerContext seededContext = await SeedDatabase();
-        string name = Unique("MailServer");
-        MailServer expectedMailServer = await CreateMailServerAsync(new
+        string name = Unique(prefix: "MailServer");
+
+        MailServer expectedMailServer = await CreateMailServerAsync(payload: new
         {
             appId = seededContext.AppId,
             name,
@@ -52,34 +61,48 @@ public sealed partial class MailServerControllerTests
             port = 25,
             enableSSL = false,
         });
+
         MailServer actualMailServer;
 
         // When
-        actualMailServer = await GetMailServerAsync(expectedMailServer.Id);
+        actualMailServer = await GetMailServerAsync(id: expectedMailServer.Id);
 
         // Then
-        actualMailServer.Should().NotBeNull();
-        actualMailServer.Id.Should().Be(expectedMailServer.Id);
-        actualMailServer.Name.Should().Be(name);
 
-        await DeleteMailServerAsync(expectedMailServer.Id);
-        await Teardown(seededContext);
+        actualMailServer.Should()
+            .NotBeNull();
+
+        actualMailServer.Id.Should()
+            .Be(expected: expectedMailServer.Id);
+
+        actualMailServer.Name.Should()
+            .Be(expected: name);
+
+        await DeleteMailServerAsync(id: expectedMailServer.Id);
+        await Teardown(seededContext: seededContext);
     }
 
     [Fact]
     public async Task Get_WithoutReadPrivilege_ReturnsNotFound()
     {
-        SeededMailServerContext seededContext = await SeedDatabase("mailserver_create", "mailserver_update", "mailserver_delete");
+        // Given
+        SeededMailServerContext seededContext = await SeedDatabase(
+privileges: [
+                "mailserver_create",
+                "mailserver_update",
+                "mailserver_delete",
+            ]);
 
         using IServiceScope scope = fixture.Factory.Services.CreateScope();
+
         using var core = scope.ServiceProvider
             .GetRequiredService<cCoder.Data.ICoreContextFactory>()
             .CreateCoreContext();
 
-        MailServer hiddenMailServer = await core.AddMailServerAsync(new MailServer
+        MailServer hiddenMailServer = await core.AddMailServerAsync(mailServer: new MailServer
         {
             AppId = seededContext.AppId,
-            Name = Unique("HiddenMailServer"),
+            Name = Unique(prefix: "HiddenMailServer"),
             User = "acceptance",
             Password = "password",
             Host = "smtp.acceptance.local",
@@ -88,16 +111,14 @@ public sealed partial class MailServerControllerTests
             EnableSSL = false,
         });
 
-        int actualStatusCode = await GetMailServerStatusCodeAsync(hiddenMailServer.Id);
+        // When
+        int actualStatusCode = await GetMailServerStatusCodeAsync(id: hiddenMailServer.Id);
 
-        actualStatusCode.Should().Be((int)HttpStatusCode.NotFound);
+        // Then
 
-        await Teardown(seededContext);
+        actualStatusCode.Should()
+            .Be(expected: (int)HttpStatusCode.NotFound);
+
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net.Mail;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
@@ -5,54 +9,62 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class SmtpMailSenderService(ISmtpMailSenderBroker smtpMailSenderBroker)
+internal sealed partial class SmtpMailSenderService(ISmtpMailSenderBroker smtpMailSenderBroker)
     : ISmtpMailSenderService
 {
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
-        MailSender sender = email.MailSender
-            ?? throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
 
-        using MailMessage message = CreateMailMessage(email, sender);
+        ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
+
+        MailSender sender = email.MailSender
+                                                                                                                ?? throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
+
+        using MailMessage message = CreateMailMessage(newQueuedEmail: email, newMailSender: sender);
 
         await smtpMailSenderBroker.SendAsync(
-            new SmtpMailSendRequest
-            {
-                Host = sender.Host,
-                Port = sender.Port,
-                EnableSsl = sender.EnableSSL,
-                User = sender.User,
-                Password = sender.Password,
-                Message = message,
-            },
-            cancellationToken);
-    }
+request: new SmtpMailSendRequest
+{
+    Host = sender.Host,
+    Port = sender.Port,
+    EnableSsl = sender.EnableSSL,
+    User = sender.User,
+    Password = sender.Password,
+    Message = message,
+},
+cancellationToken: cancellationToken);
+    }, isTask: true);
 
-    private static MailMessage CreateMailMessage(QueuedEmail email, MailSender sender)
+    private static MailMessage CreateMailMessage(QueuedEmail newQueuedEmail, MailSender newMailSender)
     {
         MailMessage message = new()
         {
-            IsBodyHtml = email.IsBodyHtml,
-            Subject = email.Subject,
-            Body = email.Content,
-            From = CreateFromAddress(sender),
+            IsBodyHtml = newQueuedEmail.IsBodyHtml,
+            Subject = newQueuedEmail.Subject,
+            Body = newQueuedEmail.Content,
+            From = CreateMailAddress(newMailSender: newMailSender),
         };
 
-        message.To.Add(email.To);
+        message.To.Add(addresses: newQueuedEmail.To);
 
-        if (!string.IsNullOrWhiteSpace(email.CC))
-            message.CC.Add(email.CC);
+        if (!string.IsNullOrWhiteSpace(value: newQueuedEmail.CC))
+        {
+            message.CC.Add(addresses: newQueuedEmail.CC);
+        }
 
         return message;
     }
 
-    private static MailAddress CreateFromAddress(MailSender sender)
+    private static MailAddress CreateMailAddress(MailSender newMailSender)
     {
-        if (!string.IsNullOrWhiteSpace(sender.FromEmail))
-            return new MailAddress(sender.FromEmail);
+        if (!string.IsNullOrWhiteSpace(value: newMailSender.FromEmail))
+        {
+            return new MailAddress(address: newMailSender.FromEmail);
+        }
 
-        return sender.User.Contains('@')
-            ? new MailAddress(sender.User)
+        return newMailSender.User.Contains(value: '@')
+            ? new MailAddress(address: newMailSender.User)
             : null;
     }
 }

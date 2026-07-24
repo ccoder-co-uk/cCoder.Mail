@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.Extensions.Hosting;
 
@@ -12,9 +16,10 @@ public sealed class MailSenderHostedService(
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using IServiceScope scope = serviceScopeFactory.CreateScope();
+
         IMailSenderOrchestrationService mailSenderOrchestrationService =
             scope.ServiceProvider.GetRequiredService<IMailSenderOrchestrationService>();
 
-        await mailSenderOrchestrationService.RunContinuouslyAsync(stoppingToken);
+        await mailSenderOrchestrationService.RunContinuouslyAsync(cancellationToken: stoppingToken);
     }
 }

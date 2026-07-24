@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -17,27 +21,21 @@ public partial class QueuedEmailServiceTests
         // Given
         QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 7);
 
-        queuedEmailBrokerMock.Setup(x => x.GetAllQueuedEmails(false)).Returns(new[] { ToExternalQueuedEmail(queuedEmail) }.AsQueryable());
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: false))
+            .Returns(value: new[] { ToExternalQueuedEmail(item: queuedEmail) }.AsQueryable());
 
         // When
-        QueuedEmail result = queuedEmailService.Get(7);
+        QueuedEmail result = queuedEmailService.GetQueuedEmail(queuedEmailId: 7);
 
         // Then
-        result.Should().BeEquivalentTo(queuedEmail);
-        queuedEmailBrokerMock.Verify(x => x.GetAllQueuedEmails(false), Times.Once);
-        queuedEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), Times.AtMostOnce());
+
+        result.Should()
+            .BeEquivalentTo(expectation: queuedEmail);
+
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: false), times: Times.Once);
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-
-

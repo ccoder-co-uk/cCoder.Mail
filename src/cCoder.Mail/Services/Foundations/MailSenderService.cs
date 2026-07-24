@@ -1,56 +1,100 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal class MailSenderService(
+internal partial class MailSenderService(
     IMailSenderBroker mailSenderBroker,
     IAuthorizationBroker authorizationBroker)
     : IMailSenderService
 {
-    public MailSender Get(Guid id)
+    public MailSender GetMailSender(Guid mailSenderId) =>
+        TryCatch<MailSender>(operation: () =>
     {
-        MailSender mailSender = GetAll().FirstOrDefault(item => item.Id == id);
+
+        ValidateMailSenderOnGet(inputs: [mailSenderId]);
+
+        MailSender mailSender = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: false)
+            .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (mailSender is not null)
+        {
             return mailSender;
+        }
 
-        MailSender unrestrictedMailSender = GetAll(true).FirstOrDefault(item => item.Id == id);
+        MailSender unrestrictedMailSender = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (unrestrictedMailSender is not null)
-            authorizationBroker.Authorize(unrestrictedMailSender.AppId, $"{nameof(MailSender)}_read");
+        {
+            authorizationBroker.Authorize(appId: unrestrictedMailSender.AppId, privilege: $"{nameof(MailSender)}_read");
+        }
 
         return unrestrictedMailSender;
-    }
+    });
 
-    public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
-        mailSenderBroker.GetAllMailSenders(ignoreFilters);
+    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<MailSender>>(operation: () =>
+        {
+            ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
 
-    public async ValueTask<MailSender> AddAsync(MailSender entity)
+            return mailSenderBroker.GetAllMailSenders(ignoreFilters: ignoreFilters);
+        });
+
+    public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
+        TryCatch<MailSender>(operation: async () =>
     {
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(MailSender)}_create");
-        return await mailSenderBroker.AddMailSenderAsync(Copy(entity));
-    }
+        ValidateMailSenderOnAdd(inputs: [newMailSender]);
 
-    public async ValueTask<MailSender> UpdateAsync(MailSender entity)
+        authorizationBroker.Authorize(appId: newMailSender.AppId, privilege: $"{nameof(MailSender)}_create");
+        return await mailSenderBroker.AddMailSenderAsync(newMailSender: Copy(entity: newMailSender));
+    }, isValueTask: true);
+
+    public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
+        TryCatch<MailSender>(operation: async () =>
     {
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(MailSender)}_update");
-        return await mailSenderBroker.UpdateMailSenderAsync(Copy(entity));
-    }
+        ValidateMailSenderOnUpdate(inputs: [updatedMailSender]);
 
-    public async ValueTask<int> DeleteAsync(Guid id)
+        authorizationBroker.Authorize(appId: updatedMailSender.AppId, privilege: $"{nameof(MailSender)}_update");
+        return await mailSenderBroker.UpdateMailSenderAsync(updatedMailSender: Copy(entity: updatedMailSender));
+    }, isValueTask: true);
+
+    public ValueTask<int> DeleteAsync(Guid mailSenderId) =>
+        TryCatch<int>(operation: async () =>
     {
-        MailSender entity = GetAll(ignoreFilters: true).FirstOrDefault(item => item.Id == id);
-        authorizationBroker.Authorize(entity.AppId, $"{nameof(MailSender)}_delete");
-        return await mailSenderBroker.DeleteMailSenderAsync(Copy(entity));
-    }
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailSender> items) =>
-        mailSenderBroker.DeleteAllMailSendersAsync(items);
+        ValidateDeleteAsync(inputs: [mailSenderId]);
+
+        MailSender entity = mailSenderBroker
+            .GetAllMailSenders(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == mailSenderId);
+
+        authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");
+        return await mailSenderBroker.DeleteMailSenderAsync(deletedMailSender: Copy(entity: entity));
+    }, isValueTask: true);
+
+    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender) =>
+        TryCatch(operation: () =>
+        {
+            ValidateAllMailSenderOnDelete(inputs: [deletedMailSender]);
+
+            return mailSenderBroker.DeleteAllMailSendersAsync(deletedMailSender: deletedMailSender);
+        }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        mailSenderBroker.DeleteAllMailSendersByAppIdAsync(appId);
+        TryCatch(operation: () =>
+        {
+            ValidateAllByAppIdOnDelete(inputs: [appId]);
+
+            return mailSenderBroker.DeleteAllMailSendersByAppIdAsync(appId: appId);
+        }, isValueTask: true);
 
     private static MailSender Copy(MailSender entity) =>
         entity is null

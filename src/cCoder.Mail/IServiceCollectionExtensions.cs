@@ -1,10 +1,15 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Brokers.Storages;
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Exposures;
 using cCoder.Mail.Exposures.EventHandlers;
 using cCoder.Mail.Exposures.HostedServices;
@@ -12,6 +17,7 @@ using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Services.Foundations.Events;
 using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Services.Aggregations;
 using cCoder.Mail.Services.Processings;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
@@ -32,19 +38,19 @@ public static partial class IServiceCollectionExtensions
 {
     public static void AddMail(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMail((_, configuration) => configure?.Invoke(configuration));
+        Action<MailConfiguration> newMailConfiguration = null) =>
+        services.AddConfiguredMail(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
 
     public static void AddMailWeb(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null,
+        Action<MailConfiguration> newMailConfiguration = null,
         ODataConventionModelBuilder builder = null) =>
-        services.AddConfiguredMailWeb((_, configuration) => configure?.Invoke(configuration), builder);
+        services.AddConfiguredMailWeb(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration), builder: builder);
 
     public static void AddMailHostedServices(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMailHostedServices((_, configuration) => configure?.Invoke(configuration));
+        Action<MailConfiguration> newMailConfiguration = null) =>
+        services.AddConfiguredMailHostedServices(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
 
     private static void AddMail(this IServiceCollection services)
     {
@@ -71,9 +77,9 @@ public static partial class IServiceCollectionExtensions
         services.AddOrchestrations();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
-        services.AddHostedService(provider => provider.GetRequiredService<IMailSenderHostedService>());
+        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailSenderHostedService>());
         services.AddSingleton<IMailReceiverHostedService, MailReceiverHostedService>();
-        services.AddHostedService(provider => provider.GetRequiredService<IMailReceiverHostedService>());
+        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailReceiverHostedService>());
     }
 
     private static void AddEventingTypes(this IServiceCollection services)
@@ -90,6 +96,9 @@ public static partial class IServiceCollectionExtensions
     private static void AddBrokers(this IServiceCollection services)
     {
         services.AddTransient<IEventHubBroker, EventHubBroker>();
+        services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
+        services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
+        services.AddSingleton<IUIBaselineExposure, UIBaselineExposure>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
@@ -143,13 +152,10 @@ public static partial class IServiceCollectionExtensions
 
     private static void AddOrchestrations(this IServiceCollection services)
     {
-        services.AddTransient<IAppOrchestrationService, AppOrchestrationService>();
-        services.AddTransient<IMailClientOrchestrationService, MailClientOrchestrationService>();
+        services.AddTransient<IAppAggregationService, AppAggregationService>();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddTransient<IMailReceiverOrchestrationService, MailReceiverOrchestrationService>();
         services.AddTransient<IMailServerOrchestrationService, MailServerOrchestrationService>();
-        services.AddTransient<IMailSenderConfigurationOrchestrationService, MailSenderConfigurationOrchestrationService>();
-        services.AddTransient<IMailReceiverConfigurationOrchestrationService, MailReceiverConfigurationOrchestrationService>();
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();
         services.AddTransient<ISentEmailOrchestrationService, SentEmailOrchestrationService>();
         services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
@@ -171,5 +177,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<ISentEmailEventProcessingService, SentEmailEventProcessingService>();
         services.AddTransient<ISentEmailProcessingService, SentEmailProcessingService>();
         services.AddTransient<IReceivedEmailProcessingService, ReceivedEmailProcessingService>();
+        services.AddTransient<IMailSendingProcessingService, MailSendingProcessingService>();
+        services.AddTransient<IMailReceivingProcessingService, MailReceivingProcessingService>();
     }
 }

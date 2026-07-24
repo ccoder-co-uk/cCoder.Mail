@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -18,50 +22,58 @@ public partial class QueuedEmailServiceTests
         // Given
         QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 9, appId: 7);
 
-        queuedEmailBrokerMock.Setup(x => x.GetAllQueuedEmails(true)).Returns(new[] { ToExternalQueuedEmail(queuedEmail) }.AsQueryable());
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
+            .Returns(value: new[] { ToExternalQueuedEmail(item: queuedEmail) }.AsQueryable());
 
-        queuedEmailBrokerMock.Setup(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>())).Returns((int?)7);
-        authorizationBrokerMock.Setup(x => x.Authorize((int?)7, "QueuedEmail_delete"));
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()))
+            .Returns(value: (int?)7);
+
+        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_delete"));
+
         queuedEmailBrokerMock
-            .Setup(x => x.DeleteAllQueuedEmailSendFailuresAsync(It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
+            .Returns(value: ValueTask.CompletedTask);
+
         queuedEmailBrokerMock
-            .Setup(x =>
+            .Setup(expression: x =>
                 x.DeleteQueuedEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.QueuedEmail>(candidate =>
+deletedQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
                         candidate.Id == queuedEmail.Id
                         && candidate.AppId == queuedEmail.AppId
                         && candidate.Subject == queuedEmail.Subject
                     )
                 )
             )
-            .ReturnsAsync(1);
+            .ReturnsAsync(value: 1);
 
         // When
-        await queuedEmailService.DeleteAsync(9);
+        await queuedEmailService.DeleteAsync(queuedEmailId: 9);
 
         // Then
-        queuedEmailBrokerMock.Verify(x => x.GetAllQueuedEmails(true), Times.Once);
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
+
         queuedEmailBrokerMock.Verify(
-            x =>
+expression: x =>
                 x.DeleteQueuedEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.QueuedEmail>(candidate =>
+deletedQueuedEmail: It.Is<cCoder.Data.Models.Mail.QueuedEmail>(match: candidate =>
                         candidate.Id == queuedEmail.Id
                         && candidate.AppId == queuedEmail.AppId
                         && candidate.Subject == queuedEmail.Subject
                     )
                 ),
-            Times.Once
+times: Times.Once
         );
+
         queuedEmailBrokerMock.Verify(
-            x => x.DeleteAllQueuedEmailSendFailuresAsync(
-                It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()
+expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(
+deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()
             ),
-            Times.Once
+times: Times.Once
         );
-        queuedEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), Times.AtMostOnce());
+
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "QueuedEmail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_delete"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -71,34 +83,31 @@ public partial class QueuedEmailServiceTests
         // Given
         QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 9, appId: 7);
 
-        queuedEmailBrokerMock.Setup(x => x.GetAllQueuedEmails(true)).Returns(new[] { ToExternalQueuedEmail(queuedEmail) }.AsQueryable());
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
+            .Returns(value: new[] { ToExternalQueuedEmail(item: queuedEmail) }.AsQueryable());
 
         authorizationBrokerMock
-            .Setup(x => x.Authorize((int?)7, "QueuedEmail_delete"))
-            .Throws(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_delete"))
+            .Throws(exception: new SecurityException(message: "Access Denied!"));
+
         queuedEmailBrokerMock
-            .Setup(x => x.DeleteAllQueuedEmailSendFailuresAsync(It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.DeleteAllQueuedEmailSendFailuresAsync(deletedEmailSendFailure: It.IsAny<IEnumerable<cCoder.Data.Models.Mail.EmailSendFailure>>()))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        Func<Task> action = async () => await queuedEmailService.DeleteAsync(9);
+        Func<Task> action = async () => await queuedEmailService.DeleteAsync(queuedEmailId: 9);
 
         // Then
-        await action.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        queuedEmailBrokerMock.Verify(x => x.GetAllQueuedEmails(true), Times.Once);
-        queuedEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), Times.AtMostOnce());
+
+        await action.Should()
+            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .WithMessage(expectedWildcardPattern: "The mail service failed.");
+
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "QueuedEmail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_delete"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-

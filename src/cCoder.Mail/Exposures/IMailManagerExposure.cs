@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -7,6 +11,5 @@ namespace cCoder.Mail.Exposures;
 
 public interface IMailManagerExposure
 {
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivileges = false);
+    ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = false);
 }
-

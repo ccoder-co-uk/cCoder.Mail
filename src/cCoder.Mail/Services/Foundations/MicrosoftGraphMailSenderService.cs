@@ -1,134 +1,160 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net.Http.Headers;
 using System.Text.Json;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed class MicrosoftGraphMailSenderService(
-    MailConfiguration mailConfiguration,
+internal sealed partial class MicrosoftGraphMailSenderService(
+    IMailConfigurationExposure mailConfigurationExposure,
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailSenderService
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     private const string DefaultGraphBaseUrl = "https://graph.microsoft.com/v1.0";
+
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
 
-    public async Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default)
+    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+        TryCatch(operation: async () =>
     {
-        MailSender sender = GetMailSender(email);
-        string accessToken = await GetAccessTokenAsync(cancellationToken);
-        using HttpRequestMessage message = new(HttpMethod.Post, BuildSendUrl(sender));
-        message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        message.Content = JsonContent.Create(CreateSendPayload(email));
+        ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
 
-        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(message, cancellationToken);
+        MailSender sender = GetMailSender(email: email);
+        string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);
+        using HttpRequestMessage message = new(method: HttpMethod.Post, requestUri: BuildSendUrl(sender: sender));
+        message.Headers.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: accessToken);
+        message.Content = JsonContent.Create(inputValue: CreateSendPayload(newQueuedEmail: email));
+
+        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException($"Microsoft Graph mail send failed: {response.Content}");
-    }
+        {
+            throw new InvalidOperationException(message: $"Microsoft Graph mail send failed: {response.Content}");
+        }
+    }, isTask: true);
 
     private static MailSender GetMailSender(QueuedEmail email)
     {
         if (email == null)
-            throw new ArgumentNullException(nameof(email));
+        {
+            throw new ArgumentNullException(paramName: nameof(email));
+        }
 
         MailSender sender = email.MailSender;
 
         if (sender == null)
-            throw new InvalidOperationException("No mail sender configuration could be found to send the email.");
+        {
+            throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
+        }
 
-        if (string.IsNullOrWhiteSpace(sender.User))
-            throw new InvalidOperationException("Microsoft Graph sender user is required.");
+        if (string.IsNullOrWhiteSpace(value: sender.User))
+        {
+            throw new InvalidOperationException(message: "Microsoft Graph sender user is required.");
+        }
 
-        if (string.IsNullOrWhiteSpace(email.To))
-            throw new InvalidOperationException("Email recipient is required.");
+        if (string.IsNullOrWhiteSpace(value: email.To))
+        {
+            throw new InvalidOperationException(message: "Email recipient is required.");
+        }
 
         return sender;
     }
 
     private string BuildSendUrl(MailSender sender)
     {
-        string graphBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.GraphBaseUrl)
+        string graphBaseUrl = ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.GraphBaseUrl)
             ?? DefaultGraphBaseUrl;
 
-        return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(sender.User)}/sendMail";
+        return $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: sender.User)}/sendMail";
     }
 
-    private static object CreateSendPayload(QueuedEmail email) =>
+    private static object CreateSendPayload(QueuedEmail newQueuedEmail) =>
         new
         {
             message = new
             {
-                subject = email.Subject,
+                subject = newQueuedEmail.Subject,
                 body = new
                 {
-                    contentType = email.IsBodyHtml ? "HTML" : "Text",
-                    content = email.Content ?? string.Empty,
+                    contentType = newQueuedEmail.IsBodyHtml ? "HTML" : "Text",
+                    content = newQueuedEmail.Content ?? string.Empty,
                 },
-                toRecipients = Recipients(email.To),
-                ccRecipients = Recipients(email.CC),
+                toRecipients = Recipients(addresses: newQueuedEmail.To),
+                ccRecipients = Recipients(addresses: newQueuedEmail.CC),
             },
             saveToSentItems = true,
         };
 
     private static object[] Recipients(string addresses) =>
-        string.IsNullOrWhiteSpace(addresses)
+        string.IsNullOrWhiteSpace(value: addresses)
             ? []
             : addresses
-                .Split([';', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .Select(address => new
-                {
-                    emailAddress = new
-                    {
-                        address,
-                    },
-                })
-                .ToArray();
+                .Split(separator: [';', ','], options: StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        .Select(selector: address => new
+        {
+            emailAddress = new
+            {
+                address,
+            },
+        })
+        .ToArray();
 
     private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {
-        using HttpRequestMessage request = new(HttpMethod.Post, BuildTokenUrl())
+        using HttpRequestMessage request = new(method: HttpMethod.Post, requestUri: BuildTokenUrl())
         {
             Content = new FormUrlEncodedContent(
-            [
+nameValueCollection: [
                 new KeyValuePair<string, string>(
-                    "client_id",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientId, "Microsoft Graph client id")),
+key: "client_id",
+value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ClientId, configurationName: "Microsoft Graph client id")),
                 new KeyValuePair<string, string>(
-                    "client_secret",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientSecret, "Microsoft Graph client secret")),
-                new KeyValuePair<string, string>("scope", "https://graph.microsoft.com/.default"),
-                new KeyValuePair<string, string>("grant_type", "client_credentials"),
+key: "client_secret",
+value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ClientSecret, configurationName: "Microsoft Graph client secret")),
+                new KeyValuePair<string, string>(key: "scope", value: "https://graph.microsoft.com/.default"),
+                new KeyValuePair<string, string>(key: "grant_type", value: "client_credentials"),
             ]),
         };
 
-        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request, cancellationToken);
+        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: request, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException($"Microsoft Graph token request failed: {response.Content}");
+        {
+            throw new InvalidOperationException(message: $"Microsoft Graph token request failed: {response.Content}");
+        }
 
-        using JsonDocument document = JsonDocument.Parse(response.Content);
+        using JsonDocument document = JsonDocument.Parse(json: response.Content);
 
-        return document.RootElement.GetProperty("access_token").GetString()
-            ?? throw new InvalidOperationException("Microsoft Graph token response did not include an access token.");
+        return document.RootElement.GetProperty(propertyName: "access_token")
+            .GetString()
+            ?? throw new InvalidOperationException(message: "Microsoft Graph token response did not include an access token.");
     }
 
     private string BuildTokenUrl()
     {
         string tenantId = ReadRequiredConfiguredValue(
-            mailConfiguration.MicrosoftGraph.TenantId,
-            "Microsoft Graph tenant id");
-        string loginBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.LoginBaseUrl)
+configuredValue: mailConfiguration.MicrosoftGraph.TenantId,
+configurationName: "Microsoft Graph tenant id");
+
+        string loginBaseUrl = ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.LoginBaseUrl)
             ?? DefaultLoginBaseUrl;
 
-        return $"{loginBaseUrl.TrimEnd('/')}/{Uri.EscapeDataString(tenantId)}/oauth2/v2.0/token";
+        return $"{loginBaseUrl.TrimEnd(trimChar: '/')}/{Uri.EscapeDataString(stringToEscape: tenantId)}/oauth2/v2.0/token";
     }
 
     private static string ReadRequiredConfiguredValue(string configuredValue, string configurationName) =>
-        ReadConfiguredValue(configuredValue)
-        ?? throw new InvalidOperationException($"{configurationName} is required for Microsoft Graph mail.");
+        ReadConfiguredValue(configuredValue: configuredValue)
+        ?? throw new InvalidOperationException(message: $"{configurationName} is required for Microsoft Graph mail.");
 
     private static string ReadConfiguredValue(string configuredValue) =>
-        string.IsNullOrWhiteSpace(configuredValue) ? null : configuredValue;
+        string.IsNullOrWhiteSpace(value: configuredValue) ? null : configuredValue;
 }

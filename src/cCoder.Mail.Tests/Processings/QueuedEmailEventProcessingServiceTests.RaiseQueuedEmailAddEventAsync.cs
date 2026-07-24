@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -15,24 +19,17 @@ public partial class QueuedEmailEventProcessingServiceTests
     {
         // Given
         QueuedEmail entity = CreateRandomQueuedEmail();
+
         queuedEmailEventServiceMock
-            .Setup(x => x.RaiseQueuedEmailAddEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await service.RaiseQueuedEmailAddEventAsync(entity);
+        await service.RaiseQueuedEmailAddEventAsync(entity: entity);
 
         // Then
-        queuedEmailEventServiceMock.Verify(x => x.RaiseQueuedEmailAddEventAsync(entity), Times.Once);
+        queuedEmailEventServiceMock.Verify(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity), times: Times.Once);
         queuedEmailEventServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

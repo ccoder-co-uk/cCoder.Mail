@@ -1,7 +1,11 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.OData;
-using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -12,7 +16,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class MailReceiverController(
-    IMailReceiverConfigurationOrchestrationService service)
+    IMailReceiverProcessingService service)
     : ODataController
 {
     [HttpGet]
@@ -22,11 +26,11 @@ public partial class MailReceiverController(
 
         return isExtendedMetaRequest
             ? Ok(
-                new MailModelBuilder()
+value: new MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(MailReceiver))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(MailReceiver))
             )
-            : Ok(new MetadataContainer(typeof(MailReceiver), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(MailReceiver), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -39,7 +43,8 @@ public partial class MailReceiverController(
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<MailReceiver> queryOptions) => Ok(service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<MailReceiver> queryOptions) =>
+        Ok(value: service.GetAllMailReceiver());
 
     [HttpGet]
     [AllowAnonymous]
@@ -55,8 +60,10 @@ public partial class MailReceiverController(
     {
         try
         {
-            IQueryable<MailReceiver> result = service.GetAll().Where(mailReceiver => mailReceiver.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<MailReceiver> result = service.GetAllMailReceiver()
+                .Where(predicate: mailReceiver => mailReceiver.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -73,12 +80,14 @@ public partial class MailReceiverController(
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] MailReceiver entity)
+    public async Task<IActionResult> Post([FromBody] MailReceiver newMailReceiver)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await service.AddAsync(entity));
+        return Ok(value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver));
     }
 
     [HttpPut]
@@ -90,30 +99,35 @@ public partial class MailReceiverController(
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailReceiver entity)
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailReceiver updatedMailReceiver)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await service.UpdateAsync(entity));
+        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] Guid key, Delta<MailReceiver> delta)
+    [ActionName("Patch")]
+    public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailReceiver> updatedMailReceiver)
     {
-        MailReceiver originalEntity = service.Get(key);
+        MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverId: key);
 
         if (originalEntity == null)
+        {
             return NotFound();
+        }
 
-        delta.Patch(originalEntity);
-        return Ok(await service.UpdateAsync(originalEntity));
+        updatedMailReceiver.Patch(original: originalEntity);
+        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] Guid key)
     {
-        await service.DeleteAsync(key);
+        await service.DeleteAsync(iMailReceiverId: key);
         return Ok();
     }
 }

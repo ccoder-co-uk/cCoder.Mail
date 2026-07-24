@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Exposures.MailClients;
 
@@ -8,6 +12,6 @@ internal sealed class MailSenderClientBroker(IMailSenderFactory mailSenderFactor
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         mailSenderFactory
-            .GetSender(email?.MailSender?.ProviderName)
-            .SendAsync(email, cancellationToken);
+            .GetSender(providerName: email?.MailSender?.ProviderName)
+        .SendAsync(email: email, cancellationToken: cancellationToken);
 }

@@ -1,4 +1,8 @@
-using cCoder.Data;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -10,43 +14,55 @@ using DataSentEmail = cCoder.Data.Models.Mail.SentEmail;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class SentEmailEventService(
+internal partial class SentEmailEventService(
     ISentEmailEventBroker sentEmailEventBroker,
-    ICoreAuthInfo authInfo
+    IAuthInfoBroker authInfoBroker
 ) : ISentEmailEventService
 {
-    public async ValueTask RaiseSentEmailAddEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailAddEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailAddEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailAddEventAsync(message);
-    }
+        await sentEmailEventBroker.RaiseSentEmailAddEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailUpdateEventAsync(message);
-    }
+        await sentEmailEventBroker.RaiseSentEmailUpdateEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity)
+    public ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseSentEmailDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataSentEmail> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailDeleteEventAsync(message);
-    }
+        await sentEmailEventBroker.RaiseSentEmailDeleteEventAsync(message: message);
+    }, isValueTask: true);
 
     private static DataSentEmail ToExternalSentEmail(SentEmail entity) =>
         entity == null ? null : new DataSentEmail
@@ -63,13 +79,3 @@ internal class SentEmailEventService(
             From = entity.From,
         };
 }
-
-
-
-
-
-
-
-
-
-

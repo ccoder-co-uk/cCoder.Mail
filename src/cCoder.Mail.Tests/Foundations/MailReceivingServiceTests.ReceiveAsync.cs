@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -18,19 +22,23 @@ public partial class MailReceivingServiceTests
             User = "user@example.test",
             Password = "password",
         };
+
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
         mailReceiverClientBrokerMock
-            .Setup(broker => broker.ReceiveAsync(request, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: broker => broker.ReceiveAsync(request: request, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceiverClientBrokerMock.Verify(broker => broker.ReceiveAsync(request, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceiverClientBrokerMock.Verify(expression: broker => broker.ReceiveAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
         mailReceiverClientBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -42,15 +50,18 @@ public partial class MailReceivingServiceTests
         CancellationToken cancellationToken = new();
 
         mailReceiverClientBrokerMock
-            .Setup(broker => broker.ReceiveTopAsync(1, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: broker => broker.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceiverClientBrokerMock.Verify(broker => broker.ReceiveTopAsync(1, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceiverClientBrokerMock.Verify(expression: broker => broker.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken), times: Times.Once);
         mailReceiverClientBrokerMock.VerifyNoOtherCalls();
     }
 }

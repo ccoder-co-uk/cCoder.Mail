@@ -1,29 +1,85 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class ReceivedEmailProcessingService(IReceivedEmailService service) : IReceivedEmailProcessingService
+internal partial class ReceivedEmailProcessingService(IReceivedEmailService service) : IReceivedEmailProcessingService
 {
-    public ReceivedEmail Get(int id) => service.Get(id);
+    public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateReceivedEmailOnGet(inputs: [receivedEmailId]);
 
-    public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) => service.GetAll(ignoreFilters);
+            return service.GetReceivedEmail(iReceivedEmailId: receivedEmailId);
+        });
 
-    public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity) => service.AddAsync(entity);
+    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
+        {
+            ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
 
-    public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity) => service.UpdateAsync(entity);
+            return service.GetAllReceivedEmail(ignoreFilters: ignoreFilters);
+        });
 
-    public ValueTask<int> DeleteAsync(int id) => service.DeleteAsync(id);
+    public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateReceivedEmailOnAdd(inputs: [newReceivedEmail]);
+
+            return service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail);
+        }, isValueTask: true);
+
+    public ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail) =>
+        TryCatch<ReceivedEmail>(operation: () =>
+        {
+            ValidateReceivedEmailOnUpdate(inputs: [updatedReceivedEmail]);
+
+            return service.UpdateReceivedEmailAsync(updatedReceivedEmail: updatedReceivedEmail);
+        }, isValueTask: true);
+
+    public ValueTask<int> DeleteAsync(int receivedEmailId) =>
+        TryCatch<int>(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [receivedEmailId]);
+
+            return service.DeleteAsync(iReceivedEmailId: receivedEmailId);
+        }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId);
+        TryCatch(operation: () =>
+        {
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
-    public ValueTask AddRangeAsync(
-        IEnumerable<ReceivedEmail> entities,
+            return service.DeleteAllByAppIdAsync(appId: appId);
+        }, isValueTask: true);
+
+    public ValueTask AddRangeReceivedEmailAsync(
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default) =>
-        service.AddRangeAsync(entities, cancellationToken);
+        TryCatch(operation: () =>
+        {
+            ValidateRangeReceivedEmailOnAdd(inputs: [newReceivedEmail, cancellationToken]);
 
-    public bool Exists(Guid mailReceiverId, string messageId) => service.Exists(mailReceiverId, messageId);
+            return service.AddRangeReceivedEmailAsync(newReceivedEmail: newReceivedEmail, cancellationToken: cancellationToken);
+        }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<ReceivedEmail> items) => service.DeleteAllAsync(items);
+    public bool Exists(Guid mailReceiverId, string messageId) =>
+        TryCatch<bool>(operation: () =>
+        {
+            ValidateExists(inputs: [mailReceiverId, messageId]);
+
+            return service.Exists(mailReceiverId: mailReceiverId, messageId: messageId);
+        });
+
+    public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail) =>
+        TryCatch(operation: () =>
+        {
+            ValidateAllReceivedEmailOnDelete(inputs: [deletedReceivedEmail]);
+
+            return service.DeleteAllReceivedEmailAsync(deletedReceivedEmail: deletedReceivedEmail);
+        }, isValueTask: true);
 }

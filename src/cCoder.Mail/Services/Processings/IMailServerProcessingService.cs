@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -7,19 +11,19 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface IMailServerProcessingService
 {
-    MailServer Get(int id);
+    MailServer GetMailServer(int iMailServerId);
 
-    IQueryable<MailServer> GetAll(bool ignoreFilters = false);
+    IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false);
 
-    ValueTask<MailServer> AddAsync(MailServer entity);
+    ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer);
 
-    ValueTask<MailServer> UpdateAsync(MailServer entity);
+    ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask DeleteAsync(int iMailServerId);
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items);
+    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer);
 
-    ValueTask DeleteAllAsync(IEnumerable<MailServer> items);
+    ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer);
 }

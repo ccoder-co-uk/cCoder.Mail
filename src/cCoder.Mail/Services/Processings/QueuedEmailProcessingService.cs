@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Models;
@@ -8,61 +12,144 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
+internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
 {
-    public QueuedEmail Get(int id)
+    public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
-        return service.Get(id);
-    }
+        ValidateQueuedEmailOnGet(inputs: [queuedEmailId]);
 
-    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false)
-    {
-        return service.GetAll(ignoreFilters);
-    }
+        return service.GetQueuedEmail(iQueuedEmailId: queuedEmailId);
+    });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity)
+    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
+        TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
-        return AddAsync(entity, checkPrivs: false);
-    }
+        ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivs)
-    {
-        return service.AddAsync(email, checkPrivs);
-    }
+        return service.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
+    });
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity)
-    {
-        return service.UpdateAsync(entity);
-    }
+    public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
+        TryCatch<QueuedEmail[]>(operation: () =>
+        {
+            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
 
-    public async ValueTask DeleteAsync(int id)
+            return service.GetDispatchBatch(
+                batchSize: batchSize,
+                maxFailures: maxFailures);
+        });
+
+    public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail) =>
+        TryCatch<QueuedEmail>(operation: () =>
     {
-        QueuedEmail queuedEmail = GetAll(ignoreFilters: true).FirstOrDefault((QueuedEmail r) => r.Id == id);
+        ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail]);
+
+        return service.AddQueuedEmailAsync(
+            newQueuedEmail: newQueuedEmail,
+            checkPrivileges: false);
+    }, isValueTask: true);
+
+    public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
+        TryCatch<QueuedEmail>(operation: () =>
+    {
+        ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail, checkPrivs]);
+
+        return service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivileges: checkPrivs);
+    }, isValueTask: true);
+
+    public ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail) =>
+        TryCatch<QueuedEmail>(operation: () =>
+    {
+        ValidateQueuedEmailOnUpdate(inputs: [updatedQueuedEmail]);
+
+        return service.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail);
+    }, isValueTask: true);
+
+    public ValueTask RecordSendFailureAsync(
+        int emailId,
+        string reason,
+        CancellationToken cancellationToken = default) =>
+        TryCatch(operation: () =>
+        {
+            ValidateRecordSendFailureAsync(
+                inputs: [emailId, reason, cancellationToken]);
+
+            return service.RecordSendFailureAsync(
+                emailId: emailId,
+                reason: reason,
+                cancellationToken: cancellationToken);
+        }, isValueTask: true);
+
+    public ValueTask MarkAsSentQueuedEmailAsync(
+        QueuedEmail queuedEmail,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default) =>
+        TryCatch(operation: () =>
+        {
+            ValidateMarkAsSentQueuedEmailAsync(
+                inputs:
+                [
+                    queuedEmail,
+                    mailSenderId,
+                    fromAddress,
+                    cancellationToken
+                ]);
+
+            return service.MarkAsSentQueuedEmailAsync(
+                queuedEmail: queuedEmail,
+                mailSenderId: mailSenderId,
+                fromAddress: fromAddress,
+                cancellationToken: cancellationToken);
+        }, isValueTask: true);
+
+    public ValueTask DeleteAsync(int queuedEmailId) =>
+        TryCatch(operation: async () =>
+    {
+
+        ValidateDeleteAsync(inputs: [queuedEmailId]);
+
+        QueuedEmail queuedEmail = service.GetAllQueuedEmail(ignoreFilters: true)
+            .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == queuedEmailId);
+
         if (queuedEmail == null)
         {
-            throw new SecurityException("Access Denied!");
+            throw new SecurityException(message: "Access Denied!");
         }
-        authorizationBroker.Authorize(queuedEmail.AppId, "queuedemail_delete");
-        await service.DeleteAsync(queuedEmail.Id, checkPrivileges: false);
-    }
+
+        authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: "queuedemail_delete");
+        await service.DeleteAsync(iQueuedEmailId: queuedEmail.Id, checkPrivileges: false);
+    }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId);
+        TryCatch(operation: () =>
+        {
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
-    public async ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
+            return service.DeleteAllByAppIdAsync(appId: appId);
+        }, isValueTask: true);
+
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
+        TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: async () =>
     {
+        ValidateOrUpdateQueuedEmailResultOnAdd(inputs: [newQueuedEmail]);
+
         List<Result<QueuedEmail>> results = new List<Result<QueuedEmail>>();
 
-        foreach (QueuedEmail item in items)
+        foreach (QueuedEmail item in newQueuedEmail)
         {
             try
             {
                 QueuedEmail savedItem =
                     item.Id == 0
-                        ? await AddAsync(item)
-                        : await UpdateAsync(item);
+                        ? await service.AddQueuedEmailAsync(
+                            newQueuedEmail: item,
+                            checkPrivileges: true)
+                        : await service.UpdateQueuedEmailAsync(
+                            updatedQueuedEmail: item);
 
-                results.Add(new Result<QueuedEmail>
+                results.Add(item: new Result<QueuedEmail>
                 {
                     Success = true,
                     Item = savedItem,
@@ -71,7 +158,7 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
             }
             catch (Exception ex)
             {
-                results.Add(new Result<QueuedEmail>
+                results.Add(item: new Result<QueuedEmail>
                 {
                     Success = false,
                     Item = item,
@@ -81,13 +168,19 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
         }
 
         return results;
-    }
+    }, isValueTask: true);
 
-    public async ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items)
+    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
+        TryCatch(operation: async () =>
     {
-        foreach (QueuedEmail item in items)
+
+        ValidateAllQueuedEmailOnDelete(inputs: [deletedQueuedEmail]);
+
+        foreach (QueuedEmail item in deletedQueuedEmail)
         {
-            await DeleteAsync(item.Id);
+            await service.DeleteAsync(
+                iQueuedEmailId: item.Id,
+                checkPrivileges: true);
         }
-    }
+    }, isValueTask: true);
 }

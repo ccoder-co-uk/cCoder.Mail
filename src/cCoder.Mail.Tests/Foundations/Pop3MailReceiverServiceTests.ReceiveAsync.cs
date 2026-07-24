@@ -1,4 +1,9 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Dependencies.MailClients;
 using cCoder.Mail.Models;
 using FluentAssertions;
 using Moq;
@@ -21,62 +26,87 @@ public partial class Pop3MailReceiverServiceTests
             Password = "password",
             MaximumMessages = 1,
         };
+
         CancellationToken cancellationToken = new();
         MailClientTextConnection connection = new();
 
         pop3MailReceiverBrokerMock
-            .Setup(broker => broker.OpenAsync("pop3.example.test", 995, cancellationToken))
-            .ReturnsAsync(connection);
+            .Setup(expression: broker => broker.OpenAsync(host: "pop3.example.test", port: 995, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: connection);
+
         pop3MailReceiverBrokerMock
-            .SetupSequence(broker => broker.ReadLineAsync(connection, cancellationToken))
-            .ReturnsAsync("+OK ready")
-            .ReturnsAsync("+OK user")
-            .ReturnsAsync("+OK pass")
-            .ReturnsAsync("+OK 1 100")
-            .ReturnsAsync("+OK message")
-            .ReturnsAsync("Message-ID: <message-1@example.test>")
-            .ReturnsAsync("From: sender@example.test")
-            .ReturnsAsync("To: mail@example.test")
-            .ReturnsAsync("Subject: Received")
-            .ReturnsAsync("Date: Tue, 30 Jun 2026 10:00:00 +0000")
-            .ReturnsAsync("Content-Type: text/plain")
-            .ReturnsAsync(string.Empty)
-            .ReturnsAsync("Body")
-            .ReturnsAsync(".");
+            .SetupSequence(expression: broker => broker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: "+OK ready")
+            .ReturnsAsync(value: "+OK user")
+            .ReturnsAsync(value: "+OK pass")
+            .ReturnsAsync(value: "+OK 1 100")
+            .ReturnsAsync(value: "+OK message")
+            .ReturnsAsync(value: "Message-ID: <message-1@example.test>")
+            .ReturnsAsync(value: "From: sender@example.test")
+            .ReturnsAsync(value: "To: mail@example.test")
+            .ReturnsAsync(value: "Subject: Received")
+            .ReturnsAsync(value: "Date: Tue, 30 Jun 2026 10:00:00 +0000")
+            .ReturnsAsync(value: "Content-Type: text/plain")
+            .ReturnsAsync(value: string.Empty)
+            .ReturnsAsync(value: "Body")
+            .ReturnsAsync(value: ".");
+
         pop3MailReceiverBrokerMock
-            .Setup(broker => broker.WriteLineAsync(connection, It.IsAny<string>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: broker => broker.WriteLineAsync(connection: connection, line: It.IsAny<string>(), cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().ContainSingle();
-        actualEmails[0].MessageId.Should().Be("<message-1@example.test>");
-        actualEmails[0].From.Should().Be("sender@example.test");
-        actualEmails[0].To.Should().Be("mail@example.test");
-        actualEmails[0].Subject.Should().Be("Received");
-        actualEmails[0].Content.Should().Be("Body");
-        actualEmails[0].IsBodyHtml.Should().BeFalse();
-        pop3MailReceiverBrokerMock.Verify(broker => broker.OpenAsync("pop3.example.test", 995, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .ContainSingle();
+
+        actualEmails[0].MessageId.Should()
+            .Be(expected: "<message-1@example.test>");
+
+        actualEmails[0].From.Should()
+            .Be(expected: "sender@example.test");
+
+        actualEmails[0].To.Should()
+            .Be(expected: "mail@example.test");
+
+        actualEmails[0].Subject.Should()
+            .Be(expected: "Received");
+
+        actualEmails[0].Content.Should()
+            .Be(expected: "Body");
+
+        actualEmails[0].IsBodyHtml.Should()
+            .BeFalse();
+
+        pop3MailReceiverBrokerMock.Verify(expression: broker => broker.OpenAsync(host: "pop3.example.test", port: 995, cancellationToken: cancellationToken), times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, "USER mail@example.test", cancellationToken),
-            Times.Once);
+expression: broker => broker.WriteLineAsync(connection: connection, line: "USER mail@example.test", cancellationToken: cancellationToken),
+times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, "PASS password", cancellationToken),
-            Times.Once);
+expression: broker => broker.WriteLineAsync(connection: connection, line: "PASS password", cancellationToken: cancellationToken),
+times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, "STAT", cancellationToken),
-            Times.Once);
+expression: broker => broker.WriteLineAsync(connection: connection, line: "STAT", cancellationToken: cancellationToken),
+times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, "RETR 1", cancellationToken),
-            Times.Once);
+expression: broker => broker.WriteLineAsync(connection: connection, line: "RETR 1", cancellationToken: cancellationToken),
+times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, "QUIT", cancellationToken),
-            Times.Once);
+expression: broker => broker.WriteLineAsync(connection: connection, line: "QUIT", cancellationToken: cancellationToken),
+times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.ReadLineAsync(connection, cancellationToken),
-            Times.Exactly(14));
+expression: broker => broker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken),
+times: Times.Exactly(callCount: 14));
+
         pop3MailReceiverBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -91,43 +121,57 @@ public partial class Pop3MailReceiverServiceTests
         mailConfiguration.Pop3.Password = "password";
 
         pop3MailReceiverBrokerMock
-            .Setup(broker => broker.OpenSslAsync("pop3.example.test", 995, cancellationToken))
-            .ReturnsAsync(connection);
+            .Setup(expression: broker => broker.OpenSslAsync(host: "pop3.example.test", port: 995, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: connection);
+
         pop3MailReceiverBrokerMock
-            .SetupSequence(broker => broker.ReadLineAsync(connection, cancellationToken))
-            .ReturnsAsync("+OK ready")
-            .ReturnsAsync("+OK user")
-            .ReturnsAsync("+OK pass")
-            .ReturnsAsync("+OK 1 100")
-            .ReturnsAsync("+OK message")
-            .ReturnsAsync("Message-ID: <message-1@example.test>")
-            .ReturnsAsync("From: sender@example.test")
-            .ReturnsAsync("To: mail@example.test")
-            .ReturnsAsync("Subject: Received")
-            .ReturnsAsync("Date: Tue, 30 Jun 2026 10:00:00 +0000")
-            .ReturnsAsync("Content-Type: text/plain")
-            .ReturnsAsync(string.Empty)
-            .ReturnsAsync("Body")
-            .ReturnsAsync(".");
+            .SetupSequence(expression: broker => broker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: "+OK ready")
+            .ReturnsAsync(value: "+OK user")
+            .ReturnsAsync(value: "+OK pass")
+            .ReturnsAsync(value: "+OK 1 100")
+            .ReturnsAsync(value: "+OK message")
+            .ReturnsAsync(value: "Message-ID: <message-1@example.test>")
+            .ReturnsAsync(value: "From: sender@example.test")
+            .ReturnsAsync(value: "To: mail@example.test")
+            .ReturnsAsync(value: "Subject: Received")
+            .ReturnsAsync(value: "Date: Tue, 30 Jun 2026 10:00:00 +0000")
+            .ReturnsAsync(value: "Content-Type: text/plain")
+            .ReturnsAsync(value: string.Empty)
+            .ReturnsAsync(value: "Body")
+            .ReturnsAsync(value: ".");
+
         pop3MailReceiverBrokerMock
-            .Setup(broker => broker.WriteLineAsync(connection, It.IsAny<string>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: broker => broker.WriteLineAsync(connection: connection, line: It.IsAny<string>(), cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await pop3MailReceiverService.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().ContainSingle();
-        actualEmails[0].MessageId.Should().Be("<message-1@example.test>");
-        actualEmails[0].Subject.Should().Be("Received");
-        actualEmails[0].Content.Should().Be("Body");
-        pop3MailReceiverBrokerMock.Verify(broker => broker.OpenSslAsync("pop3.example.test", 995, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .ContainSingle();
+
+        actualEmails[0].MessageId.Should()
+            .Be(expected: "<message-1@example.test>");
+
+        actualEmails[0].Subject.Should()
+            .Be(expected: "Received");
+
+        actualEmails[0].Content.Should()
+            .Be(expected: "Body");
+
+        pop3MailReceiverBrokerMock.Verify(expression: broker => broker.OpenSslAsync(host: "pop3.example.test", port: 995, cancellationToken: cancellationToken), times: Times.Once);
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.WriteLineAsync(connection, It.IsAny<string>(), cancellationToken),
-            Times.Exactly(5));
+expression: broker => broker.WriteLineAsync(connection: connection, line: It.IsAny<string>(), cancellationToken: cancellationToken),
+times: Times.Exactly(callCount: 5));
+
         pop3MailReceiverBrokerMock.Verify(
-            broker => broker.ReadLineAsync(connection, cancellationToken),
-            Times.Exactly(14));
+expression: broker => broker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken),
+times: Times.Exactly(callCount: 14));
+
         pop3MailReceiverBrokerMock.VerifyNoOtherCalls();
     }
 }

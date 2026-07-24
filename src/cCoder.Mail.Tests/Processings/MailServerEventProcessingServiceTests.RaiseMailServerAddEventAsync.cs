@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -15,24 +19,17 @@ public partial class MailServerEventProcessingServiceTests
     {
         // Given
         MailServer entity = CreateRandomMailServer();
+
         mailServerEventServiceMock
-            .Setup(x => x.RaiseMailServerAddEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseMailServerAddEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await service.RaiseMailServerAddEventAsync(entity);
+        await service.RaiseMailServerAddEventAsync(entity: entity);
 
         // Then
-        mailServerEventServiceMock.Verify(x => x.RaiseMailServerAddEventAsync(entity), Times.Once);
+        mailServerEventServiceMock.Verify(expression: x => x.RaiseMailServerAddEventAsync(entity: entity), times: Times.Once);
         mailServerEventServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

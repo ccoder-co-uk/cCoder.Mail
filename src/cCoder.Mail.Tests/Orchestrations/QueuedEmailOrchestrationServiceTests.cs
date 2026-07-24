@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -18,23 +22,16 @@ public partial class QueuedEmailOrchestrationServiceTests
 
     public QueuedEmailOrchestrationServiceTests()
     {
-        queuedEmailProcessingServiceMock = new Mock<IQueuedEmailProcessingService>(MockBehavior.Strict);
-        queuedEmailEventProcessingServiceMock = new Mock<IQueuedEmailEventProcessingService>(MockBehavior.Strict);
+        queuedEmailProcessingServiceMock = new Mock<IQueuedEmailProcessingService>(behavior: MockBehavior.Strict);
+        queuedEmailEventProcessingServiceMock = new Mock<IQueuedEmailEventProcessingService>(behavior: MockBehavior.Strict);
+
         orchestrationService = new QueuedEmailOrchestrationService(
-            queuedEmailProcessingServiceMock.Object,
-            queuedEmailEventProcessingServiceMock.Object
+processingService: queuedEmailProcessingServiceMock.Object,
+eventService: queuedEmailEventProcessingServiceMock.Object
         );
     }
 
     private static QueuedEmail CreateRandomQueuedEmail() =>
-        Builder<QueuedEmail>.CreateNew().Build();
+        Builder<QueuedEmail>.CreateNew()
+        .Build();
 }
-
-
-
-
-
-
-
-
-

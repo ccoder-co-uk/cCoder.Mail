@@ -1,4 +1,8 @@
-using cCoder.Mail.Exposures.OData;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.CMS;
@@ -15,18 +19,10 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class QueuedEmailController : ODataController
+public partial class QueuedEmailController(
+    IQueuedEmailOrchestrationService service)
+        : ODataController
 {
-    protected IQueuedEmailOrchestrationService Service { get; }
-
-    public QueuedEmailController(
-        IQueuedEmailOrchestrationService service,
-        ILogger<QueuedEmailController> log
-    )
-    {
-        Service = service;
-    }
-
     [HttpGet]
     public IActionResult GetMetadata()
     {
@@ -34,11 +30,11 @@ public partial class QueuedEmailController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-                new cCoder.Mail.Exposures.OData.MailModelBuilder()
+value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(QueuedEmail))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(QueuedEmail))
             )
-            : Ok(new MetadataContainer(typeof(QueuedEmail), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(QueuedEmail), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -51,7 +47,8 @@ public partial class QueuedEmailController : ODataController
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<QueuedEmail> queryOptions) => Ok(Service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<QueuedEmail> queryOptions) =>
+        Ok(value: service.GetAllQueuedEmail());
 
     [HttpGet]
     [AllowAnonymous]
@@ -67,8 +64,10 @@ public partial class QueuedEmailController : ODataController
     {
         try
         {
-            IQueryable<QueuedEmail> result = Service.GetAll().Where(queuedEmail => queuedEmail.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<QueuedEmail> result = service.GetAllQueuedEmail()
+                .Where(predicate: queuedEmail => queuedEmail.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -85,12 +84,14 @@ public partial class QueuedEmailController : ODataController
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] QueuedEmail entity)
+    public async Task<IActionResult> Post([FromBody] QueuedEmail newQueuedEmail)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await Service.AddAsync(entity));
+        return Ok(value: await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail));
     }
 
     [HttpPut]
@@ -102,33 +103,35 @@ public partial class QueuedEmailController : ODataController
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail entity)
+    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail updatedQueuedEmail)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+        {
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+        }
 
-        return Ok(await Service.UpdateAsync(entity));
+        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
-    public async Task<IActionResult> Patch([FromRoute] int key, Delta<QueuedEmail> delta)
+    [ActionName("Patch")]
+    public async Task<IActionResult> Put([FromRoute] int key, Delta<QueuedEmail> updatedQueuedEmail)
     {
-        QueuedEmail originalEntity = Service.Get(key);
-        if (originalEntity == null)
-            return NotFound();
+        QueuedEmail originalEntity = service.GetQueuedEmail(iQueuedEmailId: key);
 
-        delta.Patch(originalEntity);
-        return Ok(await Service.UpdateAsync(originalEntity));
+        if (originalEntity == null)
+        {
+            return NotFound();
+        }
+
+        updatedQueuedEmail.Patch(original: originalEntity);
+        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await Service.DeleteAsync(key);
+        await service.DeleteAsync(iQueuedEmailId: key);
         return Ok();
     }
 }
-
-
-
-

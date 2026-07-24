@@ -1,4 +1,8 @@
-using cCoder.Data;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
+using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -10,43 +14,55 @@ using DataMailServer = cCoder.Data.Models.Mail.MailServer;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-internal class MailServerEventService(
+internal partial class MailServerEventService(
     IMailServerEventBroker mailServerEventBroker,
-    ICoreAuthInfo authInfo
+    IAuthInfoBroker authInfoBroker
 ) : IMailServerEventService
 {
-    public async ValueTask RaiseMailServerAddEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerAddEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerAddEventAsync(message);
-    }
+        await mailServerEventBroker.RaiseMailServerAddEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseMailServerUpdateEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerUpdateEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message);
-    }
+        await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message: message);
+    }, isValueTask: true);
 
-    public async ValueTask RaiseMailServerDeleteEventAsync(MailServer entity)
+    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
+        TryCatch(operation: async () =>
     {
+
+        ValidateRaiseMailServerDeleteEventAsync(inputs: [entity]);
+
         EventMessage<DataMailServer> message = new()
         {
-            AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message);
-    }
+        await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message: message);
+    }, isValueTask: true);
 
     private static DataMailServer ToExternalMailServer(MailServer entity) =>
         entity == null ? null : new DataMailServer
@@ -62,13 +78,3 @@ internal class MailServerEventService(
             EnableSSL = entity.EnableSSL,
         };
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using Moq;
 using Xunit;
@@ -14,18 +18,19 @@ public partial class MailSenderClientBrokerTests
         CancellationToken cancellationToken = new();
 
         mailSenderFactoryMock
-            .Setup(factory => factory.GetSender(null))
-            .Returns(mailSenderProviderMock.Object);
+            .Setup(expression: factory => factory.GetSender(providerName: null))
+            .Returns(value: mailSenderProviderMock.Object);
+
         mailSenderProviderMock
-            .Setup(provider => provider.SendAsync(email, cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        await mailSenderClientBroker.SendAsync(email, cancellationToken);
+        await mailSenderClientBroker.SendAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
-        mailSenderFactoryMock.Verify(factory => factory.GetSender(null), Times.Once);
-        mailSenderProviderMock.Verify(provider => provider.SendAsync(email, cancellationToken), Times.Once);
+        mailSenderFactoryMock.Verify(expression: factory => factory.GetSender(providerName: null), times: Times.Once);
+        mailSenderProviderMock.Verify(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
         mailSenderFactoryMock.VerifyNoOtherCalls();
         mailSenderProviderMock.VerifyNoOtherCalls();
     }
@@ -43,21 +48,23 @@ public partial class MailSenderClientBrokerTests
                 ProviderName = "MicrosoftGraph",
             },
         };
+
         CancellationToken cancellationToken = new();
 
         mailSenderFactoryMock
-            .Setup(factory => factory.GetSender("MicrosoftGraph"))
-            .Returns(mailSenderProviderMock.Object);
+            .Setup(expression: factory => factory.GetSender(providerName: "MicrosoftGraph"))
+            .Returns(value: mailSenderProviderMock.Object);
+
         mailSenderProviderMock
-            .Setup(provider => provider.SendAsync(email, cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        await mailSenderClientBroker.SendAsync(email, cancellationToken);
+        await mailSenderClientBroker.SendAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
-        mailSenderFactoryMock.Verify(factory => factory.GetSender("MicrosoftGraph"), Times.Once);
-        mailSenderProviderMock.Verify(provider => provider.SendAsync(email, cancellationToken), Times.Once);
+        mailSenderFactoryMock.Verify(expression: factory => factory.GetSender(providerName: "MicrosoftGraph"), times: Times.Once);
+        mailSenderProviderMock.Verify(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
         mailSenderFactoryMock.VerifyNoOtherCalls();
         mailSenderProviderMock.VerifyNoOtherCalls();
     }

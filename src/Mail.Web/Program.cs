@@ -1,172 +1,20 @@
-using System.Security;
-using Apps.Shared;
-using Apps.Shared.Models;
-using cCoder.Mail;
-using cCoder.Mail.Models;
-using cCoder.Security;
-using cCoder.Security.Data.EF;
-using cCoder.Eventing;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.OData;
-using MailConfig = cCoder.Mail.Models.Config;
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
 
+using Mail.Web.Hosting;
 
 namespace Mail.Web;
 
 public class Program
 {
-    private static ILogger log = null!;
-
     public static void Main(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-        string coreConnection = builder.Configuration.GetConnectionString("Core")
-            ?? throw new InvalidOperationException("ConnectionStrings:Core is required.");
-
-        string ssoConnection = builder.Configuration.GetConnectionString("SSO")
-            ?? throw new InvalidOperationException("ConnectionStrings:SSO is required.");
-
-        Apps.Shared.Models.Config config = new();
-        builder.Configuration.Bind(config);
-        builder.Services.AddSingleton(config);
-        builder.Services.AddSingleton(
-            new MailConfig
-            {
-                ConnectionStrings = new Dictionary<string, string>(config.ConnectionStrings),
-                Settings = new Dictionary<string, string>(config.Settings),
-                Services = new Dictionary<string, string>(config.Services),
-                DebugInfo = config.DebugInfo,
-                LogSQL = config.LogSQL,
-            });
-        builder.Services.AddEventing();
-
-        builder.Services.AddSecurityApi((services, securityConfig) =>
-        {
-            securityConfig.AddMSSQLModelProvider(services, ssoConnection);
-            securityConfig.UseAESHMMACPasswordEncryption(
-                services,
-                builder.Configuration.GetSection("Settings")["DecryptionKey"]);
-        });
-
-        cCoder.Data.IServiceCollectionExtensions.AddCoreData(
-            builder.Services,
-            coreConnection);
-
-        builder.Services.AddMailWeb(mailConfiguration =>
-            ConfigureMailProviders(builder.Configuration, mailConfiguration));
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
+        builder.Services.AddMailWebApplication(configuration: builder.Configuration);
 
         WebApplication app = builder.Build();
-        log = app.Services.GetRequiredService<ILogger<Program>>();
-
-        app.UseHttpsRedirection();
-        app.UseSession();
-        app.UseStaticFiles();
-
-        app.UseSwagger()
-            .UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/Mail/swagger.json", "Mail API");
-                options.SwaggerEndpoint("/swagger/Core/swagger.json", "Core API");
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Core API");
-            })
-            .UseODataBatching()
-            .UseODataRouteDebug();
-
-        app.UseDomainApiShell();
-        app.MapGet("/Health", () => Results.Text("OK"));
-        app.MapGet("/", () => Results.Redirect("/tools/index.html"));
-        app.StartMailWeb(log);
-        app.UseDomainDefaultCors();
-        app.UseDomainExceptionHandling(HandleUnhandledException);
+        app.UseMailWebApplication();
         app.Run();
     }
-
-    private static async Task HandleUnhandledException(HttpContext context)
-    {
-        Exception exception = context.Features.Get<IExceptionHandlerPathFeature>()?.Error;
-
-        context.Response.StatusCode =
-            exception?.GetType() == typeof(SecurityException) ? 401 : 500;
-        context.Response.ContentType = "application/json";
-
-        if (exception is null)
-            return;
-
-        log.LogError("{Message}\n{StackTrace}", exception.Message, exception.StackTrace);
-        await context.Response.WriteAsync(
-            "{ \"error\": \"" + exception.Message.Replace("\"", "\'") + "\" }");
-    }
-
-    private static void ConfigureMailProviders(
-        IConfiguration configuration,
-        MailConfiguration mailConfiguration)
-    {
-        ConfigureRuntime(configuration, mailConfiguration);
-        ConfigureMailbox(configuration, mailConfiguration.Pop3, "POP", 995);
-        ConfigureMailbox(configuration, mailConfiguration.Imap, "IMAP", 993);
-
-        mailConfiguration
-            .AddSmtpSender()
-            .AddPop3Receiver()
-            .AddImapReceiver()
-            .AddMicrosoftGraphSender(graphConfiguration => ConfigureGraph(configuration, graphConfiguration))
-            .AddMicrosoftGraphReceiver(graphConfiguration => ConfigureGraph(configuration, graphConfiguration));
-    }
-
-    private static void ConfigureGraph(
-        IConfiguration configuration,
-        MicrosoftGraphMailConfiguration graphConfiguration)
-    {
-        graphConfiguration.TenantId = configuration["CCODER_MAIL_GRAPH_TENANT_ID"] ?? graphConfiguration.TenantId;
-        graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
-        graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
-        graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
-        graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_BASE_URL"]
-            ?? configuration["CCODER_MAIL_GRAPH_LOGIN_URL"]
-            ?? graphConfiguration.LoginBaseUrl;
-        graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_RECEIVE_USER"]
-            ?? configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"]
-            ?? configuration["CCODER_MAIL_INTEGRATION_SEND_USER"]
-            ?? configuration["CCODER_MAIL_INTEGRATION_SMTP_USER"]
-            ?? graphConfiguration.ReceiveUser;
-    }
-
-    private static void ConfigureRuntime(
-        IConfiguration configuration,
-        MailConfiguration mailConfiguration)
-    {
-        mailConfiguration.IsMigrating =
-            int.TryParse(configuration["MIGRATING"], out int result) && result == 1;
-    }
-
-    private static void ConfigureMailbox(
-        IConfiguration configuration,
-        MailboxReceiveConfiguration mailboxConfiguration,
-        string providerPrefix,
-        int defaultPort)
-    {
-        mailboxConfiguration.Host = configuration[$"CCODER_MAIL_{providerPrefix}_HOST"]
-            ?? configuration["CCODER_MAIL_RECEIVE_HOST"]
-            ?? mailboxConfiguration.Host;
-        mailboxConfiguration.Port = int.TryParse(
-            configuration[$"CCODER_MAIL_{providerPrefix}_PORT"]
-            ?? configuration["CCODER_MAIL_RECEIVE_PORT"],
-            out int port)
-                ? port
-                : defaultPort;
-        mailboxConfiguration.EnableSSL = !bool.TryParse(
-            configuration[$"CCODER_MAIL_{providerPrefix}_SSL"]
-            ?? configuration["CCODER_MAIL_RECEIVE_SSL"],
-            out bool enableSsl)
-                || enableSsl;
-        mailboxConfiguration.User = configuration[$"CCODER_MAIL_{providerPrefix}_USER"]
-            ?? configuration["CCODER_MAIL_RECEIVE_USER"]
-            ?? mailboxConfiguration.User;
-        mailboxConfiguration.Password = configuration[$"CCODER_MAIL_{providerPrefix}_PASSWORD"]
-            ?? configuration["CCODER_MAIL_RECEIVE_PASSWORD"]
-            ?? mailboxConfiguration.Password;
-    }
 }
-
-

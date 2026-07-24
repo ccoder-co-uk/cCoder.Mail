@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -16,7 +20,9 @@ public sealed partial class QueuedEmailControllerTests
         int actualCount = await GetQueuedEmailCountAsync();
 
         // Then
-        actualCount.Should().BeGreaterThanOrEqualTo(0);
+
+        actualCount.Should()
+            .BeGreaterThanOrEqualTo(expected: 0);
     }
 
     [Fact]
@@ -25,10 +31,12 @@ public sealed partial class QueuedEmailControllerTests
         // Given
 
         // When
-        IReadOnlyList<QueuedEmail> actualQueuedEmails = await GetQueuedEmailsAsync(1);
+        IReadOnlyList<QueuedEmail> actualQueuedEmails = await GetQueuedEmailsAsync(top: 1);
 
         // Then
-        actualQueuedEmails.Should().NotBeNull();
+
+        actualQueuedEmails.Should()
+            .NotBeNull();
     }
 
     [Fact]
@@ -36,8 +44,9 @@ public sealed partial class QueuedEmailControllerTests
     {
         // Given
         SeededQueuedEmailContext seededContext = await SeedDatabase();
-        string subject = Unique("QueuedEmail");
-        QueuedEmail expectedQueuedEmail = await CreateQueuedEmailAsync(new
+        string subject = Unique(prefix: "QueuedEmail");
+
+        QueuedEmail expectedQueuedEmail = await CreateQueuedEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
@@ -48,21 +57,21 @@ public sealed partial class QueuedEmailControllerTests
             isBodyHtml = true,
             mailServerName = "Default",
         });
+
         QueuedEmail actualQueuedEmail;
 
         // When
-        actualQueuedEmail = await GetQueuedEmailAsync(expectedQueuedEmail.Id);
+        actualQueuedEmail = await GetQueuedEmailAsync(id: expectedQueuedEmail.Id);
 
         // Then
-        actualQueuedEmail.Id.Should().Be(expectedQueuedEmail.Id);
-        actualQueuedEmail.Subject.Should().Be(subject);
 
-        await DeleteQueuedEmailAsync(expectedQueuedEmail.Id);
-        await Teardown(seededContext);
+        actualQueuedEmail.Id.Should()
+            .Be(expected: expectedQueuedEmail.Id);
+
+        actualQueuedEmail.Subject.Should()
+            .Be(expected: subject);
+
+        await DeleteQueuedEmailAsync(id: expectedQueuedEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

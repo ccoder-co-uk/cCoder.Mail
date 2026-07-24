@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -7,21 +11,34 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface IQueuedEmailProcessingService
 {
-    QueuedEmail Get(int id);
+    QueuedEmail GetQueuedEmail(int iQueuedEmailId);
 
-    IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false);
+    IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);
 
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail entity);
+    QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
 
-    ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity);
+    ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
+
+    ValueTask RecordSendFailureAsync(
+        int emailId,
+        string reason,
+        CancellationToken cancellationToken = default);
+
+    ValueTask MarkAsSentQueuedEmailAsync(
+        QueuedEmail queuedEmail,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default);
+
+    ValueTask DeleteAsync(int iQueuedEmailId);
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items);
+    ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail);
 
-    ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items);
+    ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail);
 
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail entity, bool checkPrivs);
+    ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs);
 }

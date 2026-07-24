@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using FluentAssertions;
 using Xunit;
 
@@ -11,14 +15,26 @@ public sealed partial class HostedServicesShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/");
+        string content = await GetOkContentAsync(path: "/");
 
         // Then
-        content.Should().Contain("cCoder.Mail Hosted Services");
-        content.Should().Contain("MailSenderHostedService");
-        content.Should().Contain("MailReceiverHostedService");
-        content.Should().Contain("app_add");
-        content.Should().Contain("app_update");
-        content.Should().Contain("app_delete");
+
+        content.Should()
+            .Contain(expected: "cCoder.Mail Hosted Services");
+
+        content.Should()
+            .Contain(expected: "MailSenderHostedService");
+
+        content.Should()
+            .Contain(expected: "MailReceiverHostedService");
+
+        content.Should()
+            .Contain(expected: "app_add");
+
+        content.Should()
+            .Contain(expected: "app_update");
+
+        content.Should()
+            .Contain(expected: "app_delete");
     }
 }

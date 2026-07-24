@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using HostedServices.AcceptanceTests.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
@@ -16,14 +20,15 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
     {
         AcceptanceSettings settings = new()
         {
-            CoreConnectionString = AddDatabaseSuffix("CCODER_ACCEPTANCE_CORE_CONNECTION_STRING"),
+            CoreConnectionString = AddDatabaseSuffix(variableName: "CCODER_ACCEPTANCE_CORE_CONNECTION_STRING"),
         };
 
-        Factory = new HostedServicesAcceptanceFactory(settings);
-        Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
+        Factory = new HostedServicesAcceptanceFactory(settings: settings);
+
+        Client = Factory.CreateClient(options: new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false,
-            BaseAddress = new Uri("https://localhost"),
+            BaseAddress = new Uri(uriString: "https://localhost"),
         });
 
         return Task.CompletedTask;
@@ -34,26 +39,33 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
         Client?.Dispose();
 
         if (Factory is not null)
+        {
             await Factory.DisposeAsync();
+        }
     }
 
     private static string AddDatabaseSuffix(string variableName)
     {
         string connectionString = BuildConfiguration()[variableName]
-            ?? ReadConfiguredConnectionString(variableName);
+            ?? ReadConfiguredConnectionString(variableName: variableName);
 
-        if (string.IsNullOrWhiteSpace(connectionString))
+        if (string.IsNullOrWhiteSpace(value: connectionString))
+        {
             return string.Empty;
+        }
 
-        SqlConnectionStringBuilder builder = new(connectionString)
+        SqlConnectionStringBuilder builder = new(connectionString: connectionString)
         {
             Encrypt = true,
             TrustServerCertificate = true,
         };
+
         string databaseName = builder.InitialCatalog ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(databaseName))
+        if (string.IsNullOrWhiteSpace(value: databaseName))
+        {
             return connectionString;
+        }
 
         builder.InitialCatalog = $"{databaseName}-mail-hostedservices";
         return builder.ConnectionString;
@@ -62,20 +74,20 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
     private static string ReadConfiguredConnectionString(string variableName)
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.testing.json", optional: true)
+            .SetBasePath(basePath: AppContext.BaseDirectory)
+            .AddJsonFile(path: "appsettings.testing.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
 
-        return configuration.GetConnectionString("Core") ?? string.Empty;
+        return configuration.GetConnectionString(name: "Core") ?? string.Empty;
     }
 
     private static IConfigurationRoot BuildConfiguration() =>
         new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.testing.json", optional: true)
-            .AddEnvironmentVariables()
-            .Build();
+            .SetBasePath(basePath: AppContext.BaseDirectory)
+        .AddJsonFile(path: "appsettings.testing.json", optional: true)
+        .AddEnvironmentVariables()
+        .Build();
 }
 
 [CollectionDefinition(Name)]
