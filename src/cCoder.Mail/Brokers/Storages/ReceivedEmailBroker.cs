@@ -11,12 +11,12 @@ namespace cCoder.Mail.Brokers.Storages;
 public interface IReceivedEmailBroker
 {
     IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters);
-    ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail entity);
-    ValueTask AddReceivedEmailsAsync(IEnumerable<ReceivedEmail> entities, CancellationToken cancellationToken = default);
+    ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail);
+    ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail);
+    ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail deletedReceivedEmail);
+    ValueTask AddReceivedEmailsAsync(IEnumerable<ReceivedEmail> newReceivedEmail, CancellationToken cancellationToken = default);
     bool Exists(Guid mailReceiverId, string messageId);
-    ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items);
+    ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail);
     ValueTask DeleteAllReceivedEmailsByAppIdAsync(int appId);
     int? GetAppId(ReceivedEmail entity);
 }
@@ -32,37 +32,37 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
             : coreDataContext.ReceivedMail;
     }
 
-    public async ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        ReceivedEmail result = (await coreDataContext.ReceivedMail.AddAsync(entity: entity)).Entity;
+        ReceivedEmail result = (await coreDataContext.ReceivedMail.AddAsync(entity: newReceivedEmail)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        ReceivedEmail result = coreDataContext.ReceivedMail.Update(entity: entity)
+        ReceivedEmail result = coreDataContext.ReceivedMail.Update(entity: updatedReceivedEmail)
             .Entity;
 
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail entity)
+    public async ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail deletedReceivedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.ReceivedMail.Remove(entity: entity);
+        coreDataContext.ReceivedMail.Remove(entity: deletedReceivedEmail);
         return await coreDataContext.SaveChangesAsync();
     }
 
     public async ValueTask AddReceivedEmailsAsync(
-        IEnumerable<ReceivedEmail> entities,
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default)
     {
-        ReceivedEmail[] items = entities?.ToArray() ?? [];
+        ReceivedEmail[] items = newReceivedEmail?.ToArray() ?? [];
 
         if (items.Length == 0)
         {
@@ -88,15 +88,15 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
             .Any(predicate: email => email.MailReceiverId == mailReceiverId && email.MessageId == messageId);
     }
 
-    public async ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items)
+    public async ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail)
     {
-        if (items == null || !items.Any())
+        if (deletedReceivedEmail == null || !deletedReceivedEmail.Any())
         {
             return;
         }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.ReceivedMail.RemoveRange(entities: items);
+        coreDataContext.ReceivedMail.RemoveRange(entities: deletedReceivedEmail);
         _ = await coreDataContext.SaveChangesAsync();
     }
 

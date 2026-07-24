@@ -84,14 +84,14 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] QueuedEmail entity)
+    public async Task<IActionResult> Post([FromBody] QueuedEmail newQueuedEmail)
     {
         if (!ModelState.IsValid)
         {
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddQueuedEmailAsync(newQueuedEmail: entity));
+        return Ok(value: await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail));
     }
 
     [HttpPut]
@@ -103,14 +103,14 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail entity)
+    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail updatedQueuedEmail)
     {
         if (!ModelState.IsValid)
         {
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: entity));
+        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]

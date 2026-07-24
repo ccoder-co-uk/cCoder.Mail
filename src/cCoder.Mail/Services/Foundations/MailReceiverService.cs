@@ -60,7 +60,7 @@ internal partial class MailReceiverService(
         ValidateAddAsync(inputs: [newMailReceiver]);
 
         authorizationBroker.Authorize(appId: newMailReceiver.AppId, privilege: $"{nameof(MailReceiver)}_create");
-        return await mailReceiverBroker.AddMailReceiverAsync(entity: Copy(entity: newMailReceiver));
+        return await mailReceiverBroker.AddMailReceiverAsync(newMailReceiver: Copy(entity: newMailReceiver));
     }, isValueTask: true);
 
     public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
@@ -69,7 +69,7 @@ internal partial class MailReceiverService(
         ValidateUpdateAsync(inputs: [updatedMailReceiver]);
 
         authorizationBroker.Authorize(appId: updatedMailReceiver.AppId, privilege: $"{nameof(MailReceiver)}_update");
-        return await mailReceiverBroker.UpdateMailReceiverAsync(entity: Copy(entity: updatedMailReceiver));
+        return await mailReceiverBroker.UpdateMailReceiverAsync(updatedMailReceiver: Copy(entity: updatedMailReceiver));
     }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailReceiverId) =>
@@ -82,15 +82,15 @@ internal partial class MailReceiverService(
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailReceiver)}_delete");
-        return await mailReceiverBroker.DeleteMailReceiverAsync(entity: Copy(entity: entity));
+        return await mailReceiverBroker.DeleteMailReceiverAsync(deletedMailReceiver: Copy(entity: entity));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> items) =>
+    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [items]);
+            ValidateDeleteAllAsync(inputs: [deletedMailReceiver]);
 
-            return mailReceiverBroker.DeleteAllMailReceiversAsync(items: items);
+            return mailReceiverBroker.DeleteAllMailReceiversAsync(deletedMailReceiver: deletedMailReceiver);
         }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>

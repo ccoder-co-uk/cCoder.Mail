@@ -74,19 +74,19 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> items) =>
+    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail) =>
         TryCatch<IEnumerable<Result<SentEmail>>>(operation: () =>
     {
-        ValidateAddOrUpdate(inputs: [items]);
+        ValidateAddOrUpdate(inputs: [newSentEmail]);
 
-        return processingService.AddOrUpdateSentEmailResult(items: items);
+        return processingService.AddOrUpdateSentEmailResult(newSentEmail: newSentEmail);
     }, isValueTask: true);
 
-    public ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> items) =>
+    public ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail) =>
         TryCatch(operation: () =>
     {
-        ValidateDeleteAllAsync(inputs: [items]);
+        ValidateDeleteAllAsync(inputs: [deletedSentEmail]);
 
-        return processingService.DeleteAllSentEmailAsync(items: items);
+        return processingService.DeleteAllSentEmailAsync(deletedSentEmail: deletedSentEmail);
     }, isValueTask: true);
 }

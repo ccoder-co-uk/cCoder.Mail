@@ -11,5 +11,5 @@ namespace cCoder.Mail.Exposures;
 
 public interface IMailManagerExposure
 {
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivileges = false);
+    ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = false);
 }

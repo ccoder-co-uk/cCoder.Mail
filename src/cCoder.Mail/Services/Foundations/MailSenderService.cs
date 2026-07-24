@@ -52,7 +52,7 @@ internal partial class MailSenderService(
         ValidateAddAsync(inputs: [newMailSender]);
 
         authorizationBroker.Authorize(appId: newMailSender.AppId, privilege: $"{nameof(MailSender)}_create");
-        return await mailSenderBroker.AddMailSenderAsync(entity: Copy(entity: newMailSender));
+        return await mailSenderBroker.AddMailSenderAsync(newMailSender: Copy(entity: newMailSender));
     }, isValueTask: true);
 
     public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
@@ -61,7 +61,7 @@ internal partial class MailSenderService(
         ValidateUpdateAsync(inputs: [updatedMailSender]);
 
         authorizationBroker.Authorize(appId: updatedMailSender.AppId, privilege: $"{nameof(MailSender)}_update");
-        return await mailSenderBroker.UpdateMailSenderAsync(entity: Copy(entity: updatedMailSender));
+        return await mailSenderBroker.UpdateMailSenderAsync(updatedMailSender: Copy(entity: updatedMailSender));
     }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailSenderId) =>
@@ -74,15 +74,15 @@ internal partial class MailSenderService(
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");
-        return await mailSenderBroker.DeleteMailSenderAsync(entity: Copy(entity: entity));
+        return await mailSenderBroker.DeleteMailSenderAsync(deletedMailSender: Copy(entity: entity));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items) =>
+    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [items]);
+            ValidateDeleteAllAsync(inputs: [deletedMailSender]);
 
-            return mailSenderBroker.DeleteAllMailSendersAsync(items: items);
+            return mailSenderBroker.DeleteAllMailSendersAsync(deletedMailSender: deletedMailSender);
         }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>

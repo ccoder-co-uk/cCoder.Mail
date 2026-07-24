@@ -56,7 +56,7 @@ internal partial class SentEmailService(
         ValidateAddAsync(inputs: [newSentEmail]);
 
         authorizationBroker.Authorize(appId: newSentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
-        SentEmail result = await sentEmailBroker.AddSentEmailAsync(entity: Copy(sentEmail: newSentEmail));
+        SentEmail result = await sentEmailBroker.AddSentEmailAsync(newSentEmail: Copy(sentEmail: newSentEmail));
         newSentEmail.Id = result.Id;
         newSentEmail.AppId = result.AppId;
         newSentEmail.SentByUserId = result.SentByUserId;
@@ -77,7 +77,7 @@ internal partial class SentEmailService(
         ValidateUpdateAsync(inputs: [updatedSentEmail]);
 
         authorizationBroker.Authorize(appId: updatedSentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
-        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(entity: Copy(sentEmail: updatedSentEmail));
+        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(updatedSentEmail: Copy(sentEmail: updatedSentEmail));
         updatedSentEmail.Id = result.Id;
         updatedSentEmail.AppId = result.AppId;
         updatedSentEmail.SentByUserId = result.SentByUserId;
@@ -107,17 +107,17 @@ internal partial class SentEmailService(
         }
 
         authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
-        _ = await sentEmailBroker.DeleteSentEmailAsync(entity: Copy(sentEmail: sentEmail));
+        _ = await sentEmailBroker.DeleteSentEmailAsync(deletedSentEmail: Copy(sentEmail: sentEmail));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> items) =>
+    public ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail) =>
         TryCatch(operation: () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [items]);
+        ValidateDeleteAllForAppAsync(inputs: [deletedSentEmail]);
 
         return sentEmailBroker.DeleteAllSentEmailsAsync(
-        items: items?.Select(selector: Copy) ?? []);
+        deletedSentEmail: deletedSentEmail?.Select(selector: Copy) ?? []);
     }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>

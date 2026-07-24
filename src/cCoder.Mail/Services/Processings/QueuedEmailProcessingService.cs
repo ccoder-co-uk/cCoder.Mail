@@ -80,14 +80,14 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> items) =>
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: async () =>
     {
-        ValidateAddOrUpdate(inputs: [items]);
+        ValidateAddOrUpdate(inputs: [newQueuedEmail]);
 
         List<Result<QueuedEmail>> results = new List<Result<QueuedEmail>>();
 
-        foreach (QueuedEmail item in items)
+        foreach (QueuedEmail item in newQueuedEmail)
         {
             try
             {
@@ -117,13 +117,13 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         return results;
     }, isValueTask: true);
 
-    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> items) =>
+    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAllAsync(inputs: [items]);
+        ValidateDeleteAllAsync(inputs: [deletedQueuedEmail]);
 
-        foreach (QueuedEmail item in items)
+        foreach (QueuedEmail item in deletedQueuedEmail)
         {
             await DeleteAsync(queuedEmailId: item.Id);
         }

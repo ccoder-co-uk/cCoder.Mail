@@ -23,7 +23,7 @@ public interface IMailServerProcessingService
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> items);
+    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer);
 
-    ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> items);
+    ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer);
 }

@@ -80,14 +80,14 @@ value: new MailModelBuilder()
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Post([FromBody] MailSender entity)
+    public async Task<IActionResult> Post([FromBody] MailSender newMailSender)
     {
         if (!ModelState.IsValid)
         {
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddMailSenderAsync(newMailSender: entity));
+        return Ok(value: await service.AddMailSenderAsync(newMailSender: newMailSender));
     }
 
     [HttpPut]
@@ -99,14 +99,14 @@ value: new MailModelBuilder()
         MaxAnyAllExpressionDepth = 5,
         MaxExpansionDepth = 5
     )]
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailSender entity)
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailSender updatedMailSender)
     {
         if (!ModelState.IsValid)
         {
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateMailSenderAsync(updatedMailSender: entity));
+        return Ok(value: await service.UpdateMailSenderAsync(updatedMailSender: updatedMailSender));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]

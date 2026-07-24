@@ -14,17 +14,17 @@ public interface IQueuedEmailBroker
 {
     IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters);
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
-    ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail entity);
-    ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail entity);
-    ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail entity);
+    ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail);
+    ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
+    ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail deletedQueuedEmail);
     ValueTask AddQueuedEmailSendFailureAsync(int emailId, string reason, CancellationToken cancellationToken = default);
     ValueTask MarkQueuedEmailAsSentAsync(
         QueuedEmail entity,
         Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default);
-    ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items);
-    ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> items);
+    ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> deletedEmailSendFailure);
+    ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> deletedQueuedEmail);
     ValueTask DeleteAllQueuedEmailsByAppIdAsync(int appId);
     int? GetAppId(QueuedEmail entity);
 }
@@ -54,31 +54,31 @@ internal sealed class QueuedEmailBroker(ICoreContextFactory coreContextFactory) 
             .ToArray();
     }
 
-    public async ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail entity)
+    public async ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        QueuedEmail result = (await coreDataContext.QueuedMail.AddAsync(entity: entity)).Entity;
+        QueuedEmail result = (await coreDataContext.QueuedMail.AddAsync(entity: newQueuedEmail)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail entity)
+    public async ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        QueuedEmail result = coreDataContext.QueuedMail.Update(entity: entity)
+        QueuedEmail result = coreDataContext.QueuedMail.Update(entity: updatedQueuedEmail)
             .Entity;
 
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail entity)
+    public async ValueTask<int> DeleteQueuedEmailAsync(QueuedEmail deletedQueuedEmail)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
         EmailSendFailure[] failures = coreDataContext.SendFailures
-            .Where(predicate: failure => failure.EmailId == entity.Id)
+            .Where(predicate: failure => failure.EmailId == deletedQueuedEmail.Id)
             .ToArray();
 
         if (failures.Length > 0)
@@ -86,7 +86,7 @@ internal sealed class QueuedEmailBroker(ICoreContextFactory coreContextFactory) 
             coreDataContext.SendFailures.RemoveRange(entities: failures);
         }
 
-        coreDataContext.QueuedMail.Remove(entity: entity);
+        coreDataContext.QueuedMail.Remove(entity: deletedQueuedEmail);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -151,27 +151,27 @@ cancellationToken: cancellationToken);
         _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
-    public async ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items)
+    public async ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> deletedEmailSendFailure)
     {
-        if (items == null || !items.Any())
+        if (deletedEmailSendFailure == null || !deletedEmailSendFailure.Any())
         {
             return;
         }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.SendFailures.RemoveRange(entities: items);
+        coreDataContext.SendFailures.RemoveRange(entities: deletedEmailSendFailure);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
-    public async ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> items)
+    public async ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> deletedQueuedEmail)
     {
-        if (items == null || !items.Any())
+        if (deletedQueuedEmail == null || !deletedQueuedEmail.Any())
         {
             return;
         }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.QueuedMail.RemoveRange(entities: items);
+        coreDataContext.QueuedMail.RemoveRange(entities: deletedQueuedEmail);
         _ = await coreDataContext.SaveChangesAsync();
     }
 

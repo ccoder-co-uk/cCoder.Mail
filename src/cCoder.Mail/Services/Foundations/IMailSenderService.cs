@@ -13,6 +13,6 @@ public interface IMailSenderService
     ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender);
     ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender);
     ValueTask<int> DeleteAsync(Guid iMailSenderId);
-    ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items);
+    ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

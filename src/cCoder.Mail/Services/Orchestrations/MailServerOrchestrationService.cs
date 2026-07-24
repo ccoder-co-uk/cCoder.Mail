@@ -74,19 +74,19 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> items) =>
+    public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {
-        ValidateAddOrUpdate(inputs: [items]);
+        ValidateAddOrUpdate(inputs: [newMailServer]);
 
-        return processingService.AddOrUpdateMailServerResult(items: items);
+        return processingService.AddOrUpdateMailServerResult(newMailServer: newMailServer);
     }, isValueTask: true);
 
-    public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> items) =>
+    public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer) =>
         TryCatch(operation: () =>
     {
-        ValidateDeleteAllAsync(inputs: [items]);
+        ValidateDeleteAllAsync(inputs: [deletedMailServer]);
 
-        return processingService.DeleteAllMailServerAsync(items: items);
+        return processingService.DeleteAllMailServerAsync(deletedMailServer: deletedMailServer);
     }, isValueTask: true);
 }

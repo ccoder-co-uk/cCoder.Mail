@@ -29,11 +29,11 @@ public class MailConfiguration
         Imap = new MailboxReceiveConfiguration { Port = 993 };
         EventProviders = [];
 
-        MailConfigurationExtensions.AddSmtpSender(configuration: this);
-        MailConfigurationExtensions.AddMicrosoftGraphSender(configuration: this);
-        MailConfigurationExtensions.AddPop3Receiver(configuration: this);
-        MailConfigurationExtensions.AddImapReceiver(configuration: this);
-        MailConfigurationExtensions.AddMicrosoftGraphReceiver(configuration: this);
+        MailConfigurationExtensions.AddSmtpSender(newMailConfiguration: this);
+        MailConfigurationExtensions.AddMicrosoftGraphSender(newMailConfiguration: this);
+        MailConfigurationExtensions.AddPop3Receiver(newMailConfiguration: this);
+        MailConfigurationExtensions.AddImapReceiver(newMailConfiguration: this);
+        MailConfigurationExtensions.AddMicrosoftGraphReceiver(newMailConfiguration: this);
     }
 
     public IDictionary<string, string> ConnectionStrings { get; set; }

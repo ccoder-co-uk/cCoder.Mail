@@ -13,6 +13,6 @@ namespace cCoder.Mail.Exposures;
 internal class MailManagerExposure(
     IQueuedEmailOrchestrationService queuedEmailOrchestrationService) : IMailManagerExposure
 {
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivileges = false) =>
-        queuedEmailOrchestrationService.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivs: checkPrivileges);
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = false) =>
+        queuedEmailOrchestrationService.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivs: checkPrivileges);
 }

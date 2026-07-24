@@ -74,20 +74,20 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> items) =>
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: () =>
     {
-        ValidateAddOrUpdate(inputs: [items]);
+        ValidateAddOrUpdate(inputs: [newQueuedEmail]);
 
-        return processingService.AddOrUpdateQueuedEmailResult(items: items);
+        return processingService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newQueuedEmail);
     }, isValueTask: true);
 
-    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> items) =>
+    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
         TryCatch(operation: () =>
     {
-        ValidateDeleteAllAsync(inputs: [items]);
+        ValidateDeleteAllAsync(inputs: [deletedQueuedEmail]);
 
-        return processingService.DeleteAllQueuedEmailAsync(items: items);
+        return processingService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: deletedQueuedEmail);
     }, isValueTask: true);
 
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>

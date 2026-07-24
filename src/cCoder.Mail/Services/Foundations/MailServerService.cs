@@ -56,7 +56,7 @@ internal partial class MailServerService(
         ValidateAddAsync(inputs: [newMailServer]);
 
         authorizationBroker.Authorize(appId: newMailServer.AppId, privilege: $"{nameof(MailServer)}_create");
-        MailServer result = await mailServerBroker.AddMailServerAsync(entity: Copy(mailServer: newMailServer));
+        MailServer result = await mailServerBroker.AddMailServerAsync(newMailServer: Copy(mailServer: newMailServer));
         newMailServer.Id = result.Id;
         newMailServer.AppId = result.AppId;
         newMailServer.Name = result.Name;
@@ -75,7 +75,7 @@ internal partial class MailServerService(
         ValidateUpdateAsync(inputs: [updatedMailServer]);
 
         authorizationBroker.Authorize(appId: updatedMailServer.AppId, privilege: $"{nameof(MailServer)}_update");
-        MailServer result = await mailServerBroker.UpdateMailServerAsync(entity: Copy(mailServer: updatedMailServer));
+        MailServer result = await mailServerBroker.UpdateMailServerAsync(updatedMailServer: Copy(mailServer: updatedMailServer));
         updatedMailServer.Id = result.Id;
         updatedMailServer.AppId = result.AppId;
         updatedMailServer.Name = result.Name;
@@ -103,17 +103,17 @@ internal partial class MailServerService(
         }
 
         authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
-        _ = await mailServerBroker.DeleteMailServerAsync(entity: Copy(mailServer: mailServer));
+        _ = await mailServerBroker.DeleteMailServerAsync(deletedMailServer: Copy(mailServer: mailServer));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllForAppMailServerAsync(IEnumerable<MailServer> items) =>
+    public ValueTask DeleteAllForAppMailServerAsync(IEnumerable<MailServer> deletedMailServer) =>
         TryCatch(operation: () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [items]);
+        ValidateDeleteAllForAppAsync(inputs: [deletedMailServer]);
 
         return mailServerBroker.DeleteAllMailServersAsync(
-        items: items?.Select(selector: Copy) ?? []);
+        deletedMailServer: deletedMailServer?.Select(selector: Copy) ?? []);
     }, isValueTask: true);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>

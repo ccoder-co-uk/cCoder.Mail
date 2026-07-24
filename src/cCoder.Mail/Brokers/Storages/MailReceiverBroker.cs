@@ -12,10 +12,10 @@ public interface IMailReceiverBroker
 {
     IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters);
     MailReceiver[] GetEnabledMailReceivers();
-    ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver entity);
-    ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver entity);
-    ValueTask<int> DeleteMailReceiverAsync(MailReceiver entity);
-    ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> items);
+    ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
+    ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);
+    ValueTask<int> DeleteMailReceiverAsync(MailReceiver deletedMailReceiver);
+    ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> deletedMailReceiver);
     ValueTask DeleteAllMailReceiversByAppIdAsync(int appId);
     int? GetAppId(MailReceiver entity);
 }
@@ -41,41 +41,41 @@ internal sealed class MailReceiverBroker(ICoreContextFactory coreContextFactory)
             .ToArray();
     }
 
-    public async ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver entity)
+    public async ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailReceiver result = (await coreDataContext.MailReceivers.AddAsync(entity: entity)).Entity;
+        MailReceiver result = (await coreDataContext.MailReceivers.AddAsync(entity: newMailReceiver)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver entity)
+    public async ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        MailReceiver result = coreDataContext.MailReceivers.Update(entity: entity)
+        MailReceiver result = coreDataContext.MailReceivers.Update(entity: updatedMailReceiver)
             .Entity;
 
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
 
-    public async ValueTask<int> DeleteMailReceiverAsync(MailReceiver entity)
+    public async ValueTask<int> DeleteMailReceiverAsync(MailReceiver deletedMailReceiver)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailReceivers.Remove(entity: entity);
+        coreDataContext.MailReceivers.Remove(entity: deletedMailReceiver);
         return await coreDataContext.SaveChangesAsync();
     }
 
-    public async ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> items)
+    public async ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> deletedMailReceiver)
     {
-        if (items == null || !items.Any())
+        if (deletedMailReceiver == null || !deletedMailReceiver.Any())
         {
             return;
         }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailReceivers.RemoveRange(entities: items);
+        coreDataContext.MailReceivers.RemoveRange(entities: deletedMailReceiver);
         _ = await coreDataContext.SaveChangesAsync();
     }
 

@@ -17,6 +17,6 @@ public interface ISentEmailService
     ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
     ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
     ValueTask DeleteAsync(int iSentEmailId);
-    ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> items);
+    ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

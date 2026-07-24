@@ -24,12 +24,12 @@ internal partial class AppOrchestrationService(
         ValidateAddAsync(inputs: [newApp]);
 
         StampMail(app: newApp);
-        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(items: newApp.MailServers ?? []);
-        await AddOrUpdateAsync(items: newApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
-        await AddOrUpdateAsync(items: newApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(items: newApp.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(items: newApp.SentMail ?? []);
-        await AddOrUpdateAsync(items: newApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
+        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: newApp.MailServers ?? []);
+        await AddOrUpdateAsync(newMailSender: newApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
+        await AddOrUpdateAsync(newMailReceiver: newApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
+        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: newApp.SentMail ?? []);
+        await AddOrUpdateAsync(newReceivedEmail: newApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
     public ValueTask UpdateAppAsync(App updatedApp) =>
@@ -38,12 +38,12 @@ internal partial class AppOrchestrationService(
         ValidateUpdateAsync(inputs: [updatedApp]);
 
         StampMail(app: updatedApp);
-        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(items: updatedApp.MailServers ?? []);
-        await AddOrUpdateAsync(items: updatedApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
-        await AddOrUpdateAsync(items: updatedApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(items: updatedApp.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(items: updatedApp.SentMail ?? []);
-        await AddOrUpdateAsync(items: updatedApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
+        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: updatedApp.MailServers ?? []);
+        await AddOrUpdateAsync(newMailSender: updatedApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
+        await AddOrUpdateAsync(newMailReceiver: updatedApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
+        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: updatedApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: updatedApp.SentMail ?? []);
+        await AddOrUpdateAsync(newReceivedEmail: updatedApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
     public ValueTask DeleteAsync(int appId) =>
@@ -93,10 +93,10 @@ internal partial class AppOrchestrationService(
     }
 
     private static async ValueTask AddOrUpdateAsync(
-        IEnumerable<MailSender> items,
+        IEnumerable<MailSender> newMailSender,
         IMailSenderConfigurationOrchestrationService service)
     {
-        foreach (MailSender item in items)
+        foreach (MailSender item in newMailSender)
         {
             if (item.Id == Guid.Empty)
             {
@@ -110,10 +110,10 @@ internal partial class AppOrchestrationService(
     }
 
     private static async ValueTask AddOrUpdateAsync(
-        IEnumerable<MailReceiver> items,
+        IEnumerable<MailReceiver> newMailReceiver,
         IMailReceiverConfigurationOrchestrationService service)
     {
-        foreach (MailReceiver item in items)
+        foreach (MailReceiver item in newMailReceiver)
         {
             if (item.Id == Guid.Empty)
             {
@@ -127,10 +127,10 @@ internal partial class AppOrchestrationService(
     }
 
     private static async ValueTask AddOrUpdateAsync(
-        IEnumerable<ReceivedEmail> items,
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         IReceivedEmailOrchestrationService service)
     {
-        foreach (ReceivedEmail item in items)
+        foreach (ReceivedEmail item in newReceivedEmail)
         {
             if (item.Id == 0)
             {

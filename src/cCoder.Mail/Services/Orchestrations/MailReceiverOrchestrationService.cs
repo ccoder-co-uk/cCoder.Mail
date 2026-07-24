@@ -90,7 +90,7 @@ cancellationToken: cancellationToken);
             .Select(selector: email => Prepare(email: email, receiver: receiver))
         ];
 
-        await receivedEmailProcessingService.AddRangeReceivedEmailAsync(entities: newEmails, cancellationToken: cancellationToken);
+        await receivedEmailProcessingService.AddRangeReceivedEmailAsync(newReceivedEmail: newEmails, cancellationToken: cancellationToken);
 
         receiver.LastReceivedOn = to;
         await mailReceiverProcessingService.UpdateMailReceiverAsync(updatedMailReceiver: receiver);

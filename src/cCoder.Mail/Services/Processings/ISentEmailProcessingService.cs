@@ -23,7 +23,7 @@ public interface ISentEmailProcessingService
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> items);
+    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail);
 
-    ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> items);
+    ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
 }

@@ -10,96 +10,96 @@ namespace cCoder.Mail;
 public static class MailConfigurationExtensions
 {
     public static MailConfiguration AddSmtpSender(
-        this MailConfiguration configuration,
+        this MailConfiguration newMailConfiguration,
         string name = MailProviderNames.Smtp) =>
-        configuration.AddSenderProvider(
+        newMailConfiguration.AddSenderProvider(
             name: name,
             providerName: MailProviderNames.Smtp);
 
     public static MailConfiguration AddPop3Receiver(
-        this MailConfiguration configuration,
+        this MailConfiguration newMailConfiguration,
         string name = MailProviderNames.Pop3) =>
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: name,
             providerName: MailProviderNames.Pop3);
 
     public static MailConfiguration AddImapReceiver(
-        this MailConfiguration configuration,
+        this MailConfiguration newMailConfiguration,
         string name = MailProviderNames.Imap) =>
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: name,
             providerName: MailProviderNames.Imap);
 
     public static MailConfiguration AddMicrosoftGraphSender(
-        this MailConfiguration configuration,
-        Action<MicrosoftGraphMailConfiguration> configure = null,
+        this MailConfiguration newMailConfiguration,
+        Action<MicrosoftGraphMailConfiguration> newMicrosoftGraphMailConfiguration = null,
         string name = MailProviderNames.MicrosoftGraph)
     {
-        configure?.Invoke(obj: configuration.MicrosoftGraph);
+        newMicrosoftGraphMailConfiguration?.Invoke(obj: newMailConfiguration.MicrosoftGraph);
 
-        configuration.AddSenderProvider(
+        newMailConfiguration.AddSenderProvider(
             name: name,
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddSenderProvider(
+        newMailConfiguration.AddSenderProvider(
             name: "graph.microsoft.com",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddSenderProvider(
+        newMailConfiguration.AddSenderProvider(
             name: "https://graph.microsoft.com",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddSenderProvider(
+        newMailConfiguration.AddSenderProvider(
             name: "microsoft-graph",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        return configuration;
+        return newMailConfiguration;
     }
 
     public static MailConfiguration AddMicrosoftGraphReceiver(
-        this MailConfiguration configuration,
-        Action<MicrosoftGraphMailConfiguration> configure = null,
+        this MailConfiguration newMailConfiguration,
+        Action<MicrosoftGraphMailConfiguration> newMicrosoftGraphMailConfiguration = null,
         string name = MailProviderNames.MicrosoftGraph)
     {
-        configure?.Invoke(obj: configuration.MicrosoftGraph);
+        newMicrosoftGraphMailConfiguration?.Invoke(obj: newMailConfiguration.MicrosoftGraph);
 
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: name,
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: "graph.microsoft.com",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: "https://graph.microsoft.com",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        configuration.AddReceiverProvider(
+        newMailConfiguration.AddReceiverProvider(
             name: "microsoft-graph",
             providerName: MailProviderNames.MicrosoftGraph);
 
-        return configuration;
+        return newMailConfiguration;
     }
 
     public static MailConfiguration AddSenderProvider(
-        this MailConfiguration configuration,
+        this MailConfiguration newMailConfiguration,
         string name,
         string providerName)
     {
-        configuration.SenderProviders[name] = providerName;
+        newMailConfiguration.SenderProviders[name] = providerName;
 
-        return configuration;
+        return newMailConfiguration;
     }
 
     public static MailConfiguration AddReceiverProvider(
-        this MailConfiguration configuration,
+        this MailConfiguration newMailConfiguration,
         string name,
         string providerName)
     {
-        configuration.ReceiverProviders[name] = providerName;
+        newMailConfiguration.ReceiverProviders[name] = providerName;
 
-        return configuration;
+        return newMailConfiguration;
     }
 
     public static string ResolveSenderProviderName(

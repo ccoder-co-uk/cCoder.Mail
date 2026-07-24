@@ -57,11 +57,11 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items) =>
+    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [items]);
+            ValidateDeleteAllAsync(inputs: [deletedMailSender]);
 
-            return service.DeleteAllMailSenderAsync(items: items);
+            return service.DeleteAllMailSenderAsync(deletedMailSender: deletedMailSender);
         }, isValueTask: true);
 }

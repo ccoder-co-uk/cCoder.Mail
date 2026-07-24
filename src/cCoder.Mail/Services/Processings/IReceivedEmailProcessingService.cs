@@ -14,7 +14,7 @@ public interface IReceivedEmailProcessingService
     ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail);
     ValueTask<int> DeleteAsync(int iReceivedEmailId);
     ValueTask DeleteByAppIdAsync(int appId);
-    ValueTask AddRangeReceivedEmailAsync(IEnumerable<ReceivedEmail> entities, CancellationToken cancellationToken = default);
+    ValueTask AddRangeReceivedEmailAsync(IEnumerable<ReceivedEmail> newReceivedEmail, CancellationToken cancellationToken = default);
     bool Exists(Guid mailReceiverId, string messageId);
-    ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> items);
+    ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail);
 }

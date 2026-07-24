@@ -11,7 +11,7 @@ namespace cCoder.Mail.Exposures;
 
 public interface IMailAppExposure
 {
-    ValueTask AddAsync(App app);
-    ValueTask UpdateAsync(App app);
+    ValueTask AddAsync(App newApp);
+    ValueTask UpdateAsync(App updatedApp);
     ValueTask DeleteAsync(int appId);
 }

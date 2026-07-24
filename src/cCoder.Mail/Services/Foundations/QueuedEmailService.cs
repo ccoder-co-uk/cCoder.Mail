@@ -66,7 +66,7 @@ internal partial class QueuedEmailService(
             authorizationBroker.Authorize(appId: newQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
         }
 
-        QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(entity: Copy(queuedEmail: newQueuedEmail));
+        QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(newQueuedEmail: Copy(queuedEmail: newQueuedEmail));
         newQueuedEmail.Id = result.Id;
         newQueuedEmail.AppId = result.AppId;
         newQueuedEmail.SentByUserId = result.SentByUserId;
@@ -87,7 +87,7 @@ internal partial class QueuedEmailService(
         ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
 
         authorizationBroker.Authorize(appId: updatedQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
-        QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(entity: Copy(queuedEmail: updatedQueuedEmail));
+        QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(updatedQueuedEmail: Copy(queuedEmail: updatedQueuedEmail));
         updatedQueuedEmail.Id = result.Id;
         updatedQueuedEmail.AppId = result.AppId;
         updatedQueuedEmail.SentByUserId = result.SentByUserId;
@@ -145,19 +145,19 @@ internal partial class QueuedEmailService(
         }
 
         await queuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(
-items: queuedEmail.FailedSends?.Select(selector: Copy)
+deletedEmailSendFailure: queuedEmail.FailedSends?.Select(selector: Copy)
             .ToArray() ?? []);
 
-        _ = await queuedEmailBroker.DeleteQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
+        _ = await queuedEmailBroker.DeleteQueuedEmailAsync(deletedQueuedEmail: Copy(queuedEmail: queuedEmail));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> items) =>
+    public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [items]);
+        ValidateDeleteAllForAppAsync(inputs: [deletedQueuedEmail]);
 
-        foreach (QueuedEmail item in items ?? [])
+        foreach (QueuedEmail item in deletedQueuedEmail ?? [])
         {
             await DeleteAsync(queuedEmailId: item.Id, checkPrivileges: false);
         }

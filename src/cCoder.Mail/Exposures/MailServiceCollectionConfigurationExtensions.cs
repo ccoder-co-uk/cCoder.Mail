@@ -18,23 +18,23 @@ public static partial class IServiceCollectionExtensions
 {
     private static MailConfiguration AddConfiguredMail(
         this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> configure)
+        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
     {
-        MailConfiguration configuration = CreateConfiguration(services: services, configure: configure);
+        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
         services.AddMail();
         return configuration;
     }
 
     private static MailConfiguration AddConfiguredMailWeb(
         this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> configure,
+        Action<IServiceCollection, MailConfiguration> newMailConfiguration,
         ODataConventionModelBuilder builder = null)
     {
-        MailConfiguration configuration = CreateConfiguration(services: services, configure: configure);
+        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
         services.AddMailWeb(builder: builder);
 
         services.AddConfiguredApi(
-configuration: configuration,
+newMailConfiguration: configuration,
 documentName: "Mail",
 configureModel: static modelBuilder => modelBuilder.ConfigureMailApiModel(),
 builder: builder);
@@ -44,9 +44,9 @@ builder: builder);
 
     private static MailConfiguration AddConfiguredMailHostedServices(
         this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> configure)
+        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
     {
-        MailConfiguration configuration = CreateConfiguration(services: services, configure: configure);
+        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
         services.AddMailHostedServices();
         return configuration;
     }
@@ -56,10 +56,10 @@ builder: builder);
 
     private static MailConfiguration CreateConfiguration(
         IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> configure)
+        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
     {
         MailConfiguration configuration = new();
-        configure?.Invoke(arg1: services, arg2: configuration);
+        newMailConfiguration?.Invoke(arg1: services, arg2: configuration);
         services.AddSingleton(implementationInstance: configuration);
         services.AddEventProviders(eventProviders: configuration.EventProviders);
         return configuration;
@@ -67,7 +67,7 @@ builder: builder);
 
     private static void AddConfiguredApi(
         this IServiceCollection services,
-        MailConfiguration configuration,
+        MailConfiguration newMailConfiguration,
         string documentName,
         Action<ODataConventionModelBuilder> configureModel,
         ODataConventionModelBuilder builder = null,
@@ -84,15 +84,15 @@ builder: builder);
 
         if (builder is null)
         {
-            AddApiDocumentation(services: services, documentName: documentName, configuration: configuration, useFullSchemaIds: useFullSchemaIds);
+            AddApiDocumentation(services: services, documentName: documentName, newMailConfiguration: newMailConfiguration, useFullSchemaIds: useFullSchemaIds);
         }
 
         IEdmModel routeModel = BuildRouteModel(configureModel: configureModel);
         DefaultODataBatchHandler batchHandler = new();
 
-        string rootPath = string.IsNullOrWhiteSpace(value: configuration.RootPath)
+        string rootPath = string.IsNullOrWhiteSpace(value: newMailConfiguration.RootPath)
             ? $"Api/{documentName}"
-            : configuration.RootPath;
+            : newMailConfiguration.RootPath;
 
         services.AddControllers()
             .AddOData(setupAction: options =>
@@ -110,7 +110,7 @@ builder: builder);
                 .AddRouteComponents(routePrefix: rootPath, model: routeModel, batchHandler: batchHandler);
 
             if (builder is null
-                && configuration.IncludeLegacyCoreContext
+                && newMailConfiguration.IncludeLegacyCoreContext
                 && !string.Equals(a: rootPath, b: "Api/Core", comparisonType: StringComparison.OrdinalIgnoreCase))
             {
                 _ = options.AddRouteComponents(routePrefix: "Api/Core", model: routeModel, batchHandler: batchHandler);
@@ -121,13 +121,13 @@ builder: builder);
     private static void AddApiDocumentation(
         IServiceCollection services,
         string documentName,
-        MailConfiguration configuration,
+        MailConfiguration newMailConfiguration,
         bool useFullSchemaIds)
     {
         services.AddSwaggerGen(setupAction: options =>
         {
             options.ResolveConflictingActions(resolver: apiDescriptions => apiDescriptions.First());
-            AddSwaggerDocuments(options: options, documentName: documentName, configuration: configuration);
+            AddSwaggerDocuments(options: options, documentName: documentName, newMailConfiguration: newMailConfiguration);
 
             options.DocInclusionPredicate(
 predicate: (swaggerDocumentName, apiDescription) =>
@@ -135,7 +135,7 @@ predicate: (swaggerDocumentName, apiDescription) =>
 swaggerDocumentName: swaggerDocumentName,
 relativePath: apiDescription.RelativePath,
 documentName: documentName,
-configuration: configuration));
+configuration: newMailConfiguration));
 
             if (useFullSchemaIds)
             {
@@ -156,7 +156,7 @@ configuration: configuration));
     private static void AddSwaggerDocuments(
         Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions options,
         string documentName,
-        MailConfiguration configuration)
+        MailConfiguration newMailConfiguration)
     {
         options.SwaggerDoc(name: documentName, info: new OpenApiInfo
         {
@@ -164,7 +164,7 @@ configuration: configuration));
             Version = documentName,
         });
 
-        if (configuration.IncludeLegacyCoreContext)
+        if (newMailConfiguration.IncludeLegacyCoreContext)
         {
             options.SwaggerDoc(name: "Core", info: new OpenApiInfo
             {

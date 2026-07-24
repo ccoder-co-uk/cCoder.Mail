@@ -493,7 +493,7 @@
           "Name": "AddMailReceiverAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -503,7 +503,7 @@
           "Name": "DeleteAllMailReceiversAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailReceiver",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
@@ -523,7 +523,7 @@
           "Name": "DeleteMailReceiverAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -558,7 +558,7 @@
           "Name": "UpdateMailReceiverAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -575,7 +575,7 @@
           "Name": "AddMailSenderAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -585,7 +585,7 @@
           "Name": "DeleteAllMailSendersAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailSender",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
@@ -605,7 +605,7 @@
           "Name": "DeleteMailSenderAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -635,7 +635,7 @@
           "Name": "UpdateMailSenderAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -652,7 +652,7 @@
           "Name": "AddMailServerAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -662,7 +662,7 @@
           "Name": "DeleteAllMailServersAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -682,7 +682,7 @@
           "Name": "DeleteMailServerAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -712,7 +712,7 @@
           "Name": "UpdateMailServerAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -729,7 +729,7 @@
           "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
@@ -757,7 +757,7 @@
           "Name": "DeleteAllQueuedEmailSendFailuresAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedEmailSendFailure",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.EmailSendFailure\u003E"
             }
           ],
@@ -767,7 +767,7 @@
           "Name": "DeleteAllQueuedEmailsAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -787,7 +787,7 @@
           "Name": "DeleteQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
@@ -853,7 +853,7 @@
           "Name": "UpdateQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
@@ -870,7 +870,7 @@
           "Name": "AddReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newReceivedEmail",
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
@@ -880,7 +880,7 @@
           "Name": "AddReceivedEmailsAsync",
           "Inputs": [
             {
-              "Name": "entities",
+              "Name": "newReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             },
             {
@@ -894,7 +894,7 @@
           "Name": "DeleteAllReceivedEmailsAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             }
           ],
@@ -914,7 +914,7 @@
           "Name": "DeleteReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedReceivedEmail",
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
@@ -958,7 +958,7 @@
           "Name": "UpdateReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedReceivedEmail",
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
@@ -975,7 +975,7 @@
           "Name": "AddSentEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
@@ -985,7 +985,7 @@
           "Name": "DeleteAllSentEmailsAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -1005,7 +1005,7 @@
           "Name": "DeleteSentEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "deletedSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
@@ -1035,7 +1035,7 @@
           "Name": "UpdateSentEmailAsync",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "updatedSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
@@ -2316,7 +2316,7 @@
           "Name": "AddAsync",
           "Inputs": [
             {
-              "Name": "app",
+              "Name": "newApp",
               "Type": "cCoder.Data.Models.CMS.App"
             }
           ],
@@ -2336,7 +2336,7 @@
           "Name": "UpdateAsync",
           "Inputs": [
             {
-              "Name": "app",
+              "Name": "updatedApp",
               "Type": "cCoder.Data.Models.CMS.App"
             }
           ],
@@ -2353,7 +2353,7 @@
           "Name": "AddAsync",
           "Inputs": [
             {
-              "Name": "email",
+              "Name": "newQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             },
             {
@@ -2389,7 +2389,7 @@
               "Type": "IServiceCollection"
             },
             {
-              "Name": "configure",
+              "Name": "newMailConfiguration",
               "Type": "System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E"
             }
           ],
@@ -2403,7 +2403,7 @@
               "Type": "IServiceCollection"
             },
             {
-              "Name": "configure",
+              "Name": "newMailConfiguration",
               "Type": "System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E"
             }
           ],
@@ -2417,7 +2417,7 @@
               "Type": "IServiceCollection"
             },
             {
-              "Name": "configure",
+              "Name": "newMailConfiguration",
               "Type": "System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E"
             },
             {
@@ -2448,7 +2448,7 @@
           "Name": "AddImapReceiver",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
@@ -2462,11 +2462,11 @@
           "Name": "AddMicrosoftGraphReceiver",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
-              "Name": "configure",
+              "Name": "newMicrosoftGraphMailConfiguration",
               "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
             },
             {
@@ -2480,11 +2480,11 @@
           "Name": "AddMicrosoftGraphSender",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
-              "Name": "configure",
+              "Name": "newMicrosoftGraphMailConfiguration",
               "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
             },
             {
@@ -2498,7 +2498,7 @@
           "Name": "AddPop3Receiver",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
@@ -2512,7 +2512,7 @@
           "Name": "AddReceiverProvider",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
@@ -2530,7 +2530,7 @@
           "Name": "AddSenderProvider",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
@@ -2548,7 +2548,7 @@
           "Name": "AddSmtpSender",
           "Inputs": [
             {
-              "Name": "configuration",
+              "Name": "newMailConfiguration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
             {
@@ -3332,7 +3332,7 @@
           "Name": "DeleteAllMailReceiverAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailReceiver",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
@@ -3449,7 +3449,7 @@
           "Name": "DeleteAllMailSenderAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailSender",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
@@ -3547,7 +3547,7 @@
           "Name": "DeleteAllForAppMailServerAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -3719,7 +3719,7 @@
           "Name": "DeleteAllForAppQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -3834,7 +3834,7 @@
           "Name": "AddRangeReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "entities",
+              "Name": "newReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             },
             {
@@ -3868,7 +3868,7 @@
           "Name": "DeleteAllReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             }
           ],
@@ -3959,7 +3959,7 @@
           "Name": "DeleteAllForAppSentEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -4321,7 +4321,7 @@
           "Name": "AddOrUpdateMailServerResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -4331,7 +4331,7 @@
           "Name": "DeleteAllMailServerAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -4398,7 +4398,7 @@
           "Name": "AddOrUpdateQueuedEmailResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -4432,7 +4432,7 @@
           "Name": "DeleteAllQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -4594,7 +4594,7 @@
           "Name": "AddOrUpdateSentEmailResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -4614,7 +4614,7 @@
           "Name": "DeleteAllSentEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -4691,7 +4691,7 @@
           "Name": "DeleteAllMailReceiverAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailReceiver",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
@@ -4773,7 +4773,7 @@
           "Name": "DeleteAllMailSenderAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailSender",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
@@ -4887,7 +4887,7 @@
           "Name": "AddOrUpdateMailServerResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -4897,7 +4897,7 @@
           "Name": "DeleteAllMailServerAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedMailServer",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
             }
           ],
@@ -5001,7 +5001,7 @@
           "Name": "AddOrUpdateQueuedEmailResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -5035,7 +5035,7 @@
           "Name": "DeleteAllQueuedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedQueuedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
             }
           ],
@@ -5102,7 +5102,7 @@
           "Name": "AddRangeReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "entities",
+              "Name": "newReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             },
             {
@@ -5126,7 +5126,7 @@
           "Name": "DeleteAllReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedReceivedEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             }
           ],
@@ -5244,7 +5244,7 @@
           "Name": "AddOrUpdateSentEmailResult",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "newSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -5264,7 +5264,7 @@
           "Name": "DeleteAllSentEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
+              "Name": "deletedSentEmail",
               "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
             }
           ],
@@ -5714,34 +5714,6 @@
       "LineNumber": 29
     },
     {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 44
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 63
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 70
-    },
-    {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
@@ -5756,34 +5728,6 @@
       "LineNumber": 28
     },
     {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 41
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 59
-    },
-    {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
@@ -5796,34 +5740,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
       "LineNumber": 30
-    },
-    {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 43
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 54
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 61
     },
     {
       "Code": "STXB002",
@@ -6029,20 +5945,6 @@
       "LineNumber": 116
     },
     {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailAppExposure",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailAppExposure",
-      "LineNumber": 18
-    },
-    {
       "Code": "STXAPP001",
       "Description": "Program.cs, IServiceCollectionExtensions.cs, and WebApplicationExtensions.cs must live at the project root.",
       "Severity": "Warning",
@@ -6127,13 +6029,6 @@
       "LineNumber": 81
     },
     {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 88
-    },
-    {
       "Code": "STX0012",
       "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
       "Severity": "Warning",
@@ -6169,13 +6064,6 @@
       "LineNumber": 73
     },
     {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 80
-    },
-    {
       "Code": "STX0012",
       "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
       "Severity": "Warning",
@@ -6209,13 +6097,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
       "LineNumber": 97
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 109
     },
     {
       "Code": "STXF002",
@@ -6435,32 +6316,11 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 85
-    },
-    {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
       "LineNumber": 12
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 68
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 60
     },
     {
       "Code": "STX0007",
@@ -6482,13 +6342,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
       "LineNumber": 77
-    },
-    {
-      "Code": "STX0021",
-      "Description": "delete model parameters must use the deleted prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 100
     },
     {
       "Code": "STX0005",

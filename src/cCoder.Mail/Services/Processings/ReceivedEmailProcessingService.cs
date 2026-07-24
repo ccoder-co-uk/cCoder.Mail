@@ -58,13 +58,13 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
         }, isValueTask: true);
 
     public ValueTask AddRangeReceivedEmailAsync(
-        IEnumerable<ReceivedEmail> entities,
+        IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
-            ValidateAddRangeAsync(inputs: [entities, cancellationToken]);
+            ValidateAddRangeAsync(inputs: [newReceivedEmail, cancellationToken]);
 
-            return service.AddRangeReceivedEmailAsync(entities: entities, cancellationToken: cancellationToken);
+            return service.AddRangeReceivedEmailAsync(newReceivedEmail: newReceivedEmail, cancellationToken: cancellationToken);
         }, isValueTask: true);
 
     public bool Exists(Guid mailReceiverId, string messageId) =>
@@ -75,11 +75,11 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
             return service.Exists(mailReceiverId: mailReceiverId, messageId: messageId);
         });
 
-    public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> items) =>
+    public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [items]);
+            ValidateDeleteAllAsync(inputs: [deletedReceivedEmail]);
 
-            return service.DeleteAllReceivedEmailAsync(items: items);
+            return service.DeleteAllReceivedEmailAsync(deletedReceivedEmail: deletedReceivedEmail);
         }, isValueTask: true);
 }

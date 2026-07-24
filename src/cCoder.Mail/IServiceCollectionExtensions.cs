@@ -36,19 +36,19 @@ public static partial class IServiceCollectionExtensions
 {
     public static void AddMail(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMail(configure: (_, configuration) => configure?.Invoke(obj: configuration));
+        Action<MailConfiguration> newMailConfiguration = null) =>
+        services.AddConfiguredMail(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
 
     public static void AddMailWeb(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null,
+        Action<MailConfiguration> newMailConfiguration = null,
         ODataConventionModelBuilder builder = null) =>
-        services.AddConfiguredMailWeb(configure: (_, configuration) => configure?.Invoke(obj: configuration), builder: builder);
+        services.AddConfiguredMailWeb(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration), builder: builder);
 
     public static void AddMailHostedServices(
         this IServiceCollection services,
-        Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMailHostedServices(configure: (_, configuration) => configure?.Invoke(obj: configuration));
+        Action<MailConfiguration> newMailConfiguration = null) =>
+        services.AddConfiguredMailHostedServices(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
 
     private static void AddMail(this IServiceCollection services)
     {

@@ -65,11 +65,11 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> items) =>
+    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [items]);
+            ValidateDeleteAllAsync(inputs: [deletedMailReceiver]);
 
-            return service.DeleteAllMailReceiverAsync(items: items);
+            return service.DeleteAllMailReceiverAsync(deletedMailReceiver: deletedMailReceiver);
         }, isValueTask: true);
 }
