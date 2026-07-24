@@ -4,9 +4,9 @@
 
 using cCoder.Mail.Models.Exceptions;
 
-namespace cCoder.Mail.Services.Orchestrations;
+namespace cCoder.Mail.Services.Processings;
 
-internal sealed partial class MailClientOrchestrationService
+internal sealed partial class MailReceivingProcessingService
 {
     private static void TryCatch(Action operation)
     {

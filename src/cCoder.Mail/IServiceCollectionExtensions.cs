@@ -98,6 +98,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IEventHubBroker, EventHubBroker>();
         services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
         services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
+        services.AddSingleton<IUIBaselineExposure, UIBaselineExposure>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
@@ -152,12 +153,12 @@ public static partial class IServiceCollectionExtensions
     private static void AddOrchestrations(this IServiceCollection services)
     {
         services.AddTransient<IAppAggregationService, AppAggregationService>();
-        services.AddTransient<IMailClientOrchestrationService, MailClientOrchestrationService>();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddTransient<IMailReceiverOrchestrationService, MailReceiverOrchestrationService>();
         services.AddTransient<IMailServerOrchestrationService, MailServerOrchestrationService>();
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();
         services.AddTransient<ISentEmailOrchestrationService, SentEmailOrchestrationService>();
+        services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
     }
 
     private static void AddEventHandlers(this IServiceCollection services)
@@ -176,5 +177,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<ISentEmailEventProcessingService, SentEmailEventProcessingService>();
         services.AddTransient<ISentEmailProcessingService, SentEmailProcessingService>();
         services.AddTransient<IReceivedEmailProcessingService, ReceivedEmailProcessingService>();
+        services.AddTransient<IMailSendingProcessingService, MailSendingProcessingService>();
+        services.AddTransient<IMailReceivingProcessingService, MailReceivingProcessingService>();
     }
 }

@@ -12,18 +12,45 @@ namespace cCoder.Mail.Services.Orchestrations;
 internal sealed partial class MailReceiverOrchestrationService(
     IMailReceiverProcessingService mailReceiverProcessingService,
     IReceivedEmailProcessingService receivedEmailProcessingService,
-    IMailReceivingService mailReceivingService,
-    MailConfiguration mailConfiguration,
-    ILogger<MailReceiverOrchestrationService> log)
+    IMailReceivingProcessingService mailReceivingProcessingService)
     : IMailReceiverOrchestrationService
 {
+    public ValueTask<MailReceiver> AddMailReceiverAsync(
+        MailReceiver newMailReceiver) =>
+        TryCatch<MailReceiver>(operation: () =>
+        {
+            ValidateMailReceiverOnAdd(inputs: [newMailReceiver]);
+
+            return mailReceiverProcessingService.AddMailReceiverAsync(
+                newMailReceiver: newMailReceiver);
+        }, isValueTask: true);
+
+    public ValueTask<MailReceiver> UpdateMailReceiverAsync(
+        MailReceiver updatedMailReceiver) =>
+        TryCatch<MailReceiver>(operation: () =>
+        {
+            ValidateMailReceiverOnUpdate(inputs: [updatedMailReceiver]);
+
+            return mailReceiverProcessingService.UpdateMailReceiverAsync(
+                updatedMailReceiver: updatedMailReceiver);
+        }, isValueTask: true);
+
+    public ValueTask DeleteByAppIdAsync(int appId) =>
+        TryCatch(operation: () =>
+        {
+            ValidateByAppIdOnDelete(inputs: [appId]);
+
+            return mailReceiverProcessingService.DeleteByAppIdAsync(
+                appId: appId);
+        }, isValueTask: true);
+
     public Task RunContinuouslyAsync(CancellationToken cancellationToken = default) =>
         TryCatch(operation: async () =>
     {
 
         ValidateRunContinuouslyAsync(inputs: [cancellationToken]);
 
-        if (mailConfiguration.IsMigrating)
+        if (mailReceivingProcessingService.IsMigrationInProgress())
         {
             return;
         }
@@ -42,7 +69,7 @@ internal sealed partial class MailReceiverOrchestrationService(
             }
             catch (Exception ex)
             {
-                log.LogError(exception: ex, message: ex.Message);
+                mailReceivingProcessingService.LogError(exception: ex);
             }
         }
     }, isTask: true);
@@ -71,7 +98,7 @@ internal sealed partial class MailReceiverOrchestrationService(
         DateTimeOffset from = receiver.LastReceivedOn ?? DateTimeOffset.UtcNow.AddDays(days: -1);
         DateTimeOffset to = DateTimeOffset.UtcNow;
 
-        ReceivedEmail[] receivedEmails = await mailReceivingService.ReceiveMailboxReceiveRequestAsync(
+        ReceivedEmail[] receivedEmails = await mailReceivingProcessingService.ReceiveMailboxReceiveRequestAsync(
 request: new MailboxReceiveRequest
 {
     ProviderName = receiver.ProviderName,

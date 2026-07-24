@@ -74,7 +74,9 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer) =>
+    ValueTask<IEnumerable<Result<MailServer>>>
+        IMailServerOrchestrationService.AddOrUpdateMailServerResult(
+            IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {
         ValidateOrUpdateMailServerResultOnAdd(inputs: [newMailServer]);

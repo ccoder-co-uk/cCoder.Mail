@@ -15,9 +15,22 @@ public interface IQueuedEmailProcessingService
 
     IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);
 
+    QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
+
     ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail);
 
     ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
+
+    ValueTask RecordSendFailureAsync(
+        int emailId,
+        string reason,
+        CancellationToken cancellationToken = default);
+
+    ValueTask MarkAsSentQueuedEmailAsync(
+        QueuedEmail queuedEmail,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default);
 
     ValueTask DeleteAsync(int iQueuedEmailId);
 

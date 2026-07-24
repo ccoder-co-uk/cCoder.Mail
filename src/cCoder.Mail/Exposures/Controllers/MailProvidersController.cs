@@ -10,8 +10,12 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/MailProviders")]
 [Route("Api/Core/MailProviders")]
-public sealed class MailProvidersController(MailConfiguration mailConfiguration) : ControllerBase
+public sealed class MailProvidersController(
+    IMailConfigurationExposure mailConfigurationExposure) : ControllerBase
 {
+    private readonly MailConfiguration mailConfiguration =
+        mailConfigurationExposure.GetMailConfiguration();
+
     [HttpGet]
     public IActionResult Get() =>
         Ok(value: GetSenderProviders()

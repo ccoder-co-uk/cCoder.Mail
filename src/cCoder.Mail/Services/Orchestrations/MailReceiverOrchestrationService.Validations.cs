@@ -8,6 +8,15 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal sealed partial class MailReceiverOrchestrationService
 {
+    private static void ValidateMailReceiverOnAdd(object[] inputs) =>
+        ValidationRulesEngine.Validate(inputs: inputs);
+
+    private static void ValidateMailReceiverOnUpdate(object[] inputs) =>
+        ValidationRulesEngine.Validate(inputs: inputs);
+
+    private static void ValidateByAppIdOnDelete(object[] inputs) =>
+        ValidationRulesEngine.Validate(inputs: inputs);
+
     private static void ValidateRunContinuouslyAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 

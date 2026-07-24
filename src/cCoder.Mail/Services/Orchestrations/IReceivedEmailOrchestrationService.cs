@@ -7,9 +7,15 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-public interface IMailClientOrchestrationService
+public interface IReceivedEmailOrchestrationService
 {
-    Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default);
+    ValueTask<ReceivedEmail> AddReceivedEmailAsync(
+        ReceivedEmail newReceivedEmail);
+
+    ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(
+        ReceivedEmail updatedReceivedEmail);
+
+    ValueTask DeleteByAppIdAsync(int appId);
 
     Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,

@@ -13,11 +13,11 @@ namespace cCoder.Mail.Services.Aggregations;
 
 internal partial class AppAggregationService(
     IMailServerOrchestrationService mailServerOrchestrationService,
-    IMailSenderProcessingService mailSenderProcessingService,
-    IMailReceiverProcessingService mailReceiverProcessingService,
+    IMailSenderOrchestrationService mailSenderOrchestrationService,
+    IMailReceiverOrchestrationService mailReceiverOrchestrationService,
     IQueuedEmailOrchestrationService queuedEmailOrchestrationService,
     ISentEmailOrchestrationService sentEmailOrchestrationService,
-    IReceivedEmailProcessingService receivedEmailProcessingService
+    IReceivedEmailOrchestrationService receivedEmailOrchestrationService
 ) : IAppAggregationService
 {
     public ValueTask AddAppAsync(App newApp) =>
@@ -27,11 +27,11 @@ internal partial class AppAggregationService(
 
         StampMail(app: newApp);
         _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: newApp.MailServers ?? []);
-        await AddOrUpdateAsync(newMailSender: newApp.MailSenders ?? [], service: mailSenderProcessingService);
-        await AddOrUpdateAsync(newMailReceiver: newApp.MailReceivers ?? [], service: mailReceiverProcessingService);
+        await AddOrUpdateAsync(newMailSender: newApp.MailSenders ?? [], service: mailSenderOrchestrationService);
+        await AddOrUpdateAsync(newMailReceiver: newApp.MailReceivers ?? [], service: mailReceiverOrchestrationService);
         _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newApp.MailQueue ?? []);
         _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: newApp.SentMail ?? []);
-        await AddOrUpdateAsync(newReceivedEmail: newApp.ReceivedMail ?? [], service: receivedEmailProcessingService);
+        await AddOrUpdateAsync(newReceivedEmail: newApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
     public ValueTask UpdateAppAsync(App updatedApp) =>
@@ -41,11 +41,11 @@ internal partial class AppAggregationService(
 
         StampMail(app: updatedApp);
         _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: updatedApp.MailServers ?? []);
-        await AddOrUpdateAsync(newMailSender: updatedApp.MailSenders ?? [], service: mailSenderProcessingService);
-        await AddOrUpdateAsync(newMailReceiver: updatedApp.MailReceivers ?? [], service: mailReceiverProcessingService);
+        await AddOrUpdateAsync(newMailSender: updatedApp.MailSenders ?? [], service: mailSenderOrchestrationService);
+        await AddOrUpdateAsync(newMailReceiver: updatedApp.MailReceivers ?? [], service: mailReceiverOrchestrationService);
         _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: updatedApp.MailQueue ?? []);
         _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: updatedApp.SentMail ?? []);
-        await AddOrUpdateAsync(newReceivedEmail: updatedApp.ReceivedMail ?? [], service: receivedEmailProcessingService);
+        await AddOrUpdateAsync(newReceivedEmail: updatedApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
     public ValueTask DeleteAsync(int appId) =>
@@ -55,10 +55,10 @@ internal partial class AppAggregationService(
 
         await queuedEmailOrchestrationService.DeleteByAppIdAsync(appId: appId);
         await sentEmailOrchestrationService.DeleteByAppIdAsync(appId: appId);
-        await receivedEmailProcessingService.DeleteByAppIdAsync(appId: appId);
+        await receivedEmailOrchestrationService.DeleteByAppIdAsync(appId: appId);
         await mailServerOrchestrationService.DeleteByAppIdAsync(appId: appId);
-        await mailSenderProcessingService.DeleteByAppIdAsync(appId: appId);
-        await mailReceiverProcessingService.DeleteByAppIdAsync(appId: appId);
+        await mailSenderOrchestrationService.DeleteByAppIdAsync(appId: appId);
+        await mailReceiverOrchestrationService.DeleteByAppIdAsync(appId: appId);
     }, isValueTask: true);
 
     private static void StampMail(App app)
@@ -96,7 +96,7 @@ internal partial class AppAggregationService(
 
     private static async ValueTask AddOrUpdateAsync(
         IEnumerable<MailSender> newMailSender,
-        IMailSenderProcessingService service)
+        IMailSenderOrchestrationService service)
     {
         foreach (MailSender item in newMailSender)
         {
@@ -113,7 +113,7 @@ internal partial class AppAggregationService(
 
     private static async ValueTask AddOrUpdateAsync(
         IEnumerable<MailReceiver> newMailReceiver,
-        IMailReceiverProcessingService service)
+        IMailReceiverOrchestrationService service)
     {
         foreach (MailReceiver item in newMailReceiver)
         {
@@ -130,7 +130,7 @@ internal partial class AppAggregationService(
 
     private static async ValueTask AddOrUpdateAsync(
         IEnumerable<ReceivedEmail> newReceivedEmail,
-        IReceivedEmailProcessingService service)
+        IReceivedEmailOrchestrationService service)
     {
         foreach (ReceivedEmail item in newReceivedEmail)
         {

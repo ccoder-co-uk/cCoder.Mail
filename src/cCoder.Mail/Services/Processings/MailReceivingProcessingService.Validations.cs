@@ -4,11 +4,14 @@
 
 using cCoder.Mail.Dependencies;
 
-namespace cCoder.Mail.Services.Orchestrations;
+namespace cCoder.Mail.Services.Processings;
 
-internal sealed partial class MailClientOrchestrationService
+internal sealed partial class MailReceivingProcessingService
 {
-    private static void ValidateSendQueuedEmailAsync(object[] inputs) =>
+    private static void ValidateIsMigrationInProgress(object[] inputs) =>
+        ValidationRulesEngine.Validate(inputs: inputs);
+
+    private static void ValidateLogError(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateReceiveMailboxReceiveRequestAsync(object[] inputs) =>

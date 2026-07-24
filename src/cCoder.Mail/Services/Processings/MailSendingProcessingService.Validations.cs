@@ -4,22 +4,22 @@
 
 using cCoder.Mail.Dependencies;
 
-namespace cCoder.Mail.Services.Orchestrations;
+namespace cCoder.Mail.Services.Processings;
 
-internal sealed partial class MailSenderOrchestrationService
+internal sealed partial class MailSendingProcessingService
 {
-    private static void ValidateMailSenderOnAdd(object[] inputs) =>
+    private static void ValidateIsMigrationInProgress(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateMailSenderOnUpdate(object[] inputs) =>
+    private static void ValidateLogDispatch(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateByAppIdOnDelete(object[] inputs) =>
+    private static void ValidateLogSummary(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateRunContinuouslyAsync(object[] inputs) =>
+    private static void ValidateLogError(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateRunAsync(object[] inputs) =>
+    private static void ValidateSendQueuedEmailAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

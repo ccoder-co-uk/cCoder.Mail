@@ -30,6 +30,16 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         return service.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
     });
 
+    public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
+        TryCatch<QueuedEmail[]>(operation: () =>
+        {
+            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
+
+            return service.GetDispatchBatch(
+                batchSize: batchSize,
+                maxFailures: maxFailures);
+        });
+
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
@@ -55,6 +65,44 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
 
         return service.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail);
     }, isValueTask: true);
+
+    public ValueTask RecordSendFailureAsync(
+        int emailId,
+        string reason,
+        CancellationToken cancellationToken = default) =>
+        TryCatch(operation: () =>
+        {
+            ValidateRecordSendFailureAsync(
+                inputs: [emailId, reason, cancellationToken]);
+
+            return service.RecordSendFailureAsync(
+                emailId: emailId,
+                reason: reason,
+                cancellationToken: cancellationToken);
+        }, isValueTask: true);
+
+    public ValueTask MarkAsSentQueuedEmailAsync(
+        QueuedEmail queuedEmail,
+        Guid mailSenderId,
+        string fromAddress,
+        CancellationToken cancellationToken = default) =>
+        TryCatch(operation: () =>
+        {
+            ValidateMarkAsSentQueuedEmailAsync(
+                inputs:
+                [
+                    queuedEmail,
+                    mailSenderId,
+                    fromAddress,
+                    cancellationToken
+                ]);
+
+            return service.MarkAsSentQueuedEmailAsync(
+                queuedEmail: queuedEmail,
+                mailSenderId: mailSenderId,
+                fromAddress: fromAddress,
+                cancellationToken: cancellationToken);
+        }, isValueTask: true);
 
     public ValueTask DeleteAsync(int queuedEmailId) =>
         TryCatch(operation: async () =>
