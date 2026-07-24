@@ -21,7 +21,7 @@ internal sealed partial class SmtpMailSenderService(ISmtpMailSenderBroker smtpMa
         MailSender sender = email.MailSender
                                                                                                                 ?? throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
 
-        using MailMessage message = CreateMailMessage(email: email, sender: sender);
+        using MailMessage message = CreateMailMessage(newQueuedEmail: email, newMailSender: sender);
 
         await smtpMailSenderBroker.SendAsync(
 request: new SmtpMailSendRequest
@@ -36,35 +36,35 @@ request: new SmtpMailSendRequest
 cancellationToken: cancellationToken);
     }, isTask: true);
 
-    private static MailMessage CreateMailMessage(QueuedEmail email, MailSender sender)
+    private static MailMessage CreateMailMessage(QueuedEmail newQueuedEmail, MailSender newMailSender)
     {
         MailMessage message = new()
         {
-            IsBodyHtml = email.IsBodyHtml,
-            Subject = email.Subject,
-            Body = email.Content,
-            From = CreateFromAddress(sender: sender),
+            IsBodyHtml = newQueuedEmail.IsBodyHtml,
+            Subject = newQueuedEmail.Subject,
+            Body = newQueuedEmail.Content,
+            From = CreateFromAddress(newMailSender: newMailSender),
         };
 
-        message.To.Add(addresses: email.To);
+        message.To.Add(addresses: newQueuedEmail.To);
 
-        if (!string.IsNullOrWhiteSpace(value: email.CC))
+        if (!string.IsNullOrWhiteSpace(value: newQueuedEmail.CC))
         {
-            message.CC.Add(addresses: email.CC);
+            message.CC.Add(addresses: newQueuedEmail.CC);
         }
 
         return message;
     }
 
-    private static MailAddress CreateFromAddress(MailSender sender)
+    private static MailAddress CreateFromAddress(MailSender newMailSender)
     {
-        if (!string.IsNullOrWhiteSpace(value: sender.FromEmail))
+        if (!string.IsNullOrWhiteSpace(value: newMailSender.FromEmail))
         {
-            return new MailAddress(address: sender.FromEmail);
+            return new MailAddress(address: newMailSender.FromEmail);
         }
 
-        return sender.User.Contains(value: '@')
-            ? new MailAddress(address: sender.User)
+        return newMailSender.User.Contains(value: '@')
+            ? new MailAddress(address: newMailSender.User)
             : null;
     }
 }

@@ -12,11 +12,11 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface IMailServerService
 {
-    MailServer Get(int id);
+    MailServer Get(int iMailServerId);
     IQueryable<MailServer> GetAll(bool ignoreFilters = false);
-    ValueTask<MailServer> AddAsync(MailServer mailServer);
-    ValueTask<MailServer> UpdateAsync(MailServer mailServer);
-    ValueTask DeleteAsync(int id);
+    ValueTask<MailServer> AddAsync(MailServer newMailServer);
+    ValueTask<MailServer> UpdateAsync(MailServer updatedMailServer);
+    ValueTask DeleteAsync(int iMailServerId);
     ValueTask DeleteAllForAppAsync(IEnumerable<MailServer> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

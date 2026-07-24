@@ -14,5 +14,5 @@ internal class MailManagerExposure(
     IQueuedEmailOrchestrationService queuedEmailOrchestrationService) : IMailManagerExposure
 {
     public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivileges = false) =>
-        queuedEmailOrchestrationService.AddAsync(entity: email, checkPrivs: checkPrivileges);
+        queuedEmailOrchestrationService.AddAsync(newQueuedEmail: email, checkPrivs: checkPrivileges);
 }

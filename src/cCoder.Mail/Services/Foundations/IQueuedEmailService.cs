@@ -12,18 +12,18 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface IQueuedEmailService
 {
-    QueuedEmail Get(int id);
+    QueuedEmail Get(int iQueuedEmailId);
     IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false);
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true);
-    ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail);
+    ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = true);
+    ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail);
     ValueTask RecordSendFailureAsync(int emailId, string reason, CancellationToken cancellationToken = default);
     ValueTask MarkAsSentAsync(
         QueuedEmail queuedEmail,
         Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default);
-    ValueTask DeleteAsync(int id, bool checkPrivileges = true);
+    ValueTask DeleteAsync(int iQueuedEmailId, bool checkPrivileges = true);
     ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

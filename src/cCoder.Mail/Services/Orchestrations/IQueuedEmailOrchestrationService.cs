@@ -11,20 +11,20 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface IQueuedEmailOrchestrationService
 {
-    QueuedEmail Get(int id);
+    QueuedEmail Get(int iQueuedEmailId);
 
     IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false);
 
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail entity);
+    ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail);
 
-    ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity);
+    ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask DeleteAsync(int iQueuedEmailId);
     ValueTask DeleteByAppIdAsync(int appId);
 
     ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items);
 
     ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items);
 
-    ValueTask<QueuedEmail> AddAsync(QueuedEmail entity, bool checkPrivs);
+    ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivs);
 }

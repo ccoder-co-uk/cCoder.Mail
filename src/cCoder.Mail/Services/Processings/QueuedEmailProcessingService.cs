@@ -14,12 +14,12 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
 {
-    public QueuedEmail Get(int id) =>
+    public QueuedEmail Get(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
-        ValidateGet(inputs: [id]);
+        ValidateGet(inputs: [queuedEmailId]);
 
-        return service.Get(id: id);
+        return service.Get(iQueuedEmailId: queuedEmailId);
     });
 
     public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
@@ -30,38 +30,38 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         return service.GetAll(ignoreFilters: ignoreFilters);
     });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity) =>
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
-        ValidateAddAsync(inputs: [entity]);
+        ValidateAddAsync(inputs: [newQueuedEmail]);
 
-        return AddAsync(email: entity, checkPrivs: false);
+        return AddAsync(newQueuedEmail: newQueuedEmail, checkPrivs: false);
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivs) =>
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
-        ValidateAddAsync(inputs: [email, checkPrivs]);
+        ValidateAddAsync(inputs: [newQueuedEmail, checkPrivs]);
 
-        return service.AddAsync(queuedEmail: email, checkPrivileges: checkPrivs);
+        return service.AddAsync(newQueuedEmail: newQueuedEmail, checkPrivileges: checkPrivs);
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity) =>
+    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
-        ValidateUpdateAsync(inputs: [entity]);
+        ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
 
-        return service.UpdateAsync(queuedEmail: entity);
+        return service.UpdateAsync(updatedQueuedEmail: updatedQueuedEmail);
     }, isValueTask: true);
 
-    public ValueTask DeleteAsync(int id) =>
+    public ValueTask DeleteAsync(int queuedEmailId) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAsync(inputs: [id]);
+        ValidateDeleteAsync(inputs: [queuedEmailId]);
 
         QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
-                                                       .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == id);
+            .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == queuedEmailId);
 
         if (queuedEmail == null)
         {
@@ -69,7 +69,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         }
 
         authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: "queuedemail_delete");
-        await service.DeleteAsync(id: queuedEmail.Id, checkPrivileges: false);
+        await service.DeleteAsync(iQueuedEmailId: queuedEmail.Id, checkPrivileges: false);
     }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
@@ -93,8 +93,8 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             {
                 QueuedEmail savedItem =
                     item.Id == 0
-                        ? await AddAsync(entity: item)
-                        : await UpdateAsync(entity: item);
+                        ? await AddAsync(newQueuedEmail: item)
+                        : await UpdateAsync(updatedQueuedEmail: item);
 
                 results.Add(item: new Result<QueuedEmail>
                 {
@@ -125,7 +125,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
 
         foreach (QueuedEmail item in items)
         {
-            await DeleteAsync(id: item.Id);
+            await DeleteAsync(queuedEmailId: item.Id);
         }
     }, isValueTask: true);
 }

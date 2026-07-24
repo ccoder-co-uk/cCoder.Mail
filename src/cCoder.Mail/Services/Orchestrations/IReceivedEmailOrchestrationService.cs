@@ -9,11 +9,11 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface IReceivedEmailOrchestrationService
 {
-    ReceivedEmail Get(int id);
+    ReceivedEmail Get(int iReceivedEmailId);
     IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false);
-    ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity);
-    ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity);
-    ValueTask<int> DeleteAsync(int id);
+    ValueTask<ReceivedEmail> AddAsync(ReceivedEmail newReceivedEmail);
+    ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail updatedReceivedEmail);
+    ValueTask<int> DeleteAsync(int iReceivedEmailId);
     ValueTask DeleteByAppIdAsync(int appId);
     Task<ReceivedEmail[]> ReceiveAsync(MailboxReceiveRequest request, CancellationToken cancellationToken = default);
     Task<ReceivedEmail[]> ReceiveTopAsync(int count, CancellationToken cancellationToken = default);

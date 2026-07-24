@@ -28,7 +28,7 @@ internal sealed partial class MicrosoftGraphMailSenderService(
         string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);
         using HttpRequestMessage message = new(method: HttpMethod.Post, requestUri: BuildSendUrl(sender: sender));
         message.Headers.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: accessToken);
-        message.Content = JsonContent.Create(inputValue: CreateSendPayload(email: email));
+        message.Content = JsonContent.Create(inputValue: CreateSendPayload(newQueuedEmail: email));
 
         HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
 
@@ -73,19 +73,19 @@ internal sealed partial class MicrosoftGraphMailSenderService(
         return $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: sender.User)}/sendMail";
     }
 
-    private static object CreateSendPayload(QueuedEmail email) =>
+    private static object CreateSendPayload(QueuedEmail newQueuedEmail) =>
         new
         {
             message = new
             {
-                subject = email.Subject,
+                subject = newQueuedEmail.Subject,
                 body = new
                 {
-                    contentType = email.IsBodyHtml ? "HTML" : "Text",
-                    content = email.Content ?? string.Empty,
+                    contentType = newQueuedEmail.IsBodyHtml ? "HTML" : "Text",
+                    content = newQueuedEmail.Content ?? string.Empty,
                 },
-                toRecipients = Recipients(addresses: email.To),
-                ccRecipients = Recipients(addresses: email.CC),
+                toRecipients = Recipients(addresses: newQueuedEmail.To),
+                ccRecipients = Recipients(addresses: newQueuedEmail.CC),
             },
             saveToSentItems = true,
         };

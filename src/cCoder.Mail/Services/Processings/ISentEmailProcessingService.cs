@@ -11,15 +11,15 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface ISentEmailProcessingService
 {
-    SentEmail Get(int id);
+    SentEmail Get(int iSentEmailId);
 
     IQueryable<SentEmail> GetAll(bool ignoreFilters = false);
 
-    ValueTask<SentEmail> AddAsync(SentEmail entity);
+    ValueTask<SentEmail> AddAsync(SentEmail newSentEmail);
 
-    ValueTask<SentEmail> UpdateAsync(SentEmail entity);
+    ValueTask<SentEmail> UpdateAsync(SentEmail updatedSentEmail);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask DeleteAsync(int iSentEmailId);
 
     ValueTask DeleteByAppIdAsync(int appId);
 

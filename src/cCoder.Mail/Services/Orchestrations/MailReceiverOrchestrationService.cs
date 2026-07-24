@@ -93,7 +93,7 @@ cancellationToken: cancellationToken);
         await receivedEmailProcessingService.AddRangeAsync(entities: newEmails, cancellationToken: cancellationToken);
 
         receiver.LastReceivedOn = to;
-        await mailReceiverProcessingService.UpdateAsync(entity: receiver);
+        await mailReceiverProcessingService.UpdateAsync(updatedMailReceiver: receiver);
     }
 
     private static ReceivedEmail Prepare(ReceivedEmail email, MailReceiver receiver)

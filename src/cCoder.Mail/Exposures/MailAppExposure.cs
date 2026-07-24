@@ -13,10 +13,10 @@ namespace cCoder.Mail.Exposures;
 internal class MailAppExposure(IAppOrchestrationService appOrchestrationService) : IMailAppExposure
 {
     public ValueTask AddAsync(App app) =>
-        appOrchestrationService.AddAsync(app: app);
+        appOrchestrationService.AddAsync(newApp: app);
 
     public ValueTask UpdateAsync(App app) =>
-        appOrchestrationService.UpdateAsync(app: app);
+        appOrchestrationService.UpdateAsync(updatedApp: app);
 
     public ValueTask DeleteAsync(int appId) =>
         appOrchestrationService.DeleteAsync(appId: appId);

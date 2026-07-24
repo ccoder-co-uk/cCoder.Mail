@@ -17,14 +17,14 @@ internal partial class SentEmailService(
     IAuthorizationBroker authorizationBroker
 ) : ISentEmailService
 {
-    public SentEmail Get(int id) =>
+    public SentEmail Get(int sentEmailId) =>
         TryCatch<SentEmail>(operation: () =>
     {
 
-        ValidateGet(inputs: [id]);
+        ValidateGet(inputs: [sentEmailId]);
 
         SentEmail sentEmail = GetAll()
-                                               .FirstOrDefault(predicate: i => i.Id == id);
+            .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (sentEmail is not null)
         {
@@ -32,7 +32,7 @@ internal partial class SentEmailService(
         }
 
         SentEmail unrestrictedSentEmail = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: i => i.Id == id);
+            .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (unrestrictedSentEmail is not null)
         {
@@ -50,56 +50,56 @@ internal partial class SentEmailService(
             return sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<SentEmail> AddAsync(SentEmail sentEmail) =>
+    public ValueTask<SentEmail> AddAsync(SentEmail newSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [sentEmail]);
+        ValidateAddAsync(inputs: [newSentEmail]);
 
-        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
-        SentEmail result = await sentEmailBroker.AddSentEmailAsync(entity: Copy(sentEmail: sentEmail));
-        sentEmail.Id = result.Id;
-        sentEmail.AppId = result.AppId;
-        sentEmail.SentByUserId = result.SentByUserId;
-        sentEmail.Subject = result.Subject;
-        sentEmail.Content = result.Content;
-        sentEmail.To = result.To;
-        sentEmail.CC = result.CC;
-        sentEmail.IsBodyHtml = result.IsBodyHtml;
-        sentEmail.SentOn = result.SentOn;
-        sentEmail.From = result.From;
-        sentEmail.MailSenderId = result.MailSenderId;
-        return sentEmail;
+        authorizationBroker.Authorize(appId: newSentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
+        SentEmail result = await sentEmailBroker.AddSentEmailAsync(entity: Copy(sentEmail: newSentEmail));
+        newSentEmail.Id = result.Id;
+        newSentEmail.AppId = result.AppId;
+        newSentEmail.SentByUserId = result.SentByUserId;
+        newSentEmail.Subject = result.Subject;
+        newSentEmail.Content = result.Content;
+        newSentEmail.To = result.To;
+        newSentEmail.CC = result.CC;
+        newSentEmail.IsBodyHtml = result.IsBodyHtml;
+        newSentEmail.SentOn = result.SentOn;
+        newSentEmail.From = result.From;
+        newSentEmail.MailSenderId = result.MailSenderId;
+        return newSentEmail;
     }, isValueTask: true);
 
-    public ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail) =>
+    public ValueTask<SentEmail> UpdateAsync(SentEmail updatedSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [sentEmail]);
+        ValidateUpdateAsync(inputs: [updatedSentEmail]);
 
-        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
-        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(entity: Copy(sentEmail: sentEmail));
-        sentEmail.Id = result.Id;
-        sentEmail.AppId = result.AppId;
-        sentEmail.SentByUserId = result.SentByUserId;
-        sentEmail.Subject = result.Subject;
-        sentEmail.Content = result.Content;
-        sentEmail.To = result.To;
-        sentEmail.CC = result.CC;
-        sentEmail.IsBodyHtml = result.IsBodyHtml;
-        sentEmail.SentOn = result.SentOn;
-        sentEmail.From = result.From;
-        sentEmail.MailSenderId = result.MailSenderId;
-        return sentEmail;
+        authorizationBroker.Authorize(appId: updatedSentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
+        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(entity: Copy(sentEmail: updatedSentEmail));
+        updatedSentEmail.Id = result.Id;
+        updatedSentEmail.AppId = result.AppId;
+        updatedSentEmail.SentByUserId = result.SentByUserId;
+        updatedSentEmail.Subject = result.Subject;
+        updatedSentEmail.Content = result.Content;
+        updatedSentEmail.To = result.To;
+        updatedSentEmail.CC = result.CC;
+        updatedSentEmail.IsBodyHtml = result.IsBodyHtml;
+        updatedSentEmail.SentOn = result.SentOn;
+        updatedSentEmail.From = result.From;
+        updatedSentEmail.MailSenderId = result.MailSenderId;
+        return updatedSentEmail;
     }, isValueTask: true);
 
-    public ValueTask DeleteAsync(int id) =>
+    public ValueTask DeleteAsync(int sentEmailId) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAsync(inputs: [id]);
+        ValidateDeleteAsync(inputs: [sentEmailId]);
 
         SentEmail sentEmail = GetAll(ignoreFilters: true)
-                                                       .FirstOrDefault(predicate: item => item.Id == id);
+            .FirstOrDefault(predicate: item => item.Id == sentEmailId);
 
         if (sentEmail is null)
         {

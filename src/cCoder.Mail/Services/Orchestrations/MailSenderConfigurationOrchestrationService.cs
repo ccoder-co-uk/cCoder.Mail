@@ -10,12 +10,12 @@ namespace cCoder.Mail.Services.Orchestrations;
 internal partial class MailSenderConfigurationOrchestrationService(IMailSenderProcessingService processingService)
     : IMailSenderConfigurationOrchestrationService
 {
-    public MailSender Get(Guid id) =>
+    public MailSender Get(Guid mailSenderConfigurationId) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateGet(inputs: [id]);
+            ValidateGet(inputs: [mailSenderConfigurationId]);
 
-            return processingService.Get(id: id);
+            return processingService.Get(iMailSenderId: mailSenderConfigurationId);
         });
 
     public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
@@ -26,28 +26,28 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
             return processingService.GetAll(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<MailSender> AddAsync(MailSender entity) =>
+    public ValueTask<MailSender> AddAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateAddAsync(inputs: [entity]);
+            ValidateAddAsync(inputs: [newMailSender]);
 
-            return processingService.AddAsync(entity: entity);
+            return processingService.AddAsync(newMailSender: newMailSender);
         }, isValueTask: true);
 
-    public ValueTask<MailSender> UpdateAsync(MailSender entity) =>
+    public ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [entity]);
+            ValidateUpdateAsync(inputs: [updatedMailSender]);
 
-            return processingService.UpdateAsync(entity: entity);
+            return processingService.UpdateAsync(updatedMailSender: updatedMailSender);
         }, isValueTask: true);
 
-    public ValueTask<int> DeleteAsync(Guid id) =>
+    public ValueTask<int> DeleteAsync(Guid mailSenderConfigurationId) =>
         TryCatch<int>(operation: () =>
         {
-            ValidateDeleteAsync(inputs: [id]);
+            ValidateDeleteAsync(inputs: [mailSenderConfigurationId]);
 
-            return processingService.DeleteAsync(id: id);
+            return processingService.DeleteAsync(iMailSenderId: mailSenderConfigurationId);
         }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>

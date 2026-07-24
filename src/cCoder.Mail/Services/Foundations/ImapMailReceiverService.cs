@@ -142,7 +142,7 @@ internal sealed partial class ImapMailReceiverService(
         .Groups["ids"].Value
             .Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries)
         .Select(selector: value => int.TryParse(s: value, result: out int id) ? id : 0)
-        .Where(predicate: id => id > 0)
+        .Where(predicate: imapMailReceiverId => imapMailReceiverId > 0)
         .ToArray();
 
     private static ReceivedEmail ParseMessage(string rawMessage)

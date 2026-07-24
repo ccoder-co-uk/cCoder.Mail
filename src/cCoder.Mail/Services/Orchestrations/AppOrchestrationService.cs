@@ -18,32 +18,32 @@ internal partial class AppOrchestrationService(
     IReceivedEmailOrchestrationService receivedEmailOrchestrationService
 ) : IAppOrchestrationService
 {
-    public ValueTask AddAsync(App app) =>
+    public ValueTask AddAsync(App newApp) =>
         TryCatch(operation: async () =>
     {
-        ValidateAddAsync(inputs: [app]);
+        ValidateAddAsync(inputs: [newApp]);
 
-        StampMail(app: app);
-        _ = await mailServerOrchestrationService.AddOrUpdate(items: app.MailServers ?? []);
-        await AddOrUpdateAsync(items: app.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
-        await AddOrUpdateAsync(items: app.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdate(items: app.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdate(items: app.SentMail ?? []);
-        await AddOrUpdateAsync(items: app.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
+        StampMail(app: newApp);
+        _ = await mailServerOrchestrationService.AddOrUpdate(items: newApp.MailServers ?? []);
+        await AddOrUpdateAsync(items: newApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
+        await AddOrUpdateAsync(items: newApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
+        _ = await queuedEmailOrchestrationService.AddOrUpdate(items: newApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdate(items: newApp.SentMail ?? []);
+        await AddOrUpdateAsync(items: newApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
-    public ValueTask UpdateAsync(App app) =>
+    public ValueTask UpdateAsync(App updatedApp) =>
         TryCatch(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [app]);
+        ValidateUpdateAsync(inputs: [updatedApp]);
 
-        StampMail(app: app);
-        _ = await mailServerOrchestrationService.AddOrUpdate(items: app.MailServers ?? []);
-        await AddOrUpdateAsync(items: app.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
-        await AddOrUpdateAsync(items: app.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdate(items: app.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdate(items: app.SentMail ?? []);
-        await AddOrUpdateAsync(items: app.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
+        StampMail(app: updatedApp);
+        _ = await mailServerOrchestrationService.AddOrUpdate(items: updatedApp.MailServers ?? []);
+        await AddOrUpdateAsync(items: updatedApp.MailSenders ?? [], service: mailSenderConfigurationOrchestrationService);
+        await AddOrUpdateAsync(items: updatedApp.MailReceivers ?? [], service: mailReceiverConfigurationOrchestrationService);
+        _ = await queuedEmailOrchestrationService.AddOrUpdate(items: updatedApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdate(items: updatedApp.SentMail ?? []);
+        await AddOrUpdateAsync(items: updatedApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
     public ValueTask DeleteAsync(int appId) =>
@@ -100,11 +100,11 @@ internal partial class AppOrchestrationService(
         {
             if (item.Id == Guid.Empty)
             {
-                _ = await service.AddAsync(entity: item);
+                _ = await service.AddAsync(newMailSender: item);
             }
             else
             {
-                _ = await service.UpdateAsync(entity: item);
+                _ = await service.UpdateAsync(updatedMailSender: item);
             }
         }
     }
@@ -117,11 +117,11 @@ internal partial class AppOrchestrationService(
         {
             if (item.Id == Guid.Empty)
             {
-                _ = await service.AddAsync(entity: item);
+                _ = await service.AddAsync(newMailReceiver: item);
             }
             else
             {
-                _ = await service.UpdateAsync(entity: item);
+                _ = await service.UpdateAsync(updatedMailReceiver: item);
             }
         }
     }
@@ -134,11 +134,11 @@ internal partial class AppOrchestrationService(
         {
             if (item.Id == 0)
             {
-                _ = await service.AddAsync(entity: item);
+                _ = await service.AddAsync(newReceivedEmail: item);
             }
             else
             {
-                _ = await service.UpdateAsync(entity: item);
+                _ = await service.UpdateAsync(updatedReceivedEmail: item);
             }
         }
     }

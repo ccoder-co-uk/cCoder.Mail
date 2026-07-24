@@ -14,14 +14,14 @@ internal partial class QueuedEmailService(
     IAuthorizationBroker authorizationBroker
 ) : IQueuedEmailService
 {
-    public QueuedEmail Get(int id) =>
+    public QueuedEmail Get(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
 
-        ValidateGet(inputs: [id]);
+        ValidateGet(inputs: [queuedEmailId]);
 
         QueuedEmail queuedEmail = GetAll()
-                                               .FirstOrDefault(predicate: i => i.Id == id);
+            .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (queuedEmail is not null)
         {
@@ -29,7 +29,7 @@ internal partial class QueuedEmailService(
         }
 
         QueuedEmail unrestrictedQueuedEmail = GetAll(ignoreFilters: true)
-            .FirstOrDefault(predicate: i => i.Id == id);
+            .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (unrestrictedQueuedEmail is not null)
         {
@@ -55,51 +55,51 @@ internal partial class QueuedEmailService(
             return queuedEmailBroker.GetDispatchBatch(batchSize: batchSize, maxFailures: maxFailures);
         });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true) =>
+    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = true) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
 
-        ValidateAddAsync(inputs: [queuedEmail, checkPrivileges]);
+        ValidateAddAsync(inputs: [newQueuedEmail, checkPrivileges]);
 
         if (checkPrivileges)
         {
-            authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
+            authorizationBroker.Authorize(appId: newQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
         }
 
-        QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
-        queuedEmail.Id = result.Id;
-        queuedEmail.AppId = result.AppId;
-        queuedEmail.SentByUserId = result.SentByUserId;
-        queuedEmail.Subject = result.Subject;
-        queuedEmail.Content = result.Content;
-        queuedEmail.To = result.To;
-        queuedEmail.CC = result.CC;
-        queuedEmail.IsBodyHtml = result.IsBodyHtml;
-        queuedEmail.MailServerName = result.MailServerName;
-        queuedEmail.MailSenderId = result.MailSenderId;
-        queuedEmail.MailSender = result.MailSender;
-        return queuedEmail;
+        QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(entity: Copy(queuedEmail: newQueuedEmail));
+        newQueuedEmail.Id = result.Id;
+        newQueuedEmail.AppId = result.AppId;
+        newQueuedEmail.SentByUserId = result.SentByUserId;
+        newQueuedEmail.Subject = result.Subject;
+        newQueuedEmail.Content = result.Content;
+        newQueuedEmail.To = result.To;
+        newQueuedEmail.CC = result.CC;
+        newQueuedEmail.IsBodyHtml = result.IsBodyHtml;
+        newQueuedEmail.MailServerName = result.MailServerName;
+        newQueuedEmail.MailSenderId = result.MailSenderId;
+        newQueuedEmail.MailSender = result.MailSender;
+        return newQueuedEmail;
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail queuedEmail) =>
+    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [queuedEmail]);
+        ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
 
-        authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
-        QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
-        queuedEmail.Id = result.Id;
-        queuedEmail.AppId = result.AppId;
-        queuedEmail.SentByUserId = result.SentByUserId;
-        queuedEmail.Subject = result.Subject;
-        queuedEmail.Content = result.Content;
-        queuedEmail.To = result.To;
-        queuedEmail.CC = result.CC;
-        queuedEmail.IsBodyHtml = result.IsBodyHtml;
-        queuedEmail.MailServerName = result.MailServerName;
-        queuedEmail.MailSenderId = result.MailSenderId;
-        queuedEmail.MailSender = result.MailSender;
-        return queuedEmail;
+        authorizationBroker.Authorize(appId: updatedQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
+        QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(entity: Copy(queuedEmail: updatedQueuedEmail));
+        updatedQueuedEmail.Id = result.Id;
+        updatedQueuedEmail.AppId = result.AppId;
+        updatedQueuedEmail.SentByUserId = result.SentByUserId;
+        updatedQueuedEmail.Subject = result.Subject;
+        updatedQueuedEmail.Content = result.Content;
+        updatedQueuedEmail.To = result.To;
+        updatedQueuedEmail.CC = result.CC;
+        updatedQueuedEmail.IsBodyHtml = result.IsBodyHtml;
+        updatedQueuedEmail.MailServerName = result.MailServerName;
+        updatedQueuedEmail.MailSenderId = result.MailSenderId;
+        updatedQueuedEmail.MailSender = result.MailSender;
+        return updatedQueuedEmail;
     }, isValueTask: true);
 
     public ValueTask RecordSendFailureAsync(
@@ -125,14 +125,14 @@ internal partial class QueuedEmailService(
             return queuedEmailBroker.MarkQueuedEmailAsSentAsync(entity: Copy(queuedEmail: queuedEmail), mailSenderId: mailSenderId, fromAddress: fromAddress, cancellationToken: cancellationToken);
         }, isValueTask: true);
 
-    public ValueTask DeleteAsync(int id, bool checkPrivileges = true) =>
+    public ValueTask DeleteAsync(int queuedEmailId, bool checkPrivileges = true) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAsync(inputs: [id, checkPrivileges]);
+        ValidateDeleteAsync(inputs: [queuedEmailId, checkPrivileges]);
 
         QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
-                                                                        .FirstOrDefault(predicate: item => item.Id == id);
+            .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
 
         if (queuedEmail is null)
         {
@@ -159,7 +159,7 @@ items: queuedEmail.FailedSends?.Select(selector: Copy)
 
         foreach (QueuedEmail item in items ?? [])
         {
-            await DeleteAsync(id: item.Id, checkPrivileges: false);
+            await DeleteAsync(queuedEmailId: item.Id, checkPrivileges: false);
         }
     }, isValueTask: true);
 

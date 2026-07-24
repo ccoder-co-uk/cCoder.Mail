@@ -14,12 +14,12 @@ internal partial class ReceivedEmailOrchestrationService(
     IMailReceivingService mailReceivingService)
     : IReceivedEmailOrchestrationService
 {
-    public ReceivedEmail Get(int id) =>
+    public ReceivedEmail Get(int receivedEmailId) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateGet(inputs: [id]);
+            ValidateGet(inputs: [receivedEmailId]);
 
-            return processingService.Get(id: id);
+            return processingService.Get(iReceivedEmailId: receivedEmailId);
         });
 
     public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) =>
@@ -30,28 +30,28 @@ internal partial class ReceivedEmailOrchestrationService(
             return processingService.GetAll(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail entity) =>
+    public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail newReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateAddAsync(inputs: [entity]);
+            ValidateAddAsync(inputs: [newReceivedEmail]);
 
-            return processingService.AddAsync(entity: entity);
+            return processingService.AddAsync(newReceivedEmail: newReceivedEmail);
         }, isValueTask: true);
 
-    public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail entity) =>
+    public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail updatedReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [entity]);
+            ValidateUpdateAsync(inputs: [updatedReceivedEmail]);
 
-            return processingService.UpdateAsync(entity: entity);
+            return processingService.UpdateAsync(updatedReceivedEmail: updatedReceivedEmail);
         }, isValueTask: true);
 
-    public ValueTask<int> DeleteAsync(int id) =>
+    public ValueTask<int> DeleteAsync(int receivedEmailId) =>
         TryCatch<int>(operation: () =>
         {
-            ValidateDeleteAsync(inputs: [id]);
+            ValidateDeleteAsync(inputs: [receivedEmailId]);
 
-            return processingService.DeleteAsync(id: id);
+            return processingService.DeleteAsync(iReceivedEmailId: receivedEmailId);
         }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>

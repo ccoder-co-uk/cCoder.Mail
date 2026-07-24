@@ -91,7 +91,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(entity: entity));
+        return Ok(value: await service.AddAsync(newSentEmail: entity));
     }
 
     [HttpPut]
@@ -110,13 +110,13 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(entity: entity));
+        return Ok(value: await service.UpdateAsync(updatedSentEmail: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<SentEmail> delta)
     {
-        SentEmail originalEntity = service.Get(id: key);
+        SentEmail originalEntity = service.Get(iSentEmailId: key);
 
         if (originalEntity == null)
         {
@@ -124,13 +124,13 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(entity: originalEntity));
+        return Ok(value: await service.UpdateAsync(updatedSentEmail: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await service.DeleteAsync(id: key);
+        await service.DeleteAsync(iSentEmailId: key);
         return Ok();
     }
 }

@@ -8,12 +8,12 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface IMailReceiverService
 {
-    MailReceiver Get(Guid id);
+    MailReceiver Get(Guid iMailReceiverId);
     IQueryable<MailReceiver> GetAll(bool ignoreFilters = false);
     MailReceiver[] GetEnabled();
-    ValueTask<MailReceiver> AddAsync(MailReceiver entity);
-    ValueTask<MailReceiver> UpdateAsync(MailReceiver entity);
-    ValueTask<int> DeleteAsync(Guid id);
+    ValueTask<MailReceiver> AddAsync(MailReceiver newMailReceiver);
+    ValueTask<MailReceiver> UpdateAsync(MailReceiver updatedMailReceiver);
+    ValueTask<int> DeleteAsync(Guid iMailReceiverId);
     ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

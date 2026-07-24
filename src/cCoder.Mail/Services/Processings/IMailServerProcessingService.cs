@@ -11,15 +11,15 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface IMailServerProcessingService
 {
-    MailServer Get(int id);
+    MailServer Get(int iMailServerId);
 
     IQueryable<MailServer> GetAll(bool ignoreFilters = false);
 
-    ValueTask<MailServer> AddAsync(MailServer entity);
+    ValueTask<MailServer> AddAsync(MailServer newMailServer);
 
-    ValueTask<MailServer> UpdateAsync(MailServer entity);
+    ValueTask<MailServer> UpdateAsync(MailServer updatedMailServer);
 
-    ValueTask DeleteAsync(int id);
+    ValueTask DeleteAsync(int iMailServerId);
 
     ValueTask DeleteByAppIdAsync(int appId);
 

@@ -9,12 +9,12 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class MailReceiverProcessingService(IMailReceiverService service) : IMailReceiverProcessingService
 {
-    public MailReceiver Get(Guid id) =>
+    public MailReceiver Get(Guid mailReceiverId) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateGet(inputs: [id]);
+            ValidateGet(inputs: [mailReceiverId]);
 
-            return service.Get(id: id);
+            return service.Get(iMailReceiverId: mailReceiverId);
         });
 
     public IQueryable<MailReceiver> GetAll(bool ignoreFilters = false) =>
@@ -33,28 +33,28 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
             return service.GetEnabled();
         });
 
-    public ValueTask<MailReceiver> AddAsync(MailReceiver entity) =>
+    public ValueTask<MailReceiver> AddAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateAddAsync(inputs: [entity]);
+            ValidateAddAsync(inputs: [newMailReceiver]);
 
-            return service.AddAsync(entity: entity);
+            return service.AddAsync(newMailReceiver: newMailReceiver);
         }, isValueTask: true);
 
-    public ValueTask<MailReceiver> UpdateAsync(MailReceiver entity) =>
+    public ValueTask<MailReceiver> UpdateAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [entity]);
+            ValidateUpdateAsync(inputs: [updatedMailReceiver]);
 
-            return service.UpdateAsync(entity: entity);
+            return service.UpdateAsync(updatedMailReceiver: updatedMailReceiver);
         }, isValueTask: true);
 
-    public ValueTask<int> DeleteAsync(Guid id) =>
+    public ValueTask<int> DeleteAsync(Guid mailReceiverId) =>
         TryCatch<int>(operation: () =>
         {
-            ValidateDeleteAsync(inputs: [id]);
+            ValidateDeleteAsync(inputs: [mailReceiverId]);
 
-            return service.DeleteAsync(id: id);
+            return service.DeleteAsync(iMailReceiverId: mailReceiverId);
         }, isValueTask: true);
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
