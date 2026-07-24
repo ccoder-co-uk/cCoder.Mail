@@ -133,6 +133,29 @@ internal partial class QueuedEmailService(
 
         ValidateDeleteAsync(inputs: [queuedEmailId, checkPrivileges]);
 
+        await DeleteQueuedEmailAsync(
+            queuedEmailId: queuedEmailId,
+            checkPrivileges: checkPrivileges);
+    }, isValueTask: true);
+
+    public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
+        TryCatch(operation: async () =>
+    {
+
+        ValidateAllForAppQueuedEmailOnDelete(inputs: [deletedQueuedEmail]);
+
+        foreach (QueuedEmail item in deletedQueuedEmail ?? [])
+        {
+            await DeleteQueuedEmailAsync(
+                queuedEmailId: item.Id,
+                checkPrivileges: false);
+        }
+    }, isValueTask: true);
+
+    private async ValueTask DeleteQueuedEmailAsync(
+        int queuedEmailId,
+        bool checkPrivileges)
+    {
         QueuedEmail queuedEmail = queuedEmailBroker
             .GetAllQueuedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
@@ -152,19 +175,7 @@ deletedEmailSendFailure: queuedEmail.FailedSends?.Select(selector: Copy)
             .ToArray() ?? []);
 
         _ = await queuedEmailBroker.DeleteQueuedEmailAsync(deletedQueuedEmail: Copy(queuedEmail: queuedEmail));
-    }, isValueTask: true);
-
-    public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
-        TryCatch(operation: async () =>
-    {
-
-        ValidateAllForAppQueuedEmailOnDelete(inputs: [deletedQueuedEmail]);
-
-        foreach (QueuedEmail item in deletedQueuedEmail ?? [])
-        {
-            await DeleteAsync(queuedEmailId: item.Id, checkPrivileges: false);
-        }
-    }, isValueTask: true);
+    }
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
         TryCatch(operation: () =>

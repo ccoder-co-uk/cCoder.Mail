@@ -26,19 +26,9 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
         {
             ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
-            ValidateReceiveRequest(request: request);
-            string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);
-            using HttpRequestMessage message = new(method: HttpMethod.Get, requestUri: BuildMessagesUrl(request: request));
-            message.Headers.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: accessToken);
-
-            HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(message: $"Microsoft Graph mailbox receive failed: {response.Content}");
-            }
-
-            return ParseMessages(content: response.Content);
+            return await ReceiveMailboxAsync(
+                request: request,
+                cancellationToken: cancellationToken);
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
@@ -49,7 +39,7 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
 
             ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
 
-            return ReceiveMailboxReceiveRequestAsync(
+            return ReceiveMailboxAsync(
             request: new MailboxReceiveRequest
             {
                 User = ReadConfiguredReceiveUser(),
@@ -57,6 +47,37 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
             },
             cancellationToken: cancellationToken);
         }, isTask: true);
+
+    private async Task<ReceivedEmail[]> ReceiveMailboxAsync(
+        MailboxReceiveRequest request,
+        CancellationToken cancellationToken)
+    {
+        ValidateReceiveRequest(request: request);
+
+        string accessToken = await GetAccessTokenAsync(
+            cancellationToken: cancellationToken);
+
+        using HttpRequestMessage message = new(
+            method: HttpMethod.Get,
+            requestUri: BuildMessagesUrl(request: request));
+
+        message.Headers.Authorization = new AuthenticationHeaderValue(
+            scheme: "Bearer",
+            parameter: accessToken);
+
+        HttpClientBrokerResponse response =
+            await microsoftGraphBroker.SendAsync(
+                request: message,
+                cancellationToken: cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException(
+                message: $"Microsoft Graph mailbox receive failed: {response.Content}");
+        }
+
+        return ParseMessages(content: response.Content);
+    }
 
     private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {

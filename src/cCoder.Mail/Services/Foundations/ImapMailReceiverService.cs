@@ -22,40 +22,9 @@ internal sealed partial class ImapMailReceiverService(
         {
             ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
-            ValidateReceiveRequest(request: request);
-
-            using MailClientTextConnection connection = await OpenConnectionAsync(request: request, cancellationToken: cancellationToken);
-            _ = await imapMailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken);
-            await SendCommandAsync(connection: connection, tag: "a1", command: $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"", cancellationToken: cancellationToken);
-            await SendCommandAsync(connection: connection, tag: "a2", command: "SELECT INBOX", cancellationToken: cancellationToken);
-
-            string searchResponse = await SendCommandAsync(
-    connection: connection,
-    tag: "a3",
-    command: BuildSearchCommand(request: request),
-    cancellationToken: cancellationToken);
-
-            int[] messageIds = ParseSearchIds(response: searchResponse)
-                .Reverse()
-                .Take(count: Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100))
-                .ToArray();
-
-            List<ReceivedEmail> messages = [];
-
-            foreach (int messageId in messageIds)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                string rawMessage = await FetchMessageAsync(connection: connection, messageId: messageId, cancellationToken: cancellationToken);
-                ReceivedEmail receivedEmail = ParseMessage(rawMessage: rawMessage);
-
-                if (IsWithinPeriod(receivedOn: receivedEmail.ReceivedOn, from: request.From, to: request.To))
-                {
-                    messages.Add(item: receivedEmail);
-                }
-            }
-
-            await SendCommandAsync(connection: connection, tag: "az", command: "LOGOUT", cancellationToken: cancellationToken);
-            return [.. messages.OrderByDescending(keySelector: message => message.ReceivedOn)];
+            return await ReceiveMailboxAsync(
+                request: request,
+                cancellationToken: cancellationToken);
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
@@ -66,7 +35,7 @@ internal sealed partial class ImapMailReceiverService(
 
             ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
 
-            return ReceiveMailboxReceiveRequestAsync(
+            return ReceiveMailboxAsync(
             request: new MailboxReceiveRequest
             {
                 ProviderName = MailProviderNames.Imap,
@@ -79,6 +48,86 @@ internal sealed partial class ImapMailReceiverService(
             },
             cancellationToken: cancellationToken);
         }, isTask: true);
+
+    private async Task<ReceivedEmail[]> ReceiveMailboxAsync(
+        MailboxReceiveRequest request,
+        CancellationToken cancellationToken)
+    {
+        ValidateReceiveRequest(request: request);
+
+        using MailClientTextConnection connection = await OpenConnectionAsync(
+            request: request,
+            cancellationToken: cancellationToken);
+
+        _ = await imapMailReceiverBroker.ReadLineAsync(
+            connection: connection,
+            cancellationToken: cancellationToken);
+
+        await SendCommandAsync(
+            connection: connection,
+            tag: "a1",
+            command: $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"",
+            cancellationToken: cancellationToken);
+
+        await SendCommandAsync(
+            connection: connection,
+            tag: "a2",
+            command: "SELECT INBOX",
+            cancellationToken: cancellationToken);
+
+        string searchResponse = await SendCommandAsync(
+            connection: connection,
+            tag: "a3",
+            command: BuildSearchCommand(request: request),
+            cancellationToken: cancellationToken);
+
+        int maximumMessages = request.MaximumMessages <= 0
+            ? 100
+            : request.MaximumMessages;
+
+        int[] messageIds = ParseSearchIds(response: searchResponse)
+            .Reverse()
+            .Take(count: Math.Clamp(
+                value: maximumMessages,
+                min: 1,
+                max: 100))
+            .ToArray();
+
+        List<ReceivedEmail> messages = [];
+
+        foreach (int messageId in messageIds)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            string rawMessage = await FetchMessageAsync(
+                connection: connection,
+                messageId: messageId,
+                cancellationToken: cancellationToken);
+
+            ReceivedEmail receivedEmail = ParseMessage(
+                rawMessage: rawMessage);
+
+            if (IsWithinPeriod(
+                receivedOn: receivedEmail.ReceivedOn,
+                from: request.From,
+                to: request.To))
+            {
+                messages.Add(item: receivedEmail);
+            }
+        }
+
+        await SendCommandAsync(
+            connection: connection,
+            tag: "az",
+            command: "LOGOUT",
+            cancellationToken: cancellationToken);
+
+        return
+        [
+            .. messages.OrderByDescending(
+                keySelector: message => message.ReceivedOn)
+        ];
+    }
 
     private Task<MailClientTextConnection> OpenConnectionAsync(
         MailboxReceiveRequest request,

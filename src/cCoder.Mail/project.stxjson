@@ -5882,25 +5882,11 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 69
-    },
-    {
       "Code": "STXF002",
       "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 52
     },
     {
       "Code": "STXF002",
@@ -5915,13 +5901,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 165
     },
     {
       "Code": "STX0022",
@@ -5959,13 +5938,6 @@
       "LineNumber": 12
     },
     {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 37
-    },
-    {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
@@ -5985,13 +5957,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 37
     },
     {
       "Code": "STX0007",
