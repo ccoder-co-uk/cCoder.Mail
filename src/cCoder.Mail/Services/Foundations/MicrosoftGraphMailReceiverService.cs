@@ -24,7 +24,7 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>
         {
-            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
             ValidateReceiveRequest(request: request);
             string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);

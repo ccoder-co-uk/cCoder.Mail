@@ -8,6 +8,6 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailMetadataTypeService
 {
-    private static void ValidateGetKnownMetadata(object[] inputs) =>
+    private static void ValidateKnownMetadataOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

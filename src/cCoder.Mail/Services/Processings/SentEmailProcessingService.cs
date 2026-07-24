@@ -15,7 +15,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public SentEmail GetSentEmail(int sentEmailId) =>
         TryCatch<SentEmail>(operation: () =>
     {
-        ValidateGet(inputs: [sentEmailId]);
+        ValidateSentEmailOnGet(inputs: [sentEmailId]);
 
         return service.GetSentEmail(iSentEmailId: sentEmailId);
     });
@@ -23,7 +23,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
     {
-        ValidateGetAll(inputs: [ignoreFilters]);
+        ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
 
         return service.GetAllSentEmail(ignoreFilters: ignoreFilters);
     });
@@ -31,7 +31,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
         TryCatch<SentEmail>(operation: () =>
     {
-        ValidateAddAsync(inputs: [newSentEmail]);
+        ValidateSentEmailOnAdd(inputs: [newSentEmail]);
 
         return service.AddSentEmailAsync(newSentEmail: newSentEmail);
     }, isValueTask: true);
@@ -39,7 +39,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail) =>
         TryCatch<SentEmail>(operation: () =>
     {
-        ValidateUpdateAsync(inputs: [updatedSentEmail]);
+        ValidateSentEmailOnUpdate(inputs: [updatedSentEmail]);
 
         return service.UpdateSentEmailAsync(updatedSentEmail: updatedSentEmail);
     }, isValueTask: true);
@@ -55,7 +55,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -63,7 +63,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
     public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail) =>
         TryCatch<IEnumerable<Result<SentEmail>>>(operation: async () =>
     {
-        ValidateAddOrUpdate(inputs: [newSentEmail]);
+        ValidateOrUpdateSentEmailResultOnAdd(inputs: [newSentEmail]);
 
         List<Result<SentEmail>> results = new List<Result<SentEmail>>();
 
@@ -101,7 +101,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAllAsync(inputs: [deletedSentEmail]);
+        ValidateAllSentEmailOnDelete(inputs: [deletedSentEmail]);
 
         foreach (SentEmail item in deletedSentEmail)
         {

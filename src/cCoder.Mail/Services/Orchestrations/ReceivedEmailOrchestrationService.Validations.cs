@@ -8,25 +8,25 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class ReceivedEmailOrchestrationService
 {
-    private static void ValidateGet(object[] inputs) =>
+    private static void ValidateReceivedEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateGetAll(object[] inputs) =>
+    private static void ValidateAllReceivedEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateAddAsync(object[] inputs) =>
+    private static void ValidateReceivedEmailOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateUpdateAsync(object[] inputs) =>
+    private static void ValidateReceivedEmailOnUpdate(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteByAppIdAsync(object[] inputs) =>
+    private static void ValidateByAppIdOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateReceiveAsync(object[] inputs) =>
+    private static void ValidateReceiveMailboxReceiveRequestAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateReceiveTopAsync(object[] inputs) =>

@@ -21,7 +21,7 @@ internal partial class MailServerService(
         TryCatch<MailServer>(operation: () =>
     {
 
-        ValidateGet(inputs: [mailServerId]);
+        ValidateMailServerOnGet(inputs: [mailServerId]);
 
         MailServer mailServer = GetAllMailServer()
             .FirstOrDefault(predicate: i => i.Id == mailServerId);
@@ -45,7 +45,7 @@ internal partial class MailServerService(
     public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
 
             return mailServerBroker.GetAllMailServers(ignoreFilters: ignoreFilters);
         });
@@ -53,7 +53,7 @@ internal partial class MailServerService(
     public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newMailServer]);
+        ValidateMailServerOnAdd(inputs: [newMailServer]);
 
         authorizationBroker.Authorize(appId: newMailServer.AppId, privilege: $"{nameof(MailServer)}_create");
         MailServer result = await mailServerBroker.AddMailServerAsync(newMailServer: Copy(mailServer: newMailServer));
@@ -72,7 +72,7 @@ internal partial class MailServerService(
     public ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedMailServer]);
+        ValidateMailServerOnUpdate(inputs: [updatedMailServer]);
 
         authorizationBroker.Authorize(appId: updatedMailServer.AppId, privilege: $"{nameof(MailServer)}_update");
         MailServer result = await mailServerBroker.UpdateMailServerAsync(updatedMailServer: Copy(mailServer: updatedMailServer));
@@ -110,7 +110,7 @@ internal partial class MailServerService(
         TryCatch(operation: () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [deletedMailServer]);
+        ValidateAllForAppMailServerOnDelete(inputs: [deletedMailServer]);
 
         return mailServerBroker.DeleteAllMailServersAsync(
         deletedMailServer: deletedMailServer?.Select(selector: Copy) ?? []);
@@ -119,7 +119,7 @@ internal partial class MailServerService(
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+            ValidateAllByAppIdOnDelete(inputs: [appId]);
 
             return mailServerBroker.DeleteAllMailServersByAppIdAsync(appId: appId);
         }, isValueTask: true);

@@ -8,6 +8,6 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailSenderService
 {
-    private static void ValidateSendAsync(object[] inputs) =>
+    private static void ValidateSendQueuedEmailAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

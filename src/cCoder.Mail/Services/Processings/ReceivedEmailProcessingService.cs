@@ -12,7 +12,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateGet(inputs: [receivedEmailId]);
+            ValidateReceivedEmailOnGet(inputs: [receivedEmailId]);
 
             return service.GetReceivedEmail(iReceivedEmailId: receivedEmailId);
         });
@@ -20,7 +20,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
 
             return service.GetAllReceivedEmail(ignoreFilters: ignoreFilters);
         });
@@ -28,7 +28,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateAddAsync(inputs: [newReceivedEmail]);
+            ValidateReceivedEmailOnAdd(inputs: [newReceivedEmail]);
 
             return service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail);
         }, isValueTask: true);
@@ -36,7 +36,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [updatedReceivedEmail]);
+            ValidateReceivedEmailOnUpdate(inputs: [updatedReceivedEmail]);
 
             return service.UpdateReceivedEmailAsync(updatedReceivedEmail: updatedReceivedEmail);
         }, isValueTask: true);
@@ -52,7 +52,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -62,7 +62,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
         CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
-            ValidateAddRangeAsync(inputs: [newReceivedEmail, cancellationToken]);
+            ValidateRangeReceivedEmailOnAdd(inputs: [newReceivedEmail, cancellationToken]);
 
             return service.AddRangeReceivedEmailAsync(newReceivedEmail: newReceivedEmail, cancellationToken: cancellationToken);
         }, isValueTask: true);
@@ -78,7 +78,7 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
     public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> deletedReceivedEmail) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [deletedReceivedEmail]);
+            ValidateAllReceivedEmailOnDelete(inputs: [deletedReceivedEmail]);
 
             return service.DeleteAllReceivedEmailAsync(deletedReceivedEmail: deletedReceivedEmail);
         }, isValueTask: true);

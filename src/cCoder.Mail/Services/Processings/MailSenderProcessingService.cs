@@ -12,7 +12,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public MailSender GetMailSender(Guid mailSenderId) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateGet(inputs: [mailSenderId]);
+            ValidateMailSenderOnGet(inputs: [mailSenderId]);
 
             return service.GetMailSender(iMailSenderId: mailSenderId);
         });
@@ -20,7 +20,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
 
             return service.GetAllMailSender(ignoreFilters: ignoreFilters);
         });
@@ -28,7 +28,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateAddAsync(inputs: [newMailSender]);
+            ValidateMailSenderOnAdd(inputs: [newMailSender]);
 
             return service.AddMailSenderAsync(newMailSender: newMailSender);
         }, isValueTask: true);
@@ -36,7 +36,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [updatedMailSender]);
+            ValidateMailSenderOnUpdate(inputs: [updatedMailSender]);
 
             return service.UpdateMailSenderAsync(updatedMailSender: updatedMailSender);
         }, isValueTask: true);
@@ -52,7 +52,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -60,7 +60,7 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
     public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [deletedMailSender]);
+            ValidateAllMailSenderOnDelete(inputs: [deletedMailSender]);
 
             return service.DeleteAllMailSenderAsync(deletedMailSender: deletedMailSender);
         }, isValueTask: true);

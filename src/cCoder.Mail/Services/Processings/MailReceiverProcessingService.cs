@@ -12,7 +12,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public MailReceiver GetMailReceiver(Guid mailReceiverId) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateGet(inputs: [mailReceiverId]);
+            ValidateMailReceiverOnGet(inputs: [mailReceiverId]);
 
             return service.GetMailReceiver(iMailReceiverId: mailReceiverId);
         });
@@ -20,7 +20,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllMailReceiverOnGet(inputs: [ignoreFilters]);
 
             return service.GetAllMailReceiver(ignoreFilters: ignoreFilters);
         });
@@ -28,7 +28,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public MailReceiver[] GetEnabled() =>
         TryCatch<MailReceiver[]>(operation: () =>
         {
-            ValidateGetEnabled(inputs: []);
+            ValidateEnabledOnGet(inputs: []);
 
             return service.GetEnabled();
         });
@@ -36,7 +36,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateAddAsync(inputs: [newMailReceiver]);
+            ValidateMailReceiverOnAdd(inputs: [newMailReceiver]);
 
             return service.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
         }, isValueTask: true);
@@ -44,7 +44,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [updatedMailReceiver]);
+            ValidateMailReceiverOnUpdate(inputs: [updatedMailReceiver]);
 
             return service.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver);
         }, isValueTask: true);
@@ -60,7 +60,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -68,7 +68,7 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllAsync(inputs: [deletedMailReceiver]);
+            ValidateAllMailReceiverOnDelete(inputs: [deletedMailReceiver]);
 
             return service.DeleteAllMailReceiverAsync(deletedMailReceiver: deletedMailReceiver);
         }, isValueTask: true);

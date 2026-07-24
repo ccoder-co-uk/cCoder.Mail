@@ -8,33 +8,33 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal partial class QueuedEmailService
 {
-    private static void ValidateGet(object[] inputs) =>
+    private static void ValidateQueuedEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateGetAll(object[] inputs) =>
+    private static void ValidateAllQueuedEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateGetDispatchBatch(object[] inputs) =>
+    private static void ValidateDispatchBatchOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateAddAsync(object[] inputs) =>
+    private static void ValidateQueuedEmailOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateUpdateAsync(object[] inputs) =>
+    private static void ValidateQueuedEmailOnUpdate(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateRecordSendFailureAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateMarkAsSentAsync(object[] inputs) =>
+    private static void ValidateMarkAsSentQueuedEmailAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteAllForAppAsync(object[] inputs) =>
+    private static void ValidateAllForAppQueuedEmailOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteAllByAppIdAsync(object[] inputs) =>
+    private static void ValidateAllByAppIdOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

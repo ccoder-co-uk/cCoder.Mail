@@ -13,7 +13,7 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
     public MailSender GetMailSender(Guid mailSenderConfigurationId) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateGet(inputs: [mailSenderConfigurationId]);
+            ValidateMailSenderOnGet(inputs: [mailSenderConfigurationId]);
 
             return processingService.GetMailSender(iMailSenderId: mailSenderConfigurationId);
         });
@@ -21,7 +21,7 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
     public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
 
             return processingService.GetAllMailSender(ignoreFilters: ignoreFilters);
         });
@@ -29,7 +29,7 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
     public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateAddAsync(inputs: [newMailSender]);
+            ValidateMailSenderOnAdd(inputs: [newMailSender]);
 
             return processingService.AddMailSenderAsync(newMailSender: newMailSender);
         }, isValueTask: true);
@@ -37,7 +37,7 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
     public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [updatedMailSender]);
+            ValidateMailSenderOnUpdate(inputs: [updatedMailSender]);
 
             return processingService.UpdateMailSenderAsync(updatedMailSender: updatedMailSender);
         }, isValueTask: true);
@@ -53,7 +53,7 @@ internal partial class MailSenderConfigurationOrchestrationService(IMailSenderPr
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);

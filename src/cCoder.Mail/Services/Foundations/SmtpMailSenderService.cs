@@ -16,7 +16,7 @@ internal sealed partial class SmtpMailSenderService(ISmtpMailSenderBroker smtpMa
         TryCatch(operation: async () =>
     {
 
-        ValidateSendAsync(inputs: [email, cancellationToken]);
+        ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
 
         MailSender sender = email.MailSender
                                                                                                                 ?? throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");

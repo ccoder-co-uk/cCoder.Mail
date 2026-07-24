@@ -22,7 +22,7 @@ internal sealed partial class MicrosoftGraphMailSenderService(
     public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: async () =>
     {
-        ValidateSendAsync(inputs: [email, cancellationToken]);
+        ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
 
         MailSender sender = GetMailSender(email: email);
         string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);

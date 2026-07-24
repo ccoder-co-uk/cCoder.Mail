@@ -21,7 +21,7 @@ internal partial class SentEmailService(
         TryCatch<SentEmail>(operation: () =>
     {
 
-        ValidateGet(inputs: [sentEmailId]);
+        ValidateSentEmailOnGet(inputs: [sentEmailId]);
 
         SentEmail sentEmail = GetAllSentEmail()
             .FirstOrDefault(predicate: i => i.Id == sentEmailId);
@@ -45,7 +45,7 @@ internal partial class SentEmailService(
     public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
 
             return sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
         });
@@ -53,7 +53,7 @@ internal partial class SentEmailService(
     public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newSentEmail]);
+        ValidateSentEmailOnAdd(inputs: [newSentEmail]);
 
         authorizationBroker.Authorize(appId: newSentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
         SentEmail result = await sentEmailBroker.AddSentEmailAsync(newSentEmail: Copy(sentEmail: newSentEmail));
@@ -74,7 +74,7 @@ internal partial class SentEmailService(
     public ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedSentEmail]);
+        ValidateSentEmailOnUpdate(inputs: [updatedSentEmail]);
 
         authorizationBroker.Authorize(appId: updatedSentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
         SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(updatedSentEmail: Copy(sentEmail: updatedSentEmail));
@@ -114,7 +114,7 @@ internal partial class SentEmailService(
         TryCatch(operation: () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [deletedSentEmail]);
+        ValidateAllForAppSentEmailOnDelete(inputs: [deletedSentEmail]);
 
         return sentEmailBroker.DeleteAllSentEmailsAsync(
         deletedSentEmail: deletedSentEmail?.Select(selector: Copy) ?? []);
@@ -123,7 +123,7 @@ internal partial class SentEmailService(
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+            ValidateAllByAppIdOnDelete(inputs: [appId]);
 
             return sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId: appId);
         }, isValueTask: true);

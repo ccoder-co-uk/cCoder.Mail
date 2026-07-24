@@ -13,7 +13,7 @@ internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiv
     public MailReceiver GetMailReceiver(Guid mailReceiverConfigurationId) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateGet(inputs: [mailReceiverConfigurationId]);
+            ValidateMailReceiverOnGet(inputs: [mailReceiverConfigurationId]);
 
             return processingService.GetMailReceiver(iMailReceiverId: mailReceiverConfigurationId);
         });
@@ -21,7 +21,7 @@ internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiv
     public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllMailReceiverOnGet(inputs: [ignoreFilters]);
 
             return processingService.GetAllMailReceiver(ignoreFilters: ignoreFilters);
         });
@@ -29,7 +29,7 @@ internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiv
     public ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateAddAsync(inputs: [newMailReceiver]);
+            ValidateMailReceiverOnAdd(inputs: [newMailReceiver]);
 
             return processingService.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
         }, isValueTask: true);
@@ -37,7 +37,7 @@ internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiv
     public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
-            ValidateUpdateAsync(inputs: [updatedMailReceiver]);
+            ValidateMailReceiverOnUpdate(inputs: [updatedMailReceiver]);
 
             return processingService.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver);
         }, isValueTask: true);
@@ -53,7 +53,7 @@ internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiv
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);

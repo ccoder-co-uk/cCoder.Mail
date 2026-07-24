@@ -8,21 +8,21 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class MailReceiverConfigurationOrchestrationService
 {
-    private static void ValidateGet(object[] inputs) =>
+    private static void ValidateMailReceiverOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateGetAll(object[] inputs) =>
+    private static void ValidateAllMailReceiverOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateAddAsync(object[] inputs) =>
+    private static void ValidateMailReceiverOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateUpdateAsync(object[] inputs) =>
+    private static void ValidateMailReceiverOnUpdate(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteByAppIdAsync(object[] inputs) =>
+    private static void ValidateByAppIdOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

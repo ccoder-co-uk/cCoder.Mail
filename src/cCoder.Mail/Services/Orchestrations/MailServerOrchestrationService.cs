@@ -15,7 +15,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public MailServer GetMailServer(int mailServerId) =>
         TryCatch<MailServer>(operation: () =>
     {
-        ValidateGet(inputs: [mailServerId]);
+        ValidateMailServerOnGet(inputs: [mailServerId]);
 
         return processingService.GetMailServer(iMailServerId: mailServerId);
     });
@@ -23,7 +23,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
     {
-        ValidateGetAll(inputs: [ignoreFilters]);
+        ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
 
         return processingService.GetAllMailServer(ignoreFilters: ignoreFilters);
     });
@@ -31,7 +31,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newMailServer]);
+        ValidateMailServerOnAdd(inputs: [newMailServer]);
 
         MailServer result = await processingService.AddMailServerAsync(newMailServer: newMailServer);
         await eventService.RaiseMailServerAddEventAsync(entity: result);
@@ -41,7 +41,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedMailServer]);
+        ValidateMailServerOnUpdate(inputs: [updatedMailServer]);
 
         MailServer result = await processingService.UpdateMailServerAsync(updatedMailServer: updatedMailServer);
         await eventService.RaiseMailServerUpdateEventAsync(entity: result);
@@ -69,7 +69,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -77,7 +77,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {
-        ValidateAddOrUpdate(inputs: [newMailServer]);
+        ValidateOrUpdateMailServerResultOnAdd(inputs: [newMailServer]);
 
         return processingService.AddOrUpdateMailServerResult(newMailServer: newMailServer);
     }, isValueTask: true);
@@ -85,7 +85,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
     public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer) =>
         TryCatch(operation: () =>
     {
-        ValidateDeleteAllAsync(inputs: [deletedMailServer]);
+        ValidateAllMailServerOnDelete(inputs: [deletedMailServer]);
 
         return processingService.DeleteAllMailServerAsync(deletedMailServer: deletedMailServer);
     }, isValueTask: true);

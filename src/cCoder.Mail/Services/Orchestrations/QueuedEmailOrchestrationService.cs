@@ -15,7 +15,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
-        ValidateGet(inputs: [queuedEmailId]);
+        ValidateQueuedEmailOnGet(inputs: [queuedEmailId]);
 
         return processingService.GetQueuedEmail(iQueuedEmailId: queuedEmailId);
     });
@@ -23,7 +23,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
-        ValidateGetAll(inputs: [ignoreFilters]);
+        ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
 
         return processingService.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
     });
@@ -31,7 +31,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newQueuedEmail]);
+        ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail]);
 
         QueuedEmail result = await processingService.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail);
         await eventService.RaiseQueuedEmailAddEventAsync(entity: result);
@@ -41,7 +41,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
+        ValidateQueuedEmailOnUpdate(inputs: [updatedQueuedEmail]);
 
         QueuedEmail result = await processingService.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail);
         await eventService.RaiseQueuedEmailUpdateEventAsync(entity: result);
@@ -69,7 +69,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteByAppIdAsync(inputs: [appId]);
+            ValidateByAppIdOnDelete(inputs: [appId]);
 
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
@@ -77,7 +77,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: () =>
     {
-        ValidateAddOrUpdate(inputs: [newQueuedEmail]);
+        ValidateOrUpdateQueuedEmailResultOnAdd(inputs: [newQueuedEmail]);
 
         return processingService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newQueuedEmail);
     }, isValueTask: true);
@@ -85,7 +85,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
         TryCatch(operation: () =>
     {
-        ValidateDeleteAllAsync(inputs: [deletedQueuedEmail]);
+        ValidateAllQueuedEmailOnDelete(inputs: [deletedQueuedEmail]);
 
         return processingService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: deletedQueuedEmail);
     }, isValueTask: true);
@@ -93,7 +93,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newQueuedEmail, checkPrivs]);
+        ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail, checkPrivs]);
 
         QueuedEmail result = await processingService.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivs: checkPrivs);
         await eventService.RaiseQueuedEmailAddEventAsync(entity: result);

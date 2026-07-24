@@ -8,27 +8,27 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class SentEmailOrchestrationService
 {
-    private static void ValidateGet(object[] inputs) =>
+    private static void ValidateSentEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateGetAll(object[] inputs) =>
+    private static void ValidateAllSentEmailOnGet(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateAddAsync(object[] inputs) =>
+    private static void ValidateSentEmailOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateUpdateAsync(object[] inputs) =>
+    private static void ValidateSentEmailOnUpdate(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteByAppIdAsync(object[] inputs) =>
+    private static void ValidateByAppIdOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateAddOrUpdate(object[] inputs) =>
+    private static void ValidateOrUpdateSentEmailResultOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateDeleteAllAsync(object[] inputs) =>
+    private static void ValidateAllSentEmailOnDelete(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 }

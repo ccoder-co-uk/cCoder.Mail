@@ -20,7 +20,7 @@ internal sealed partial class ImapMailReceiverService(
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>
         {
-            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
             ValidateReceiveRequest(request: request);
 

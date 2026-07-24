@@ -16,7 +16,7 @@ internal sealed partial class MailClientOrchestrationService(
     public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
-            ValidateSendAsync(inputs: [email, cancellationToken]);
+            ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
 
             return mailSendingService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
         }, isTask: true);
@@ -26,7 +26,7 @@ internal sealed partial class MailClientOrchestrationService(
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
-            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
             return mailReceivingService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
         }, isTask: true);

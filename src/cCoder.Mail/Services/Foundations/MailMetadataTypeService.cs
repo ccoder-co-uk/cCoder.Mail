@@ -14,7 +14,7 @@ internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
         TryCatch<IEnumerable<MetadataContainerSet>>(operation: () =>
     {
 
-        ValidateGetKnownMetadata(inputs: []);
+        ValidateKnownMetadataOnGet(inputs: []);
 
         return [
                 new MetadataContainerSet

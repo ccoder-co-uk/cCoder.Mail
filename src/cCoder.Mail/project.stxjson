@@ -1826,7 +1826,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -1840,7 +1840,7 @@
               "Type": "System.Guid"
             },
             {
-              "Name": "entity",
+              "Name": "updatedMailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -1906,7 +1906,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -1920,7 +1920,7 @@
               "Type": "System.Guid"
             },
             {
-              "Name": "entity",
+              "Name": "updatedMailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -1986,7 +1986,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -2000,7 +2000,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "entity",
+              "Name": "updatedMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -2066,7 +2066,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
@@ -2080,7 +2080,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "entity",
+              "Name": "updatedQueuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
@@ -2146,7 +2146,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newReceivedEmail",
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
@@ -2160,7 +2160,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "entity",
+              "Name": "updatedReceivedEmail",
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
@@ -2261,7 +2261,7 @@
           "Name": "Post",
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "newSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
@@ -2275,7 +2275,7 @@
               "Type": "System.Int32"
             },
             {
-              "Name": "entity",
+              "Name": "updatedSentEmail",
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
@@ -5847,20 +5847,6 @@
       "LineNumber": 10
     },
     {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 83
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 102
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
@@ -5868,39 +5854,11 @@
       "LineNumber": 112
     },
     {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 83
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 102
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
       "LineNumber": 112
-    },
-    {
-      "Code": "STX0019",
-      "Description": "create model parameters must use the new prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 87
-    },
-    {
-      "Code": "STX0020",
-      "Description": "update model parameters must use the updated prefix.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 106
     },
     {
       "Code": "STXAPI004",
@@ -5994,20 +5952,6 @@
       "LineNumber": 69
     },
     {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 11
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6029,20 +5973,6 @@
       "LineNumber": 81
     },
     {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 11
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6062,20 +5992,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
       "LineNumber": 73
-    },
-    {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 15
     },
     {
       "Code": "STX0005",
@@ -6127,20 +6043,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 12
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6169,20 +6071,6 @@
       "LineNumber": 162
     },
     {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 11
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6202,20 +6090,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
       "LineNumber": 73
-    },
-    {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
-    },
-    {
-      "Code": "STX0023",
-      "Description": "Each business operation must call its operation-specific validation method.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 15
     },
     {
       "Code": "STX0005",

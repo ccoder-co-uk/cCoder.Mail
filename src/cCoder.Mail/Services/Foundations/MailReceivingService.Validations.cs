@@ -8,7 +8,7 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailReceivingService
 {
-    private static void ValidateReceiveAsync(object[] inputs) =>
+    private static void ValidateReceiveMailboxReceiveRequestAsync(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateReceiveTopAsync(object[] inputs) =>

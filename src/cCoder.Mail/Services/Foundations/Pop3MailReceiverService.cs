@@ -20,7 +20,7 @@ internal sealed partial class Pop3MailReceiverService(
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>
         {
-            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
             string[][] rawMessages = await ReceiveRawMessagesAsync(request: request, cancellationToken: cancellationToken);
 

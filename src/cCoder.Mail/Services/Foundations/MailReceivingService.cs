@@ -15,7 +15,7 @@ internal sealed partial class MailReceivingService(IMailReceiverClientBroker mai
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
-            ValidateReceiveAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
 
             return mailReceiverClientBroker.ReceiveAsync(request: request, cancellationToken: cancellationToken);
         }, isTask: true);

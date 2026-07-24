@@ -8,10 +8,10 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class AppOrchestrationService
 {
-    private static void ValidateAddAsync(object[] inputs) =>
+    private static void ValidateAppOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
-    private static void ValidateUpdateAsync(object[] inputs) =>
+    private static void ValidateAppOnUpdate(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>

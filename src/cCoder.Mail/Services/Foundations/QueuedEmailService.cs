@@ -18,7 +18,7 @@ internal partial class QueuedEmailService(
         TryCatch<QueuedEmail>(operation: () =>
     {
 
-        ValidateGet(inputs: [queuedEmailId]);
+        ValidateQueuedEmailOnGet(inputs: [queuedEmailId]);
 
         QueuedEmail queuedEmail = GetAllQueuedEmail()
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
@@ -42,7 +42,7 @@ internal partial class QueuedEmailService(
     public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
         {
-            ValidateGetAll(inputs: [ignoreFilters]);
+            ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
 
             return queuedEmailBroker.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
         });
@@ -50,7 +50,7 @@ internal partial class QueuedEmailService(
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
         TryCatch<QueuedEmail[]>(operation: () =>
         {
-            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
+            ValidateDispatchBatchOnGet(inputs: [batchSize, maxFailures]);
 
             return queuedEmailBroker.GetDispatchBatch(batchSize: batchSize, maxFailures: maxFailures);
         });
@@ -59,7 +59,7 @@ internal partial class QueuedEmailService(
         TryCatch<QueuedEmail>(operation: async () =>
     {
 
-        ValidateAddAsync(inputs: [newQueuedEmail, checkPrivileges]);
+        ValidateQueuedEmailOnAdd(inputs: [newQueuedEmail, checkPrivileges]);
 
         if (checkPrivileges)
         {
@@ -84,7 +84,7 @@ internal partial class QueuedEmailService(
     public ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
+        ValidateQueuedEmailOnUpdate(inputs: [updatedQueuedEmail]);
 
         authorizationBroker.Authorize(appId: updatedQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
         QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(updatedQueuedEmail: Copy(queuedEmail: updatedQueuedEmail));
@@ -120,7 +120,7 @@ internal partial class QueuedEmailService(
         CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
-            ValidateMarkAsSentAsync(inputs: [queuedEmail, mailSenderId, fromAddress, cancellationToken]);
+            ValidateMarkAsSentQueuedEmailAsync(inputs: [queuedEmail, mailSenderId, fromAddress, cancellationToken]);
 
             return queuedEmailBroker.MarkQueuedEmailAsSentAsync(entity: Copy(queuedEmail: queuedEmail), mailSenderId: mailSenderId, fromAddress: fromAddress, cancellationToken: cancellationToken);
         }, isValueTask: true);
@@ -155,7 +155,7 @@ deletedEmailSendFailure: queuedEmail.FailedSends?.Select(selector: Copy)
         TryCatch(operation: async () =>
     {
 
-        ValidateDeleteAllForAppAsync(inputs: [deletedQueuedEmail]);
+        ValidateAllForAppQueuedEmailOnDelete(inputs: [deletedQueuedEmail]);
 
         foreach (QueuedEmail item in deletedQueuedEmail ?? [])
         {
@@ -166,7 +166,7 @@ deletedEmailSendFailure: queuedEmail.FailedSends?.Select(selector: Copy)
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
-            ValidateDeleteAllByAppIdAsync(inputs: [appId]);
+            ValidateAllByAppIdOnDelete(inputs: [appId]);
 
             return queuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(appId: appId);
         }, isValueTask: true);

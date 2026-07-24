@@ -21,7 +21,7 @@ internal partial class AppOrchestrationService(
     public ValueTask AddAppAsync(App newApp) =>
         TryCatch(operation: async () =>
     {
-        ValidateAddAsync(inputs: [newApp]);
+        ValidateAppOnAdd(inputs: [newApp]);
 
         StampMail(app: newApp);
         _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: newApp.MailServers ?? []);
@@ -35,7 +35,7 @@ internal partial class AppOrchestrationService(
     public ValueTask UpdateAppAsync(App updatedApp) =>
         TryCatch(operation: async () =>
     {
-        ValidateUpdateAsync(inputs: [updatedApp]);
+        ValidateAppOnUpdate(inputs: [updatedApp]);
 
         StampMail(app: updatedApp);
         _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: updatedApp.MailServers ?? []);

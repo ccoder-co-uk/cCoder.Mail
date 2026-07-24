@@ -12,7 +12,7 @@ internal sealed partial class MailSendingService(IMailSenderClientBroker mailSen
     public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
-            ValidateSendAsync(inputs: [email, cancellationToken]);
+            ValidateSendQueuedEmailAsync(inputs: [email, cancellationToken]);
 
             return mailSenderClientBroker.SendAsync(email: email, cancellationToken: cancellationToken);
         }, isTask: true);
