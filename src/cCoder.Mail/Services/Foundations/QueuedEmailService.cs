@@ -14,13 +14,13 @@ internal partial class QueuedEmailService(
     IAuthorizationBroker authorizationBroker
 ) : IQueuedEmailService
 {
-    public QueuedEmail Get(int queuedEmailId) =>
+    public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
 
         ValidateGet(inputs: [queuedEmailId]);
 
-        QueuedEmail queuedEmail = GetAll()
+        QueuedEmail queuedEmail = GetAllQueuedEmail()
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (queuedEmail is not null)
@@ -28,7 +28,7 @@ internal partial class QueuedEmailService(
             return queuedEmail;
         }
 
-        QueuedEmail unrestrictedQueuedEmail = GetAll(ignoreFilters: true)
+        QueuedEmail unrestrictedQueuedEmail = GetAllQueuedEmail(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (unrestrictedQueuedEmail is not null)
@@ -39,7 +39,7 @@ internal partial class QueuedEmailService(
         return null;
     });
 
-    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
@@ -55,7 +55,7 @@ internal partial class QueuedEmailService(
             return queuedEmailBroker.GetDispatchBatch(batchSize: batchSize, maxFailures: maxFailures);
         });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = true) =>
+    public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = true) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
 
@@ -81,7 +81,7 @@ internal partial class QueuedEmailService(
         return newQueuedEmail;
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail) =>
+    public ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: async () =>
     {
         ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
@@ -113,7 +113,7 @@ internal partial class QueuedEmailService(
             return queuedEmailBroker.AddQueuedEmailSendFailureAsync(emailId: emailId, reason: reason, cancellationToken: cancellationToken);
         }, isValueTask: true);
 
-    public ValueTask MarkAsSentAsync(
+    public ValueTask MarkAsSentQueuedEmailAsync(
         QueuedEmail queuedEmail,
         Guid mailSenderId,
         string fromAddress,
@@ -131,7 +131,7 @@ internal partial class QueuedEmailService(
 
         ValidateDeleteAsync(inputs: [queuedEmailId, checkPrivileges]);
 
-        QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
+        QueuedEmail queuedEmail = GetAllQueuedEmail(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
 
         if (queuedEmail is null)
@@ -151,7 +151,7 @@ items: queuedEmail.FailedSends?.Select(selector: Copy)
         _ = await queuedEmailBroker.DeleteQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items) =>
+    public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> items) =>
         TryCatch(operation: async () =>
     {
 

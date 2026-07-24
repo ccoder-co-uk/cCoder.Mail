@@ -11,19 +11,19 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface IMailServerProcessingService
 {
-    MailServer Get(int iMailServerId);
+    MailServer GetMailServer(int iMailServerId);
 
-    IQueryable<MailServer> GetAll(bool ignoreFilters = false);
+    IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false);
 
-    ValueTask<MailServer> AddAsync(MailServer newMailServer);
+    ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer);
 
-    ValueTask<MailServer> UpdateAsync(MailServer updatedMailServer);
+    ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer);
 
     ValueTask DeleteAsync(int iMailServerId);
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items);
+    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> items);
 
-    ValueTask DeleteAllAsync(IEnumerable<MailServer> items);
+    ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> items);
 }

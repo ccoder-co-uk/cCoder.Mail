@@ -48,7 +48,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<MailServer> queryOptions) =>
-        Ok(value: service.GetAll());
+        Ok(value: service.GetAllMailServer());
 
     [HttpGet]
     [AllowAnonymous]
@@ -64,7 +64,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     {
         try
         {
-            IQueryable<MailServer> result = service.GetAll()
+            IQueryable<MailServer> result = service.GetAllMailServer()
                 .Where(predicate: mailServer => mailServer.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -91,7 +91,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(newMailServer: entity));
+        return Ok(value: await service.AddMailServerAsync(newMailServer: entity));
     }
 
     [HttpPut]
@@ -110,13 +110,13 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(updatedMailServer: entity));
+        return Ok(value: await service.UpdateMailServerAsync(updatedMailServer: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<MailServer> delta)
     {
-        MailServer originalEntity = service.Get(iMailServerId: key);
+        MailServer originalEntity = service.GetMailServer(iMailServerId: key);
 
         if (originalEntity == null)
         {
@@ -124,7 +124,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(updatedMailServer: originalEntity));
+        return Ok(value: await service.UpdateMailServerAsync(updatedMailServer: originalEntity));
     }
 
     [HttpDelete]

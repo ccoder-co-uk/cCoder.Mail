@@ -101,8 +101,8 @@ cancellationToken: cancellationToken);
 
         try
         {
-            await mailClientOrchestrationService.SendAsync(email: email, cancellationToken: cancellationToken);
-            await queuedEmailService.MarkAsSentAsync(queuedEmail: email, mailSenderId: sender.Id, fromAddress: sender.FromEmail ?? sender.User, cancellationToken: cancellationToken);
+            await mailClientOrchestrationService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
+            await queuedEmailService.MarkAsSentQueuedEmailAsync(queuedEmail: email, mailSenderId: sender.Id, fromAddress: sender.FromEmail ?? sender.User, cancellationToken: cancellationToken);
             return true;
         }
         catch (Exception ex)

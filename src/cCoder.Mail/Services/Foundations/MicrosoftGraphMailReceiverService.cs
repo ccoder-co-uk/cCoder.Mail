@@ -19,7 +19,7 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
 
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
 
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>
@@ -49,7 +49,7 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
 
             ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
 
-            return ReceiveAsync(
+            return ReceiveMailboxReceiveRequestAsync(
             request: new MailboxReceiveRequest
             {
                 User = ReadConfiguredReceiveUser(),

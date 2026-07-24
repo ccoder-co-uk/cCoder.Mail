@@ -66,7 +66,7 @@ internal sealed partial class MailReceiverOrchestrationService(
         DateTimeOffset from = receiver.LastReceivedOn ?? DateTimeOffset.UtcNow.AddDays(days: -1);
         DateTimeOffset to = DateTimeOffset.UtcNow;
 
-        ReceivedEmail[] receivedEmails = await mailReceivingService.ReceiveAsync(
+        ReceivedEmail[] receivedEmails = await mailReceivingService.ReceiveMailboxReceiveRequestAsync(
 request: new MailboxReceiveRequest
 {
     ProviderName = receiver.ProviderName,
@@ -90,10 +90,10 @@ cancellationToken: cancellationToken);
             .Select(selector: email => Prepare(email: email, receiver: receiver))
         ];
 
-        await receivedEmailProcessingService.AddRangeAsync(entities: newEmails, cancellationToken: cancellationToken);
+        await receivedEmailProcessingService.AddRangeReceivedEmailAsync(entities: newEmails, cancellationToken: cancellationToken);
 
         receiver.LastReceivedOn = to;
-        await mailReceiverProcessingService.UpdateAsync(updatedMailReceiver: receiver);
+        await mailReceiverProcessingService.UpdateMailReceiverAsync(updatedMailReceiver: receiver);
     }
 
     private static ReceivedEmail Prepare(ReceivedEmail email, MailReceiver receiver)

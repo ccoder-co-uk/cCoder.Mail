@@ -9,7 +9,7 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface IMailReceivingService
 {
-    Task<ReceivedEmail[]> ReceiveAsync(
+    Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);
 

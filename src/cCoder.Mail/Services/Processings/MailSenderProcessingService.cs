@@ -9,36 +9,36 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class MailSenderProcessingService(IMailSenderService service) : IMailSenderProcessingService
 {
-    public MailSender Get(Guid mailSenderId) =>
+    public MailSender GetMailSender(Guid mailSenderId) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateGet(inputs: [mailSenderId]);
 
-            return service.Get(iMailSenderId: mailSenderId);
+            return service.GetMailSender(iMailSenderId: mailSenderId);
         });
 
-    public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return service.GetAll(ignoreFilters: ignoreFilters);
+            return service.GetAllMailSender(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<MailSender> AddAsync(MailSender newMailSender) =>
+    public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateAddAsync(inputs: [newMailSender]);
 
-            return service.AddAsync(newMailSender: newMailSender);
+            return service.AddMailSenderAsync(newMailSender: newMailSender);
         }, isValueTask: true);
 
-    public ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender) =>
+    public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedMailSender]);
 
-            return service.UpdateAsync(updatedMailSender: updatedMailSender);
+            return service.UpdateMailSenderAsync(updatedMailSender: updatedMailSender);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailSenderId) =>
@@ -57,11 +57,11 @@ internal partial class MailSenderProcessingService(IMailSenderService service) :
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailSender> items) =>
+    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items) =>
         TryCatch(operation: () =>
         {
             ValidateDeleteAllAsync(inputs: [items]);
 
-            return service.DeleteAllAsync(items: items);
+            return service.DeleteAllMailSenderAsync(items: items);
         }, isValueTask: true);
 }

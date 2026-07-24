@@ -13,13 +13,13 @@ internal partial class MailReceiverService(
     IAuthorizationBroker authorizationBroker)
     : IMailReceiverService
 {
-    public MailReceiver Get(Guid mailReceiverId) =>
+    public MailReceiver GetMailReceiver(Guid mailReceiverId) =>
         TryCatch<MailReceiver>(operation: () =>
     {
 
         ValidateGet(inputs: [mailReceiverId]);
 
-        MailReceiver mailReceiver = GetAll()
+        MailReceiver mailReceiver = GetAllMailReceiver()
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         if (mailReceiver is not null)
@@ -27,7 +27,7 @@ internal partial class MailReceiverService(
             return mailReceiver;
         }
 
-        MailReceiver unrestrictedMailReceiver = GetAll(ignoreFilters: true)
+        MailReceiver unrestrictedMailReceiver = GetAllMailReceiver(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         if (unrestrictedMailReceiver is not null)
@@ -38,7 +38,7 @@ internal partial class MailReceiverService(
         return unrestrictedMailReceiver;
     });
 
-    public IQueryable<MailReceiver> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
@@ -54,7 +54,7 @@ internal partial class MailReceiverService(
             return mailReceiverBroker.GetEnabledMailReceivers();
         });
 
-    public ValueTask<MailReceiver> AddAsync(MailReceiver newMailReceiver) =>
+    public ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: async () =>
     {
         ValidateAddAsync(inputs: [newMailReceiver]);
@@ -63,7 +63,7 @@ internal partial class MailReceiverService(
         return await mailReceiverBroker.AddMailReceiverAsync(entity: Copy(entity: newMailReceiver));
     }, isValueTask: true);
 
-    public ValueTask<MailReceiver> UpdateAsync(MailReceiver updatedMailReceiver) =>
+    public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: async () =>
     {
         ValidateUpdateAsync(inputs: [updatedMailReceiver]);
@@ -78,14 +78,14 @@ internal partial class MailReceiverService(
 
         ValidateDeleteAsync(inputs: [mailReceiverId]);
 
-        MailReceiver entity = GetAll(ignoreFilters: true)
+        MailReceiver entity = GetAllMailReceiver(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailReceiverId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailReceiver)}_delete");
         return await mailReceiverBroker.DeleteMailReceiverAsync(entity: Copy(entity: entity));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items) =>
+    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> items) =>
         TryCatch(operation: () =>
         {
             ValidateDeleteAllAsync(inputs: [items]);

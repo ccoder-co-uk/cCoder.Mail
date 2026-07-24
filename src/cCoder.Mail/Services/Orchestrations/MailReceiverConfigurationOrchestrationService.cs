@@ -10,36 +10,36 @@ namespace cCoder.Mail.Services.Orchestrations;
 internal partial class MailReceiverConfigurationOrchestrationService(IMailReceiverProcessingService processingService)
     : IMailReceiverConfigurationOrchestrationService
 {
-    public MailReceiver Get(Guid mailReceiverConfigurationId) =>
+    public MailReceiver GetMailReceiver(Guid mailReceiverConfigurationId) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateGet(inputs: [mailReceiverConfigurationId]);
 
-            return processingService.Get(iMailReceiverId: mailReceiverConfigurationId);
+            return processingService.GetMailReceiver(iMailReceiverId: mailReceiverConfigurationId);
         });
 
-    public IQueryable<MailReceiver> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return processingService.GetAll(ignoreFilters: ignoreFilters);
+            return processingService.GetAllMailReceiver(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<MailReceiver> AddAsync(MailReceiver newMailReceiver) =>
+    public ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateAddAsync(inputs: [newMailReceiver]);
 
-            return processingService.AddAsync(newMailReceiver: newMailReceiver);
+            return processingService.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
         }, isValueTask: true);
 
-    public ValueTask<MailReceiver> UpdateAsync(MailReceiver updatedMailReceiver) =>
+    public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedMailReceiver]);
 
-            return processingService.UpdateAsync(updatedMailReceiver: updatedMailReceiver);
+            return processingService.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailReceiverConfigurationId) =>

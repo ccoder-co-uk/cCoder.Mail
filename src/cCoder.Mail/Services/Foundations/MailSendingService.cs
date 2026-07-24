@@ -9,7 +9,7 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailSendingService(IMailSenderClientBroker mailSenderClientBroker) : IMailSendingService
 {
-    public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
             ValidateSendAsync(inputs: [email, cancellationToken]);

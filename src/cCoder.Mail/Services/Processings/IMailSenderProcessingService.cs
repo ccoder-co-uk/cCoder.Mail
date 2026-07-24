@@ -8,11 +8,11 @@ namespace cCoder.Mail.Services.Processings;
 
 public interface IMailSenderProcessingService
 {
-    MailSender Get(Guid iMailSenderId);
-    IQueryable<MailSender> GetAll(bool ignoreFilters = false);
-    ValueTask<MailSender> AddAsync(MailSender newMailSender);
-    ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender);
+    MailSender GetMailSender(Guid iMailSenderId);
+    IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false);
+    ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender);
+    ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender);
     ValueTask<int> DeleteAsync(Guid iMailSenderId);
     ValueTask DeleteByAppIdAsync(int appId);
-    ValueTask DeleteAllAsync(IEnumerable<MailSender> items);
+    ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items);
 }

@@ -9,36 +9,36 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class ReceivedEmailProcessingService(IReceivedEmailService service) : IReceivedEmailProcessingService
 {
-    public ReceivedEmail Get(int receivedEmailId) =>
+    public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateGet(inputs: [receivedEmailId]);
 
-            return service.Get(iReceivedEmailId: receivedEmailId);
+            return service.GetReceivedEmail(iReceivedEmailId: receivedEmailId);
         });
 
-    public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return service.GetAll(ignoreFilters: ignoreFilters);
+            return service.GetAllReceivedEmail(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail newReceivedEmail) =>
+    public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateAddAsync(inputs: [newReceivedEmail]);
 
-            return service.AddAsync(newReceivedEmail: newReceivedEmail);
+            return service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail);
         }, isValueTask: true);
 
-    public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail updatedReceivedEmail) =>
+    public ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedReceivedEmail]);
 
-            return service.UpdateAsync(updatedReceivedEmail: updatedReceivedEmail);
+            return service.UpdateReceivedEmailAsync(updatedReceivedEmail: updatedReceivedEmail);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(int receivedEmailId) =>
@@ -57,14 +57,14 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask AddRangeAsync(
+    public ValueTask AddRangeReceivedEmailAsync(
         IEnumerable<ReceivedEmail> entities,
         CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
             ValidateAddRangeAsync(inputs: [entities, cancellationToken]);
 
-            return service.AddRangeAsync(entities: entities, cancellationToken: cancellationToken);
+            return service.AddRangeReceivedEmailAsync(entities: entities, cancellationToken: cancellationToken);
         }, isValueTask: true);
 
     public bool Exists(Guid mailReceiverId, string messageId) =>
@@ -75,11 +75,11 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
             return service.Exists(mailReceiverId: mailReceiverId, messageId: messageId);
         });
 
-    public ValueTask DeleteAllAsync(IEnumerable<ReceivedEmail> items) =>
+    public ValueTask DeleteAllReceivedEmailAsync(IEnumerable<ReceivedEmail> items) =>
         TryCatch(operation: () =>
         {
             ValidateDeleteAllAsync(inputs: [items]);
 
-            return service.DeleteAllAsync(items: items);
+            return service.DeleteAllReceivedEmailAsync(items: items);
         }, isValueTask: true);
 }

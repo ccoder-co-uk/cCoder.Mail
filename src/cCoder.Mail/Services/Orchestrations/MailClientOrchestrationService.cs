@@ -13,22 +13,22 @@ internal sealed partial class MailClientOrchestrationService(
     IMailReceivingService mailReceivingService)
     : IMailClientOrchestrationService
 {
-    public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: () =>
         {
             ValidateSendAsync(inputs: [email, cancellationToken]);
 
-            return mailSendingService.SendAsync(email: email, cancellationToken: cancellationToken);
+            return mailSendingService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
         }, isTask: true);
 
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
             ValidateReceiveAsync(inputs: [request, cancellationToken]);
 
-            return mailReceivingService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+            return mailReceivingService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(

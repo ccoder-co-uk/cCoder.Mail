@@ -10,36 +10,36 @@ namespace cCoder.Mail.Services.Orchestrations;
 internal partial class MailSenderConfigurationOrchestrationService(IMailSenderProcessingService processingService)
     : IMailSenderConfigurationOrchestrationService
 {
-    public MailSender Get(Guid mailSenderConfigurationId) =>
+    public MailSender GetMailSender(Guid mailSenderConfigurationId) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateGet(inputs: [mailSenderConfigurationId]);
 
-            return processingService.Get(iMailSenderId: mailSenderConfigurationId);
+            return processingService.GetMailSender(iMailSenderId: mailSenderConfigurationId);
         });
 
-    public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return processingService.GetAll(ignoreFilters: ignoreFilters);
+            return processingService.GetAllMailSender(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<MailSender> AddAsync(MailSender newMailSender) =>
+    public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateAddAsync(inputs: [newMailSender]);
 
-            return processingService.AddAsync(newMailSender: newMailSender);
+            return processingService.AddMailSenderAsync(newMailSender: newMailSender);
         }, isValueTask: true);
 
-    public ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender) =>
+    public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedMailSender]);
 
-            return processingService.UpdateAsync(updatedMailSender: updatedMailSender);
+            return processingService.UpdateMailSenderAsync(updatedMailSender: updatedMailSender);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailSenderConfigurationId) =>

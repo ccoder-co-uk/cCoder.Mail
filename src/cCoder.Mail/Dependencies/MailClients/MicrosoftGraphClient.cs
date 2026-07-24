@@ -17,12 +17,12 @@ internal sealed class MicrosoftGraphClient(
         MailProviderNames.MicrosoftGraph;
 
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        microsoftGraphMailSenderService.SendAsync(email: email, cancellationToken: cancellationToken);
+        microsoftGraphMailSenderService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        microsoftGraphMailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        microsoftGraphMailReceiverService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,

@@ -48,7 +48,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<QueuedEmail> queryOptions) =>
-        Ok(value: service.GetAll());
+        Ok(value: service.GetAllQueuedEmail());
 
     [HttpGet]
     [AllowAnonymous]
@@ -64,7 +64,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     {
         try
         {
-            IQueryable<QueuedEmail> result = service.GetAll()
+            IQueryable<QueuedEmail> result = service.GetAllQueuedEmail()
                 .Where(predicate: queuedEmail => queuedEmail.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -91,7 +91,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(newQueuedEmail: entity));
+        return Ok(value: await service.AddQueuedEmailAsync(newQueuedEmail: entity));
     }
 
     [HttpPut]
@@ -110,13 +110,13 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(updatedQueuedEmail: entity));
+        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<QueuedEmail> delta)
     {
-        QueuedEmail originalEntity = service.Get(iQueuedEmailId: key);
+        QueuedEmail originalEntity = service.GetQueuedEmail(iQueuedEmailId: key);
 
         if (originalEntity == null)
         {
@@ -124,7 +124,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(updatedQueuedEmail: originalEntity));
+        return Ok(value: await service.UpdateQueuedEmailAsync(updatedQueuedEmail: originalEntity));
     }
 
     [HttpDelete]

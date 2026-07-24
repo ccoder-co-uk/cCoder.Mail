@@ -44,7 +44,7 @@ value: new MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<MailReceiver> queryOptions) =>
-        Ok(value: service.GetAll());
+        Ok(value: service.GetAllMailReceiver());
 
     [HttpGet]
     [AllowAnonymous]
@@ -60,7 +60,7 @@ value: new MailModelBuilder()
     {
         try
         {
-            IQueryable<MailReceiver> result = service.GetAll()
+            IQueryable<MailReceiver> result = service.GetAllMailReceiver()
                 .Where(predicate: mailReceiver => mailReceiver.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -87,7 +87,7 @@ value: new MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(newMailReceiver: entity));
+        return Ok(value: await service.AddMailReceiverAsync(newMailReceiver: entity));
     }
 
     [HttpPut]
@@ -106,13 +106,13 @@ value: new MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(updatedMailReceiver: entity));
+        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] Guid key, Delta<MailReceiver> delta)
     {
-        MailReceiver originalEntity = service.Get(iMailReceiverConfigurationId: key);
+        MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverConfigurationId: key);
 
         if (originalEntity == null)
         {
@@ -120,7 +120,7 @@ value: new MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(updatedMailReceiver: originalEntity));
+        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: originalEntity));
     }
 
     [HttpDelete]

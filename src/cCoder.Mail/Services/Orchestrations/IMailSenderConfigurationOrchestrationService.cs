@@ -8,10 +8,10 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface IMailSenderConfigurationOrchestrationService
 {
-    MailSender Get(Guid iMailSenderConfigurationId);
-    IQueryable<MailSender> GetAll(bool ignoreFilters = false);
-    ValueTask<MailSender> AddAsync(MailSender newMailSender);
-    ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender);
+    MailSender GetMailSender(Guid iMailSenderConfigurationId);
+    IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false);
+    ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender);
+    ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender);
     ValueTask<int> DeleteAsync(Guid iMailSenderConfigurationId);
     ValueTask DeleteByAppIdAsync(int appId);
 }

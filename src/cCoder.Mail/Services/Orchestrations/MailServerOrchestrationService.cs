@@ -12,38 +12,38 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class MailServerOrchestrationService(IMailServerProcessingService processingService, IMailServerEventProcessingService eventService) : IMailServerOrchestrationService
 {
-    public MailServer Get(int mailServerId) =>
+    public MailServer GetMailServer(int mailServerId) =>
         TryCatch<MailServer>(operation: () =>
     {
         ValidateGet(inputs: [mailServerId]);
 
-        return processingService.Get(iMailServerId: mailServerId);
+        return processingService.GetMailServer(iMailServerId: mailServerId);
     });
 
-    public IQueryable<MailServer> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
     {
         ValidateGetAll(inputs: [ignoreFilters]);
 
-        return processingService.GetAll(ignoreFilters: ignoreFilters);
+        return processingService.GetAllMailServer(ignoreFilters: ignoreFilters);
     });
 
-    public ValueTask<MailServer> AddAsync(MailServer newMailServer) =>
+    public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
         ValidateAddAsync(inputs: [newMailServer]);
 
-        MailServer result = await processingService.AddAsync(newMailServer: newMailServer);
+        MailServer result = await processingService.AddMailServerAsync(newMailServer: newMailServer);
         await eventService.RaiseMailServerAddEventAsync(entity: result);
         return result;
     }, isValueTask: true);
 
-    public ValueTask<MailServer> UpdateAsync(MailServer updatedMailServer) =>
+    public ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer) =>
         TryCatch<MailServer>(operation: async () =>
     {
         ValidateUpdateAsync(inputs: [updatedMailServer]);
 
-        MailServer result = await processingService.UpdateAsync(updatedMailServer: updatedMailServer);
+        MailServer result = await processingService.UpdateMailServerAsync(updatedMailServer: updatedMailServer);
         await eventService.RaiseMailServerUpdateEventAsync(entity: result);
         return result;
     }, isValueTask: true);
@@ -54,7 +54,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
 
         ValidateDeleteAsync(inputs: [mailServerId]);
 
-        MailServer entity = processingService.GetAll(ignoreFilters: true)
+        MailServer entity = processingService.GetAllMailServer(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailServerId);
 
         if (entity is null)
@@ -74,19 +74,19 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdate(IEnumerable<MailServer> items) =>
+    public ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> items) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {
         ValidateAddOrUpdate(inputs: [items]);
 
-        return processingService.AddOrUpdate(items: items);
+        return processingService.AddOrUpdateMailServerResult(items: items);
     }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailServer> items) =>
+    public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> items) =>
         TryCatch(operation: () =>
     {
         ValidateDeleteAllAsync(inputs: [items]);
 
-        return processingService.DeleteAllAsync(items: items);
+        return processingService.DeleteAllMailServerAsync(items: items);
     }, isValueTask: true);
 }

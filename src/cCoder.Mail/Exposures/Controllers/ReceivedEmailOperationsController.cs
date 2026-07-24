@@ -25,7 +25,7 @@ public sealed class ReceivedEmailOperationsController(
             return BadRequest(modelState: ModelState);
         }
 
-        return Ok(value: await service.ReceiveAsync(request: request, cancellationToken: cancellationToken));
+        return Ok(value: await service.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken));
     }
 
     [HttpGet("ReceiveTop/{count:int}")]

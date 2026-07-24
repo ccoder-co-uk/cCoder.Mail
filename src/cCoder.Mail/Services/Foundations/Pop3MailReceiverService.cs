@@ -15,7 +15,7 @@ internal sealed partial class Pop3MailReceiverService(
     MailConfiguration mailConfiguration)
     : IPop3MailReceiverService
 {
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>

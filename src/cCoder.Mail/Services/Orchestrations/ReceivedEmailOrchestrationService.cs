@@ -14,36 +14,36 @@ internal partial class ReceivedEmailOrchestrationService(
     IMailReceivingService mailReceivingService)
     : IReceivedEmailOrchestrationService
 {
-    public ReceivedEmail Get(int receivedEmailId) =>
+    public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateGet(inputs: [receivedEmailId]);
 
-            return processingService.Get(iReceivedEmailId: receivedEmailId);
+            return processingService.GetReceivedEmail(iReceivedEmailId: receivedEmailId);
         });
 
-    public IQueryable<ReceivedEmail> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return processingService.GetAll(ignoreFilters: ignoreFilters);
+            return processingService.GetAllReceivedEmail(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<ReceivedEmail> AddAsync(ReceivedEmail newReceivedEmail) =>
+    public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateAddAsync(inputs: [newReceivedEmail]);
 
-            return processingService.AddAsync(newReceivedEmail: newReceivedEmail);
+            return processingService.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail);
         }, isValueTask: true);
 
-    public ValueTask<ReceivedEmail> UpdateAsync(ReceivedEmail updatedReceivedEmail) =>
+    public ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedReceivedEmail]);
 
-            return processingService.UpdateAsync(updatedReceivedEmail: updatedReceivedEmail);
+            return processingService.UpdateReceivedEmailAsync(updatedReceivedEmail: updatedReceivedEmail);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(int receivedEmailId) =>
@@ -62,14 +62,14 @@ internal partial class ReceivedEmailOrchestrationService(
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
             ValidateReceiveAsync(inputs: [request, cancellationToken]);
 
-            return mailReceivingService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+            return mailReceivingService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(

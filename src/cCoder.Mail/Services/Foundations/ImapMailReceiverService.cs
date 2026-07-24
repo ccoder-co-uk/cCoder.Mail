@@ -15,7 +15,7 @@ internal sealed partial class ImapMailReceiverService(
     MailConfiguration mailConfiguration)
     : IImapMailReceiverService
 {
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: async () =>
@@ -66,7 +66,7 @@ internal sealed partial class ImapMailReceiverService(
 
             ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
 
-            return ReceiveAsync(
+            return ReceiveMailboxReceiveRequestAsync(
             request: new MailboxReceiveRequest
             {
                 ProviderName = MailProviderNames.Imap,

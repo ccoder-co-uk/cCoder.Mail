@@ -14,44 +14,44 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
 {
-    public QueuedEmail Get(int queuedEmailId) =>
+    public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
         ValidateGet(inputs: [queuedEmailId]);
 
-        return service.Get(iQueuedEmailId: queuedEmailId);
+        return service.GetQueuedEmail(iQueuedEmailId: queuedEmailId);
     });
 
-    public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
         ValidateGetAll(inputs: [ignoreFilters]);
 
-        return service.GetAll(ignoreFilters: ignoreFilters);
+        return service.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
     });
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail) =>
+    public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
         ValidateAddAsync(inputs: [newQueuedEmail]);
 
-        return AddAsync(newQueuedEmail: newQueuedEmail, checkPrivs: false);
+        return AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivs: false);
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> AddAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
+    public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivs) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
         ValidateAddAsync(inputs: [newQueuedEmail, checkPrivs]);
 
-        return service.AddAsync(newQueuedEmail: newQueuedEmail, checkPrivileges: checkPrivs);
+        return service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail, checkPrivileges: checkPrivs);
     }, isValueTask: true);
 
-    public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail updatedQueuedEmail) =>
+    public ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail) =>
         TryCatch<QueuedEmail>(operation: () =>
     {
         ValidateUpdateAsync(inputs: [updatedQueuedEmail]);
 
-        return service.UpdateAsync(updatedQueuedEmail: updatedQueuedEmail);
+        return service.UpdateQueuedEmailAsync(updatedQueuedEmail: updatedQueuedEmail);
     }, isValueTask: true);
 
     public ValueTask DeleteAsync(int queuedEmailId) =>
@@ -60,7 +60,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
 
         ValidateDeleteAsync(inputs: [queuedEmailId]);
 
-        QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
+        QueuedEmail queuedEmail = GetAllQueuedEmail(ignoreFilters: true)
             .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == queuedEmailId);
 
         if (queuedEmail == null)
@@ -80,7 +80,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items) =>
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> items) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: async () =>
     {
         ValidateAddOrUpdate(inputs: [items]);
@@ -93,8 +93,8 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             {
                 QueuedEmail savedItem =
                     item.Id == 0
-                        ? await AddAsync(newQueuedEmail: item)
-                        : await UpdateAsync(updatedQueuedEmail: item);
+                        ? await AddQueuedEmailAsync(newQueuedEmail: item)
+                        : await UpdateQueuedEmailAsync(updatedQueuedEmail: item);
 
                 results.Add(item: new Result<QueuedEmail>
                 {
@@ -117,7 +117,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         return results;
     }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items) =>
+    public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> items) =>
         TryCatch(operation: async () =>
     {
 

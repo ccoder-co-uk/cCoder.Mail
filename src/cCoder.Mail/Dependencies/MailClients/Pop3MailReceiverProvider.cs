@@ -17,7 +17,7 @@ internal sealed class Pop3MailReceiverProvider(IPop3MailReceiverService pop3Mail
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        pop3MailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        pop3MailReceiverService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,

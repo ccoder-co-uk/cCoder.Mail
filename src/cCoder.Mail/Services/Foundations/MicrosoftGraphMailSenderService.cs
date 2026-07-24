@@ -19,7 +19,7 @@ internal sealed partial class MicrosoftGraphMailSenderService(
 
     private const string DefaultLoginBaseUrl = "https://login.microsoftonline.com";
 
-    public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
         TryCatch(operation: async () =>
     {
         ValidateSendAsync(inputs: [email, cancellationToken]);

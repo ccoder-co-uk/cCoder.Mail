@@ -17,7 +17,7 @@ internal sealed class ImapMailReceiverProvider(IImapMailReceiverService imapMail
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        imapMailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        imapMailReceiverService.ReceiveMailboxReceiveRequestAsync(request: request, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,

@@ -3262,7 +3262,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "ReceiveAsync",
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -3309,7 +3309,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailReceiverAsync",
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -3319,21 +3319,21 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
-          "Inputs": [
-            {
-              "Name": "items",
-              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
           "Name": "DeleteAllByAppIdAsync",
           "Inputs": [
             {
               "Name": "appId",
               "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        },
+        {
+          "Name": "DeleteAllMailReceiverAsync",
+          "Inputs": [
+            {
+              "Name": "items",
+              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask"
@@ -3349,17 +3349,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Int32\u003E"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailReceiverId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailReceiver",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3374,7 +3364,17 @@
           "ReturnType": "cCoder.Data.Models.Mail.MailReceiver[]"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailReceiver",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
+        },
+        {
+          "Name": "UpdateMailReceiverAsync",
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -3391,7 +3391,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "ReceiveAsync",
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -3426,7 +3426,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailSenderAsync",
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -3436,21 +3436,21 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
-          "Inputs": [
-            {
-              "Name": "items",
-              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
           "Name": "DeleteAllByAppIdAsync",
           "Inputs": [
             {
               "Name": "appId",
               "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        },
+        {
+          "Name": "DeleteAllMailSenderAsync",
+          "Inputs": [
+            {
+              "Name": "items",
+              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask"
@@ -3466,17 +3466,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Int32\u003E"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailSenderId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailSender",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3486,7 +3476,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailSender",
+          "Inputs": [
+            {
+              "Name": "mailSenderId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
+        },
+        {
+          "Name": "UpdateMailSenderAsync",
           "Inputs": [
             {
               "Name": "updatedMailSender",
@@ -3503,7 +3503,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "SendAsync",
+          "Name": "SendQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "email",
@@ -3524,7 +3524,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailServerAsync",
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -3544,7 +3544,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "DeleteAllForAppAsync",
+          "Name": "DeleteAllForAppMailServerAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -3564,17 +3564,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailServerId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailServer",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3584,7 +3574,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailServer",
+          "Inputs": [
+            {
+              "Name": "mailServerId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
+        },
+        {
+          "Name": "UpdateMailServerAsync",
           "Inputs": [
             {
               "Name": "updatedMailServer",
@@ -3601,7 +3601,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "ReceiveAsync",
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -3636,7 +3636,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "SendAsync",
+          "Name": "SendQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "email",
@@ -3657,7 +3657,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "ReceiveAsync",
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -3692,7 +3692,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -3716,7 +3716,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "DeleteAllForAppAsync",
+          "Name": "DeleteAllForAppQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -3740,17 +3740,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "queuedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllQueuedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3774,7 +3764,17 @@
           "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail[]"
         },
         {
-          "Name": "MarkAsSentAsync",
+          "Name": "GetQueuedEmail",
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
+        },
+        {
+          "Name": "MarkAsSentQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "queuedEmail",
@@ -3814,7 +3814,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "UpdateQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedQueuedEmail",
@@ -3831,17 +3831,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
-          "Inputs": [
-            {
-              "Name": "newReceivedEmail",
-              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-        },
-        {
-          "Name": "AddRangeAsync",
+          "Name": "AddRangeReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "entities",
@@ -3855,14 +3845,14 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "AddReceivedEmailAsync",
           "Inputs": [
             {
-              "Name": "items",
-              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
+              "Name": "newReceivedEmail",
+              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         },
         {
           "Name": "DeleteAllByAppIdAsync",
@@ -3870,6 +3860,16 @@
             {
               "Name": "appId",
               "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        },
+        {
+          "Name": "DeleteAllReceivedEmailAsync",
+          "Inputs": [
+            {
+              "Name": "items",
+              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask"
@@ -3899,17 +3899,7 @@
           "ReturnType": "System.Boolean"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "receivedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllReceivedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3919,7 +3909,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetReceivedEmail",
+          "Inputs": [
+            {
+              "Name": "receivedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
+        },
+        {
+          "Name": "UpdateReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedReceivedEmail",
@@ -3936,7 +3936,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddSentEmailAsync",
           "Inputs": [
             {
               "Name": "newSentEmail",
@@ -3956,7 +3956,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "DeleteAllForAppAsync",
+          "Name": "DeleteAllForAppSentEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -3976,17 +3976,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "sentEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllSentEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -3996,7 +3986,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetSentEmail",
+          "Inputs": [
+            {
+              "Name": "sentEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
+        },
+        {
+          "Name": "UpdateSentEmailAsync",
           "Inputs": [
             {
               "Name": "updatedSentEmail",
@@ -4013,7 +4013,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "SendAsync",
+          "Name": "SendQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "email",
@@ -4034,7 +4034,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddAppAsync",
           "Inputs": [
             {
               "Name": "newApp",
@@ -4054,7 +4054,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "UpdateAppAsync",
           "Inputs": [
             {
               "Name": "updatedApp",
@@ -4071,7 +4071,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "ReceiveAsync",
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -4099,7 +4099,7 @@
           "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
         },
         {
-          "Name": "SendAsync",
+          "Name": "SendQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "email",
@@ -4120,7 +4120,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailReceiverAsync",
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4150,17 +4150,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailReceiverConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailReceiver",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4170,7 +4160,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailReceiver",
+          "Inputs": [
+            {
+              "Name": "mailReceiverConfigurationId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
+        },
+        {
+          "Name": "UpdateMailReceiverAsync",
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -4214,7 +4214,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailSenderAsync",
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -4244,17 +4244,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailSenderConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailSender",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4264,7 +4254,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailSender",
+          "Inputs": [
+            {
+              "Name": "mailSenderConfigurationId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
+        },
+        {
+          "Name": "UpdateMailSenderAsync",
           "Inputs": [
             {
               "Name": "updatedMailSender",
@@ -4308,7 +4308,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailServerAsync",
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -4318,7 +4318,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
-          "Name": "AddOrUpdate",
+          "Name": "AddOrUpdateMailServerResult",
           "Inputs": [
             {
               "Name": "items",
@@ -4328,7 +4328,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.MailServer\u003E\u003E\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllMailServerAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4358,17 +4358,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailServerId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailServer",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4378,7 +4368,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailServer",
+          "Inputs": [
+            {
+              "Name": "mailServerId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
+        },
+        {
+          "Name": "UpdateMailServerAsync",
           "Inputs": [
             {
               "Name": "updatedMailServer",
@@ -4395,7 +4395,17 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddOrUpdateQueuedEmailResult",
+          "Inputs": [
+            {
+              "Name": "items",
+              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E\u003E\u003E"
+        },
+        {
+          "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -4405,7 +4415,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "AddAsync",
+          "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -4419,17 +4429,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "AddOrUpdate",
-          "Inputs": [
-            {
-              "Name": "items",
-              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E\u003E\u003E"
-        },
-        {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4459,17 +4459,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "queuedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllQueuedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4479,7 +4469,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetQueuedEmail",
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
+        },
+        {
+          "Name": "UpdateQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedQueuedEmail",
@@ -4496,7 +4496,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -4526,17 +4526,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "receivedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllReceivedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4546,7 +4536,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         },
         {
-          "Name": "ReceiveAsync",
+          "Name": "GetReceivedEmail",
+          "Inputs": [
+            {
+              "Name": "receivedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
+        },
+        {
+          "Name": "ReceiveMailboxReceiveRequestAsync",
           "Inputs": [
             {
               "Name": "request",
@@ -4574,7 +4574,7 @@
           "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "UpdateReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedReceivedEmail",
@@ -4591,17 +4591,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
-          "Inputs": [
-            {
-              "Name": "newSentEmail",
-              "Type": "cCoder.Data.Models.Mail.SentEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
-        },
-        {
-          "Name": "AddOrUpdate",
+          "Name": "AddOrUpdateSentEmailResult",
           "Inputs": [
             {
               "Name": "items",
@@ -4611,7 +4601,17 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.SentEmail\u003E\u003E\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "AddSentEmailAsync",
+          "Inputs": [
+            {
+              "Name": "newSentEmail",
+              "Type": "cCoder.Data.Models.Mail.SentEmail"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
+        },
+        {
+          "Name": "DeleteAllSentEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4641,17 +4641,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "sentEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllSentEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4661,7 +4651,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetSentEmail",
+          "Inputs": [
+            {
+              "Name": "sentEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
+        },
+        {
+          "Name": "UpdateSentEmailAsync",
           "Inputs": [
             {
               "Name": "updatedSentEmail",
@@ -4678,7 +4678,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailReceiverAsync",
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4688,7 +4688,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllMailReceiverAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4718,17 +4718,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailReceiverId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailReceiver",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4743,7 +4733,17 @@
           "ReturnType": "cCoder.Data.Models.Mail.MailReceiver[]"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailReceiver",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
+        },
+        {
+          "Name": "UpdateMailReceiverAsync",
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -4760,7 +4760,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailSenderAsync",
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -4770,7 +4770,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllMailSenderAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4800,17 +4800,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailSenderId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailSender",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4820,7 +4810,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailSender",
+          "Inputs": [
+            {
+              "Name": "mailSenderId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
+        },
+        {
+          "Name": "UpdateMailSenderAsync",
           "Inputs": [
             {
               "Name": "updatedMailSender",
@@ -4874,7 +4874,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddMailServerAsync",
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -4884,7 +4884,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
-          "Name": "AddOrUpdate",
+          "Name": "AddOrUpdateMailServerResult",
           "Inputs": [
             {
               "Name": "items",
@@ -4894,7 +4894,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.MailServer\u003E\u003E\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllMailServerAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -4924,17 +4924,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "mailServerId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllMailServer",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -4944,7 +4934,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetMailServer",
+          "Inputs": [
+            {
+              "Name": "mailServerId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.MailServer"
+        },
+        {
+          "Name": "UpdateMailServerAsync",
           "Inputs": [
             {
               "Name": "updatedMailServer",
@@ -4998,7 +4998,17 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
+          "Name": "AddOrUpdateQueuedEmailResult",
+          "Inputs": [
+            {
+              "Name": "items",
+              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E\u003E\u003E"
+        },
+        {
+          "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -5008,7 +5018,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "AddAsync",
+          "Name": "AddQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -5022,17 +5032,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "AddOrUpdate",
-          "Inputs": [
-            {
-              "Name": "items",
-              "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E\u003E\u003E"
-        },
-        {
-          "Name": "DeleteAllAsync",
+          "Name": "DeleteAllQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -5062,17 +5062,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "queuedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllQueuedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -5082,7 +5072,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetQueuedEmail",
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail"
+        },
+        {
+          "Name": "UpdateQueuedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedQueuedEmail",
@@ -5099,17 +5099,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
-          "Inputs": [
-            {
-              "Name": "newReceivedEmail",
-              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-        },
-        {
-          "Name": "AddRangeAsync",
+          "Name": "AddRangeReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "entities",
@@ -5123,7 +5113,17 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "AddReceivedEmailAsync",
+          "Inputs": [
+            {
+              "Name": "newReceivedEmail",
+              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
+        },
+        {
+          "Name": "DeleteAllReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -5167,17 +5167,7 @@
           "ReturnType": "System.Boolean"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "receivedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllReceivedEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -5187,7 +5177,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetReceivedEmail",
+          "Inputs": [
+            {
+              "Name": "receivedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
+        },
+        {
+          "Name": "UpdateReceivedEmailAsync",
           "Inputs": [
             {
               "Name": "updatedReceivedEmail",
@@ -5241,17 +5241,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "AddAsync",
-          "Inputs": [
-            {
-              "Name": "newSentEmail",
-              "Type": "cCoder.Data.Models.Mail.SentEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
-        },
-        {
-          "Name": "AddOrUpdate",
+          "Name": "AddOrUpdateSentEmailResult",
           "Inputs": [
             {
               "Name": "items",
@@ -5261,7 +5251,17 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.Result\u003CcCoder.Data.Models.Mail.SentEmail\u003E\u003E\u003E"
         },
         {
-          "Name": "DeleteAllAsync",
+          "Name": "AddSentEmailAsync",
+          "Inputs": [
+            {
+              "Name": "newSentEmail",
+              "Type": "cCoder.Data.Models.Mail.SentEmail"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
+        },
+        {
+          "Name": "DeleteAllSentEmailAsync",
           "Inputs": [
             {
               "Name": "items",
@@ -5291,17 +5291,7 @@
           "ReturnType": "System.Threading.Tasks.ValueTask"
         },
         {
-          "Name": "Get",
-          "Inputs": [
-            {
-              "Name": "sentEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
-        },
-        {
-          "Name": "GetAll",
+          "Name": "GetAllSentEmail",
           "Inputs": [
             {
               "Name": "ignoreFilters",
@@ -5311,7 +5301,17 @@
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
         },
         {
-          "Name": "UpdateAsync",
+          "Name": "GetSentEmail",
+          "Inputs": [
+            {
+              "Name": "sentEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "cCoder.Data.Models.Mail.SentEmail"
+        },
+        {
+          "Name": "UpdateSentEmailAsync",
           "Inputs": [
             {
               "Name": "updatedSentEmail",
@@ -6085,13 +6085,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 18
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6127,20 +6120,6 @@
       "LineNumber": 30
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 57
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 66
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6148,25 +6127,11 @@
       "LineNumber": 81
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 88
-    },
-    {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
       "LineNumber": 88
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceivingService",
-      "LineNumber": 13
     },
     {
       "Code": "STX0012",
@@ -6197,32 +6162,11 @@
       "LineNumber": 30
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 58
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
       "LineNumber": 73
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 80
     },
     {
       "Code": "STX0021",
@@ -6260,32 +6204,11 @@
       "LineNumber": 34
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 53
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 72
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
       "LineNumber": 97
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 109
     },
     {
       "Code": "STX0021",
@@ -6300,13 +6223,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 22
     },
     {
       "Code": "STX0005",
@@ -6328,13 +6244,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 18
     },
     {
       "Code": "STX0012",
@@ -6470,46 +6379,11 @@
       "LineNumber": 12
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 21
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
-      "LineNumber": 24
-    },
-    {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
       "LineNumber": 10
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 37
     },
     {
       "Code": "STXO001",
@@ -6531,20 +6405,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
       "LineNumber": 10
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 37
     },
     {
       "Code": "STX0004",
@@ -6575,34 +6435,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 41
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 85
-    },
-    {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
@@ -6617,60 +6449,11 @@
       "LineNumber": 12
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 65
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 36
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 44
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
-      "LineNumber": 68
-    },
-    {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailReceiverProcessingService",
       "LineNumber": 68
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 36
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
-      "LineNumber": 60
     },
     {
       "Code": "STX0021",
@@ -6687,27 +6470,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 39
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 63
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
@@ -6720,13 +6482,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
       "LineNumber": 77
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Processings.MailServerProcessingService",
-      "LineNumber": 100
     },
     {
       "Code": "STX0021",

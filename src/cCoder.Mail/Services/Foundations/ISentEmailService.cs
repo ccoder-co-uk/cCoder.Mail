@@ -12,11 +12,11 @@ namespace cCoder.Mail.Services.Foundations;
 
 public interface ISentEmailService
 {
-    SentEmail Get(int iSentEmailId);
-    IQueryable<SentEmail> GetAll(bool ignoreFilters = false);
-    ValueTask<SentEmail> AddAsync(SentEmail newSentEmail);
-    ValueTask<SentEmail> UpdateAsync(SentEmail updatedSentEmail);
+    SentEmail GetSentEmail(int iSentEmailId);
+    IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
+    ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
+    ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
     ValueTask DeleteAsync(int iSentEmailId);
-    ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items);
+    ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

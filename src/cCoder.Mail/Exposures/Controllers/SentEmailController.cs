@@ -48,7 +48,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) =>
-        Ok(value: service.GetAll());
+        Ok(value: service.GetAllSentEmail());
 
     [HttpGet]
     [AllowAnonymous]
@@ -64,7 +64,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     {
         try
         {
-            IQueryable<SentEmail> result = service.GetAll()
+            IQueryable<SentEmail> result = service.GetAllSentEmail()
                 .Where(predicate: sentEmail => sentEmail.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -91,7 +91,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(newSentEmail: entity));
+        return Ok(value: await service.AddSentEmailAsync(newSentEmail: entity));
     }
 
     [HttpPut]
@@ -110,13 +110,13 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(updatedSentEmail: entity));
+        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<SentEmail> delta)
     {
-        SentEmail originalEntity = service.Get(iSentEmailId: key);
+        SentEmail originalEntity = service.GetSentEmail(iSentEmailId: key);
 
         if (originalEntity == null)
         {
@@ -124,7 +124,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(updatedSentEmail: originalEntity));
+        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: originalEntity));
     }
 
     [HttpDelete]

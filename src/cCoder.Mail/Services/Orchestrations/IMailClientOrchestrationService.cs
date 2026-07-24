@@ -9,9 +9,9 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface IMailClientOrchestrationService
 {
-    Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default);
+    Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default);
 
-    Task<ReceivedEmail[]> ReceiveAsync(
+    Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);
 

@@ -12,38 +12,38 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class SentEmailOrchestrationService(ISentEmailProcessingService processingService, ISentEmailEventProcessingService eventService) : ISentEmailOrchestrationService
 {
-    public SentEmail Get(int sentEmailId) =>
+    public SentEmail GetSentEmail(int sentEmailId) =>
         TryCatch<SentEmail>(operation: () =>
     {
         ValidateGet(inputs: [sentEmailId]);
 
-        return processingService.Get(iSentEmailId: sentEmailId);
+        return processingService.GetSentEmail(iSentEmailId: sentEmailId);
     });
 
-    public IQueryable<SentEmail> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
     {
         ValidateGetAll(inputs: [ignoreFilters]);
 
-        return processingService.GetAll(ignoreFilters: ignoreFilters);
+        return processingService.GetAllSentEmail(ignoreFilters: ignoreFilters);
     });
 
-    public ValueTask<SentEmail> AddAsync(SentEmail newSentEmail) =>
+    public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
         ValidateAddAsync(inputs: [newSentEmail]);
 
-        SentEmail result = await processingService.AddAsync(newSentEmail: newSentEmail);
+        SentEmail result = await processingService.AddSentEmailAsync(newSentEmail: newSentEmail);
         await eventService.RaiseSentEmailAddEventAsync(entity: result);
         return result;
     }, isValueTask: true);
 
-    public ValueTask<SentEmail> UpdateAsync(SentEmail updatedSentEmail) =>
+    public ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail) =>
         TryCatch<SentEmail>(operation: async () =>
     {
         ValidateUpdateAsync(inputs: [updatedSentEmail]);
 
-        SentEmail result = await processingService.UpdateAsync(updatedSentEmail: updatedSentEmail);
+        SentEmail result = await processingService.UpdateSentEmailAsync(updatedSentEmail: updatedSentEmail);
         await eventService.RaiseSentEmailUpdateEventAsync(entity: result);
         return result;
     }, isValueTask: true);
@@ -54,7 +54,7 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
 
         ValidateDeleteAsync(inputs: [sentEmailId]);
 
-        SentEmail entity = processingService.GetAll(ignoreFilters: true)
+        SentEmail entity = processingService.GetAllSentEmail(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == sentEmailId);
 
         if (entity is null)
@@ -74,19 +74,19 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items) =>
+    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> items) =>
         TryCatch<IEnumerable<Result<SentEmail>>>(operation: () =>
     {
         ValidateAddOrUpdate(inputs: [items]);
 
-        return processingService.AddOrUpdate(items: items);
+        return processingService.AddOrUpdateSentEmailResult(items: items);
     }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<SentEmail> items) =>
+    public ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> items) =>
         TryCatch(operation: () =>
     {
         ValidateDeleteAllAsync(inputs: [items]);
 
-        return processingService.DeleteAllAsync(items: items);
+        return processingService.DeleteAllSentEmailAsync(items: items);
     }, isValueTask: true);
 }

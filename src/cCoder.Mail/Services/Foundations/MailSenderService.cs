@@ -13,13 +13,13 @@ internal partial class MailSenderService(
     IAuthorizationBroker authorizationBroker)
     : IMailSenderService
 {
-    public MailSender Get(Guid mailSenderId) =>
+    public MailSender GetMailSender(Guid mailSenderId) =>
         TryCatch<MailSender>(operation: () =>
     {
 
         ValidateGet(inputs: [mailSenderId]);
 
-        MailSender mailSender = GetAll()
+        MailSender mailSender = GetAllMailSender()
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (mailSender is not null)
@@ -27,7 +27,7 @@ internal partial class MailSenderService(
             return mailSender;
         }
 
-        MailSender unrestrictedMailSender = GetAll(ignoreFilters: true)
+        MailSender unrestrictedMailSender = GetAllMailSender(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (unrestrictedMailSender is not null)
@@ -38,7 +38,7 @@ internal partial class MailSenderService(
         return unrestrictedMailSender;
     });
 
-    public IQueryable<MailSender> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
@@ -46,7 +46,7 @@ internal partial class MailSenderService(
             return mailSenderBroker.GetAllMailSenders(ignoreFilters: ignoreFilters);
         });
 
-    public ValueTask<MailSender> AddAsync(MailSender newMailSender) =>
+    public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: async () =>
     {
         ValidateAddAsync(inputs: [newMailSender]);
@@ -55,7 +55,7 @@ internal partial class MailSenderService(
         return await mailSenderBroker.AddMailSenderAsync(entity: Copy(entity: newMailSender));
     }, isValueTask: true);
 
-    public ValueTask<MailSender> UpdateAsync(MailSender updatedMailSender) =>
+    public ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender) =>
         TryCatch<MailSender>(operation: async () =>
     {
         ValidateUpdateAsync(inputs: [updatedMailSender]);
@@ -70,14 +70,14 @@ internal partial class MailSenderService(
 
         ValidateDeleteAsync(inputs: [mailSenderId]);
 
-        MailSender entity = GetAll(ignoreFilters: true)
+        MailSender entity = GetAllMailSender(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");
         return await mailSenderBroker.DeleteMailSenderAsync(entity: Copy(entity: entity));
     }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailSender> items) =>
+    public ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> items) =>
         TryCatch(operation: () =>
         {
             ValidateDeleteAllAsync(inputs: [items]);

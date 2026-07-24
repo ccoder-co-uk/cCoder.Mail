@@ -15,5 +15,5 @@ internal sealed class SmtpMailSenderProvider(ISmtpMailSenderService smtpMailSend
         MailProviderNames.Smtp;
 
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        smtpMailSenderService.SendAsync(email: email, cancellationToken: cancellationToken);
+        smtpMailSenderService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
 }

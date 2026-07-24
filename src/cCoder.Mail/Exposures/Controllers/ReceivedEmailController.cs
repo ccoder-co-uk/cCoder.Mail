@@ -44,7 +44,7 @@ value: new MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<ReceivedEmail> queryOptions) =>
-        Ok(value: service.GetAll());
+        Ok(value: service.GetAllReceivedEmail());
 
     [HttpGet]
     [AllowAnonymous]
@@ -60,7 +60,7 @@ value: new MailModelBuilder()
     {
         try
         {
-            IQueryable<ReceivedEmail> result = service.GetAll()
+            IQueryable<ReceivedEmail> result = service.GetAllReceivedEmail()
                 .Where(predicate: receivedEmail => receivedEmail.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -87,7 +87,7 @@ value: new MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.AddAsync(newReceivedEmail: entity));
+        return Ok(value: await service.AddReceivedEmailAsync(newReceivedEmail: entity));
     }
 
     [HttpPut]
@@ -106,13 +106,13 @@ value: new MailModelBuilder()
             return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await service.UpdateAsync(updatedReceivedEmail: entity));
+        return Ok(value: await service.UpdateReceivedEmailAsync(updatedReceivedEmail: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<ReceivedEmail> delta)
     {
-        ReceivedEmail originalEntity = service.Get(iReceivedEmailId: key);
+        ReceivedEmail originalEntity = service.GetReceivedEmail(iReceivedEmailId: key);
 
         if (originalEntity == null)
         {
@@ -120,7 +120,7 @@ value: new MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateAsync(updatedReceivedEmail: originalEntity));
+        return Ok(value: await service.UpdateReceivedEmailAsync(updatedReceivedEmail: originalEntity));
     }
 
     [HttpDelete]

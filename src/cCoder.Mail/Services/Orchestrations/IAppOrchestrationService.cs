@@ -11,7 +11,7 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 public interface IAppOrchestrationService
 {
-    ValueTask AddAsync(App newApp);
-    ValueTask UpdateAsync(App updatedApp);
+    ValueTask AddAppAsync(App newApp);
+    ValueTask UpdateAppAsync(App updatedApp);
     ValueTask DeleteAsync(int appId);
 }

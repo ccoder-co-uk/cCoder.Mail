@@ -9,20 +9,20 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class MailReceiverProcessingService(IMailReceiverService service) : IMailReceiverProcessingService
 {
-    public MailReceiver Get(Guid mailReceiverId) =>
+    public MailReceiver GetMailReceiver(Guid mailReceiverId) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateGet(inputs: [mailReceiverId]);
 
-            return service.Get(iMailReceiverId: mailReceiverId);
+            return service.GetMailReceiver(iMailReceiverId: mailReceiverId);
         });
 
-    public IQueryable<MailReceiver> GetAll(bool ignoreFilters = false) =>
+    public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
             ValidateGetAll(inputs: [ignoreFilters]);
 
-            return service.GetAll(ignoreFilters: ignoreFilters);
+            return service.GetAllMailReceiver(ignoreFilters: ignoreFilters);
         });
 
     public MailReceiver[] GetEnabled() =>
@@ -33,20 +33,20 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
             return service.GetEnabled();
         });
 
-    public ValueTask<MailReceiver> AddAsync(MailReceiver newMailReceiver) =>
+    public ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateAddAsync(inputs: [newMailReceiver]);
 
-            return service.AddAsync(newMailReceiver: newMailReceiver);
+            return service.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
         }, isValueTask: true);
 
-    public ValueTask<MailReceiver> UpdateAsync(MailReceiver updatedMailReceiver) =>
+    public ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>
         {
             ValidateUpdateAsync(inputs: [updatedMailReceiver]);
 
-            return service.UpdateAsync(updatedMailReceiver: updatedMailReceiver);
+            return service.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver);
         }, isValueTask: true);
 
     public ValueTask<int> DeleteAsync(Guid mailReceiverId) =>
@@ -65,11 +65,11 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask DeleteAllAsync(IEnumerable<MailReceiver> items) =>
+    public ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> items) =>
         TryCatch(operation: () =>
         {
             ValidateDeleteAllAsync(inputs: [items]);
 
-            return service.DeleteAllAsync(items: items);
+            return service.DeleteAllMailReceiverAsync(items: items);
         }, isValueTask: true);
 }

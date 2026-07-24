@@ -10,7 +10,7 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailReceivingService(IMailReceiverClientBroker mailReceiverClientBroker) : IMailReceivingService
 {
-    public Task<ReceivedEmail[]> ReceiveAsync(
+    public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
