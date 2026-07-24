@@ -11,14 +11,18 @@ using Xunit;
 
 namespace cCoder.Mail.Tests;
 
-public class HostedServicesRegistrationTests
+public partial class HostedServicesRegistrationTests
 {
     [Fact]
     public void AddMailHostedServices_RegistersMailSenderHostedService()
     {
+        // Given
         IServiceCollection services = new ServiceCollection();
 
+        // When
         services.AddMailHostedServices();
+
+        // Then
 
         Assert.Contains(
 collection: services,

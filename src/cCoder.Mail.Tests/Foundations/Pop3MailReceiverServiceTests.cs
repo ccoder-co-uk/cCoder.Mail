@@ -22,6 +22,7 @@ public partial class Pop3MailReceiverServiceTests
         pop3MailReceiverBrokerMock = new Mock<IPop3MailReceiverBroker>(behavior: MockBehavior.Strict);
         mailConfiguration = new MailConfiguration();
         mailConfigurationExposureMock = new Mock<IMailConfigurationExposure>(behavior: MockBehavior.Strict);
+
         mailConfigurationExposureMock.Setup(expression: exposure => exposure.GetMailConfiguration())
             .Returns(value: mailConfiguration);
 

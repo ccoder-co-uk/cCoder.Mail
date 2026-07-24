@@ -11,7 +11,7 @@ using Xunit;
 
 namespace cCoder.Mail.Tests;
 
-public class AppAggregationServiceTests
+public partial class AppAggregationServiceTests
 {
     private readonly Mock<IMailServerOrchestrationService> mailServerOrchestrationServiceMock;
     private readonly Mock<IMailSenderOrchestrationService> mailSenderOrchestrationServiceMock;
@@ -42,6 +42,7 @@ receivedEmailOrchestrationService: receivedEmailOrchestrationServiceMock.Object)
     [Fact]
     public async Task ShouldDeleteAppOwnedMailRowsByAppIdWhenDeleteAsync()
     {
+        // Given
         mailServerOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
             .Returns(value: ValueTask.CompletedTask);
 
@@ -60,8 +61,10 @@ receivedEmailOrchestrationService: receivedEmailOrchestrationServiceMock.Object)
         receivedEmailOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
             .Returns(value: ValueTask.CompletedTask);
 
+        // When
         await service.DeleteAsync(appId: 5);
 
+        // Then
         mailServerOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
         mailSenderOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
         mailReceiverOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
@@ -79,6 +82,7 @@ receivedEmailOrchestrationService: receivedEmailOrchestrationServiceMock.Object)
     [Fact]
     public async Task ShouldStampMailAppIdsWhenAddAsync()
     {
+        // Given
         App app = new()
         {
             Id = 9,
@@ -99,8 +103,10 @@ newQueuedEmail: It.Is<IEnumerable<QueuedEmail>>(match: items => items.All(predic
 newSentEmail: It.Is<IEnumerable<SentEmail>>(match: items => items.All(predicate: email => email.AppId == 9))))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>(result: []));
 
+        // When
         await service.AddAppAsync(newApp: app);
 
+        // Then
         mailServerOrchestrationServiceMock.VerifyAll();
         queuedEmailOrchestrationServiceMock.VerifyAll();
         sentEmailOrchestrationServiceMock.VerifyAll();

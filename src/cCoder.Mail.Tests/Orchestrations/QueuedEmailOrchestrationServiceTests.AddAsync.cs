@@ -43,6 +43,7 @@ public partial class QueuedEmailOrchestrationServiceTests
     [Fact]
     public async Task ShouldRaiseAddEventAsyncWhenAddAsync()
     {
+        // Given
         QueuedEmail entity = CreateRandomQueuedEmail();
 
         queuedEmailProcessingServiceMock.Setup(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: entity, checkPrivs: false))
@@ -52,7 +53,10 @@ public partial class QueuedEmailOrchestrationServiceTests
             .Setup(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity))
             .Returns(value: ValueTask.CompletedTask);
 
+        // When
         QueuedEmail result = await orchestrationService.AddQueuedEmailAsync(newQueuedEmail: entity, checkPrivs: false);
+
+        // Then
 
         result.Should()
             .BeSameAs(expected: entity);
