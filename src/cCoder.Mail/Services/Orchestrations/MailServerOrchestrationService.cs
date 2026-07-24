@@ -42,7 +42,9 @@ internal class MailServerOrchestrationService(IMailServerProcessingService proce
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (entity is null)
+        {
             return;
+        }
 
         await eventService.RaiseMailServerDeleteEventAsync(entity: entity);
         await processingService.DeleteAsync(id: id);

@@ -42,7 +42,9 @@ public class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommo
                 .ToArray();
 
             if (page.Length == 0)
+            {
                 break;
+            }
 
             result.AddRange(collection: page);
             skip += pageSize;

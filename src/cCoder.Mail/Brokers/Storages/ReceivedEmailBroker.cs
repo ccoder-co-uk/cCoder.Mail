@@ -65,7 +65,9 @@ public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IRece
         ReceivedEmail[] items = entities?.ToArray() ?? [];
 
         if (items.Length == 0)
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         await coreDataContext.ReceivedMail.AddRangeAsync(entities: items, cancellationToken: cancellationToken);
@@ -75,7 +77,9 @@ public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IRece
     public bool Exists(Guid mailReceiverId, string messageId)
     {
         if (string.IsNullOrWhiteSpace(value: messageId))
+        {
             return false;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
@@ -87,7 +91,9 @@ public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IRece
     public async ValueTask DeleteAllReceivedEmailsAsync(IEnumerable<ReceivedEmail> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.ReceivedMail.RemoveRange(entities: items);

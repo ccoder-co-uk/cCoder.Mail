@@ -42,7 +42,9 @@ internal class SentEmailOrchestrationService(ISentEmailProcessingService process
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (entity is null)
+        {
             return;
+        }
 
         await eventService.RaiseSentEmailDeleteEventAsync(entity: entity);
         await processingService.DeleteAsync(id: id);

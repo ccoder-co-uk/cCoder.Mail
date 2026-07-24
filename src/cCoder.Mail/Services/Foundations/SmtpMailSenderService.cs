@@ -45,7 +45,9 @@ cancellationToken: cancellationToken);
         message.To.Add(addresses: email.To);
 
         if (!string.IsNullOrWhiteSpace(value: email.CC))
+        {
             message.CC.Add(addresses: email.CC);
+        }
 
         return message;
     }
@@ -53,7 +55,9 @@ cancellationToken: cancellationToken);
     private static MailAddress CreateFromAddress(MailSender sender)
     {
         if (!string.IsNullOrWhiteSpace(value: sender.FromEmail))
+        {
             return new MailAddress(address: sender.FromEmail);
+        }
 
         return sender.User.Contains(value: '@')
             ? new MailAddress(address: sender.User)

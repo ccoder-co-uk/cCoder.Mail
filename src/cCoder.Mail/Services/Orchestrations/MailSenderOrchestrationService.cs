@@ -20,7 +20,9 @@ internal sealed class MailSenderOrchestrationService(
     public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
     {
         if (mailConfiguration.IsMigrating)
+        {
             return;
+        }
 
         using PeriodicTimer timer = new(period: TimeSpan.FromMinutes(minutes: 1));
 
@@ -46,7 +48,9 @@ internal sealed class MailSenderOrchestrationService(
         QueuedEmail[] queue = queuedEmailService.GetDispatchBatch(batchSize: 10, maxFailures: 10);
 
         if (queue.Length == 0)
+        {
             return;
+        }
 
         log.LogInformation(message: "Picked up a batch of {Count} emails.", args: queue.Length);
 
@@ -58,9 +62,13 @@ internal sealed class MailSenderOrchestrationService(
             cancellationToken.ThrowIfCancellationRequested();
 
             if (await ProcessEmailAsync(email: email, cancellationToken: cancellationToken))
+            {
                 success++;
+            }
             else
+            {
                 failures++;
+            }
 
             await Task.Delay(millisecondsDelay: 500, cancellationToken: cancellationToken);
         }

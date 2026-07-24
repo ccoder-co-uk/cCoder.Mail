@@ -82,7 +82,9 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
             .ToArray();
 
         if (failures.Length > 0)
+        {
             coreDataContext.SendFailures.RemoveRange(entities: failures);
+        }
 
         coreDataContext.QueuedMail.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
@@ -120,7 +122,9 @@ cancellationToken: cancellationToken);
             .FirstOrDefaultAsync(predicate: email => email.Id == entity.Id, cancellationToken: cancellationToken);
 
         if (queuedEmail == null)
+        {
             return;
+        }
 
         await coreDataContext.SentMail.AddAsync(
 entity: new SentEmail
@@ -139,7 +143,9 @@ entity: new SentEmail
 cancellationToken: cancellationToken);
 
         if (queuedEmail.FailedSends?.Any() == true)
+        {
             coreDataContext.SendFailures.RemoveRange(entities: queuedEmail.FailedSends);
+        }
 
         coreDataContext.QueuedMail.Remove(entity: queuedEmail);
         _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
@@ -148,7 +154,9 @@ cancellationToken: cancellationToken);
     public async ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.SendFailures.RemoveRange(entities: items);
@@ -158,7 +166,9 @@ cancellationToken: cancellationToken);
     public async ValueTask DeleteAllQueuedEmailsAsync(IEnumerable<QueuedEmail> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.QueuedMail.RemoveRange(entities: items);

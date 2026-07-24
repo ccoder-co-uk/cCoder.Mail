@@ -70,7 +70,9 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
     public async ValueTask DeleteAllMailReceiversAsync(IEnumerable<MailReceiver> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.MailReceivers.RemoveRange(entities: items);

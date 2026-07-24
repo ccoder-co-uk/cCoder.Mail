@@ -20,7 +20,9 @@ internal sealed class MailReceiverOrchestrationService(
     public async Task RunContinuouslyAsync(CancellationToken cancellationToken = default)
     {
         if (mailConfiguration.IsMigrating)
+        {
             return;
+        }
 
         using PeriodicTimer timer = new(period: TimeSpan.FromMinutes(minutes: 1));
 

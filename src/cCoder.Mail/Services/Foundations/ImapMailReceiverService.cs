@@ -46,7 +46,9 @@ cancellationToken: cancellationToken);
             ReceivedEmail receivedEmail = ParseMessage(rawMessage: rawMessage);
 
             if (IsWithinPeriod(receivedOn: receivedEmail.ReceivedOn, from: request.From, to: request.To))
+            {
                 messages.Add(item: receivedEmail);
+            }
         }
 
         await SendCommandAsync(connection: connection, tag: "az", command: "LOGOUT", cancellationToken: cancellationToken);
@@ -91,7 +93,9 @@ cancellationToken: cancellationToken);
             _ = response.AppendLine(value: line);
 
             if (line.StartsWith(value: $"{tag} OK", comparisonType: StringComparison.OrdinalIgnoreCase))
+            {
                 return response.ToString();
+            }
 
             if (line.StartsWith(value: $"{tag} NO", comparisonType: StringComparison.OrdinalIgnoreCase)
                 || line.StartsWith(value: $"{tag} BAD", comparisonType: StringComparison.OrdinalIgnoreCase))
@@ -112,7 +116,9 @@ cancellationToken: cancellationToken);
     private static string BuildSearchCommand(MailboxReceiveRequest request)
     {
         if (request.From is null)
+        {
             return "SEARCH ALL";
+        }
 
         return $"SEARCH SINCE {request.From.Value.UtcDateTime:dd-MMM-yyyy}";
     }
@@ -135,7 +141,9 @@ cancellationToken: cancellationToken);
         int headerStart = Array.FindIndex(array: lines, match: line => line.StartsWith(value: "From:", comparisonType: StringComparison.OrdinalIgnoreCase));
 
         if (headerStart > 0)
+        {
             lines = lines[headerStart..];
+        }
 
         int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
         string[] headerLines = separatorIndex >= 0 ? lines[..separatorIndex] : lines;
@@ -172,7 +180,9 @@ cancellationToken: cancellationToken);
             int separatorIndex = line.IndexOf(value: ':');
 
             if (separatorIndex <= 0)
+            {
                 continue;
+            }
 
             currentName = line[..separatorIndex];
             headers[currentName] = line[(separatorIndex + 1)..].Trim();
@@ -206,7 +216,9 @@ cancellationToken: cancellationToken);
     private static bool IsWithinPeriod(DateTimeOffset receivedOn, DateTimeOffset? from, DateTimeOffset? to)
     {
         if (receivedOn == DateTimeOffset.MinValue)
+        {
             return from is null && to is null;
+        }
 
         return (from is null || receivedOn >= from.Value)
             && (to is null || receivedOn <= to.Value);
@@ -219,19 +231,29 @@ cancellationToken: cancellationToken);
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
+        {
             throw new ArgumentNullException(paramName: nameof(request));
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.Host))
+        {
             throw new InvalidOperationException(message: "Mailbox host is required.");
+        }
 
         if (request.Port <= 0)
+        {
             throw new InvalidOperationException(message: "Mailbox port is required.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.User))
+        {
             throw new InvalidOperationException(message: "Mailbox user is required.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.Password))
+        {
             throw new InvalidOperationException(message: "Mailbox password is required.");
+        }
     }
 
     private static string ReadRequiredConfiguration(string value, string configurationName) =>

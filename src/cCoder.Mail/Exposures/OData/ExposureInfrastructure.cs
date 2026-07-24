@@ -53,7 +53,9 @@ namespace cCoder.Mail.Exposures.OData
         private static MetadataContainer BuildMetaFor(IEdmType definition)
         {
             if (definition?.TypeKind != EdmTypeKind.Collection)
+            {
                 return null;
+            }
 
             Type cSharpType = Type.GetType(typeName: definition.FullTypeName(), throwOnError: false);
             return cSharpType is null ? null : new MetadataContainer(type: cSharpType, isEntity: true, hasEndpoint: true);

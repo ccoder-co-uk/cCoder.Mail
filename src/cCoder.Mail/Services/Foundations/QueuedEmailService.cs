@@ -20,13 +20,17 @@ internal class QueuedEmailService(
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (queuedEmail is not null)
+        {
             return queuedEmail;
+        }
 
         QueuedEmail unrestrictedQueuedEmail = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (unrestrictedQueuedEmail is not null)
+        {
             throw new SecurityException(message: "Access Denied!");
+        }
 
         return null;
     }
@@ -40,7 +44,9 @@ internal class QueuedEmailService(
     public async ValueTask<QueuedEmail> AddAsync(QueuedEmail queuedEmail, bool checkPrivileges = true)
     {
         if (checkPrivileges)
+        {
             authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
+        }
 
         QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(entity: Copy(queuedEmail: queuedEmail));
         queuedEmail.Id = result.Id;
@@ -94,10 +100,14 @@ internal class QueuedEmailService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (queuedEmail is null)
+        {
             return;
+        }
 
         if (checkPrivileges)
+        {
             authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_delete");
+        }
 
         await queuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(
 items: queuedEmail.FailedSends?.Select(selector: Copy)
@@ -109,7 +119,9 @@ items: queuedEmail.FailedSends?.Select(selector: Copy)
     public async ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items)
     {
         foreach (QueuedEmail item in items ?? [])
+        {
             await DeleteAsync(id: item.Id, checkPrivileges: false);
+        }
     }
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>

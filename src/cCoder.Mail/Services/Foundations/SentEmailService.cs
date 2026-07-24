@@ -23,13 +23,17 @@ internal class SentEmailService(
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (sentEmail is not null)
+        {
             return sentEmail;
+        }
 
         SentEmail unrestrictedSentEmail = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (unrestrictedSentEmail is not null)
+        {
             throw new SecurityException(message: "Access Denied!");
+        }
 
         return null;
     }
@@ -79,7 +83,9 @@ internal class SentEmailService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (sentEmail is null)
+        {
             return;
+        }
 
         authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
         _ = await sentEmailBroker.DeleteSentEmailAsync(entity: Copy(sentEmail: sentEmail));

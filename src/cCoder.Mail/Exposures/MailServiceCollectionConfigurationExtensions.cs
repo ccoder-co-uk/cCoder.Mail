@@ -76,12 +76,16 @@ builder: builder);
         services.AddSingleton<Action<ODataConventionModelBuilder>>(implementationInstance: configureModel);
 
         if (builder is not null)
+        {
             configureModel(obj: builder);
+        }
 
         AddAspNet(services: services);
 
         if (builder is null)
+        {
             AddApiDocumentation(services: services, documentName: documentName, configuration: configuration, useFullSchemaIds: useFullSchemaIds);
+        }
 
         IEdmModel routeModel = BuildRouteModel(configureModel: configureModel);
         DefaultODataBatchHandler batchHandler = new();
@@ -134,7 +138,9 @@ documentName: documentName,
 configuration: configuration));
 
             if (useFullSchemaIds)
+            {
                 options.CustomSchemaIds(schemaIdSelector: type => type.FullName?.Replace(oldChar: '+', newChar: '.') ?? type.Name);
+            }
 
             options.AddSecurityDefinition(name: "bearer", securityScheme: new OpenApiSecurityScheme
             {
@@ -181,10 +187,14 @@ configuration: configuration));
         MailConfiguration configuration)
     {
         if (string.IsNullOrWhiteSpace(value: relativePath))
+        {
             return false;
+        }
 
         if (string.Equals(a: swaggerDocumentName, b: "v1", comparisonType: StringComparison.OrdinalIgnoreCase))
+        {
             swaggerDocumentName = "Core";
+        }
 
         string path = NormalizePath(relativePath: relativePath);
 

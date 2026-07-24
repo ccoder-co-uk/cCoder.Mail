@@ -53,7 +53,9 @@ internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAu
         User user = GetCurrentUser();
 
         if (user == null || !(HasAppAdminPrivilege(user: user, appId: appId) || HasPrivilege(user: user, appId: appId, privilege: privilege)))
+        {
             throw new SecurityException(message: "Access Denied!");
+        }
     }
 
     private static bool HasPrivilege(User user, int? appId, string privilege)

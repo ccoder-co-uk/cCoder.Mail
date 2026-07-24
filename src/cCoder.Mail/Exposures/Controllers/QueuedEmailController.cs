@@ -95,7 +95,9 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     public async Task<IActionResult> Post([FromBody] QueuedEmail entity)
     {
         if (!ModelState.IsValid)
+        {
             return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+        }
 
         return Ok(value: await Service.AddAsync(entity: entity));
     }
@@ -112,7 +114,9 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail entity)
     {
         if (!ModelState.IsValid)
+        {
             return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+        }
 
         return Ok(value: await Service.UpdateAsync(entity: entity));
     }
@@ -123,7 +127,9 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
         QueuedEmail originalEntity = Service.Get(id: key);
 
         if (originalEntity == null)
+        {
             return NotFound();
+        }
 
         delta.Patch(original: originalEntity);
         return Ok(value: await Service.UpdateAsync(entity: originalEntity));

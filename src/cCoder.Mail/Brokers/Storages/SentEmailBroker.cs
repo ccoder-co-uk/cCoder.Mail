@@ -61,7 +61,9 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
     public async ValueTask DeleteAllSentEmailsAsync(IEnumerable<SentEmail> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.SentMail.RemoveRange(entities: items);

@@ -61,7 +61,9 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
     public async ValueTask DeleteAllMailServersAsync(IEnumerable<MailServer> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.MailServers.RemoveRange(entities: items);

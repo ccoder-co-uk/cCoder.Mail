@@ -19,13 +19,17 @@ internal class ReceivedEmailService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (receivedEmail is not null)
+        {
             return receivedEmail;
+        }
 
         ReceivedEmail unrestrictedReceivedEmail = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (unrestrictedReceivedEmail is not null)
+        {
             authorizationBroker.Authorize(appId: unrestrictedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_read");
+        }
 
         return unrestrictedReceivedEmail;
     }

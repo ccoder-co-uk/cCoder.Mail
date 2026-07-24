@@ -19,13 +19,17 @@ internal class MailSenderService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (mailSender is not null)
+        {
             return mailSender;
+        }
 
         MailSender unrestrictedMailSender = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (unrestrictedMailSender is not null)
+        {
             authorizationBroker.Authorize(appId: unrestrictedMailSender.AppId, privilege: $"{nameof(MailSender)}_read");
+        }
 
         return unrestrictedMailSender;
     }

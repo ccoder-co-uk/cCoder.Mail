@@ -30,7 +30,9 @@ internal sealed class MicrosoftGraphMailReceiverService(
         HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
+        {
             throw new InvalidOperationException(message: $"Microsoft Graph mailbox receive failed: {response.Content}");
+        }
 
         return ParseMessages(content: response.Content);
     }
@@ -66,7 +68,9 @@ value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftG
         HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: request, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
+        {
             throw new InvalidOperationException(message: $"Microsoft Graph token request failed: {response.Content}");
+        }
 
         using JsonDocument document = JsonDocument.Parse(json: response.Content);
 
@@ -102,7 +106,9 @@ configurationName: "Microsoft Graph tenant id");
         string filter = BuildFilter(request: request);
 
         if (!string.IsNullOrWhiteSpace(value: filter))
+        {
             query.Add(item: $"$filter={Uri.EscapeDataString(stringToEscape: filter)}");
+        }
 
         return $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: request.User)}/mailFolders/inbox/messages"
             + $"?{string.Join(separator: "&", values: query)}";
@@ -113,10 +119,14 @@ configurationName: "Microsoft Graph tenant id");
         List<string> filters = [];
 
         if (request.From is not null)
+        {
             filters.Add(item: $"receivedDateTime ge {request.From.Value.UtcDateTime:O}");
+        }
 
         if (request.To is not null)
+        {
             filters.Add(item: $"receivedDateTime le {request.To.Value.UtcDateTime:O}");
+        }
 
         return string.Join(separator: " and ", values: filters);
     }
@@ -126,7 +136,9 @@ configurationName: "Microsoft Graph tenant id");
         using JsonDocument document = JsonDocument.Parse(json: content);
 
         if (!document.RootElement.TryGetProperty(propertyName: "value", value: out JsonElement messages))
+        {
             return [];
+        }
 
         return messages.EnumerateArray()
             .Select(selector: ParseMessage)
@@ -163,10 +175,14 @@ configurationName: "Microsoft Graph tenant id");
     private static string GetEmailAddress(JsonElement message, string propertyName)
     {
         if (!message.TryGetProperty(propertyName: propertyName, value: out JsonElement recipient))
+        {
             return null;
+        }
 
         if (!recipient.TryGetProperty(propertyName: "emailAddress", value: out JsonElement emailAddress))
+        {
             return null;
+        }
 
         return GetString(element: emailAddress, propertyName: "address");
     }
@@ -174,7 +190,9 @@ configurationName: "Microsoft Graph tenant id");
     private static string GetRecipientAddresses(JsonElement message, string propertyName)
     {
         if (!message.TryGetProperty(propertyName: propertyName, value: out JsonElement recipients))
+        {
             return null;
+        }
 
         return string.Join(
 separator: ", ",
@@ -206,9 +224,13 @@ message: "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox recei
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
+        {
             throw new ArgumentNullException(paramName: nameof(request));
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.User))
+        {
             throw new InvalidOperationException(message: "Mailbox user is required.");
+        }
     }
 }

@@ -105,7 +105,9 @@ cancellationToken: cancellationToken);
             ?? throw new InvalidOperationException(message: "The mail server closed the connection.");
 
         if (!line.StartsWith(value: "+OK", comparisonType: StringComparison.OrdinalIgnoreCase))
+        {
             throw new InvalidOperationException(message: line);
+        }
 
         return line;
     }
@@ -122,7 +124,9 @@ cancellationToken: cancellationToken);
         while (await pop3MailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken) is { } line)
         {
             if (line == ".")
+            {
                 break;
+            }
 
             lines.Add(item: line.StartsWith(value: "..", comparisonType: StringComparison.Ordinal) ? line[1..] : line);
         }
@@ -175,7 +179,9 @@ cancellationToken: cancellationToken);
             int separatorIndex = line.IndexOf(value: ':');
 
             if (separatorIndex <= 0)
+            {
                 continue;
+            }
 
             currentName = line[..separatorIndex];
             headers[currentName] = line[(separatorIndex + 1)..].Trim();
@@ -190,7 +196,9 @@ cancellationToken: cancellationToken);
         string transferEncoding)
     {
         if (contentType?.StartsWith(value: "multipart/", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+        {
             return ParseMultipartBody(bodyLines: bodyLines, contentType: contentType);
+        }
 
         string content = DecodeBody(content: string.Join(separator: "\n", value: bodyLines), transferEncoding: transferEncoding);
 
@@ -206,7 +214,9 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
             .Groups["boundary"].Value;
 
         if (string.IsNullOrWhiteSpace(value: boundary))
+        {
             return new ParsedBody(Content: string.Join(separator: "\n", value: bodyLines), IsBodyHtml: false);
+        }
 
         string rawBody = string.Join(separator: "\n", value: bodyLines);
         string[] sections = rawBody.Split(separator: $"--{boundary}", options: StringSplitOptions.RemoveEmptyEntries);
@@ -217,7 +227,9 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
             string normalized = section.Trim('\r', '\n', '-');
 
             if (string.IsNullOrWhiteSpace(value: normalized))
+            {
                 continue;
+            }
 
             string[] lines = normalized.Split(separator: '\n')
                 .Select(selector: line => line.TrimEnd(trimChar: '\r'))
@@ -226,7 +238,9 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
             int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
 
             if (separatorIndex < 0)
+            {
                 continue;
+            }
 
             Dictionary<string, string> headers = ParseHeaders(lines: lines[..separatorIndex]);
             string partContentType = Header(headers: headers, name: "Content-Type");
@@ -237,10 +251,14 @@ content: string.Join(separator: "\n", value: lines[(separatorIndex + 1)..]),
 transferEncoding: partTransferEncoding);
 
             if (partContentType?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+            {
                 return new ParsedBody(Content: content, IsBodyHtml: true);
+            }
 
             if (partContentType?.StartsWith(value: "text/plain", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+            {
                 fallback = new ParsedBody(Content: content, IsBodyHtml: false);
+            }
         }
 
         return fallback;
@@ -279,7 +297,9 @@ evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase
     private static string DecodeHeader(string value)
     {
         if (string.IsNullOrWhiteSpace(value: value))
+        {
             return value;
+        }
 
         return EncodedWordRegex()
             .Replace(input: value, evaluator: match =>
@@ -301,7 +321,9 @@ evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase
     private static bool IsWithinPeriod(DateTimeOffset receivedOn, DateTimeOffset? from, DateTimeOffset? to)
     {
         if (receivedOn == DateTimeOffset.MinValue)
+        {
             return from is null && to is null;
+        }
 
         return (from is null || receivedOn >= from.Value)
             && (to is null || receivedOn <= to.Value);
@@ -316,19 +338,29 @@ evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
+        {
             throw new ArgumentNullException(paramName: nameof(request));
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.Host))
+        {
             throw new InvalidOperationException(message: "Mailbox host is required.");
+        }
 
         if (request.Port <= 0)
+        {
             throw new InvalidOperationException(message: "Mailbox port is required.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.User))
+        {
             throw new InvalidOperationException(message: "Mailbox user is required.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: request.Password))
+        {
             throw new InvalidOperationException(message: "Mailbox password is required.");
+        }
     }
 
     private static string ReadRequiredConfiguration(string value, string configurationName) =>

@@ -35,7 +35,9 @@ public static partial class WebApplicationExtensions
         IServiceProvider services = scope.ServiceProvider;
 
         foreach (IMailEventHandlers handlers in services.GetServices<IMailEventHandlers>())
+        {
             handlers.ListenToAllEvents();
+        }
 
         return app;
     }

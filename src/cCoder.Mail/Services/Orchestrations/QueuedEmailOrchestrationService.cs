@@ -42,7 +42,9 @@ internal class QueuedEmailOrchestrationService(IQueuedEmailProcessingService pro
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (entity is null)
+        {
             return;
+        }
 
         await eventService.RaiseQueuedEmailDeleteEventAsync(entity: entity);
         await processingService.DeleteAsync(id: id);

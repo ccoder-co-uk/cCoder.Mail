@@ -59,7 +59,9 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
     public async ValueTask DeleteAllMailSendersAsync(IEnumerable<MailSender> items)
     {
         if (items == null || !items.Any())
+        {
             return;
+        }
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         coreDataContext.MailSenders.RemoveRange(entities: items);

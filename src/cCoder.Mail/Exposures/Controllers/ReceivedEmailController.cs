@@ -83,7 +83,9 @@ value: new MailModelBuilder()
     public async Task<IActionResult> Post([FromBody] ReceivedEmail entity)
     {
         if (!ModelState.IsValid)
+        {
             return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+        }
 
         return Ok(value: await service.AddAsync(entity: entity));
     }
@@ -100,7 +102,9 @@ value: new MailModelBuilder()
     public async Task<IActionResult> Put([FromRoute] int key, [FromBody] ReceivedEmail entity)
     {
         if (!ModelState.IsValid)
+        {
             return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+        }
 
         return Ok(value: await service.UpdateAsync(entity: entity));
     }
@@ -111,7 +115,9 @@ value: new MailModelBuilder()
         ReceivedEmail originalEntity = service.Get(id: key);
 
         if (originalEntity == null)
+        {
             return NotFound();
+        }
 
         delta.Patch(original: originalEntity);
         return Ok(value: await service.UpdateAsync(entity: originalEntity));

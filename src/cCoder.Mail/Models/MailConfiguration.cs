@@ -92,7 +92,9 @@ public class MailConfiguration
             : providerName;
 
         if (SenderProviders.TryGetValue(key: name, value: out string configuredName))
+        {
             return configuredName;
+        }
 
         if (string.IsNullOrWhiteSpace(value: providerName)
             || name.Contains(value: '.', comparisonType: StringComparison.Ordinal)

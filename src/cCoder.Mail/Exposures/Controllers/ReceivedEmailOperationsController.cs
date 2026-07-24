@@ -21,7 +21,9 @@ public sealed class ReceivedEmailOperationsController(
         CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
+        {
             return BadRequest(modelState: ModelState);
+        }
 
         return Ok(value: await service.ReceiveAsync(request: request, cancellationToken: cancellationToken));
     }
@@ -32,7 +34,9 @@ public sealed class ReceivedEmailOperationsController(
         CancellationToken cancellationToken)
     {
         if (count <= 0)
+        {
             return BadRequest(error: "Count must be greater than zero.");
+        }
 
         return Ok(value: await service.ReceiveTopAsync(count: count, cancellationToken: cancellationToken));
     }

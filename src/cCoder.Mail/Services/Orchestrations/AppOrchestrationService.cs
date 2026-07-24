@@ -53,22 +53,34 @@ internal class AppOrchestrationService(
     private static void StampMail(App app)
     {
         foreach (MailServer mailServer in app.MailServers ?? [])
+        {
             mailServer.AppId = app.Id;
+        }
 
         foreach (MailSender mailSender in app.MailSenders ?? [])
+        {
             mailSender.AppId = app.Id;
+        }
 
         foreach (MailReceiver mailReceiver in app.MailReceivers ?? [])
+        {
             mailReceiver.AppId = app.Id;
+        }
 
         foreach (QueuedEmail queuedEmail in app.MailQueue ?? [])
+        {
             queuedEmail.AppId = app.Id;
+        }
 
         foreach (SentEmail sentEmail in app.SentMail ?? [])
+        {
             sentEmail.AppId = app.Id;
+        }
 
         foreach (ReceivedEmail receivedEmail in app.ReceivedMail ?? [])
+        {
             receivedEmail.AppId = app.Id;
+        }
     }
 
     private static async ValueTask AddOrUpdateAsync(
@@ -78,9 +90,13 @@ internal class AppOrchestrationService(
         foreach (MailSender item in items)
         {
             if (item.Id == Guid.Empty)
+            {
                 _ = await service.AddAsync(entity: item);
+            }
             else
+            {
                 _ = await service.UpdateAsync(entity: item);
+            }
         }
     }
 
@@ -91,9 +107,13 @@ internal class AppOrchestrationService(
         foreach (MailReceiver item in items)
         {
             if (item.Id == Guid.Empty)
+            {
                 _ = await service.AddAsync(entity: item);
+            }
             else
+            {
                 _ = await service.UpdateAsync(entity: item);
+            }
         }
     }
 
@@ -104,9 +124,13 @@ internal class AppOrchestrationService(
         foreach (ReceivedEmail item in items)
         {
             if (item.Id == 0)
+            {
                 _ = await service.AddAsync(entity: item);
+            }
             else
+            {
                 _ = await service.UpdateAsync(entity: item);
+            }
         }
     }
 

@@ -24,6 +24,8 @@ public class Replacement
         Old = old;
 
         if (replacer is not null)
+        {
             ReplaceFunction = replacer;
+        }
     }
 }

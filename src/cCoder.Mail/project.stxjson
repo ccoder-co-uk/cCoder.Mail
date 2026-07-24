@@ -5640,13 +5640,6 @@
       "LineNumber": 55
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.AuthorizationBroker",
-      "LineNumber": 56
-    },
-    {
       "Code": "STX0006",
       "Description": "Business implementation classes should be internal by default.",
       "Severity": "Warning",
@@ -5694,13 +5687,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
       "LineNumber": 44
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
-      "LineNumber": 45
     },
     {
       "Code": "STX0006",
@@ -5752,13 +5738,6 @@
       "LineNumber": 72
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 73
-    },
-    {
       "Code": "STX0006",
       "Description": "Business implementation classes should be internal by default.",
       "Severity": "Warning",
@@ -5806,13 +5785,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
       "LineNumber": 61
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 62
     },
     {
       "Code": "STX0006",
@@ -5864,13 +5836,6 @@
       "LineNumber": 63
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 64
-    },
-    {
       "Code": "STX0006",
       "Description": "Business implementation classes should be internal by default.",
       "Severity": "Warning",
@@ -5892,67 +5857,32 @@
       "LineNumber": 84
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STXB002",
+      "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 85
+      "LineNumber": 124
     },
     {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 122
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 123
+      "LineNumber": 145
     },
     {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 142
+      "LineNumber": 156
     },
     {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 150
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 151
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 160
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 161
+      "LineNumber": 168
     },
     {
       "Code": "STX0006",
@@ -5976,39 +5906,18 @@
       "LineNumber": 67
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STXB002",
+      "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 68
+      "LineNumber": 79
     },
     {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 78
-    },
-    {
-      "Code": "STXB002",
-      "Description": "A broker must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 90
+      "LineNumber": 93
     },
     {
       "Code": "STX0006",
@@ -6032,13 +5941,6 @@
       "LineNumber": 63
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.SentEmailBroker",
-      "LineNumber": 64
-    },
-    {
       "Code": "STXAPI001",
       "Description": "An API controller must have exactly one business dependency.",
       "Severity": "Warning",
@@ -6060,39 +5962,18 @@
       "LineNumber": 83
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 86
-    },
-    {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 100
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 103
+      "LineNumber": 102
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 108
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 114
+      "LineNumber": 112
     },
     {
       "Code": "STX0019",
@@ -6102,39 +5983,18 @@
       "LineNumber": 83
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 86
-    },
-    {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 100
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 103
+      "LineNumber": 102
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 108
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 114
+      "LineNumber": 112
     },
     {
       "Code": "STX0002",
@@ -6151,39 +6011,18 @@
       "LineNumber": 95
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 98
-    },
-    {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 112
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 115
+      "LineNumber": 114
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 120
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 126
+      "LineNumber": 124
     },
     {
       "Code": "STX0002",
@@ -6193,60 +6032,18 @@
       "LineNumber": 24
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 98
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 115
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 120
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 126
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 86
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 103
+      "LineNumber": 124
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 108
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 114
+      "LineNumber": 112
     },
     {
       "Code": "STXAPI004",
@@ -6256,25 +6053,11 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 24
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 35
+      "LineNumber": 31
     },
     {
       "Code": "STX0002",
@@ -6284,32 +6067,11 @@
       "LineNumber": 24
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 98
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 115
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 120
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 126
+      "LineNumber": 124
     },
     {
       "Code": "STX0019",
@@ -6379,7 +6141,7 @@
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.ExtendedMetadataContainer",
-      "LineNumber": 134
+      "LineNumber": 138
     },
     {
       "Code": "STXE005",
@@ -6515,32 +6277,18 @@
       "LineNumber": 87
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STXE001",
+      "Description": "An exposure must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 88
+      "LineNumber": 92
     },
     {
       "Code": "STXE001",
       "Description": "An exposure must not contain branching logic.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 90
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 91
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 93
+      "LineNumber": 97
     },
     {
       "Code": "STX0002",
@@ -6568,21 +6316,21 @@
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "LineNumber": 177
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "LineNumber": 178
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
       "LineNumber": 179
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
+      "LineNumber": 180
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
+      "LineNumber": 181
     },
     {
       "Code": "STX0002",
@@ -6631,34 +6379,6 @@
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 161
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 162
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 164
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
       "LineNumber": 165
     },
     {
@@ -6679,29 +6399,29 @@
       "Code": "STX0002",
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 144
+      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
+      "LineNumber": 168
     },
     {
       "Code": "STX0002",
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 145
+      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
+      "LineNumber": 169
     },
     {
       "Code": "STX0002",
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 146
+      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
+      "LineNumber": 170
     },
     {
       "Code": "STX0002",
       "Description": "Properties may only be declared on models.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 147
+      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
+      "LineNumber": 171
     },
     {
       "Code": "STX0002",
@@ -6765,6 +6485,34 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
       "LineNumber": 156
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
+      "LineNumber": 157
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
+      "LineNumber": 158
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
+      "LineNumber": 159
+    },
+    {
+      "Code": "STX0002",
+      "Description": "Properties may only be declared on models.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
+      "LineNumber": 160
     },
     {
       "Code": "STXAPP001",
@@ -6956,25 +6704,18 @@
       "LineNumber": 88
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STXM001",
+      "Description": "Models must not declare methods.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 95
+      "LineNumber": 109
     },
     {
       "Code": "STXM001",
       "Description": "Models must not declare methods.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 107
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 118
+      "LineNumber": 120
     },
     {
       "Code": "STXM002",
@@ -7012,25 +6753,11 @@
       "LineNumber": 14
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Replacement",
-      "LineNumber": 27
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Result\u003CT\u003E",
-      "LineNumber": 27
-    },
-    {
       "Code": "STXM001",
       "Description": "Models must not declare methods.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Models.Result\u003CT\u003E",
-      "LineNumber": 44
+      "LineNumber": 46
     },
     {
       "Code": "STX0008",
@@ -7306,102 +7033,25 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 49
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 59
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 94
+      "LineNumber": 61
     },
     {
       "Code": "STXFORMAT012",
       "Description": "Expression-bodied methods must return awaitable calls directly instead of adding redundant async and await keywords.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 106
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 115
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 138
+      "LineNumber": 110
     },
     {
       "Code": "STXFORMAT005",
       "Description": "Method call arguments must declare their parameter names.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 152
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 175
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 209
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 222
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 225
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 228
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 231
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 234
+      "LineNumber": 160
     },
     {
       "Code": "STX0008",
@@ -7523,81 +7173,67 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 22
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 28
+      "LineNumber": 26
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 39
+      "LineNumber": 43
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 39
+      "LineNumber": 43
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 45
+      "LineNumber": 49
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 45
+      "LineNumber": 49
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 51
+      "LineNumber": 55
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 53
+      "LineNumber": 57
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 60
+      "LineNumber": 64
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailReceiverService",
-      "LineNumber": 60
+      "LineNumber": 64
     },
     {
       "Code": "STX0003",
@@ -7740,81 +7376,67 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 22
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 28
+      "LineNumber": 26
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 36
+      "LineNumber": 40
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 36
+      "LineNumber": 40
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 42
+      "LineNumber": 46
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 42
+      "LineNumber": 46
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 48
+      "LineNumber": 52
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 50
+      "LineNumber": 54
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 57
+      "LineNumber": 61
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailSenderService",
-      "LineNumber": 57
+      "LineNumber": 61
     },
     {
       "Code": "STX0003",
@@ -7950,71 +7572,50 @@
       "LineNumber": 22
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 26
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 32
+      "LineNumber": 30
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 40
+      "LineNumber": 44
     },
     {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 40
+      "LineNumber": 44
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 56
+      "LineNumber": 60
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 56
+      "LineNumber": 60
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 72
+      "LineNumber": 76
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 74
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
       "LineNumber": 78
@@ -8024,14 +7625,14 @@
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 84
+      "LineNumber": 90
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MailServerService",
-      "LineNumber": 84
+      "LineNumber": 90
     },
     {
       "Code": "STX0008",
@@ -8097,88 +7698,11 @@
       "LineNumber": 21
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 33
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 41
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 69
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 105
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 116
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 119
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 129
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 166
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 169
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 177
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 209
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 212
+      "LineNumber": 43
     },
     {
       "Code": "STX0008",
@@ -8235,48 +7759,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 32
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 38
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 43
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 46
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService",
-      "LineNumber": 113
     },
     {
       "Code": "STX0008",
@@ -8342,123 +7824,11 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 108
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 125
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 178
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 193
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 209
-    },
-    {
       "Code": "STXFORMAT005",
       "Description": "Method call arguments must declare their parameter names.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 217
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 220
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 229
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 240
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 243
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 282
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 304
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 319
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 322
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 325
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 328
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 331
+      "LineNumber": 227
     },
     {
       "Code": "STX0008",
@@ -8538,74 +7908,32 @@
       "LineNumber": 19
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 23
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 43
+      "LineNumber": 27
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 91
-    },
-    {
-      "Code": "STX0005",
-      "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 93
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
       "LineNumber": 97
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STX0005",
+      "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 100
+      "LineNumber": 99
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 112
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.QueuedEmailService",
-      "LineNumber": 112
+      "LineNumber": 123
     },
     {
       "Code": "STX0008",
@@ -8685,39 +8013,25 @@
       "LineNumber": 18
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 22
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 28
+      "LineNumber": 26
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 48
+      "LineNumber": 52
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.ReceivedEmailService",
-      "LineNumber": 50
+      "LineNumber": 54
     },
     {
       "Code": "STX0008",
@@ -8797,43 +8111,22 @@
       "LineNumber": 22
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 26
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 32
+      "LineNumber": 30
     },
     {
       "Code": "STX0017",
       "Description": "Identifier parameters must be named for their type, for example studentId.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 76
+      "LineNumber": 80
     },
     {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
-      "LineNumber": 78
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SentEmailService",
       "LineNumber": 82
@@ -8888,25 +8181,11 @@
       "LineNumber": 12
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 48
-    },
-    {
       "Code": "STX0022",
       "Description": "Creation method names must include the concrete type they create.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 53
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 56
+      "LineNumber": 55
     },
     {
       "Code": "STX0004",
@@ -8998,90 +8277,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
       "LineNumber": 32
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 56
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 59
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 62
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 65
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 68
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 71
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 81
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 83
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 94
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 96
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 107
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 109
     },
     {
       "Code": "STX0003",
@@ -9308,18 +8503,11 @@
       "LineNumber": 12
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 23
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
-      "LineNumber": 31
+      "LineNumber": 33
     },
     {
       "Code": "STX0003",
@@ -9490,46 +8678,18 @@
       "LineNumber": 13
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 23
-    },
-    {
       "Code": "STX0005",
       "Description": "A public service method must not call another public method on the same service.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 63
+      "LineNumber": 33
     },
     {
       "Code": "STXFORMAT005",
       "Description": "Method call arguments must declare their parameter names.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 68
+      "LineNumber": 76
     },
     {
       "Code": "STX0007",
@@ -9630,32 +8790,25 @@
       "LineNumber": 39
     },
     {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
+      "Code": "STX0018",
+      "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 45
+      "LineNumber": 56
     },
     {
       "Code": "STX0018",
       "Description": "Service method names must include each model type they operate on.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 54
-    },
-    {
-      "Code": "STX0018",
-      "Description": "Service method names must include each model type they operate on.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 59
+      "LineNumber": 61
     },
     {
       "Code": "STX0021",
       "Description": "delete model parameters must use the deleted prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
-      "LineNumber": 59
+      "LineNumber": 61
     },
     {
       "Code": "STX0008",
@@ -9719,13 +8872,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
       "LineNumber": 39
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
-      "LineNumber": 45
     },
     {
       "Code": "STX0003",
@@ -9873,13 +9019,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
       "LineNumber": 39
-    },
-    {
-      "Code": "STXFORMAT007",
-      "Description": "Control-flow statement bodies must always be enclosed in scope braces.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
-      "LineNumber": 45
     },
     {
       "Code": "STX0003",

@@ -19,13 +19,17 @@ internal class MailReceiverService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (mailReceiver is not null)
+        {
             return mailReceiver;
+        }
 
         MailReceiver unrestrictedMailReceiver = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (unrestrictedMailReceiver is not null)
+        {
             authorizationBroker.Authorize(appId: unrestrictedMailReceiver.AppId, privilege: $"{nameof(MailReceiver)}_read");
+        }
 
         return unrestrictedMailReceiver;
     }

@@ -29,24 +29,34 @@ internal sealed class MicrosoftGraphMailSenderService(
         HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
+        {
             throw new InvalidOperationException(message: $"Microsoft Graph mail send failed: {response.Content}");
+        }
     }
 
     private static MailSender GetMailSender(QueuedEmail email)
     {
         if (email == null)
+        {
             throw new ArgumentNullException(paramName: nameof(email));
+        }
 
         MailSender sender = email.MailSender;
 
         if (sender == null)
+        {
             throw new InvalidOperationException(message: "No mail sender configuration could be found to send the email.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: sender.User))
+        {
             throw new InvalidOperationException(message: "Microsoft Graph sender user is required.");
+        }
 
         if (string.IsNullOrWhiteSpace(value: email.To))
+        {
             throw new InvalidOperationException(message: "Email recipient is required.");
+        }
 
         return sender;
     }
@@ -110,7 +120,9 @@ value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftG
         HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: request, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
+        {
             throw new InvalidOperationException(message: $"Microsoft Graph token request failed: {response.Content}");
+        }
 
         using JsonDocument document = JsonDocument.Parse(json: response.Content);
 

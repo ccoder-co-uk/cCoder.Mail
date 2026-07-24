@@ -23,13 +23,17 @@ internal class MailServerService(
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (mailServer is not null)
+        {
             return mailServer;
+        }
 
         MailServer unrestrictedMailServer = GetAll(ignoreFilters: true)
             .FirstOrDefault(predicate: i => i.Id == id);
 
         if (unrestrictedMailServer is not null)
+        {
             throw new SecurityException(message: "Access Denied!");
+        }
 
         return null;
     }
@@ -75,7 +79,9 @@ internal class MailServerService(
             .FirstOrDefault(predicate: item => item.Id == id);
 
         if (mailServer is null)
+        {
             return;
+        }
 
         authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
         _ = await mailServerBroker.DeleteMailServerAsync(entity: Copy(mailServer: mailServer));
