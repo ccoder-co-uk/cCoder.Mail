@@ -9,7 +9,7 @@ using cCoder.Eventing.Models;
 
 namespace cCoder.Mail.Brokers.Events;
 
-public class MailServerEventBroker(IEventHub eventHub) : IMailServerEventBroker
+internal sealed class MailServerEventBroker(IEventHub eventHub) : IMailServerEventBroker
 {
     public ValueTask RaiseMailServerAddEventAsync(EventMessage<MailServer> message) =>
         eventHub.RaiseEventAsync(name: "mail_server_add", message: message);

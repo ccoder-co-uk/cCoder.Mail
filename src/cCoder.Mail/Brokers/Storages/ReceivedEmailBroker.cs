@@ -21,7 +21,7 @@ public interface IReceivedEmailBroker
     int? GetAppId(ReceivedEmail entity);
 }
 
-public class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IReceivedEmailBroker
+internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IReceivedEmailBroker
 {
     public IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters)
     {

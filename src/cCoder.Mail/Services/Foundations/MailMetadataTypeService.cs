@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Data.Models.Mail;
 
 

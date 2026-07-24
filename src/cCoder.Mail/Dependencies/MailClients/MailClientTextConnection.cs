@@ -4,7 +4,7 @@
 
 using System.Net.Sockets;
 
-namespace cCoder.Mail.Models;
+namespace cCoder.Mail.Dependencies.MailClients;
 
 public sealed class MailClientTextConnection : IDisposable
 {

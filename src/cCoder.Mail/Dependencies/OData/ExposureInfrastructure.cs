@@ -2,13 +2,13 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OData.Edm;
 
 
-namespace cCoder.Mail.Exposures.OData
+namespace cCoder.Mail.Dependencies.OData
 {
     public static class EdmModelExtensions
     {

@@ -74,10 +74,8 @@ internal sealed class MailSenderOrchestrationService(
         }
 
         log.LogInformation(
-message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
-            success + failures,
-            success,
-            failures);
+            message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
+            args: [success + failures, success, failures]);
     }
 
     private async Task<bool> ProcessEmailAsync(QueuedEmail email, CancellationToken cancellationToken)

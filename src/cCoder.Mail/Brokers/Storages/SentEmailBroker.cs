@@ -20,7 +20,7 @@ public interface ISentEmailBroker
     int? GetAppId(SentEmail entity);
 }
 
-public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmailBroker
+internal sealed class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmailBroker
 {
 
     public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters)

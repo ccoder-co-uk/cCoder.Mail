@@ -20,7 +20,7 @@ public interface IMailServerBroker
     int? GetAppId(MailServer entity);
 }
 
-public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailServerBroker
+internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailServerBroker
 {
 
     public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters)

@@ -9,7 +9,7 @@ using cCoder.Eventing.Models;
 
 namespace cCoder.Mail.Brokers.Events;
 
-public class SentEmailEventBroker(IEventHub eventHub) : ISentEmailEventBroker
+internal sealed class SentEmailEventBroker(IEventHub eventHub) : ISentEmailEventBroker
 {
     public ValueTask RaiseSentEmailAddEventAsync(EventMessage<SentEmail> message) =>
         eventHub.RaiseEventAsync(name: "sent_email_add", message: message);

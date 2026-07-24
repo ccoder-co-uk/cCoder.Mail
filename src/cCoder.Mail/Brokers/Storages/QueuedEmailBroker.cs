@@ -29,7 +29,7 @@ public interface IQueuedEmailBroker
     int? GetAppId(QueuedEmail entity);
 }
 
-public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueuedEmailBroker
+internal sealed class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueuedEmailBroker
 {
 
     public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters)

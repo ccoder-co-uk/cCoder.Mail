@@ -4,7 +4,7 @@
 
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,7 +84,7 @@ value: new MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.AddAsync(entity: entity));
@@ -103,7 +103,7 @@ value: new MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.UpdateAsync(entity: entity));

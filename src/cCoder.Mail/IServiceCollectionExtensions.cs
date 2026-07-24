@@ -4,7 +4,7 @@
 
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;

@@ -3,14 +3,14 @@
 // ---------------------------------------------------------------
 
 using System.Linq.Expressions;
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using Microsoft.OData.ModelBuilder;
 
-namespace cCoder.Mail.Exposures.OData;
+namespace cCoder.Mail.Dependencies.OData;
 
 public abstract class ODataModelBuilder
 {

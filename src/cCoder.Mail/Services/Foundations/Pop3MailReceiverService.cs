@@ -224,7 +224,8 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
 
         foreach (string section in sections)
         {
-            string normalized = section.Trim('\r', '\n', '-');
+            string normalized = section.Trim(
+                trimChars: ['\r', '\n', '-']);
 
             if (string.IsNullOrWhiteSpace(value: normalized))
             {

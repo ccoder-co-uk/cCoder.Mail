@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Dependencies.MailClients;
 using cCoder.Mail.Models;
 using FluentAssertions;
 using Moq;

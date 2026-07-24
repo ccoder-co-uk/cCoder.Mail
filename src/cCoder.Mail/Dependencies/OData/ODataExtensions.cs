@@ -9,7 +9,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace cCoder.Mail.Exposures.OData;
+namespace cCoder.Mail.Dependencies.OData;
 
 internal static class ODataCollectionExtensions
 {

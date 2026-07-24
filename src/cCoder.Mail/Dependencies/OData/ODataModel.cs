@@ -5,7 +5,7 @@
 using Microsoft.OData.Edm;
 
 
-namespace cCoder.Mail.Exposures.OData;
+namespace cCoder.Mail.Dependencies.OData;
 
 public class ODataModel
 {

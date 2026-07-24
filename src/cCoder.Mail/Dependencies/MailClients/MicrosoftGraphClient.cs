@@ -6,7 +6,7 @@ using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
 
-namespace cCoder.Mail.Exposures.MailClients;
+namespace cCoder.Mail.Dependencies.MailClients;
 
 internal sealed class MicrosoftGraphClient(
     IMicrosoftGraphMailSenderService microsoftGraphMailSenderService,

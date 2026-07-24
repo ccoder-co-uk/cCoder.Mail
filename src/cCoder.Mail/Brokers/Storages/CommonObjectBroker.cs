@@ -14,7 +14,7 @@ public interface ICommonObjectBroker
     CommonObject[] GetLatestCommonObjectsPaged(int pageSize = 500);
 }
 
-public class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommonObjectBroker
+internal sealed class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommonObjectBroker
 {
     public CommonObject[] GetLatestCommonObjectsPaged(int pageSize = 500)
     {

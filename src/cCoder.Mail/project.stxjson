@@ -240,7 +240,7 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Models.MailClientTextConnection\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Dependencies.MailClients.MailClientTextConnection\u003E"
         },
         {
           "Name": "OpenSslAsync",
@@ -258,14 +258,14 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Models.MailClientTextConnection\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Dependencies.MailClients.MailClientTextConnection\u003E"
         },
         {
           "Name": "ReadLineAsync",
           "Inputs": [
             {
               "Name": "connection",
-              "Type": "cCoder.Mail.Models.MailClientTextConnection"
+              "Type": "cCoder.Mail.Dependencies.MailClients.MailClientTextConnection"
             },
             {
               "Name": "cancellationToken",
@@ -279,7 +279,7 @@
           "Inputs": [
             {
               "Name": "connection",
-              "Type": "cCoder.Mail.Models.MailClientTextConnection"
+              "Type": "cCoder.Mail.Dependencies.MailClients.MailClientTextConnection"
             },
             {
               "Name": "line",
@@ -392,7 +392,7 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Models.MailClientTextConnection\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Dependencies.MailClients.MailClientTextConnection\u003E"
         },
         {
           "Name": "OpenSslAsync",
@@ -410,14 +410,14 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Models.MailClientTextConnection\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Dependencies.MailClients.MailClientTextConnection\u003E"
         },
         {
           "Name": "ReadLineAsync",
           "Inputs": [
             {
               "Name": "connection",
-              "Type": "cCoder.Mail.Models.MailClientTextConnection"
+              "Type": "cCoder.Mail.Dependencies.MailClients.MailClientTextConnection"
             },
             {
               "Name": "cancellationToken",
@@ -431,7 +431,7 @@
           "Inputs": [
             {
               "Name": "connection",
-              "Type": "cCoder.Mail.Models.MailClientTextConnection"
+              "Type": "cCoder.Mail.Dependencies.MailClients.MailClientTextConnection"
             },
             {
               "Name": "line",
@@ -1044,6 +1044,697 @@
       ]
     },
     {
+      "Name": "cCoder.Mail.Dependencies.MailClients.ImapMailReceiverProvider",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "ProviderName",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "ReceiveTopAsync",
+          "Inputs": [
+            {
+              "Name": "count",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.MailClientTextConnection",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Reader",
+          "Type": "System.IO.StreamReader"
+        },
+        {
+          "Name": "Stream",
+          "Type": "System.IO.Stream"
+        },
+        {
+          "Name": "TcpClient",
+          "Type": "System.Net.Sockets.TcpClient"
+        },
+        {
+          "Name": "Writer",
+          "Type": "System.IO.StreamWriter"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "Dispose",
+          "Inputs": [],
+          "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.MailReceiverFactory",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetReceiver",
+          "Inputs": [
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Exposures.MailClients.IMailReceiverProvider"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.MailSenderFactory",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetSender",
+          "Inputs": [
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Exposures.MailClients.IMailSenderProvider"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.MicrosoftGraphClient",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "ProviderName",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "ReceiveTopAsync",
+          "Inputs": [
+            {
+              "Name": "count",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.Pop3MailReceiverProvider",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "ProviderName",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "ReceiveTopAsync",
+          "Inputs": [
+            {
+              "Name": "count",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.MailClients.SmtpMailSenderProvider",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "ProviderName",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.BadRequestResult",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.CompositePropertyInfo",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Attributes",
+          "Type": "System.Reflection.PropertyAttributes"
+        },
+        {
+          "Name": "CanRead",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "CanWrite",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "DeclaringType",
+          "Type": "System.Type"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        },
+        {
+          "Name": "PropertyType",
+          "Type": "System.Type"
+        },
+        {
+          "Name": "ReflectedType",
+          "Type": "System.Type"
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "GetAccessors",
+          "Inputs": [
+            {
+              "Name": "nonPublic",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Reflection.MethodInfo[]"
+        },
+        {
+          "Name": "GetCustomAttributes",
+          "Inputs": [
+            {
+              "Name": "inherit",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Object[]"
+        },
+        {
+          "Name": "GetCustomAttributes",
+          "Inputs": [
+            {
+              "Name": "attributeType",
+              "Type": "System.Type"
+            },
+            {
+              "Name": "inherit",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Object[]"
+        },
+        {
+          "Name": "GetGetMethod",
+          "Inputs": [
+            {
+              "Name": "nonPublic",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Reflection.MethodInfo"
+        },
+        {
+          "Name": "GetIndexParameters",
+          "Inputs": [],
+          "ReturnType": "System.Reflection.ParameterInfo[]"
+        },
+        {
+          "Name": "GetSetMethod",
+          "Inputs": [
+            {
+              "Name": "nonPublic",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Reflection.MethodInfo"
+        },
+        {
+          "Name": "GetValue",
+          "Inputs": [
+            {
+              "Name": "obj",
+              "Type": "System.Object"
+            },
+            {
+              "Name": "invokeAttr",
+              "Type": "System.Reflection.BindingFlags"
+            },
+            {
+              "Name": "binder",
+              "Type": "System.Reflection.Binder"
+            },
+            {
+              "Name": "index",
+              "Type": "System.Object[]"
+            },
+            {
+              "Name": "culture",
+              "Type": "System.Globalization.CultureInfo"
+            }
+          ],
+          "ReturnType": "System.Object"
+        },
+        {
+          "Name": "IsDefined",
+          "Inputs": [
+            {
+              "Name": "attributeType",
+              "Type": "System.Type"
+            },
+            {
+              "Name": "inherit",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "System.Boolean"
+        },
+        {
+          "Name": "SetValue",
+          "Inputs": [
+            {
+              "Name": "obj",
+              "Type": "System.Object"
+            },
+            {
+              "Name": "value",
+              "Type": "System.Object"
+            },
+            {
+              "Name": "invokeAttr",
+              "Type": "System.Reflection.BindingFlags"
+            },
+            {
+              "Name": "binder",
+              "Type": "System.Reflection.Binder"
+            },
+            {
+              "Name": "index",
+              "Type": "System.Object[]"
+            },
+            {
+              "Name": "culture",
+              "Type": "System.Globalization.CultureInfo"
+            }
+          ],
+          "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.EdmModelExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetExtendedMetadataForType",
+          "Inputs": [
+            {
+              "Name": "model",
+              "Type": "Microsoft.OData.Edm.IEdmModel"
+            },
+            {
+              "Name": "context",
+              "Type": "System.String"
+            },
+            {
+              "Name": "type",
+              "Type": "System.Type"
+            },
+            {
+              "Name": "hasEndpoint",
+              "Type": "System.Boolean"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Dependencies.OData.ExtendedMetadataContainer"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ExtendedMetadataContainer",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Operations",
+          "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Dependencies.OData.OperationContainer\u003E"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.MailModelBuilder",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "Build",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Dependencies.OData.ODataModel"
+        },
+        {
+          "Name": "Configure",
+          "Inputs": [],
+          "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.MetadataContainer",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Category",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Description",
+          "Type": "System.String"
+        },
+        {
+          "Name": "DisplayName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "HasEndpoint",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsEntity",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsJoinEntity",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsSystemManaged",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsValueType",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Properties",
+          "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Dependencies.OData.PropertyContainer\u003E"
+        },
+        {
+          "Name": "ServerType",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ServerTypeName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Type",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.MetadataContainerSet",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Types",
+          "Type": "cCoder.Mail.Dependencies.OData.ExtendedMetadataContainer[]"
+        },
+        {
+          "Name": "UriBase",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ModelStateError",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Errors",
+          "Type": "System.String[]"
+        },
+        {
+          "Name": "Key",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Value",
+          "Type": "System.Object"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ODataCollectionExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ODataJsonExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ODataModel",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Context",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Description",
+          "Type": "System.String"
+        },
+        {
+          "Name": "EDMModel",
+          "Type": "Microsoft.OData.Edm.IEdmModel"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ODataModelBuilder",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "Build",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Dependencies.OData.ODataModel"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.ODataTypeExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.OperationContainer",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Definition",
+          "Type": "System.String"
+        },
+        {
+          "Name": "HttpVerb",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
+        },
+        {
+          "Name": "Queryable",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "ReturnType",
+          "Type": "cCoder.Mail.Dependencies.OData.MetadataContainer"
+        },
+        {
+          "Name": "Url",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Dependencies.OData.PropertyContainer",
+      "StandardElementType": "Dependency",
+      "Properties": [
+        {
+          "Name": "Description",
+          "Type": "System.String"
+        },
+        {
+          "Name": "DisplayName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "IsGeneric",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsReadOnly",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsRequired",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsSystemManaged",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "IsValueType",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ServerType",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ServerTypeName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ShortDisplayName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Template",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Type",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Exposures.Controllers.BaselineController",
       "StandardElementType": "Exposure",
       "Properties": [],
@@ -1654,200 +2345,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Exposures.MailClients.ImapMailReceiverProvider",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "ProviderName",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "ReceiveAsync",
-          "Inputs": [
-            {
-              "Name": "request",
-              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "ReceiveTopAsync",
-          "Inputs": [
-            {
-              "Name": "count",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.MailClients.MailReceiverFactory",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "GetReceiver",
-          "Inputs": [
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Exposures.MailClients.IMailReceiverProvider"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.MailClients.MailSenderFactory",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "GetSender",
-          "Inputs": [
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Exposures.MailClients.IMailSenderProvider"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.MailClients.MicrosoftGraphClient",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "ProviderName",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "ReceiveAsync",
-          "Inputs": [
-            {
-              "Name": "request",
-              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "ReceiveTopAsync",
-          "Inputs": [
-            {
-              "Name": "count",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "SendAsync",
-          "Inputs": [
-            {
-              "Name": "email",
-              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.MailClients.Pop3MailReceiverProvider",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "ProviderName",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "ReceiveAsync",
-          "Inputs": [
-            {
-              "Name": "request",
-              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "ReceiveTopAsync",
-          "Inputs": [
-            {
-              "Name": "count",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.MailClients.SmtpMailSenderProvider",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "ProviderName",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "SendAsync",
-          "Inputs": [
-            {
-              "Name": "email",
-              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task"
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Exposures.MailManagerExposure",
       "StandardElementType": "Exposure",
       "Properties": [],
@@ -1867,474 +2364,6 @@
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         }
       ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.BadRequestResult",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.CompositePropertyInfo",
-      "StandardElementType": "Dependency",
-      "Properties": [
-        {
-          "Name": "Attributes",
-          "Type": "System.Reflection.PropertyAttributes"
-        },
-        {
-          "Name": "CanRead",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "CanWrite",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "DeclaringType",
-          "Type": "System.Type"
-        },
-        {
-          "Name": "Name",
-          "Type": "System.String"
-        },
-        {
-          "Name": "PropertyType",
-          "Type": "System.Type"
-        },
-        {
-          "Name": "ReflectedType",
-          "Type": "System.Type"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "GetAccessors",
-          "Inputs": [
-            {
-              "Name": "nonPublic",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Reflection.MethodInfo[]"
-        },
-        {
-          "Name": "GetCustomAttributes",
-          "Inputs": [
-            {
-              "Name": "inherit",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Object[]"
-        },
-        {
-          "Name": "GetCustomAttributes",
-          "Inputs": [
-            {
-              "Name": "attributeType",
-              "Type": "System.Type"
-            },
-            {
-              "Name": "inherit",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Object[]"
-        },
-        {
-          "Name": "GetGetMethod",
-          "Inputs": [
-            {
-              "Name": "nonPublic",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Reflection.MethodInfo"
-        },
-        {
-          "Name": "GetIndexParameters",
-          "Inputs": [],
-          "ReturnType": "System.Reflection.ParameterInfo[]"
-        },
-        {
-          "Name": "GetSetMethod",
-          "Inputs": [
-            {
-              "Name": "nonPublic",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Reflection.MethodInfo"
-        },
-        {
-          "Name": "GetValue",
-          "Inputs": [
-            {
-              "Name": "obj",
-              "Type": "System.Object"
-            },
-            {
-              "Name": "invokeAttr",
-              "Type": "System.Reflection.BindingFlags"
-            },
-            {
-              "Name": "binder",
-              "Type": "System.Reflection.Binder"
-            },
-            {
-              "Name": "index",
-              "Type": "System.Object[]"
-            },
-            {
-              "Name": "culture",
-              "Type": "System.Globalization.CultureInfo"
-            }
-          ],
-          "ReturnType": "System.Object"
-        },
-        {
-          "Name": "IsDefined",
-          "Inputs": [
-            {
-              "Name": "attributeType",
-              "Type": "System.Type"
-            },
-            {
-              "Name": "inherit",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Boolean"
-        },
-        {
-          "Name": "SetValue",
-          "Inputs": [
-            {
-              "Name": "obj",
-              "Type": "System.Object"
-            },
-            {
-              "Name": "value",
-              "Type": "System.Object"
-            },
-            {
-              "Name": "invokeAttr",
-              "Type": "System.Reflection.BindingFlags"
-            },
-            {
-              "Name": "binder",
-              "Type": "System.Reflection.Binder"
-            },
-            {
-              "Name": "index",
-              "Type": "System.Object[]"
-            },
-            {
-              "Name": "culture",
-              "Type": "System.Globalization.CultureInfo"
-            }
-          ],
-          "ReturnType": "System.Void"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.EdmModelExtensions",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "GetExtendedMetadataForType",
-          "Inputs": [
-            {
-              "Name": "model",
-              "Type": "Microsoft.OData.Edm.IEdmModel"
-            },
-            {
-              "Name": "context",
-              "Type": "System.String"
-            },
-            {
-              "Name": "type",
-              "Type": "System.Type"
-            },
-            {
-              "Name": "hasEndpoint",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Exposures.OData.ExtendedMetadataContainer"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ExtendedMetadataContainer",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Operations",
-          "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Exposures.OData.OperationContainer\u003E"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.MailModelBuilder",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "Build",
-          "Inputs": [],
-          "ReturnType": "cCoder.Mail.Exposures.OData.ODataModel"
-        },
-        {
-          "Name": "Configure",
-          "Inputs": [],
-          "ReturnType": "System.Void"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Category",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Description",
-          "Type": "System.String"
-        },
-        {
-          "Name": "DisplayName",
-          "Type": "System.String"
-        },
-        {
-          "Name": "HasEndpoint",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsEntity",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsJoinEntity",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsSystemManaged",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsValueType",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "Name",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Properties",
-          "Type": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Exposures.OData.PropertyContainer\u003E"
-        },
-        {
-          "Name": "ServerType",
-          "Type": "System.String"
-        },
-        {
-          "Name": "ServerTypeName",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Type",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.MetadataContainerSet",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Name",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Types",
-          "Type": "cCoder.Mail.Exposures.OData.ExtendedMetadataContainer[]"
-        },
-        {
-          "Name": "UriBase",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Errors",
-          "Type": "System.String[]"
-        },
-        {
-          "Name": "Key",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Value",
-          "Type": "System.Object"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ODataCollectionExtensions",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ODataJsonExtensions",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ODataModel",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Context",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Description",
-          "Type": "System.String"
-        },
-        {
-          "Name": "EDMModel",
-          "Type": "Microsoft.OData.Edm.IEdmModel"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ODataModelBuilder",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "Build",
-          "Inputs": [],
-          "ReturnType": "cCoder.Mail.Exposures.OData.ODataModel"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.ODataTypeExtensions",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Definition",
-          "Type": "System.String"
-        },
-        {
-          "Name": "HttpVerb",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Name",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Parameters",
-          "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
-        },
-        {
-          "Name": "Queryable",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "ReturnType",
-          "Type": "cCoder.Mail.Exposures.OData.MetadataContainer"
-        },
-        {
-          "Name": "Url",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "StandardElementType": "Exposure",
-      "Properties": [
-        {
-          "Name": "Description",
-          "Type": "System.String"
-        },
-        {
-          "Name": "DisplayName",
-          "Type": "System.String"
-        },
-        {
-          "Name": "IsGeneric",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsReadOnly",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsRequired",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsSystemManaged",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "IsValueType",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "Name",
-          "Type": "System.String"
-        },
-        {
-          "Name": "ServerType",
-          "Type": "System.String"
-        },
-        {
-          "Name": "ServerTypeName",
-          "Type": "System.String"
-        },
-        {
-          "Name": "ShortDisplayName",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Template",
-          "Type": "System.String"
-        },
-        {
-          "Name": "Type",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": []
     },
     {
       "Name": "cCoder.Mail.Exposures.Setup.UIBaseline",
@@ -2407,6 +2436,169 @@
             }
           ],
           "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.MailConfigurationExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "AddImapReceiver",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddMicrosoftGraphReceiver",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "configure",
+              "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddMicrosoftGraphSender",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "configure",
+              "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddPop3Receiver",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddReceiverProvider",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            },
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddSenderProvider",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            },
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "AddSmtpSender",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "name",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
+        },
+        {
+          "Name": "ResolveReceiverProviderName",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String"
+        },
+        {
+          "Name": "ResolveSenderProviderName",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String"
+        },
+        {
+          "Name": "WithEventProviders",
+          "Inputs": [
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Models.MailConfiguration"
+            },
+            {
+              "Name": "eventProviders",
+              "Type": "cCoder.Eventing.Models.EventProvider[]"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
         }
       ]
     },
@@ -2564,35 +2756,6 @@
       "Methods": []
     },
     {
-      "Name": "cCoder.Mail.Models.MailClientTextConnection",
-      "StandardElementType": "Model",
-      "Properties": [
-        {
-          "Name": "Reader",
-          "Type": "System.IO.StreamReader"
-        },
-        {
-          "Name": "Stream",
-          "Type": "System.IO.Stream"
-        },
-        {
-          "Name": "TcpClient",
-          "Type": "System.Net.Sockets.TcpClient"
-        },
-        {
-          "Name": "Writer",
-          "Type": "System.IO.StreamWriter"
-        }
-      ],
-      "Methods": [
-        {
-          "Name": "Dispose",
-          "Inputs": [],
-          "ReturnType": "System.Void"
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Models.MailConfiguration",
       "StandardElementType": "Model",
       "Properties": [
@@ -2661,124 +2824,7 @@
           "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
         }
       ],
-      "Methods": [
-        {
-          "Name": "AddImapReceiver",
-          "Inputs": [
-            {
-              "Name": "name",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddMicrosoftGraphReceiver",
-          "Inputs": [
-            {
-              "Name": "configure",
-              "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
-            },
-            {
-              "Name": "name",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddMicrosoftGraphSender",
-          "Inputs": [
-            {
-              "Name": "configure",
-              "Type": "System.Action\u003CcCoder.Mail.Models.MicrosoftGraphMailConfiguration\u003E"
-            },
-            {
-              "Name": "name",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddPop3Receiver",
-          "Inputs": [
-            {
-              "Name": "name",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddReceiverProvider",
-          "Inputs": [
-            {
-              "Name": "name",
-              "Type": "System.String"
-            },
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddSenderProvider",
-          "Inputs": [
-            {
-              "Name": "name",
-              "Type": "System.String"
-            },
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "AddSmtpSender",
-          "Inputs": [
-            {
-              "Name": "name",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        },
-        {
-          "Name": "ResolveReceiverProviderName",
-          "Inputs": [
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "System.String"
-        },
-        {
-          "Name": "ResolveSenderProviderName",
-          "Inputs": [
-            {
-              "Name": "providerName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "System.String"
-        },
-        {
-          "Name": "WithEventProviders",
-          "Inputs": [
-            {
-              "Name": "eventProviders",
-              "Type": "cCoder.Eventing.Models.EventProvider[]"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.MailConfiguration"
-        }
-      ]
+      "Methods": []
     },
     {
       "Name": "cCoder.Mail.Models.MailProviderNames",
@@ -3246,7 +3292,7 @@
         {
           "Name": "GetKnownMetadata",
           "Inputs": [],
-          "ReturnType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Exposures.OData.MetadataContainerSet\u003E"
+          "ReturnType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Dependencies.OData.MetadataContainerSet\u003E"
         }
       ]
     },
@@ -5304,11 +5350,39 @@
   "Links": [
     {
       "FromType": "cCoder.Mail.Brokers.MailClients.MailReceiverClientBroker",
-      "ToType": "cCoder.Mail.Exposures.MailClients.MailReceiverFactory"
+      "ToType": "cCoder.Mail.Dependencies.MailClients.MailReceiverFactory"
     },
     {
       "FromType": "cCoder.Mail.Brokers.MailClients.MailSenderClientBroker",
-      "ToType": "cCoder.Mail.Exposures.MailClients.MailSenderFactory"
+      "ToType": "cCoder.Mail.Dependencies.MailClients.MailSenderFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.ImapMailReceiverProvider",
+      "ToType": "cCoder.Mail.Services.Foundations.ImapMailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.MailReceiverFactory",
+      "ToType": "cCoder.Mail.Models.MailConfiguration"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.MailSenderFactory",
+      "ToType": "cCoder.Mail.Models.MailConfiguration"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.MicrosoftGraphClient",
+      "ToType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.MicrosoftGraphClient",
+      "ToType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.Pop3MailReceiverProvider",
+      "ToType": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Dependencies.MailClients.SmtpMailSenderProvider",
+      "ToType": "cCoder.Mail.Services.Foundations.SmtpMailSenderService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
@@ -5349,34 +5423,6 @@
     {
       "FromType": "cCoder.Mail.Exposures.MailAppExposure",
       "ToType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.ImapMailReceiverProvider",
-      "ToType": "cCoder.Mail.Services.Foundations.ImapMailReceiverService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.MailReceiverFactory",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.MailSenderFactory",
-      "ToType": "cCoder.Mail.Models.MailConfiguration"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.MicrosoftGraphClient",
-      "ToType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailReceiverService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.MicrosoftGraphClient",
-      "ToType": "cCoder.Mail.Services.Foundations.MicrosoftGraphMailSenderService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.Pop3MailReceiverProvider",
-      "ToType": "cCoder.Mail.Services.Foundations.Pop3MailReceiverService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.MailClients.SmtpMailSenderProvider",
-      "ToType": "cCoder.Mail.Services.Foundations.SmtpMailSenderService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailManagerExposure",
@@ -5640,41 +5686,6 @@
       "LineNumber": 55
     },
     {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Events.MailServerEventBroker",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Events.QueuedEmailEventBroker",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Events.SentEmailEventBroker",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.JsonBroker",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
-      "LineNumber": 17
-    },
-    {
       "Code": "STXB003",
       "Description": "A broker must not contain loops.",
       "Severity": "Warning",
@@ -5687,13 +5698,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.CommonObjectBroker",
       "LineNumber": 44
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
-      "LineNumber": 23
     },
     {
       "Code": "STXB002",
@@ -5738,13 +5742,6 @@
       "LineNumber": 72
     },
     {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
-      "LineNumber": 22
-    },
-    {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
@@ -5785,13 +5782,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
       "LineNumber": 61
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.MailServerBroker",
-      "LineNumber": 23
     },
     {
       "Code": "STXB002",
@@ -5836,13 +5826,6 @@
       "LineNumber": 63
     },
     {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
-      "LineNumber": 32
-    },
-    {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
@@ -5885,13 +5868,6 @@
       "LineNumber": 168
     },
     {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
-      "LineNumber": 24
-    },
-    {
       "Code": "STXB002",
       "Description": "A broker must not contain branching logic.",
       "Severity": "Warning",
@@ -5918,13 +5894,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
       "LineNumber": 93
-    },
-    {
-      "Code": "STX0006",
-      "Description": "Business implementation classes should be internal by default.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Brokers.Storages.SentEmailBroker",
-      "LineNumber": 23
     },
     {
       "Code": "STXB002",
@@ -5997,46 +5966,32 @@
       "LineNumber": 112
     },
     {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 24
-    },
-    {
       "Code": "STX0019",
       "Description": "create model parameters must use the new prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 95
+      "LineNumber": 87
     },
     {
       "Code": "STX0020",
       "Description": "update model parameters must use the updated prefix.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 114
+      "LineNumber": 106
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 124
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 24
+      "LineNumber": 116
     },
     {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 124
+      "LineNumber": 116
     },
     {
       "Code": "STXAPI004",
@@ -6060,18 +6015,11 @@
       "LineNumber": 31
     },
     {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 24
-    },
-    {
       "Code": "STXAPI004",
       "Description": "API controller methods must use HTTP nouns: Get, Post, Put, or Delete.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 124
+      "LineNumber": 116
     },
     {
       "Code": "STX0019",
@@ -6102,419 +6050,6 @@
       "LineNumber": 19
     },
     {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailClients.ImapMailReceiverProvider",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STXE003",
-      "Description": "An exposure may communicate with only one business service.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailClients.MicrosoftGraphClient",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailClients.MicrosoftGraphClient",
-      "LineNumber": 16
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailClients.Pop3MailReceiverProvider",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.MailClients.SmtpMailSenderProvider",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ExtendedMetadataContainer",
-      "LineNumber": 138
-    },
-    {
-      "Code": "STXE005",
-      "Description": "An exposure must not sequence multiple routine calls.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MailModelBuilder",
-      "LineNumber": 36
-    },
-    {
-      "Code": "STXE005",
-      "Description": "An exposure must not sequence multiple routine calls.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MailModelBuilder",
-      "LineNumber": 42
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 23
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 27
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 30
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 32
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 34
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 76
-    },
-    {
-      "Code": "STXE005",
-      "Description": "An exposure must not sequence multiple routine calls.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 85
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 87
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 92
-    },
-    {
-      "Code": "STXE001",
-      "Description": "An exposure must not contain branching logic.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainer",
-      "LineNumber": 97
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainerSet",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainerSet",
-      "LineNumber": 16
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.MetadataContainerSet",
-      "LineNumber": 18
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "LineNumber": 179
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "LineNumber": 180
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ModelStateError",
-      "LineNumber": 181
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModel",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModel",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModel",
-      "LineNumber": 14
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModelBuilder",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXE005",
-      "Description": "An exposure must not sequence multiple routine calls.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModelBuilder",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STXE005",
-      "Description": "An exposure must not sequence multiple routine calls.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.ODataModelBuilder",
-      "LineNumber": 45
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 165
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 166
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 167
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 168
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 169
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 170
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.OperationContainer",
-      "LineNumber": 171
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 148
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 149
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 150
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 151
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 152
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 153
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 154
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 155
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 156
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 157
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 158
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 159
-    },
-    {
-      "Code": "STX0002",
-      "Description": "Properties may only be declared on models.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.OData.PropertyContainer",
-      "LineNumber": 160
-    },
-    {
       "Code": "STXAPP001",
       "Description": "Program.cs, IServiceCollectionExtensions.cs, and WebApplicationExtensions.cs must live at the project root.",
       "Severity": "Warning",
@@ -6527,230 +6062,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.IServiceCollectionExtensions",
       "LineNumber": 155
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Config",
-      "LineNumber": 9
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Config",
-      "LineNumber": 10
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Config",
-      "LineNumber": 11
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailClientTextConnection",
-      "LineNumber": 19
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 20
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 21
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 22
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 23
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 25
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 28
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 31
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 32
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 33
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 34
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 35
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 37
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 42
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 47
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 64
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 76
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 82
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 88
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 109
-    },
-    {
-      "Code": "STXM001",
-      "Description": "Models must not declare methods.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailConfiguration",
-      "LineNumber": 120
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailboxReceiveConfiguration",
-      "LineNumber": 13
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailboxReceiveRequest",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailboxReceiveRequest",
-      "LineNumber": 19
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.MailboxReceiveRequest",
-      "LineNumber": 29
-    },
-    {
-      "Code": "STXM002",
-      "Description": "Model properties must not declare default values.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Models.Replacement",
-      "LineNumber": 14
     },
     {
       "Code": "STXM001",

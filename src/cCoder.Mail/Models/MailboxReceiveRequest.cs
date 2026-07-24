@@ -6,6 +6,13 @@ namespace cCoder.Mail.Models;
 
 public sealed class MailboxReceiveRequest
 {
+    public MailboxReceiveRequest()
+    {
+        Port = 995;
+        EnableSSL = true;
+        MaximumMessages = 100;
+    }
+
     public string ProviderName { get; set; }
 
     public int? AppId { get; set; }
@@ -14,9 +21,9 @@ public sealed class MailboxReceiveRequest
 
     public string Host { get; set; }
 
-    public int Port { get; set; } = 995;
+    public int Port { get; set; }
 
-    public bool EnableSSL { get; set; } = true;
+    public bool EnableSSL { get; set; }
 
     public string User { get; set; }
 
@@ -26,5 +33,5 @@ public sealed class MailboxReceiveRequest
 
     public DateTimeOffset? To { get; set; }
 
-    public int MaximumMessages { get; set; } = 100;
+    public int MaximumMessages { get; set; }
 }

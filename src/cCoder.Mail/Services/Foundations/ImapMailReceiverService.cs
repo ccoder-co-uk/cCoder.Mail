@@ -107,11 +107,15 @@ cancellationToken: cancellationToken);
         throw new InvalidOperationException(message: "The mail server closed the IMAP connection.");
     }
 
-    private async Task<string> FetchMessageAsync(
+    private Task<string> FetchMessageAsync(
         MailClientTextConnection connection,
         int messageId,
         CancellationToken cancellationToken) =>
-        await SendCommandAsync(connection: connection, tag: $"f{messageId}", command: $"FETCH {messageId} BODY[]", cancellationToken: cancellationToken);
+        SendCommandAsync(
+            connection: connection,
+            tag: $"f{messageId}",
+            command: $"FETCH {messageId} BODY[]",
+            cancellationToken: cancellationToken);
 
     private static string BuildSearchCommand(MailboxReceiveRequest request)
     {
@@ -158,7 +162,7 @@ cancellationToken: cancellationToken);
             CC = Header(headers: headers, name: "Cc"),
             Subject = DecodeHeader(value: Header(headers: headers, name: "Subject")),
             Content = string.Join(separator: "\n", value: bodyLines)
-            .TrimEnd(')', '\r', '\n'),
+                .TrimEnd(trimChars: [')', '\r', '\n']),
             IsBodyHtml = Header(headers: headers, name: "Content-Type")?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true,
             ReceivedOn = ParseDate(value: Header(headers: headers, name: "Date")),
         };

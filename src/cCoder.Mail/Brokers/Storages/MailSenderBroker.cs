@@ -19,7 +19,7 @@ public interface IMailSenderBroker
     int? GetAppId(MailSender entity);
 }
 
-public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSenderBroker
+internal sealed class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSenderBroker
 {
     public IQueryable<MailSender> GetAllMailSenders(bool ignoreFilters)
     {

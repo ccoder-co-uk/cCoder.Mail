@@ -6,21 +6,21 @@ using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
 
-namespace cCoder.Mail.Exposures.MailClients;
+namespace cCoder.Mail.Dependencies.MailClients;
 
-internal sealed class Pop3MailReceiverProvider(IPop3MailReceiverService pop3MailReceiverService)
+internal sealed class ImapMailReceiverProvider(IImapMailReceiverService imapMailReceiverService)
     : IMailReceiverProvider
 {
     public string ProviderName =>
-        MailProviderNames.Pop3;
+        MailProviderNames.Imap;
 
     public Task<ReceivedEmail[]> ReceiveAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
-        pop3MailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+        imapMailReceiverService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
-        pop3MailReceiverService.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
+        imapMailReceiverService.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
 }

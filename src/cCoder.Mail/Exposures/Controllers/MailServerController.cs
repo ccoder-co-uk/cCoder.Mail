@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures.OData;
+using cCoder.Mail.Dependencies.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.CMS;
@@ -19,18 +19,10 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class MailServerController : ODataController
+public partial class MailServerController(
+    IMailServerOrchestrationService service)
+        : ODataController
 {
-    protected IMailServerOrchestrationService Service { get; }
-
-    public MailServerController(
-        IMailServerOrchestrationService service,
-        ILogger<MailServerController> log
-    )
-    {
-        Service = service;
-    }
-
     [HttpGet]
     public IActionResult GetMetadata()
     {
@@ -38,7 +30,7 @@ public partial class MailServerController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
+value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
                     .Build()
             .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(MailServer))
             )
@@ -56,7 +48,7 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     )]
     [ActionName("Get")]
     public IActionResult GetAll(ODataQueryOptions<MailServer> queryOptions) =>
-        Ok(value: Service.GetAll());
+        Ok(value: service.GetAll());
 
     [HttpGet]
     [AllowAnonymous]
@@ -72,7 +64,7 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     {
         try
         {
-            IQueryable<MailServer> result = Service.GetAll()
+            IQueryable<MailServer> result = service.GetAll()
                 .Where(predicate: mailServer => mailServer.Id == key);
 
             return Ok(value: SingleResult.Create(queryable: result));
@@ -96,10 +88,10 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await Service.AddAsync(entity: entity));
+        return Ok(value: await service.AddAsync(entity: entity));
     }
 
     [HttpPut]
@@ -115,16 +107,16 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
         }
 
-        return Ok(value: await Service.UpdateAsync(entity: entity));
+        return Ok(value: await service.UpdateAsync(entity: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<MailServer> delta)
     {
-        MailServer originalEntity = Service.Get(id: key);
+        MailServer originalEntity = service.Get(id: key);
 
         if (originalEntity == null)
         {
@@ -132,13 +124,13 @@ value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
         }
 
         delta.Patch(original: originalEntity);
-        return Ok(value: await Service.UpdateAsync(entity: originalEntity));
+        return Ok(value: await service.UpdateAsync(entity: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await Service.DeleteAsync(id: key);
+        await service.DeleteAsync(id: key);
         return Ok();
     }
 }

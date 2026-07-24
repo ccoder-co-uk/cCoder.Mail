@@ -9,7 +9,7 @@ using cCoder.Eventing.Models;
 
 namespace cCoder.Mail.Brokers.Events;
 
-public class QueuedEmailEventBroker(IEventHub eventHub) : IQueuedEmailEventBroker
+internal sealed class QueuedEmailEventBroker(IEventHub eventHub) : IQueuedEmailEventBroker
 {
     public ValueTask RaiseQueuedEmailAddEventAsync(EventMessage<QueuedEmail> message) =>
         eventHub.RaiseEventAsync(name: "queued_email_add", message: message);

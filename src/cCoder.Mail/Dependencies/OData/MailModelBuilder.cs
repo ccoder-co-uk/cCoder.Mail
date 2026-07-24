@@ -9,7 +9,7 @@ using cCoder.Data.Models.Security;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 
-namespace cCoder.Mail.Exposures.OData;
+namespace cCoder.Mail.Dependencies.OData;
 
 internal class MailModelBuilder : ODataModelBuilder
 {

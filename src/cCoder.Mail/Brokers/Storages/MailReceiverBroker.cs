@@ -20,7 +20,7 @@ public interface IMailReceiverBroker
     int? GetAppId(MailReceiver entity);
 }
 
-public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailReceiverBroker
+internal sealed class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailReceiverBroker
 {
     public IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters)
     {
