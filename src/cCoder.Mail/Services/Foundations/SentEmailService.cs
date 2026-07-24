@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
@@ -15,24 +19,28 @@ internal class SentEmailService(
 {
     public SentEmail Get(int id)
     {
-        SentEmail sentEmail = GetAll().FirstOrDefault(i => i.Id == id);
+        SentEmail sentEmail = GetAll()
+            .FirstOrDefault(predicate: i => i.Id == id);
+
         if (sentEmail is not null)
             return sentEmail;
 
-        SentEmail unrestrictedSentEmail = GetAll(true).FirstOrDefault(i => i.Id == id);
+        SentEmail unrestrictedSentEmail = GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: i => i.Id == id);
+
         if (unrestrictedSentEmail is not null)
-            throw new SecurityException("Access Denied!");
+            throw new SecurityException(message: "Access Denied!");
 
         return null;
     }
 
     public IQueryable<SentEmail> GetAll(bool ignoreFilters = false) =>
-        sentEmailBroker.GetAllSentEmails(ignoreFilters);
+        sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
 
     public async ValueTask<SentEmail> AddAsync(SentEmail sentEmail)
     {
-        authorizationBroker.Authorize(sentEmail.AppId, $"{nameof(SentEmail)}_create");
-        SentEmail result = await sentEmailBroker.AddSentEmailAsync(Copy(sentEmail));
+        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
+        SentEmail result = await sentEmailBroker.AddSentEmailAsync(entity: Copy(sentEmail: sentEmail));
         sentEmail.Id = result.Id;
         sentEmail.AppId = result.AppId;
         sentEmail.SentByUserId = result.SentByUserId;
@@ -49,8 +57,8 @@ internal class SentEmailService(
 
     public async ValueTask<SentEmail> UpdateAsync(SentEmail sentEmail)
     {
-        authorizationBroker.Authorize(sentEmail.AppId, $"{nameof(SentEmail)}_update");
-        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(Copy(sentEmail));
+        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
+        SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(entity: Copy(sentEmail: sentEmail));
         sentEmail.Id = result.Id;
         sentEmail.AppId = result.AppId;
         sentEmail.SentByUserId = result.SentByUserId;
@@ -67,21 +75,22 @@ internal class SentEmailService(
 
     public async ValueTask DeleteAsync(int id)
     {
-        SentEmail sentEmail = GetAll(ignoreFilters: true).FirstOrDefault(item => item.Id == id);
+        SentEmail sentEmail = GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == id);
 
         if (sentEmail is null)
             return;
 
-        authorizationBroker.Authorize(sentEmail.AppId, $"{nameof(SentEmail)}_delete");
-        _ = await sentEmailBroker.DeleteSentEmailAsync(Copy(sentEmail));
+        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
+        _ = await sentEmailBroker.DeleteSentEmailAsync(entity: Copy(sentEmail: sentEmail));
     }
 
     public ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items) =>
         sentEmailBroker.DeleteAllSentEmailsAsync(
-            items?.Select(Copy) ?? []);
+items: items?.Select(selector: Copy) ?? []);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId);
+        sentEmailBroker.DeleteAllSentEmailsByAppIdAsync(appId: appId);
 
     private static SentEmail Copy(SentEmail sentEmail) =>
         sentEmail == null
@@ -101,5 +110,3 @@ internal class SentEmailService(
                 MailSenderId = sentEmail.MailSenderId,
             };
 }
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +26,7 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
     public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return ignoreFilters
             ? coreDataContext.SentMail.IgnoreQueryFilters()
             : coreDataContext.SentMail;
@@ -30,7 +35,7 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
     public async ValueTask<SentEmail> AddSentEmailAsync(SentEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        SentEmail result = (await coreDataContext.SentMail.AddAsync(entity)).Entity;
+        SentEmail result = (await coreDataContext.SentMail.AddAsync(entity: entity)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -38,7 +43,10 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
     public async ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        SentEmail result = coreDataContext.SentMail.Update(entity).Entity;
+
+        SentEmail result = coreDataContext.SentMail.Update(entity: entity)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -46,7 +54,7 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
     public async ValueTask<int> DeleteSentEmailAsync(SentEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.SentMail.Remove(entity);
+        coreDataContext.SentMail.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -56,7 +64,7 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.SentMail.RemoveRange(items);
+        coreDataContext.SentMail.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -66,7 +74,7 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
 
         await coreDataContext.SentMail
             .IgnoreQueryFilters()
-            .Where(email => email.AppId == appId)
+            .Where(predicate: email => email.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
@@ -75,10 +83,3 @@ public class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmai
         return entity.AppId;
     }
 }
-
-
-
-
-
-
-

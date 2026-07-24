@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
 using Moq;
@@ -11,7 +15,7 @@ public partial class Pop3MailReceiverProviderTests
 
     public Pop3MailReceiverProviderTests()
     {
-        pop3MailReceiverServiceMock = new Mock<IPop3MailReceiverService>(MockBehavior.Strict);
-        pop3MailReceiverProvider = new Pop3MailReceiverProvider(pop3MailReceiverServiceMock.Object);
+        pop3MailReceiverServiceMock = new Mock<IPop3MailReceiverService>(behavior: MockBehavior.Strict);
+        pop3MailReceiverProvider = new Pop3MailReceiverProvider(pop3MailReceiverService: pop3MailReceiverServiceMock.Object);
     }
 }

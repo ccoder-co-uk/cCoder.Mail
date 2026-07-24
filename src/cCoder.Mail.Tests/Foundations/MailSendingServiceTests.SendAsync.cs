@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FizzWare.NBuilder;
 using Moq;
@@ -11,18 +15,20 @@ public partial class MailSendingServiceTests
     public async Task ShouldDelegateToBrokerWhenSendAsync()
     {
         // Given
-        QueuedEmail email = Builder<QueuedEmail>.CreateNew().Build();
+        QueuedEmail email = Builder<QueuedEmail>.CreateNew()
+            .Build();
+
         CancellationToken cancellationToken = new();
 
         mailSenderClientBrokerMock
-            .Setup(broker => broker.SendAsync(email, cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: broker => broker.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        await mailSendingService.SendAsync(email, cancellationToken);
+        await mailSendingService.SendAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
-        mailSenderClientBrokerMock.Verify(broker => broker.SendAsync(email, cancellationToken), Times.Once);
+        mailSenderClientBrokerMock.Verify(expression: broker => broker.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
         mailSenderClientBrokerMock.VerifyNoOtherCalls();
     }
 }

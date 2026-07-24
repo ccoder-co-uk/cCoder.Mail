@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -15,8 +19,9 @@ namespace cCoder.Mail.Exposures.OData
             bool hasEndpoint = true
         )
         {
-            ExtendedMetadataContainer result = new(type, true, hasEndpoint) { Category = context };
-            IEdmEntitySet set = model.EntityContainer.FindEntitySet(type.Name);
+            ExtendedMetadataContainer result = new(type: type, isEntity: true, hasEndpoint: hasEndpoint) { Category = context };
+            IEdmEntitySet set = model.EntityContainer.FindEntitySet(setName: type.Name);
+
             if (set is null)
             {
                 result.HasEndpoint = false;
@@ -24,22 +29,22 @@ namespace cCoder.Mail.Exposures.OData
             }
 
             IEnumerable<OperationContainer> customOperations = model
-                .FindDeclaredBoundOperations(set.Type)
-                .Select(operation => new OperationContainer
+                .FindDeclaredBoundOperations(bindingType: set.Type)
+                .Select(selector: operation => new OperationContainer
                 {
                     Name = operation.Name,
                     Url = $"{result.Category}/{type.Name}/{operation.Name}()",
                     Queryable = operation.IsFunction(),
                     HttpVerb = operation.IsFunction() ? "GET" : "POST",
-                    ReturnType = BuildMetaFor(operation.GetReturn()?.Type?.Definition),
+                    ReturnType = BuildMetaFor(definition: operation.GetReturn()?.Type?.Definition),
                     Parameters = operation
-                        .Parameters?.Where(parameter => parameter.Name != "bindingParameter")
-                        .Select(parameter => new { parameter.Name, TypeName = parameter.Type.FullName() })
-                        .ToDictionary(item => item.Name, item => item.TypeName),
+                        .Parameters?.Where(predicate: parameter => parameter.Name != "bindingParameter")
+                .Select(selector: parameter => new { parameter.Name, TypeName = parameter.Type.FullName() })
+                .ToDictionary(keySelector: item => item.Name, elementSelector: item => item.TypeName),
                 });
 
-            result.Operations = GetBaseCrudOperations(result)
-                .Union(customOperations)
+            result.Operations = GetBaseCrudOperations(type: result)
+                .Union(second: customOperations)
                 .ToList();
 
             return result;
@@ -50,17 +55,17 @@ namespace cCoder.Mail.Exposures.OData
             if (definition?.TypeKind != EdmTypeKind.Collection)
                 return null;
 
-            Type cSharpType = Type.GetType(definition.FullTypeName(), false);
-            return cSharpType is null ? null : new MetadataContainer(cSharpType, true, true);
+            Type cSharpType = Type.GetType(typeName: definition.FullTypeName(), throwOnError: false);
+            return cSharpType is null ? null : new MetadataContainer(type: cSharpType, isEntity: true, hasEndpoint: true);
         }
 
         private static IEnumerable<OperationContainer> GetBaseCrudOperations(MetadataContainer type) =>
-            type.IsJoinEntity ? GetBaseCrudOperationsForJoinEntity(type) : GetBaseCrudOperationsForEntity(type);
+            type.IsJoinEntity ? GetBaseCrudOperationsForJoinEntity(type: type) : GetBaseCrudOperationsForEntity(type: type);
 
         private static IEnumerable<OperationContainer> GetBaseCrudOperationsForJoinEntity(
             MetadataContainer type
         ) =>
-        [
+            [
             new()
         {
             Name = "Add",
@@ -79,7 +84,8 @@ namespace cCoder.Mail.Exposures.OData
             ReturnType = type,
             Parameters = new Dictionary<string, string>
             {
-                { "odata:key", Type.GetType(type.ServerType)?.GetIdProperty()?.GetType().FullName! },
+                { "odata:key", Type.GetType(typeName: type.ServerType)?.GetIdProperty()?.GetType()
+            .FullName! },
             },
         },
         new()
@@ -101,7 +107,7 @@ namespace cCoder.Mail.Exposures.OData
         private static IEnumerable<OperationContainer> GetBaseCrudOperationsForEntity(
             MetadataContainer type
         ) =>
-        [
+            [
             new()
         {
             Name = "Add",
@@ -120,7 +126,8 @@ namespace cCoder.Mail.Exposures.OData
             ReturnType = type,
             Parameters = new Dictionary<string, string>
             {
-                { "odata:key", Type.GetType(type.ServerType)?.GetIdProperty()?.GetType().FullName! },
+                { "odata:key", Type.GetType(typeName: type.ServerType)?.GetIdProperty()?.GetType()
+            .FullName! },
                 { "body:entity", type.ServerType },
             },
         },
@@ -133,7 +140,8 @@ namespace cCoder.Mail.Exposures.OData
             ReturnType = type,
             Parameters = new Dictionary<string, string>
             {
-                { "odata:key", Type.GetType(type.ServerType)?.GetIdProperty()?.GetType().FullName! },
+                { "odata:key", Type.GetType(typeName: type.ServerType)?.GetIdProperty()?.GetType()
+            .FullName! },
             },
         },
         new()
@@ -153,14 +161,15 @@ namespace cCoder.Mail.Exposures.OData
         public BadRequestResult(ModelStateDictionary modelState)
             : base(modelState) =>
             Value = modelState
-                .Select(item => new ModelStateError
+                .Select(selector: item => new ModelStateError
                 {
                     Key = item.Key,
                     Value = item.Value?.RawValue,
-                    Errors = item.Value?.Errors?.Select(error => $"{error.ErrorMessage} - {error.Exception?.Message}").ToArray(),
+                    Errors = item.Value?.Errors?.Select(selector: error => $"{error.ErrorMessage} - {error.Exception?.Message}")
+            .ToArray(),
                 })
-                .ToArray()
-                .ToJsonForOdata();
+            .ToArray()
+            .ToJsonForOdata();
     }
 
     public sealed class ModelStateError
@@ -170,10 +179,3 @@ namespace cCoder.Mail.Exposures.OData
         public string[] Errors { get; set; }
     }
 }
-
-
-
-
-
-
-

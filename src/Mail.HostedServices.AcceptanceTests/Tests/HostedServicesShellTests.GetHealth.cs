@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using FluentAssertions;
 using Xunit;
 
@@ -11,9 +15,11 @@ public sealed partial class HostedServicesShellTests
         // Given
 
         // When
-        string content = await GetOkContentAsync("/Health");
+        string content = await GetOkContentAsync(path: "/Health");
 
         // Then
-        content.Should().Be("Healthy");
+
+        content.Should()
+            .Be(expected: "Healthy");
     }
 }

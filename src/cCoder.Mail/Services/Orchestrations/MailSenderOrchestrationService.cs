@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Text;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
@@ -18,13 +22,13 @@ internal sealed class MailSenderOrchestrationService(
         if (mailConfiguration.IsMigrating)
             return;
 
-        using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));
+        using PeriodicTimer timer = new(period: TimeSpan.FromMinutes(minutes: 1));
 
-        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken))
+        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken: cancellationToken))
         {
             try
             {
-                await RunAsync(cancellationToken);
+                await RunAsync(cancellationToken: cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -32,7 +36,7 @@ internal sealed class MailSenderOrchestrationService(
             }
             catch (Exception ex)
             {
-                log.LogError(ex, ex.Message);
+                log.LogError(exception: ex, message: ex.Message);
             }
         }
     }
@@ -44,7 +48,7 @@ internal sealed class MailSenderOrchestrationService(
         if (queue.Length == 0)
             return;
 
-        log.LogInformation("Picked up a batch of {Count} emails.", queue.Length);
+        log.LogInformation(message: "Picked up a batch of {Count} emails.", args: queue.Length);
 
         int success = 0;
         int failures = 0;
@@ -53,16 +57,16 @@ internal sealed class MailSenderOrchestrationService(
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (await ProcessEmailAsync(email, cancellationToken))
+            if (await ProcessEmailAsync(email: email, cancellationToken: cancellationToken))
                 success++;
             else
                 failures++;
 
-            await Task.Delay(500, cancellationToken);
+            await Task.Delay(millisecondsDelay: 500, cancellationToken: cancellationToken);
         }
 
         log.LogInformation(
-            "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
+message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
             success + failures,
             success,
             failures);
@@ -75,29 +79,32 @@ internal sealed class MailSenderOrchestrationService(
         if (sender == null)
         {
             await queuedEmailService.RecordSendFailureAsync(
-                email.Id,
-                "No mail sender configuration could be found to send the email.",
-                cancellationToken);
+emailId: email.Id,
+reason: "No mail sender configuration could be found to send the email.",
+cancellationToken: cancellationToken);
+
             return false;
         }
 
         try
         {
-            await mailClientOrchestrationService.SendAsync(email, cancellationToken);
-            await queuedEmailService.MarkAsSentAsync(email, sender.Id, sender.FromEmail ?? sender.User, cancellationToken);
+            await mailClientOrchestrationService.SendAsync(email: email, cancellationToken: cancellationToken);
+            await queuedEmailService.MarkAsSentAsync(queuedEmail: email, mailSenderId: sender.Id, fromAddress: sender.FromEmail ?? sender.User, cancellationToken: cancellationToken);
             return true;
         }
         catch (Exception ex)
         {
-            StringBuilder reason = new(ex.Message);
+            StringBuilder reason = new(value: ex.Message);
 
             while (ex.InnerException != null)
             {
                 ex = ex.InnerException;
-                _ = reason.Append('\n').Append(ex.Message);
+
+                _ = reason.Append(value: '\n')
+                    .Append(value: ex.Message);
             }
 
-            await queuedEmailService.RecordSendFailureAsync(email.Id, reason.ToString(), cancellationToken);
+            await queuedEmailService.RecordSendFailureAsync(emailId: email.Id, reason: reason.ToString(), cancellationToken: cancellationToken);
             return false;
         }
     }

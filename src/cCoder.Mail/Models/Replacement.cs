@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 namespace cCoder.Mail.Models;
 
 public class Replacement
@@ -5,7 +9,8 @@ public class Replacement
     private readonly string newString;
 
     public string Old { get; }
-    public string New => newString ?? ReplaceFunction(Old);
+    public string New =>
+        newString ?? ReplaceFunction(arg: Old);
     public Func<string, string> ReplaceFunction { get; } = source => source;
 
     public Replacement(string old, string @new)
@@ -22,4 +27,3 @@ public class Replacement
             ReplaceFunction = replacer;
     }
 }
-

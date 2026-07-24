@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
@@ -20,10 +24,10 @@ internal class QueuedEmailEventService(
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailAddEventAsync(message);
+        await queuedEmailEventBroker.RaiseQueuedEmailAddEventAsync(message: message);
     }
 
     public async ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity)
@@ -31,10 +35,10 @@ internal class QueuedEmailEventService(
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailUpdateEventAsync(message);
+        await queuedEmailEventBroker.RaiseQueuedEmailUpdateEventAsync(message: message);
     }
 
     public async ValueTask RaiseQueuedEmailDeleteEventAsync(QueuedEmail entity)
@@ -42,10 +46,10 @@ internal class QueuedEmailEventService(
         EventMessage<DataQueuedEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalQueuedEmail(entity),
+            Data = ToExternalQueuedEmail(entity: entity),
         };
 
-        await queuedEmailEventBroker.RaiseQueuedEmailDeleteEventAsync(message);
+        await queuedEmailEventBroker.RaiseQueuedEmailDeleteEventAsync(message: message);
     }
 
     private static DataQueuedEmail ToExternalQueuedEmail(QueuedEmail entity) =>
@@ -62,13 +66,3 @@ internal class QueuedEmailEventService(
             MailServerName = entity.MailServerName,
         };
 }
-
-
-
-
-
-
-
-
-
-

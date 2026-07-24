@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Mail.Brokers.Events;
 using Moq;
@@ -14,23 +18,17 @@ public partial class SentEmailEventServiceTests
 
     public SentEmailEventServiceTests()
     {
-        sentEmailEventBrokerMock = new Mock<ISentEmailEventBroker>(MockBehavior.Strict);
-        authInfoMock = new Mock<ICoreAuthInfo>(MockBehavior.Strict);
-        sentEmailEventBrokerMock = new(MockBehavior.Strict);
+        sentEmailEventBrokerMock = new Mock<ISentEmailEventBroker>(behavior: MockBehavior.Strict);
+        authInfoMock = new Mock<ICoreAuthInfo>(behavior: MockBehavior.Strict);
+        sentEmailEventBrokerMock = new(behavior: MockBehavior.Strict);
         authInfoMock = new();
-        authInfoMock.SetupGet(x => x.SSOUserId).Returns(CurrentUserId);
+
+        authInfoMock.SetupGet(expression: x => x.SSOUserId)
+            .Returns(value: CurrentUserId);
+
         service = new cCoder.Mail.Services.Foundations.Events.SentEmailEventService(
-            sentEmailEventBrokerMock.Object,
-            authInfoMock.Object
+sentEmailEventBroker: sentEmailEventBrokerMock.Object,
+authInfo: authInfoMock.Object
         );
     }
 }
-
-
-
-
-
-
-
-
-

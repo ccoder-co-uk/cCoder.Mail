@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 namespace cCoder.Mail.Models;
 
 public class Config
@@ -8,4 +12,3 @@ public class Config
     public bool DebugInfo { get; set; }
     public bool LogSQL { get; set; }
 }
-

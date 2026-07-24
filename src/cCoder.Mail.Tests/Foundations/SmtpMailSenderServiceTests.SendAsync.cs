@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -29,36 +33,63 @@ public partial class SmtpMailSenderServiceTests
                 FromEmail = "from@example.test",
             },
         };
+
         CancellationToken cancellationToken = new();
         SmtpMailSendRequest actualRequest = null;
 
         smtpMailSenderBrokerMock
-            .Setup(broker => broker.SendAsync(
-                It.IsAny<SmtpMailSendRequest>(),
-                cancellationToken))
-            .Callback<SmtpMailSendRequest, CancellationToken>((request, _) => actualRequest = request)
-            .Returns(Task.CompletedTask);
+            .Setup(expression: broker => broker.SendAsync(
+request: It.IsAny<SmtpMailSendRequest>(),
+cancellationToken: cancellationToken))
+            .Callback<SmtpMailSendRequest, CancellationToken>(action: (request, _) => actualRequest = request)
+            .Returns(value: Task.CompletedTask);
 
         // When
-        await smtpMailSenderService.SendAsync(email, cancellationToken);
+        await smtpMailSenderService.SendAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
-        actualRequest.Host.Should().Be("smtp.example.test");
-        actualRequest.Port.Should().Be(587);
-        actualRequest.EnableSsl.Should().BeTrue();
-        actualRequest.User.Should().Be("sender@example.test");
-        actualRequest.Password.Should().Be("password");
-        actualRequest.Message.From.Address.Should().Be("from@example.test");
-        actualRequest.Message.To.Select(address => address.Address).Should().ContainSingle("to@example.test");
-        actualRequest.Message.CC.Select(address => address.Address).Should().ContainSingle("cc@example.test");
-        actualRequest.Message.Subject.Should().Be("Send");
-        actualRequest.Message.Body.Should().Be("Body");
-        actualRequest.Message.IsBodyHtml.Should().BeTrue();
+
+        actualRequest.Host.Should()
+            .Be(expected: "smtp.example.test");
+
+        actualRequest.Port.Should()
+            .Be(expected: 587);
+
+        actualRequest.EnableSsl.Should()
+            .BeTrue();
+
+        actualRequest.User.Should()
+            .Be(expected: "sender@example.test");
+
+        actualRequest.Password.Should()
+            .Be(expected: "password");
+
+        actualRequest.Message.From.Address.Should()
+            .Be(expected: "from@example.test");
+
+        actualRequest.Message.To.Select(selector: address => address.Address)
+            .Should()
+            .ContainSingle(because: "to@example.test");
+
+        actualRequest.Message.CC.Select(selector: address => address.Address)
+            .Should()
+            .ContainSingle(because: "cc@example.test");
+
+        actualRequest.Message.Subject.Should()
+            .Be(expected: "Send");
+
+        actualRequest.Message.Body.Should()
+            .Be(expected: "Body");
+
+        actualRequest.Message.IsBodyHtml.Should()
+            .BeTrue();
+
         smtpMailSenderBrokerMock.Verify(
-            broker => broker.SendAsync(
-                It.IsAny<SmtpMailSendRequest>(),
-                cancellationToken),
-            Times.Once);
+expression: broker => broker.SendAsync(
+request: It.IsAny<SmtpMailSendRequest>(),
+cancellationToken: cancellationToken),
+times: Times.Once);
+
         smtpMailSenderBrokerMock.VerifyNoOtherCalls();
     }
 }

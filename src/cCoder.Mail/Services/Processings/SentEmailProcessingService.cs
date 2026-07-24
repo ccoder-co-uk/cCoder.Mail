@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -10,31 +14,31 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
 {
     public SentEmail Get(int id)
     {
-        return service.Get(id);
+        return service.Get(id: id);
     }
 
     public IQueryable<SentEmail> GetAll(bool ignoreFilters = false)
     {
-        return service.GetAll(ignoreFilters);
+        return service.GetAll(ignoreFilters: ignoreFilters);
     }
 
     public ValueTask<SentEmail> AddAsync(SentEmail entity)
     {
-        return service.AddAsync(entity);
+        return service.AddAsync(sentEmail: entity);
     }
 
     public ValueTask<SentEmail> UpdateAsync(SentEmail entity)
     {
-        return service.UpdateAsync(entity);
+        return service.UpdateAsync(sentEmail: entity);
     }
 
     public ValueTask DeleteAsync(int id)
     {
-        return service.DeleteAsync(id);
+        return service.DeleteAsync(id: id);
     }
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId);
+        service.DeleteAllByAppIdAsync(appId: appId);
 
     public async ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdate(IEnumerable<SentEmail> items)
     {
@@ -46,10 +50,10 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
             {
                 SentEmail savedItem =
                     item.Id == 0
-                        ? await AddAsync(item)
-                        : await UpdateAsync(item);
+                        ? await AddAsync(entity: item)
+                        : await UpdateAsync(entity: item);
 
-                results.Add(new Result<SentEmail>
+                results.Add(item: new Result<SentEmail>
                 {
                     Success = true,
                     Item = savedItem,
@@ -58,7 +62,7 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
             }
             catch (Exception ex)
             {
-                results.Add(new Result<SentEmail>
+                results.Add(item: new Result<SentEmail>
                 {
                     Success = false,
                     Item = item,
@@ -74,7 +78,7 @@ internal class SentEmailProcessingService(ISentEmailService service) : ISentEmai
     {
         foreach (SentEmail item in items)
         {
-            await DeleteAsync(item.Id);
+            await DeleteAsync(id: item.Id);
         }
     }
 }

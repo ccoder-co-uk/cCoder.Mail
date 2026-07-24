@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +24,7 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
     public IQueryable<MailSender> GetAllMailSenders(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return ignoreFilters
             ? coreDataContext.MailSenders.IgnoreQueryFilters()
             : coreDataContext.MailSenders;
@@ -28,7 +33,7 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
     public async ValueTask<MailSender> AddMailSenderAsync(MailSender entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailSender result = (await coreDataContext.MailSenders.AddAsync(entity)).Entity;
+        MailSender result = (await coreDataContext.MailSenders.AddAsync(entity: entity)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -36,7 +41,10 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
     public async ValueTask<MailSender> UpdateMailSenderAsync(MailSender entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailSender result = coreDataContext.MailSenders.Update(entity).Entity;
+
+        MailSender result = coreDataContext.MailSenders.Update(entity: entity)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -44,7 +52,7 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
     public async ValueTask<int> DeleteMailSenderAsync(MailSender entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailSenders.Remove(entity);
+        coreDataContext.MailSenders.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -54,7 +62,7 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailSenders.RemoveRange(items);
+        coreDataContext.MailSenders.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -64,9 +72,10 @@ public class MailSenderBroker(ICoreContextFactory coreContextFactory) : IMailSen
 
         await coreDataContext.MailSenders
             .IgnoreQueryFilters()
-            .Where(sender => sender.AppId == appId)
+            .Where(predicate: sender => sender.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(MailSender entity) => entity.AppId;
+    public int? GetAppId(MailSender entity) =>
+        entity.AppId;
 }

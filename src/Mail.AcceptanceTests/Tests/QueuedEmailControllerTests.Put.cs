@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,22 +16,25 @@ public sealed partial class QueuedEmailControllerTests
     {
         // Given
         SeededQueuedEmailContext seededContext = await SeedDatabase();
-        QueuedEmail createdQueuedEmail = await CreateQueuedEmailAsync(new
+
+        QueuedEmail createdQueuedEmail = await CreateQueuedEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
-            subject = Unique("QueuedEmail"),
+            subject = Unique(prefix: "QueuedEmail"),
             content = "Acceptance email content",
             to = "acceptance@example.com",
             cc = string.Empty,
             isBodyHtml = true,
             mailServerName = "Default",
         });
-        string updatedSubject = Unique("UpdatedQueuedEmail");
+
+        string updatedSubject = Unique(prefix: "UpdatedQueuedEmail");
         QueuedEmail actualQueuedEmail;
 
         // When
-        await UpdateQueuedEmailAsync(createdQueuedEmail.Id, new
+
+        await UpdateQueuedEmailAsync(id: createdQueuedEmail.Id, payload: new
         {
             id = createdQueuedEmail.Id,
             appId = seededContext.AppId,
@@ -40,17 +47,14 @@ public sealed partial class QueuedEmailControllerTests
             mailServerName = "Default",
         });
 
-        actualQueuedEmail = await GetQueuedEmailAsync(createdQueuedEmail.Id);
+        actualQueuedEmail = await GetQueuedEmailAsync(id: createdQueuedEmail.Id);
 
         // Then
-        actualQueuedEmail.Subject.Should().Be(updatedSubject);
 
-        await DeleteQueuedEmailAsync(createdQueuedEmail.Id);
-        await Teardown(seededContext);
+        actualQueuedEmail.Subject.Should()
+            .Be(expected: updatedSubject);
+
+        await DeleteQueuedEmailAsync(id: createdQueuedEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

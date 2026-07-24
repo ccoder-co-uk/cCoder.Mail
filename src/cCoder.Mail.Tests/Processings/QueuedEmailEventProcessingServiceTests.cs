@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -17,21 +21,11 @@ public partial class QueuedEmailEventProcessingServiceTests
 
     public QueuedEmailEventProcessingServiceTests()
     {
-        queuedEmailEventServiceMock = new Mock<IQueuedEmailEventService>(MockBehavior.Strict);
-        service = new QueuedEmailEventProcessingService(queuedEmailEventServiceMock.Object);
+        queuedEmailEventServiceMock = new Mock<IQueuedEmailEventService>(behavior: MockBehavior.Strict);
+        service = new QueuedEmailEventProcessingService(eventService: queuedEmailEventServiceMock.Object);
     }
 
     private static QueuedEmail CreateRandomQueuedEmail() =>
-        Builder<QueuedEmail>.CreateNew().Build();
+        Builder<QueuedEmail>.CreateNew()
+        .Build();
 }
-
-
-
-
-
-
-
-
-
-
-

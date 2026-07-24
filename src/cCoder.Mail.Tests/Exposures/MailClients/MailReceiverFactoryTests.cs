@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
 using Moq;
@@ -13,19 +17,20 @@ public partial class MailReceiverFactoryTests
 
     public MailReceiverFactoryTests()
     {
-        pop3ReceiverProviderMock = new Mock<IMailReceiverProvider>(MockBehavior.Strict);
-        graphReceiverProviderMock = new Mock<IMailReceiverProvider>(MockBehavior.Strict);
+        pop3ReceiverProviderMock = new Mock<IMailReceiverProvider>(behavior: MockBehavior.Strict);
+        graphReceiverProviderMock = new Mock<IMailReceiverProvider>(behavior: MockBehavior.Strict);
         mailConfiguration = new MailConfiguration();
 
-        pop3ReceiverProviderMock.SetupGet(provider => provider.ProviderName)
-            .Returns(MailProviderNames.Pop3);
-        graphReceiverProviderMock.SetupGet(provider => provider.ProviderName)
-            .Returns(MailProviderNames.MicrosoftGraph);
+        pop3ReceiverProviderMock.SetupGet(expression: provider => provider.ProviderName)
+            .Returns(value: MailProviderNames.Pop3);
+
+        graphReceiverProviderMock.SetupGet(expression: provider => provider.ProviderName)
+            .Returns(value: MailProviderNames.MicrosoftGraph);
 
         mailReceiverFactory = new MailReceiverFactory(
-        [
+receivers: [
             pop3ReceiverProviderMock.Object,
             graphReceiverProviderMock.Object,
-        ], mailConfiguration);
+        ], mailConfiguration: mailConfiguration);
     }
 }

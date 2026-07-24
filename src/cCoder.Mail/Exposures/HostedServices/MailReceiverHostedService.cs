@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.Extensions.Hosting;
 
@@ -11,9 +15,10 @@ public sealed class MailReceiverHostedService(
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using IServiceScope scope = serviceScopeFactory.CreateScope();
+
         IMailReceiverOrchestrationService mailReceiverOrchestrationService =
             scope.ServiceProvider.GetRequiredService<IMailReceiverOrchestrationService>();
 
-        await mailReceiverOrchestrationService.RunContinuouslyAsync(stoppingToken);
+        await mailReceiverOrchestrationService.RunContinuouslyAsync(cancellationToken: stoppingToken);
     }
 }

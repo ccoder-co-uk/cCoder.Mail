@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,12 +16,13 @@ public sealed partial class MailServerControllerTests
     {
         // Given
         SeededMailServerContext seededContext = await SeedDatabase();
-        string name = Unique("MailServer");
+        string name = Unique(prefix: "MailServer");
         MailServer expectedMailServer;
         MailServer actualMailServer;
 
         // When
-        expectedMailServer = await CreateMailServerAsync(new
+
+        expectedMailServer = await CreateMailServerAsync(payload: new
         {
             appId = seededContext.AppId,
             name,
@@ -29,18 +34,17 @@ public sealed partial class MailServerControllerTests
             enableSSL = false,
         });
 
-        actualMailServer = await GetMailServerAsync(expectedMailServer.Id);
+        actualMailServer = await GetMailServerAsync(id: expectedMailServer.Id);
 
         // Then
-        actualMailServer.Should().NotBeNull();
-        actualMailServer.Name.Should().Be(name);
 
-        await DeleteMailServerAsync(expectedMailServer.Id);
-        await Teardown(seededContext);
+        actualMailServer.Should()
+            .NotBeNull();
+
+        actualMailServer.Name.Should()
+            .Be(expected: name);
+
+        await DeleteMailServerAsync(id: expectedMailServer.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

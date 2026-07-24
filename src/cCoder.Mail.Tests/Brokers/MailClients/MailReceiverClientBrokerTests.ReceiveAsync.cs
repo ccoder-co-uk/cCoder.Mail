@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -17,23 +21,28 @@ public partial class MailReceiverClientBrokerTests
             ProviderName = "MicrosoftGraph",
             User = "mailbox@example.test",
         };
+
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
         mailReceiverFactoryMock
-            .Setup(factory => factory.GetReceiver("MicrosoftGraph"))
-            .Returns(mailReceiverProviderMock.Object);
+            .Setup(expression: factory => factory.GetReceiver(providerName: "MicrosoftGraph"))
+            .Returns(value: mailReceiverProviderMock.Object);
+
         mailReceiverProviderMock
-            .Setup(provider => provider.ReceiveAsync(request, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: provider => provider.ReceiveAsync(request: request, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceiverFactoryMock.Verify(factory => factory.GetReceiver("MicrosoftGraph"), Times.Once);
-        mailReceiverProviderMock.Verify(provider => provider.ReceiveAsync(request, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceiverFactoryMock.Verify(expression: factory => factory.GetReceiver(providerName: "MicrosoftGraph"), times: Times.Once);
+        mailReceiverProviderMock.Verify(expression: provider => provider.ReceiveAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
         mailReceiverFactoryMock.VerifyNoOtherCalls();
         mailReceiverProviderMock.VerifyNoOtherCalls();
     }
@@ -46,19 +55,23 @@ public partial class MailReceiverClientBrokerTests
         CancellationToken cancellationToken = new();
 
         mailReceiverFactoryMock
-            .Setup(factory => factory.GetReceiver(null))
-            .Returns(mailReceiverProviderMock.Object);
+            .Setup(expression: factory => factory.GetReceiver(providerName: null))
+            .Returns(value: mailReceiverProviderMock.Object);
+
         mailReceiverProviderMock
-            .Setup(provider => provider.ReceiveTopAsync(1, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: provider => provider.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceiverClientBroker.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceiverFactoryMock.Verify(factory => factory.GetReceiver(null), Times.Once);
-        mailReceiverProviderMock.Verify(provider => provider.ReceiveTopAsync(1, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceiverFactoryMock.Verify(expression: factory => factory.GetReceiver(providerName: null), times: Times.Once);
+        mailReceiverProviderMock.Verify(expression: provider => provider.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken), times: Times.Once);
         mailReceiverFactoryMock.VerifyNoOtherCalls();
         mailReceiverProviderMock.VerifyNoOtherCalls();
     }

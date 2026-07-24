@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Services.Orchestrations;
 using Moq;
@@ -12,10 +16,11 @@ public partial class MailClientOrchestrationServiceTests
 
     public MailClientOrchestrationServiceTests()
     {
-        mailSendingServiceMock = new Mock<IMailSendingService>(MockBehavior.Strict);
-        mailReceivingServiceMock = new Mock<IMailReceivingService>(MockBehavior.Strict);
+        mailSendingServiceMock = new Mock<IMailSendingService>(behavior: MockBehavior.Strict);
+        mailReceivingServiceMock = new Mock<IMailReceivingService>(behavior: MockBehavior.Strict);
+
         mailClientOrchestrationService = new MailClientOrchestrationService(
-            mailSendingServiceMock.Object,
-            mailReceivingServiceMock.Object);
+mailSendingService: mailSendingServiceMock.Object,
+mailReceivingService: mailReceivingServiceMock.Object);
     }
 }

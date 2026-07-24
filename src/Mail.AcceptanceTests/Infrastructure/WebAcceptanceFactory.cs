@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Exposures.MailClients;
@@ -22,18 +26,20 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Acceptance");
-        builder.ConfigureAppConfiguration((_, config) =>
+        builder.UseEnvironment(environment: "Acceptance");
+
+        builder.ConfigureAppConfiguration(configureDelegate: (_, config) =>
         {
             config.AddInMemoryCollection(
-            [
-                new KeyValuePair<string, string>("ConnectionStrings:Core", settings.CoreConnectionString),
-                new KeyValuePair<string, string>("ConnectionStrings:SSO", settings.SsoConnectionString),
-                new KeyValuePair<string, string>("Settings:DecryptionKey", settings.DecryptionKey),
-                new KeyValuePair<string, string>("Settings:enableExternalEventing", "false"),
+initialData: [
+                new KeyValuePair<string, string>(key: "ConnectionStrings:Core", value: settings.CoreConnectionString),
+                new KeyValuePair<string, string>(key: "ConnectionStrings:SSO", value: settings.SsoConnectionString),
+                new KeyValuePair<string, string>(key: "Settings:DecryptionKey", value: settings.DecryptionKey),
+                new KeyValuePair<string, string>(key: "Settings:enableExternalEventing", value: "false"),
             ]);
         });
-        builder.ConfigureTestServices(services =>
+
+        builder.ConfigureTestServices(servicesConfiguration: services =>
         {
             services.RemoveAll<ICoreContextFactory>();
             services.RemoveAll<ISecurityDbContextFactory>();
@@ -42,26 +48,28 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             services.RemoveAll<IMailReceiverProvider>();
 
             services.AddSingleton(
-                new cCoder.Data.Config
-                {
-                    ConnectionStrings = new Dictionary<string, string>
-                    {
-                        ["Core"] = settings.CoreConnectionString,
-                        ["SSO"] = settings.SsoConnectionString,
-                    },
-                    Settings = new Dictionary<string, string>
-                    {
-                        ["DecryptionKey"] = settings.DecryptionKey,
-                        ["enableExternalEventing"] = "false",
-                    },
-                    Services = new Dictionary<string, string>(),
-                });
+implementationInstance: new cCoder.Data.Config
+{
+    ConnectionStrings = new Dictionary<string, string>
+    {
+        ["Core"] = settings.CoreConnectionString,
+        ["SSO"] = settings.SsoConnectionString,
+    },
+    Settings = new Dictionary<string, string>
+    {
+        ["DecryptionKey"] = settings.DecryptionKey,
+        ["enableExternalEventing"] = "false",
+    },
+    Services = new Dictionary<string, string>(),
+});
+
             services.AddSingleton<ISecurityDbContextFactory>(
                 _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString)
             );
-            services.AddCoreData(settings.CoreConnectionString);
+
+            services.AddCoreData(connectionString: settings.CoreConnectionString);
             services.AddTransient<AcceptanceMailClient>();
-            services.AddTransient<IMicrosoftGraphClient>(provider => provider.GetRequiredService<AcceptanceMailClient>());
+            services.AddTransient<IMicrosoftGraphClient>(implementationFactory: provider => provider.GetRequiredService<AcceptanceMailClient>());
             services.AddTransient<IMailSenderProvider, AcceptanceSmtpMailSenderProvider>();
             services.AddTransient<IMailSenderProvider, AcceptanceGraphMailProvider>();
             services.AddTransient<IMailReceiverProvider, AcceptanceGraphMailProvider>();
@@ -77,7 +85,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             MailboxReceiveRequest request,
             CancellationToken cancellationToken = default) =>
             Task.FromResult<ReceivedEmail[]>(
-            [
+result: [
                 new()
                 {
                     MessageId = "<acceptance-message@example.test>",
@@ -86,7 +94,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
                     Subject = $"Acceptance receive from {request.User}",
                     Content = "Acceptance receive content",
                     IsBodyHtml = false,
-                    ReceivedOn = request.From?.AddMinutes(1) ?? DateTimeOffset.UtcNow,
+                    ReceivedOn = request.From?.AddMinutes(minutes: 1) ?? DateTimeOffset.UtcNow,
                 }
             ]);
 
@@ -94,7 +102,7 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
             int count,
             CancellationToken cancellationToken = default) =>
             Task.FromResult<ReceivedEmail[]>(
-            [
+result: [
                 new()
                 {
                     MessageId = "<acceptance-top-message@example.test>",
@@ -110,7 +118,8 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
 
     private sealed class AcceptanceSmtpMailSenderProvider : IMailSenderProvider
     {
-        public string ProviderName => MailProviderNames.Smtp;
+        public string ProviderName =>
+            MailProviderNames.Smtp;
 
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
@@ -120,22 +129,20 @@ internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
         : IMailSenderProvider,
             IMailReceiverProvider
     {
-        public string ProviderName => MailProviderNames.MicrosoftGraph;
+        public string ProviderName =>
+            MailProviderNames.MicrosoftGraph;
 
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-            mailClient.SendAsync(email, cancellationToken);
+            mailClient.SendAsync(email: email, cancellationToken: cancellationToken);
 
         public Task<ReceivedEmail[]> ReceiveAsync(
             MailboxReceiveRequest request,
             CancellationToken cancellationToken = default) =>
-            mailClient.ReceiveAsync(request, cancellationToken);
+            mailClient.ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
         public Task<ReceivedEmail[]> ReceiveTopAsync(
             int count,
             CancellationToken cancellationToken = default) =>
-            mailClient.ReceiveTopAsync(count, cancellationToken);
+            mailClient.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
     }
 }
-
-
-

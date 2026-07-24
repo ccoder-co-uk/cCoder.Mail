@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.ComponentModel.DataAnnotations;
 
 namespace cCoder.Mail.Models;
@@ -31,7 +35,8 @@ public class Result<T> : Result
                 return null;
             }
         }
-        set => id = value;
+        set =>
+        id = value;
     }
 
     public T Item { get; set; }

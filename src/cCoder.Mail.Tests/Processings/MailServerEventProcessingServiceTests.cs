@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -17,21 +21,11 @@ public partial class MailServerEventProcessingServiceTests
 
     public MailServerEventProcessingServiceTests()
     {
-        mailServerEventServiceMock = new Mock<IMailServerEventService>(MockBehavior.Strict);
-        service = new MailServerEventProcessingService(mailServerEventServiceMock.Object);
+        mailServerEventServiceMock = new Mock<IMailServerEventService>(behavior: MockBehavior.Strict);
+        service = new MailServerEventProcessingService(eventService: mailServerEventServiceMock.Object);
     }
 
     private static MailServer CreateRandomMailServer() =>
-        Builder<MailServer>.CreateNew().Build();
+        Builder<MailServer>.CreateNew()
+        .Build();
 }
-
-
-
-
-
-
-
-
-
-
-

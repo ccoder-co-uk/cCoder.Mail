@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Eventing.Models;
 
 namespace cCoder.Mail.Models;
@@ -16,8 +20,8 @@ public class MailConfiguration
     public IDictionary<string, string> ConnectionStrings { get; set; } = new Dictionary<string, string>();
     public IDictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
     public IDictionary<string, string> Services { get; set; } = new Dictionary<string, string>();
-    public IDictionary<string, string> SenderProviders { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-    public IDictionary<string, string> ReceiverProviders { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, string> SenderProviders { get; } = new Dictionary<string, string>(comparer: StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, string> ReceiverProviders { get; } = new Dictionary<string, string>(comparer: StringComparer.OrdinalIgnoreCase);
     public MicrosoftGraphMailConfiguration MicrosoftGraph { get; } = new();
     public bool DebugInfo { get; set; }
     public bool LogSQL { get; set; }
@@ -32,28 +36,28 @@ public class MailConfiguration
 
     public MailConfiguration AddSmtpSender(string name = MailProviderNames.Smtp)
     {
-        return AddSenderProvider(name, MailProviderNames.Smtp);
+        return AddSenderProvider(name: name, providerName: MailProviderNames.Smtp);
     }
 
     public MailConfiguration AddPop3Receiver(string name = MailProviderNames.Pop3)
     {
-        return AddReceiverProvider(name, MailProviderNames.Pop3);
+        return AddReceiverProvider(name: name, providerName: MailProviderNames.Pop3);
     }
 
     public MailConfiguration AddImapReceiver(string name = MailProviderNames.Imap)
     {
-        return AddReceiverProvider(name, MailProviderNames.Imap);
+        return AddReceiverProvider(name: name, providerName: MailProviderNames.Imap);
     }
 
     public MailConfiguration AddMicrosoftGraphSender(
         Action<MicrosoftGraphMailConfiguration> configure = null,
         string name = MailProviderNames.MicrosoftGraph)
     {
-        configure?.Invoke(MicrosoftGraph);
-        AddSenderProvider(name, MailProviderNames.MicrosoftGraph);
-        AddSenderProvider("graph.microsoft.com", MailProviderNames.MicrosoftGraph);
-        AddSenderProvider("https://graph.microsoft.com", MailProviderNames.MicrosoftGraph);
-        AddSenderProvider("microsoft-graph", MailProviderNames.MicrosoftGraph);
+        configure?.Invoke(obj: MicrosoftGraph);
+        AddSenderProvider(name: name, providerName: MailProviderNames.MicrosoftGraph);
+        AddSenderProvider(name: "graph.microsoft.com", providerName: MailProviderNames.MicrosoftGraph);
+        AddSenderProvider(name: "https://graph.microsoft.com", providerName: MailProviderNames.MicrosoftGraph);
+        AddSenderProvider(name: "microsoft-graph", providerName: MailProviderNames.MicrosoftGraph);
         return this;
     }
 
@@ -61,11 +65,11 @@ public class MailConfiguration
         Action<MicrosoftGraphMailConfiguration> configure = null,
         string name = MailProviderNames.MicrosoftGraph)
     {
-        configure?.Invoke(MicrosoftGraph);
-        AddReceiverProvider(name, MailProviderNames.MicrosoftGraph);
-        AddReceiverProvider("graph.microsoft.com", MailProviderNames.MicrosoftGraph);
-        AddReceiverProvider("https://graph.microsoft.com", MailProviderNames.MicrosoftGraph);
-        AddReceiverProvider("microsoft-graph", MailProviderNames.MicrosoftGraph);
+        configure?.Invoke(obj: MicrosoftGraph);
+        AddReceiverProvider(name: name, providerName: MailProviderNames.MicrosoftGraph);
+        AddReceiverProvider(name: "graph.microsoft.com", providerName: MailProviderNames.MicrosoftGraph);
+        AddReceiverProvider(name: "https://graph.microsoft.com", providerName: MailProviderNames.MicrosoftGraph);
+        AddReceiverProvider(name: "microsoft-graph", providerName: MailProviderNames.MicrosoftGraph);
         return this;
     }
 
@@ -83,16 +87,16 @@ public class MailConfiguration
 
     public string ResolveSenderProviderName(string providerName)
     {
-        string name = string.IsNullOrWhiteSpace(providerName)
+        string name = string.IsNullOrWhiteSpace(value: providerName)
             ? DefaultSenderProviderName
             : providerName;
 
-        if (SenderProviders.TryGetValue(name, out string configuredName))
+        if (SenderProviders.TryGetValue(key: name, value: out string configuredName))
             return configuredName;
 
-        if (string.IsNullOrWhiteSpace(providerName)
-            || name.Contains('.', StringComparison.Ordinal)
-            || name.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrWhiteSpace(value: providerName)
+            || name.Contains(value: '.', comparisonType: StringComparison.Ordinal)
+            || name.StartsWith(value: "http", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             return DefaultSenderProviderName;
         }
@@ -102,11 +106,11 @@ public class MailConfiguration
 
     public string ResolveReceiverProviderName(string providerName)
     {
-        string name = string.IsNullOrWhiteSpace(providerName)
+        string name = string.IsNullOrWhiteSpace(value: providerName)
             ? DefaultReceiverProviderName
             : providerName;
 
-        return ReceiverProviders.TryGetValue(name, out string configuredName)
+        return ReceiverProviders.TryGetValue(key: name, value: out string configuredName)
             ? configuredName
             : name;
     }

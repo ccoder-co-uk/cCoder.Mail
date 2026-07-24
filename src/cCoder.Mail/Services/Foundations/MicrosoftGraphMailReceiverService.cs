@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net.Http.Headers;
 using System.Text.Json;
 using cCoder.Data.Models.Mail;
@@ -18,86 +22,90 @@ internal sealed class MicrosoftGraphMailReceiverService(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default)
     {
-        ValidateReceiveRequest(request);
-        string accessToken = await GetAccessTokenAsync(cancellationToken);
-        using HttpRequestMessage message = new(HttpMethod.Get, BuildMessagesUrl(request));
-        message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        ValidateReceiveRequest(request: request);
+        string accessToken = await GetAccessTokenAsync(cancellationToken: cancellationToken);
+        using HttpRequestMessage message = new(method: HttpMethod.Get, requestUri: BuildMessagesUrl(request: request));
+        message.Headers.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: accessToken);
 
-        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(message, cancellationToken);
+        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: message, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException($"Microsoft Graph mailbox receive failed: {response.Content}");
+            throw new InvalidOperationException(message: $"Microsoft Graph mailbox receive failed: {response.Content}");
 
-        return ParseMessages(response.Content);
+        return ParseMessages(content: response.Content);
     }
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
         ReceiveAsync(
-            new MailboxReceiveRequest
-            {
-                User = ReadConfiguredReceiveUser(),
-                MaximumMessages = count,
-            },
-            cancellationToken);
+request: new MailboxReceiveRequest
+{
+    User = ReadConfiguredReceiveUser(),
+    MaximumMessages = count,
+},
+cancellationToken: cancellationToken);
 
     private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {
-        using HttpRequestMessage request = new(HttpMethod.Post, BuildTokenUrl())
+        using HttpRequestMessage request = new(method: HttpMethod.Post, requestUri: BuildTokenUrl())
         {
             Content = new FormUrlEncodedContent(
-            [
+nameValueCollection: [
                 new KeyValuePair<string, string>(
-                    "client_id",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientId, "Microsoft Graph client id")),
+key: "client_id",
+value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ClientId, configurationName: "Microsoft Graph client id")),
                 new KeyValuePair<string, string>(
-                    "client_secret",
-                    ReadRequiredConfiguredValue(mailConfiguration.MicrosoftGraph.ClientSecret, "Microsoft Graph client secret")),
-                new KeyValuePair<string, string>("scope", "https://graph.microsoft.com/.default"),
-                new KeyValuePair<string, string>("grant_type", "client_credentials"),
+key: "client_secret",
+value: ReadRequiredConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ClientSecret, configurationName: "Microsoft Graph client secret")),
+                new KeyValuePair<string, string>(key: "scope", value: "https://graph.microsoft.com/.default"),
+                new KeyValuePair<string, string>(key: "grant_type", value: "client_credentials"),
             ]),
         };
 
-        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request, cancellationToken);
+        HttpClientBrokerResponse response = await microsoftGraphBroker.SendAsync(request: request, cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException($"Microsoft Graph token request failed: {response.Content}");
+            throw new InvalidOperationException(message: $"Microsoft Graph token request failed: {response.Content}");
 
-        using JsonDocument document = JsonDocument.Parse(response.Content);
+        using JsonDocument document = JsonDocument.Parse(json: response.Content);
 
-        return document.RootElement.GetProperty("access_token").GetString()
-            ?? throw new InvalidOperationException("Microsoft Graph token response did not include an access token.");
+        return document.RootElement.GetProperty(propertyName: "access_token")
+            .GetString()
+            ?? throw new InvalidOperationException(message: "Microsoft Graph token response did not include an access token.");
     }
 
     private string BuildTokenUrl()
     {
         string tenantId = ReadRequiredConfiguredValue(
-            mailConfiguration.MicrosoftGraph.TenantId,
-            "Microsoft Graph tenant id");
-        string loginBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.LoginBaseUrl)
+configuredValue: mailConfiguration.MicrosoftGraph.TenantId,
+configurationName: "Microsoft Graph tenant id");
+
+        string loginBaseUrl = ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.LoginBaseUrl)
             ?? DefaultLoginBaseUrl;
 
-        return $"{loginBaseUrl.TrimEnd('/')}/{Uri.EscapeDataString(tenantId)}/oauth2/v2.0/token";
+        return $"{loginBaseUrl.TrimEnd(trimChar: '/')}/{Uri.EscapeDataString(stringToEscape: tenantId)}/oauth2/v2.0/token";
     }
 
     private string BuildMessagesUrl(MailboxReceiveRequest request)
     {
-        string graphBaseUrl = ReadConfiguredValue(mailConfiguration.MicrosoftGraph.GraphBaseUrl)
+        string graphBaseUrl = ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.GraphBaseUrl)
             ?? DefaultGraphBaseUrl;
+
         List<string> query =
         [
             "$select=internetMessageId,subject,body,receivedDateTime,from,toRecipients,ccRecipients",
-            $"$top={Math.Clamp(request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, 1, 100)}",
+            $"$top={Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100)}",
             "$orderby=receivedDateTime desc",
         ];
-        string filter = BuildFilter(request);
 
-        if (!string.IsNullOrWhiteSpace(filter))
-            query.Add($"$filter={Uri.EscapeDataString(filter)}");
+        string filter = BuildFilter(request: request);
 
-        return $"{graphBaseUrl.TrimEnd('/')}/users/{Uri.EscapeDataString(request.User)}/mailFolders/inbox/messages"
-            + $"?{string.Join("&", query)}";
+        if (!string.IsNullOrWhiteSpace(value: filter))
+            query.Add(item: $"$filter={Uri.EscapeDataString(stringToEscape: filter)}");
+
+        return $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: request.User)}/mailFolders/inbox/messages"
+            + $"?{string.Join(separator: "&", values: query)}";
     }
 
     private static string BuildFilter(MailboxReceiveRequest request)
@@ -105,102 +113,102 @@ internal sealed class MicrosoftGraphMailReceiverService(
         List<string> filters = [];
 
         if (request.From is not null)
-            filters.Add($"receivedDateTime ge {request.From.Value.UtcDateTime:O}");
+            filters.Add(item: $"receivedDateTime ge {request.From.Value.UtcDateTime:O}");
 
         if (request.To is not null)
-            filters.Add($"receivedDateTime le {request.To.Value.UtcDateTime:O}");
+            filters.Add(item: $"receivedDateTime le {request.To.Value.UtcDateTime:O}");
 
-        return string.Join(" and ", filters);
+        return string.Join(separator: " and ", values: filters);
     }
 
     private static ReceivedEmail[] ParseMessages(string content)
     {
-        using JsonDocument document = JsonDocument.Parse(content);
+        using JsonDocument document = JsonDocument.Parse(json: content);
 
-        if (!document.RootElement.TryGetProperty("value", out JsonElement messages))
+        if (!document.RootElement.TryGetProperty(propertyName: "value", value: out JsonElement messages))
             return [];
 
         return messages.EnumerateArray()
-            .Select(ParseMessage)
+            .Select(selector: ParseMessage)
             .ToArray();
     }
 
     private static ReceivedEmail ParseMessage(JsonElement message) =>
         new()
         {
-            MessageId = GetString(message, "internetMessageId"),
-            From = GetEmailAddress(message, "from"),
-            To = GetRecipientAddresses(message, "toRecipients"),
-            CC = GetRecipientAddresses(message, "ccRecipients"),
-            Subject = GetString(message, "subject"),
-            Content = GetBodyContent(message),
-            IsBodyHtml = IsHtmlBody(message),
-            ReceivedOn = GetReceivedOn(message),
+            MessageId = GetString(element: message, propertyName: "internetMessageId"),
+            From = GetEmailAddress(message: message, propertyName: "from"),
+            To = GetRecipientAddresses(message: message, propertyName: "toRecipients"),
+            CC = GetRecipientAddresses(message: message, propertyName: "ccRecipients"),
+            Subject = GetString(element: message, propertyName: "subject"),
+            Content = GetBodyContent(message: message),
+            IsBodyHtml = IsHtmlBody(message: message),
+            ReceivedOn = GetReceivedOn(message: message),
         };
 
     private static string GetBodyContent(JsonElement message) =>
-        message.TryGetProperty("body", out JsonElement body)
-            ? GetString(body, "content")
+        message.TryGetProperty(propertyName: "body", value: out JsonElement body)
+            ? GetString(element: body, propertyName: "content")
             : null;
 
     private static bool IsHtmlBody(JsonElement message) =>
-        message.TryGetProperty("body", out JsonElement body)
-        && string.Equals(GetString(body, "contentType"), "html", StringComparison.OrdinalIgnoreCase);
+        message.TryGetProperty(propertyName: "body", value: out JsonElement body)
+        && string.Equals(a: GetString(element: body, propertyName: "contentType"), b: "html", comparisonType: StringComparison.OrdinalIgnoreCase);
 
     private static DateTimeOffset GetReceivedOn(JsonElement message) =>
-        DateTimeOffset.TryParse(GetString(message, "receivedDateTime"), out DateTimeOffset receivedOn)
+        DateTimeOffset.TryParse(input: GetString(element: message, propertyName: "receivedDateTime"), result: out DateTimeOffset receivedOn)
             ? receivedOn
             : DateTimeOffset.MinValue;
 
     private static string GetEmailAddress(JsonElement message, string propertyName)
     {
-        if (!message.TryGetProperty(propertyName, out JsonElement recipient))
+        if (!message.TryGetProperty(propertyName: propertyName, value: out JsonElement recipient))
             return null;
 
-        if (!recipient.TryGetProperty("emailAddress", out JsonElement emailAddress))
+        if (!recipient.TryGetProperty(propertyName: "emailAddress", value: out JsonElement emailAddress))
             return null;
 
-        return GetString(emailAddress, "address");
+        return GetString(element: emailAddress, propertyName: "address");
     }
 
     private static string GetRecipientAddresses(JsonElement message, string propertyName)
     {
-        if (!message.TryGetProperty(propertyName, out JsonElement recipients))
+        if (!message.TryGetProperty(propertyName: propertyName, value: out JsonElement recipients))
             return null;
 
         return string.Join(
-            ", ",
-            recipients.EnumerateArray()
-                .Select(recipient => recipient.TryGetProperty("emailAddress", out JsonElement emailAddress)
-                    ? GetString(emailAddress, "address")
+separator: ", ",
+values: recipients.EnumerateArray()
+            .Select(selector: recipient => recipient.TryGetProperty(propertyName: "emailAddress", value: out JsonElement emailAddress)
+                    ? GetString(element: emailAddress, propertyName: "address")
                     : null)
-                .Where(address => !string.IsNullOrWhiteSpace(address)));
+            .Where(predicate: address => !string.IsNullOrWhiteSpace(value: address)));
     }
 
     private static string GetString(JsonElement element, string propertyName) =>
-        element.TryGetProperty(propertyName, out JsonElement property)
+        element.TryGetProperty(propertyName: propertyName, value: out JsonElement property)
         && property.ValueKind == JsonValueKind.String
             ? property.GetString()
             : null;
 
     private string ReadConfiguredReceiveUser() =>
-        ReadConfiguredValue(mailConfiguration.MicrosoftGraph.ReceiveUser)
+        ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ReceiveUser)
         ?? throw new InvalidOperationException(
-            "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
+message: "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
 
     private static string ReadRequiredConfiguredValue(string configuredValue, string configurationName) =>
-        ReadConfiguredValue(configuredValue)
-        ?? throw new InvalidOperationException($"{configurationName} is required for Microsoft Graph mail.");
+        ReadConfiguredValue(configuredValue: configuredValue)
+        ?? throw new InvalidOperationException(message: $"{configurationName} is required for Microsoft Graph mail.");
 
     private static string ReadConfiguredValue(string configuredValue) =>
-        string.IsNullOrWhiteSpace(configuredValue) ? null : configuredValue;
+        string.IsNullOrWhiteSpace(value: configuredValue) ? null : configuredValue;
 
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
-            throw new ArgumentNullException(nameof(request));
+            throw new ArgumentNullException(paramName: nameof(request));
 
-        if (string.IsNullOrWhiteSpace(request.User))
-            throw new InvalidOperationException("Mailbox user is required.");
+        if (string.IsNullOrWhiteSpace(value: request.User))
+            throw new InvalidOperationException(message: "Mailbox user is required.");
     }
 }

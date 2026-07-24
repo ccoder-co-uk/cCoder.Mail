@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Exposures.MailClients;
@@ -8,9 +12,9 @@ internal sealed class MailSenderFactory(
     : IMailSenderFactory
 {
     private readonly IReadOnlyDictionary<string, IMailSenderProvider> senders =
-        senders.ToDictionary(sender => sender.ProviderName, StringComparer.OrdinalIgnoreCase);
+        senders.ToDictionary(keySelector: sender => sender.ProviderName, comparer: StringComparer.OrdinalIgnoreCase);
 
     public IMailSenderProvider GetSender(string providerName) =>
-        senders.GetValueOrDefault(mailConfiguration.ResolveSenderProviderName(providerName))
-        ?? throw new InvalidOperationException($"No mail sender provider named '{providerName}' is registered.");
+        senders.GetValueOrDefault(key: mailConfiguration.ResolveSenderProviderName(providerName: providerName))
+        ?? throw new InvalidOperationException(message: $"No mail sender provider named '{providerName}' is registered.");
 }

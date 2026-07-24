@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Exposures.OData;
@@ -33,18 +37,18 @@ public static partial class IServiceCollectionExtensions
     public static void AddMail(
         this IServiceCollection services,
         Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMail((_, configuration) => configure?.Invoke(configuration));
+        services.AddConfiguredMail(configure: (_, configuration) => configure?.Invoke(obj: configuration));
 
     public static void AddMailWeb(
         this IServiceCollection services,
         Action<MailConfiguration> configure = null,
         ODataConventionModelBuilder builder = null) =>
-        services.AddConfiguredMailWeb((_, configuration) => configure?.Invoke(configuration), builder);
+        services.AddConfiguredMailWeb(configure: (_, configuration) => configure?.Invoke(obj: configuration), builder: builder);
 
     public static void AddMailHostedServices(
         this IServiceCollection services,
         Action<MailConfiguration> configure = null) =>
-        services.AddConfiguredMailHostedServices((_, configuration) => configure?.Invoke(configuration));
+        services.AddConfiguredMailHostedServices(configure: (_, configuration) => configure?.Invoke(obj: configuration));
 
     private static void AddMail(this IServiceCollection services)
     {
@@ -71,9 +75,9 @@ public static partial class IServiceCollectionExtensions
         services.AddOrchestrations();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
-        services.AddHostedService(provider => provider.GetRequiredService<IMailSenderHostedService>());
+        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailSenderHostedService>());
         services.AddSingleton<IMailReceiverHostedService, MailReceiverHostedService>();
-        services.AddHostedService(provider => provider.GetRequiredService<IMailReceiverHostedService>());
+        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailReceiverHostedService>());
     }
 
     private static void AddEventingTypes(this IServiceCollection services)

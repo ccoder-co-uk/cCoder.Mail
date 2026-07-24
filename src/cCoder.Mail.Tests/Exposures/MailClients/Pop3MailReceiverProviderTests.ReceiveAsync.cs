@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -17,16 +21,21 @@ public partial class Pop3MailReceiverProviderTests
         CancellationToken cancellationToken = new();
 
         pop3MailReceiverServiceMock
-            .Setup(service => service.ReceiveAsync(request, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await pop3MailReceiverProvider.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await pop3MailReceiverProvider.ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
-        pop3MailReceiverProvider.ProviderName.Should().Be(MailProviderNames.Pop3);
-        actualEmails.Should().BeSameAs(expectedEmails);
-        pop3MailReceiverServiceMock.Verify(service => service.ReceiveAsync(request, cancellationToken), Times.Once);
+
+        pop3MailReceiverProvider.ProviderName.Should()
+            .Be(expected: MailProviderNames.Pop3);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        pop3MailReceiverServiceMock.Verify(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
         pop3MailReceiverServiceMock.VerifyNoOtherCalls();
     }
 
@@ -38,15 +47,18 @@ public partial class Pop3MailReceiverProviderTests
         CancellationToken cancellationToken = new();
 
         pop3MailReceiverServiceMock
-            .Setup(service => service.ReceiveTopAsync(1, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: service => service.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await pop3MailReceiverProvider.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await pop3MailReceiverProvider.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        pop3MailReceiverServiceMock.Verify(service => service.ReceiveTopAsync(1, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        pop3MailReceiverServiceMock.Verify(expression: service => service.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken), times: Times.Once);
         pop3MailReceiverServiceMock.VerifyNoOtherCalls();
     }
 }

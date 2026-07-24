@@ -1,16 +1,21 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Packaging;
 
 namespace cCoder.Mail.Exposures.Setup;
 
 public static partial class UIBaseline
 {
-    static Package Pages => new()
-    {
-        Name = "Mail Pages",
-        Category = "Mail",
-        Description = "Mail Pages.",
-        SourceApi = "https://ccoder.co.uk/Api/",
-        Items =
+    static Package Pages =>
+        new()
+        {
+            Name = "Mail Pages",
+            Category = "Mail",
+            Description = "Mail Pages.",
+            SourceApi = "https://ccoder.co.uk/Api/",
+            Items =
         [
             new PackageItem
             {
@@ -41,5 +46,5 @@ public static partial class UIBaseline
 """
             }
         ]
-    };
+        };
 }

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,27 +20,24 @@ public partial class QueuedEmailOrchestrationServiceTests
     {
         // Given
         QueuedEmail entity = CreateRandomQueuedEmail();
-        queuedEmailProcessingServiceMock.Setup(x => x.UpdateAsync(entity)).ReturnsAsync(entity);
+
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.UpdateAsync(entity: entity))
+            .ReturnsAsync(value: entity);
 
         queuedEmailEventProcessingServiceMock
-            .Setup(x => x.RaiseQueuedEmailUpdateEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseQueuedEmailUpdateEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        QueuedEmail result = await orchestrationService.UpdateAsync(entity);
+        QueuedEmail result = await orchestrationService.UpdateAsync(entity: entity);
 
         // Then
-        result.Should().BeSameAs(entity);
-        queuedEmailProcessingServiceMock.Verify(x => x.UpdateAsync(entity), Times.Once);
-        queuedEmailEventProcessingServiceMock.Verify(x => x.RaiseQueuedEmailUpdateEventAsync(entity), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entity);
+
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.UpdateAsync(entity: entity), times: Times.Once);
+        queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailUpdateEventAsync(entity: entity), times: Times.Once);
     }
 
 }
-
-
-
-
-
-
-
-

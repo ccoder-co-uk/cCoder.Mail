@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Eventing.Models;
 
@@ -10,10 +14,3 @@ public interface ISentEmailEventBroker
     ValueTask RaiseSentEmailUpdateEventAsync(EventMessage<SentEmail> message);
     ValueTask RaiseSentEmailDeleteEventAsync(EventMessage<SentEmail> message);
 }
-
-
-
-
-
-
-

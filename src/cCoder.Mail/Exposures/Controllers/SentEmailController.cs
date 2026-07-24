@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
@@ -34,11 +38,11 @@ public partial class SentEmailController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-                new cCoder.Mail.Exposures.OData.MailModelBuilder()
+value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(SentEmail))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(SentEmail))
             )
-            : Ok(new MetadataContainer(typeof(SentEmail), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(SentEmail), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -51,7 +55,8 @@ public partial class SentEmailController : ODataController
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) => Ok(Service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) =>
+        Ok(value: Service.GetAll());
 
     [HttpGet]
     [AllowAnonymous]
@@ -67,8 +72,10 @@ public partial class SentEmailController : ODataController
     {
         try
         {
-            IQueryable<SentEmail> result = Service.GetAll().Where(sentEmail => sentEmail.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<SentEmail> result = Service.GetAll()
+                .Where(predicate: sentEmail => sentEmail.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -88,9 +95,9 @@ public partial class SentEmailController : ODataController
     public async Task<IActionResult> Post([FromBody] SentEmail entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
 
-        return Ok(await Service.AddAsync(entity));
+        return Ok(value: await Service.AddAsync(entity: entity));
     }
 
     [HttpPut]
@@ -105,43 +112,27 @@ public partial class SentEmailController : ODataController
     public async Task<IActionResult> Put([FromRoute] int key, [FromBody] SentEmail entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
 
-        return Ok(await Service.UpdateAsync(entity));
+        return Ok(value: await Service.UpdateAsync(entity: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<SentEmail> delta)
     {
-        SentEmail originalEntity = Service.Get(key);
+        SentEmail originalEntity = Service.Get(id: key);
+
         if (originalEntity == null)
             return NotFound();
 
-        delta.Patch(originalEntity);
-        return Ok(await Service.UpdateAsync(originalEntity));
+        delta.Patch(original: originalEntity);
+        return Ok(value: await Service.UpdateAsync(entity: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await Service.DeleteAsync(key);
+        await Service.DeleteAsync(id: key);
         return Ok();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,45 +20,47 @@ public partial class QueuedEmailOrchestrationServiceTests
     {
         // Given
         QueuedEmail entity = CreateRandomQueuedEmail();
-        queuedEmailProcessingServiceMock.Setup(x => x.AddAsync(entity)).ReturnsAsync(entity);
+
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddAsync(entity: entity))
+            .ReturnsAsync(value: entity);
 
         queuedEmailEventProcessingServiceMock
-            .Setup(x => x.RaiseQueuedEmailAddEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        QueuedEmail result = await orchestrationService.AddAsync(entity);
+        QueuedEmail result = await orchestrationService.AddAsync(entity: entity);
 
         // Then
-        result.Should().BeSameAs(entity);
-        queuedEmailProcessingServiceMock.Verify(x => x.AddAsync(entity), Times.Once);
-        queuedEmailEventProcessingServiceMock.Verify(x => x.RaiseQueuedEmailAddEventAsync(entity), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entity);
+
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddAsync(entity: entity), times: Times.Once);
+        queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity), times: Times.Once);
     }
 
     [Fact]
     public async Task ShouldRaiseAddEventAsyncWhenAddAsync()
     {
         QueuedEmail entity = CreateRandomQueuedEmail();
-        queuedEmailProcessingServiceMock.Setup(x => x.AddAsync(entity, false)).ReturnsAsync(entity);
+
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.AddAsync(entity: entity, checkPrivs: false))
+            .ReturnsAsync(value: entity);
+
         queuedEmailEventProcessingServiceMock
-            .Setup(x => x.RaiseQueuedEmailAddEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
-        QueuedEmail result = await orchestrationService.AddAsync(entity, false);
+        QueuedEmail result = await orchestrationService.AddAsync(entity: entity, checkPrivs: false);
 
-        result.Should().BeSameAs(entity);
-        queuedEmailProcessingServiceMock.Verify(x => x.AddAsync(entity, false), Times.Once);
+        result.Should()
+            .BeSameAs(expected: entity);
+
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.AddAsync(entity: entity, checkPrivs: false), times: Times.Once);
         queuedEmailProcessingServiceMock.VerifyNoOtherCalls();
-        queuedEmailEventProcessingServiceMock.Verify(x => x.RaiseQueuedEmailAddEventAsync(entity), Times.Once);
+        queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailAddEventAsync(entity: entity), times: Times.Once);
         queuedEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-

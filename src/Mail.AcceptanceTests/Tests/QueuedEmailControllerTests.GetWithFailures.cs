@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Net;
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
@@ -14,17 +18,18 @@ public sealed partial class QueuedEmailControllerTests
     {
         // Given
         SeededQueuedEmailContext seededContext = await SeedDatabase();
-        string failureReason = Unique("FailureReason");
-        QueuedEmail queuedEmail = await CreateQueuedEmailAsync(new
+        string failureReason = Unique(prefix: "FailureReason");
+
+        QueuedEmail queuedEmail = await CreateQueuedEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
-            subject = Unique("Subject"),
-            content = Unique("Content"),
+            subject = Unique(prefix: "Subject"),
+            content = Unique(prefix: "Content"),
             to = "recipient@example.test",
             cc = "",
             isBodyHtml = true,
-            mailServerName = Unique("Server"),
+            mailServerName = Unique(prefix: "Server"),
         });
 
         using (IServiceScope scope = fixture.Factory.Services.CreateScope())
@@ -33,27 +38,36 @@ public sealed partial class QueuedEmailControllerTests
                 .GetRequiredService<cCoder.Data.ICoreContextFactory>()
                 .CreateCoreContext();
 
-            core.Set<EmailSendFailure>().Add(new EmailSendFailure
-            {
-                EmailId = queuedEmail.Id,
-                AttemptedOn = DateTimeOffset.UtcNow,
-                FailureReason = failureReason,
-            });
+            core.Set<EmailSendFailure>()
+                .Add(entity: new EmailSendFailure
+                {
+                    EmailId = queuedEmail.Id,
+                    AttemptedOn = DateTimeOffset.UtcNow,
+                    FailureReason = failureReason,
+                });
 
             await core.SaveChangesAsync();
         }
 
         // When
+
         using HttpResponseMessage response = await Client.GetAsync(
-            $"{BaseUrl}?$filter=Id eq {queuedEmail.Id}&$expand=FailedSends");
+requestUri: $"{BaseUrl}?$filter=Id eq {queuedEmail.Id}&$expand=FailedSends");
+
         string content = await response.Content.ReadAsStringAsync();
 
         // Then
-        response.StatusCode.Should().Be(HttpStatusCode.OK, content);
-        content.Should().Contain("FailedSends");
-        content.Should().Contain(failureReason);
 
-        await DeleteQueuedEmailAsync(queuedEmail.Id);
-        await Teardown(seededContext);
+        response.StatusCode.Should()
+            .Be(expected: HttpStatusCode.OK, because: content);
+
+        content.Should()
+            .Contain(expected: "FailedSends");
+
+        content.Should()
+            .Contain(expected: failureReason);
+
+        await DeleteQueuedEmailAsync(id: queuedEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }

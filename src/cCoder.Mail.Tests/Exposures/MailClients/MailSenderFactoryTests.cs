@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
 using Moq;
@@ -13,19 +17,20 @@ public partial class MailSenderFactoryTests
 
     public MailSenderFactoryTests()
     {
-        smtpSenderProviderMock = new Mock<IMailSenderProvider>(MockBehavior.Strict);
-        graphSenderProviderMock = new Mock<IMailSenderProvider>(MockBehavior.Strict);
+        smtpSenderProviderMock = new Mock<IMailSenderProvider>(behavior: MockBehavior.Strict);
+        graphSenderProviderMock = new Mock<IMailSenderProvider>(behavior: MockBehavior.Strict);
         mailConfiguration = new MailConfiguration();
 
-        smtpSenderProviderMock.SetupGet(provider => provider.ProviderName)
-            .Returns(MailProviderNames.Smtp);
-        graphSenderProviderMock.SetupGet(provider => provider.ProviderName)
-            .Returns(MailProviderNames.MicrosoftGraph);
+        smtpSenderProviderMock.SetupGet(expression: provider => provider.ProviderName)
+            .Returns(value: MailProviderNames.Smtp);
+
+        graphSenderProviderMock.SetupGet(expression: provider => provider.ProviderName)
+            .Returns(value: MailProviderNames.MicrosoftGraph);
 
         mailSenderFactory = new MailSenderFactory(
-        [
+senders: [
             smtpSenderProviderMock.Object,
             graphSenderProviderMock.Object,
-        ], mailConfiguration);
+        ], mailConfiguration: mailConfiguration);
     }
 }

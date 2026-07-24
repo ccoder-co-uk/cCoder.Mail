@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -18,19 +22,23 @@ public partial class MailClientOrchestrationServiceTests
             User = "user@example.test",
             Password = "password",
         };
+
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
         mailReceivingServiceMock
-            .Setup(service => service.ReceiveAsync(request, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailClientOrchestrationService.ReceiveAsync(request, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailClientOrchestrationService.ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceivingServiceMock.Verify(service => service.ReceiveAsync(request, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceivingServiceMock.Verify(expression: service => service.ReceiveAsync(request: request, cancellationToken: cancellationToken), times: Times.Once);
         mailReceivingServiceMock.VerifyNoOtherCalls();
         mailSendingServiceMock.VerifyNoOtherCalls();
     }
@@ -43,15 +51,18 @@ public partial class MailClientOrchestrationServiceTests
         CancellationToken cancellationToken = new();
 
         mailReceivingServiceMock
-            .Setup(service => service.ReceiveTopAsync(1, cancellationToken))
-            .ReturnsAsync(expectedEmails);
+            .Setup(expression: service => service.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken))
+            .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailClientOrchestrationService.ReceiveTopAsync(1, cancellationToken);
+        ReceivedEmail[] actualEmails = await mailClientOrchestrationService.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
 
         // Then
-        actualEmails.Should().BeSameAs(expectedEmails);
-        mailReceivingServiceMock.Verify(service => service.ReceiveTopAsync(1, cancellationToken), Times.Once);
+
+        actualEmails.Should()
+            .BeSameAs(expected: expectedEmails);
+
+        mailReceivingServiceMock.Verify(expression: service => service.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken), times: Times.Once);
         mailReceivingServiceMock.VerifyNoOtherCalls();
         mailSendingServiceMock.VerifyNoOtherCalls();
     }

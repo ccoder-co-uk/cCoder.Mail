@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,27 +28,26 @@ public class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommo
             page = coreDataContext
                 .CommonObjects
                 .AsNoTracking()
-                .GroupBy(c => new
+                .GroupBy(keySelector: c => new
                 {
                     c.Name,
                     c.Culture,
                     c.Key,
                     c.Type,
                 })
-                .Select(c => c.OrderByDescending(v => v.Version).First())
-                .Skip(skip)
-                .Take(pageSize)
+                .Select(selector: c => c.OrderByDescending(keySelector: v => v.Version)
+                .First())
+                .Skip(count: skip)
+                .Take(count: pageSize)
                 .ToArray();
 
             if (page.Length == 0)
                 break;
 
-            result.AddRange(page);
+            result.AddRange(collection: page);
             skip += pageSize;
         } while (true);
 
         return result.ToArray();
     }
 }
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -18,28 +22,31 @@ public partial class QueuedEmailProcessingServiceTests
     {
         // Given
         authorizationBrokerMock
-            .Setup(x => x.Authorize(It.IsAny<int?>(), It.IsAny<string>()))
-            .Callback((int? appId, string privilege) =>
+            .Setup(expression: x => x.Authorize(appId: It.IsAny<int?>(), privilege: It.IsAny<string>()))
+            .Callback(action: (int? appId, string privilege) =>
             {
-                if (!(currentUser?.Can(appId, privilege) ?? false))
-                    throw new SecurityException("Access Denied!");
+                if (!(currentUser?.Can(appId: appId, operation: privilege) ?? false))
+                    throw new SecurityException(message: "Access Denied!");
             });
 
         QueuedEmail email = CreateRandomQueuedEmail();
-        DataUser actor = TestUsers.WithPrivilege("queuedemail_delete", email.AppId);
+        DataUser actor = TestUsers.WithPrivilege(privilege: "queuedemail_delete", appId: email.AppId);
         currentUser = actor;
 
-        queuedEmailServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { email }.AsQueryable());
-        queuedEmailServiceMock.Setup(x => x.DeleteAsync(email.Id, false)).Returns(ValueTask.CompletedTask);
+        queuedEmailServiceMock.Setup(expression: x => x.GetAll(ignoreFilters: true))
+            .Returns(value: new[] { email }.AsQueryable());
+
+        queuedEmailServiceMock.Setup(expression: x => x.DeleteAsync(id: email.Id, checkPrivileges: false))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await queuedEmailProcessingService.DeleteAsync(email.Id);
+        await queuedEmailProcessingService.DeleteAsync(id: email.Id);
 
         // Then
-        queuedEmailServiceMock.Verify(x => x.GetAll(true), Times.Once);
-        queuedEmailServiceMock.Verify(x => x.DeleteAsync(email.Id, false), Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.DeleteAsync(id: email.Id, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize(email.AppId, "queuedemail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: email.AppId, privilege: "queuedemail_delete"), times: Times.Once);
     }
 
     [Fact]
@@ -47,15 +54,20 @@ public partial class QueuedEmailProcessingServiceTests
     {
         // Given
         queuedEmailServiceMock
-            .Setup(x => x.GetAll(true))
-            .Returns(Array.Empty<QueuedEmail>().AsQueryable());
+            .Setup(expression: x => x.GetAll(ignoreFilters: true))
+            .Returns(value: Array.Empty<QueuedEmail>()
+            .AsQueryable());
 
         // When
-        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAsync(99);
+        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAsync(id: 99);
 
         // Then
-        await act.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        queuedEmailServiceMock.Verify(x => x.GetAll(true), Times.Once);
+
+        await act.Should()
+            .ThrowAsync<SecurityException>()
+            .WithMessage(expectedWildcardPattern: "Access Denied!");
+
+        queuedEmailServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
@@ -65,28 +77,30 @@ public partial class QueuedEmailProcessingServiceTests
     {
         // Given
         authorizationBrokerMock
-            .Setup(x => x.Authorize(It.IsAny<int?>(), It.IsAny<string>()))
-            .Callback((int? appId, string privilege) =>
+            .Setup(expression: x => x.Authorize(appId: It.IsAny<int?>(), privilege: It.IsAny<string>()))
+            .Callback(action: (int? appId, string privilege) =>
             {
-                if (!(currentUser?.Can(appId, privilege) ?? false))
-                    throw new SecurityException("Access Denied!");
+                if (!(currentUser?.Can(appId: appId, operation: privilege) ?? false))
+                    throw new SecurityException(message: "Access Denied!");
             });
 
         QueuedEmail email = CreateRandomQueuedEmail();
         currentUser = TestUsers.WithoutPrivileges();
-        queuedEmailServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { email }.AsQueryable());
+
+        queuedEmailServiceMock.Setup(expression: x => x.GetAll(ignoreFilters: true))
+            .Returns(value: new[] { email }.AsQueryable());
 
         // When
-        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAsync(email.Id);
+        Func<Task> act = async () => await queuedEmailProcessingService.DeleteAsync(id: email.Id);
 
         // Then
-        await act.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        queuedEmailServiceMock.Verify(x => x.GetAll(true), Times.Once);
+
+        await act.Should()
+            .ThrowAsync<SecurityException>()
+            .WithMessage(expectedWildcardPattern: "Access Denied!");
+
+        queuedEmailServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize(email.AppId, "queuedemail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: email.AppId, privilege: "queuedemail_delete"), times: Times.Once);
     }
 }
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
@@ -15,24 +19,28 @@ internal class MailServerService(
 {
     public MailServer Get(int id)
     {
-        MailServer mailServer = GetAll().FirstOrDefault(i => i.Id == id);
+        MailServer mailServer = GetAll()
+            .FirstOrDefault(predicate: i => i.Id == id);
+
         if (mailServer is not null)
             return mailServer;
 
-        MailServer unrestrictedMailServer = GetAll(true).FirstOrDefault(i => i.Id == id);
+        MailServer unrestrictedMailServer = GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: i => i.Id == id);
+
         if (unrestrictedMailServer is not null)
-            throw new SecurityException("Access Denied!");
+            throw new SecurityException(message: "Access Denied!");
 
         return null;
     }
 
     public IQueryable<MailServer> GetAll(bool ignoreFilters = false) =>
-        mailServerBroker.GetAllMailServers(ignoreFilters);
+        mailServerBroker.GetAllMailServers(ignoreFilters: ignoreFilters);
 
     public async ValueTask<MailServer> AddAsync(MailServer mailServer)
     {
-        authorizationBroker.Authorize(mailServer.AppId, $"{nameof(MailServer)}_create");
-        MailServer result = await mailServerBroker.AddMailServerAsync(Copy(mailServer));
+        authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_create");
+        MailServer result = await mailServerBroker.AddMailServerAsync(entity: Copy(mailServer: mailServer));
         mailServer.Id = result.Id;
         mailServer.AppId = result.AppId;
         mailServer.Name = result.Name;
@@ -47,8 +55,8 @@ internal class MailServerService(
 
     public async ValueTask<MailServer> UpdateAsync(MailServer mailServer)
     {
-        authorizationBroker.Authorize(mailServer.AppId, $"{nameof(MailServer)}_update");
-        MailServer result = await mailServerBroker.UpdateMailServerAsync(Copy(mailServer));
+        authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_update");
+        MailServer result = await mailServerBroker.UpdateMailServerAsync(entity: Copy(mailServer: mailServer));
         mailServer.Id = result.Id;
         mailServer.AppId = result.AppId;
         mailServer.Name = result.Name;
@@ -63,21 +71,22 @@ internal class MailServerService(
 
     public async ValueTask DeleteAsync(int id)
     {
-        MailServer mailServer = GetAll(ignoreFilters: true).FirstOrDefault(item => item.Id == id);
+        MailServer mailServer = GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == id);
 
         if (mailServer is null)
             return;
 
-        authorizationBroker.Authorize(mailServer.AppId, $"{nameof(MailServer)}_delete");
-        _ = await mailServerBroker.DeleteMailServerAsync(Copy(mailServer));
+        authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
+        _ = await mailServerBroker.DeleteMailServerAsync(entity: Copy(mailServer: mailServer));
     }
 
     public ValueTask DeleteAllForAppAsync(IEnumerable<MailServer> items) =>
         mailServerBroker.DeleteAllMailServersAsync(
-            items?.Select(Copy) ?? []);
+items: items?.Select(selector: Copy) ?? []);
 
     public ValueTask DeleteAllByAppIdAsync(int appId) =>
-        mailServerBroker.DeleteAllMailServersByAppIdAsync(appId);
+        mailServerBroker.DeleteAllMailServersByAppIdAsync(appId: appId);
 
     private static MailServer Copy(MailServer mailServer) =>
         mailServer == null
@@ -95,5 +104,3 @@ internal class MailServerService(
                 EnableSSL = mailServer.EnableSSL,
             };
 }
-
-

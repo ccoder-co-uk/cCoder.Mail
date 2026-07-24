@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Text;
 using System.Text.RegularExpressions;
 using cCoder.Data.Models.Mail;
@@ -15,22 +19,22 @@ internal sealed partial class ImapMailReceiverService(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default)
     {
-        ValidateReceiveRequest(request);
+        ValidateReceiveRequest(request: request);
 
-        using MailClientTextConnection connection = await OpenConnectionAsync(request, cancellationToken);
-        _ = await imapMailReceiverBroker.ReadLineAsync(connection, cancellationToken);
-        await SendCommandAsync(connection, "a1", $"LOGIN \"{Escape(request.User)}\" \"{Escape(request.Password)}\"", cancellationToken);
-        await SendCommandAsync(connection, "a2", "SELECT INBOX", cancellationToken);
+        using MailClientTextConnection connection = await OpenConnectionAsync(request: request, cancellationToken: cancellationToken);
+        _ = await imapMailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken);
+        await SendCommandAsync(connection: connection, tag: "a1", command: $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"", cancellationToken: cancellationToken);
+        await SendCommandAsync(connection: connection, tag: "a2", command: "SELECT INBOX", cancellationToken: cancellationToken);
 
         string searchResponse = await SendCommandAsync(
-            connection,
-            "a3",
-            BuildSearchCommand(request),
-            cancellationToken);
+connection: connection,
+tag: "a3",
+command: BuildSearchCommand(request: request),
+cancellationToken: cancellationToken);
 
-        int[] messageIds = ParseSearchIds(searchResponse)
+        int[] messageIds = ParseSearchIds(response: searchResponse)
             .Reverse()
-            .Take(Math.Clamp(request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, 1, 100))
+            .Take(count: Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100))
             .ToArray();
 
         List<ReceivedEmail> messages = [];
@@ -38,39 +42,39 @@ internal sealed partial class ImapMailReceiverService(
         foreach (int messageId in messageIds)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string rawMessage = await FetchMessageAsync(connection, messageId, cancellationToken);
-            ReceivedEmail receivedEmail = ParseMessage(rawMessage);
+            string rawMessage = await FetchMessageAsync(connection: connection, messageId: messageId, cancellationToken: cancellationToken);
+            ReceivedEmail receivedEmail = ParseMessage(rawMessage: rawMessage);
 
-            if (IsWithinPeriod(receivedEmail.ReceivedOn, request.From, request.To))
-                messages.Add(receivedEmail);
+            if (IsWithinPeriod(receivedOn: receivedEmail.ReceivedOn, from: request.From, to: request.To))
+                messages.Add(item: receivedEmail);
         }
 
-        await SendCommandAsync(connection, "az", "LOGOUT", cancellationToken);
-        return [.. messages.OrderByDescending(message => message.ReceivedOn)];
+        await SendCommandAsync(connection: connection, tag: "az", command: "LOGOUT", cancellationToken: cancellationToken);
+        return [.. messages.OrderByDescending(keySelector: message => message.ReceivedOn)];
     }
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
         ReceiveAsync(
-            new MailboxReceiveRequest
-            {
-                ProviderName = MailProviderNames.Imap,
-                Host = ReadRequiredConfiguration(mailConfiguration.Imap.Host, "IMAP mailbox host"),
-                Port = mailConfiguration.Imap.Port,
-                EnableSSL = mailConfiguration.Imap.EnableSSL,
-                User = ReadRequiredConfiguration(mailConfiguration.Imap.User, "IMAP mailbox user"),
-                Password = ReadRequiredConfiguration(mailConfiguration.Imap.Password, "IMAP mailbox password"),
-                MaximumMessages = count,
-            },
-            cancellationToken);
+request: new MailboxReceiveRequest
+{
+    ProviderName = MailProviderNames.Imap,
+    Host = ReadRequiredConfiguration(value: mailConfiguration.Imap.Host, configurationName: "IMAP mailbox host"),
+    Port = mailConfiguration.Imap.Port,
+    EnableSSL = mailConfiguration.Imap.EnableSSL,
+    User = ReadRequiredConfiguration(value: mailConfiguration.Imap.User, configurationName: "IMAP mailbox user"),
+    Password = ReadRequiredConfiguration(value: mailConfiguration.Imap.Password, configurationName: "IMAP mailbox password"),
+    MaximumMessages = count,
+},
+cancellationToken: cancellationToken);
 
     private Task<MailClientTextConnection> OpenConnectionAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken) =>
         request.EnableSSL
-            ? imapMailReceiverBroker.OpenSslAsync(request.Host, request.Port, cancellationToken)
-            : imapMailReceiverBroker.OpenAsync(request.Host, request.Port, cancellationToken);
+            ? imapMailReceiverBroker.OpenSslAsync(host: request.Host, port: request.Port, cancellationToken: cancellationToken)
+            : imapMailReceiverBroker.OpenAsync(host: request.Host, port: request.Port, cancellationToken: cancellationToken);
 
     private async Task<string> SendCommandAsync(
         MailClientTextConnection connection,
@@ -78,32 +82,32 @@ internal sealed partial class ImapMailReceiverService(
         string command,
         CancellationToken cancellationToken)
     {
-        await imapMailReceiverBroker.WriteLineAsync(connection, $"{tag} {command}", cancellationToken);
+        await imapMailReceiverBroker.WriteLineAsync(connection: connection, line: $"{tag} {command}", cancellationToken: cancellationToken);
 
         StringBuilder response = new();
 
-        while (await imapMailReceiverBroker.ReadLineAsync(connection, cancellationToken) is { } line)
+        while (await imapMailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken) is { } line)
         {
-            _ = response.AppendLine(line);
+            _ = response.AppendLine(value: line);
 
-            if (line.StartsWith($"{tag} OK", StringComparison.OrdinalIgnoreCase))
+            if (line.StartsWith(value: $"{tag} OK", comparisonType: StringComparison.OrdinalIgnoreCase))
                 return response.ToString();
 
-            if (line.StartsWith($"{tag} NO", StringComparison.OrdinalIgnoreCase)
-                || line.StartsWith($"{tag} BAD", StringComparison.OrdinalIgnoreCase))
+            if (line.StartsWith(value: $"{tag} NO", comparisonType: StringComparison.OrdinalIgnoreCase)
+                || line.StartsWith(value: $"{tag} BAD", comparisonType: StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException(line);
+                throw new InvalidOperationException(message: line);
             }
         }
 
-        throw new InvalidOperationException("The mail server closed the IMAP connection.");
+        throw new InvalidOperationException(message: "The mail server closed the IMAP connection.");
     }
 
     private async Task<string> FetchMessageAsync(
         MailClientTextConnection connection,
         int messageId,
         CancellationToken cancellationToken) =>
-        await SendCommandAsync(connection, $"f{messageId}", $"FETCH {messageId} BODY[]", cancellationToken);
+        await SendCommandAsync(connection: connection, tag: $"f{messageId}", command: $"FETCH {messageId} BODY[]", cancellationToken: cancellationToken);
 
     private static string BuildSearchCommand(MailboxReceiveRequest request)
     {
@@ -114,52 +118,58 @@ internal sealed partial class ImapMailReceiverService(
     }
 
     private static int[] ParseSearchIds(string response) =>
-        SearchRegex().Match(response).Groups["ids"].Value
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Select(value => int.TryParse(value, out int id) ? id : 0)
-            .Where(id => id > 0)
-            .ToArray();
+        SearchRegex()
+        .Match(input: response)
+        .Groups["ids"].Value
+            .Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries)
+        .Select(selector: value => int.TryParse(s: value, result: out int id) ? id : 0)
+        .Where(predicate: id => id > 0)
+        .ToArray();
 
     private static ReceivedEmail ParseMessage(string rawMessage)
     {
-        string[] lines = rawMessage.Split('\n').Select(line => line.TrimEnd('\r')).ToArray();
-        int headerStart = Array.FindIndex(lines, line => line.StartsWith("From:", StringComparison.OrdinalIgnoreCase));
+        string[] lines = rawMessage.Split(separator: '\n')
+            .Select(selector: line => line.TrimEnd(trimChar: '\r'))
+            .ToArray();
+
+        int headerStart = Array.FindIndex(array: lines, match: line => line.StartsWith(value: "From:", comparisonType: StringComparison.OrdinalIgnoreCase));
 
         if (headerStart > 0)
             lines = lines[headerStart..];
 
-        int separatorIndex = Array.FindIndex(lines, string.IsNullOrWhiteSpace);
+        int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
         string[] headerLines = separatorIndex >= 0 ? lines[..separatorIndex] : lines;
         string[] bodyLines = separatorIndex >= 0 ? lines[(separatorIndex + 1)..] : [];
-        Dictionary<string, string> headers = ParseHeaders(headerLines);
+        Dictionary<string, string> headers = ParseHeaders(lines: headerLines);
 
         return new()
         {
-            MessageId = Header(headers, "Message-ID"),
-            From = Header(headers, "From"),
-            To = Header(headers, "To"),
-            CC = Header(headers, "Cc"),
-            Subject = DecodeHeader(Header(headers, "Subject")),
-            Content = string.Join("\n", bodyLines).TrimEnd(')', '\r', '\n'),
-            IsBodyHtml = Header(headers, "Content-Type")?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) == true,
-            ReceivedOn = ParseDate(Header(headers, "Date")),
+            MessageId = Header(headers: headers, name: "Message-ID"),
+            From = Header(headers: headers, name: "From"),
+            To = Header(headers: headers, name: "To"),
+            CC = Header(headers: headers, name: "Cc"),
+            Subject = DecodeHeader(value: Header(headers: headers, name: "Subject")),
+            Content = string.Join(separator: "\n", value: bodyLines)
+            .TrimEnd(')', '\r', '\n'),
+            IsBodyHtml = Header(headers: headers, name: "Content-Type")?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true,
+            ReceivedOn = ParseDate(value: Header(headers: headers, name: "Date")),
         };
     }
 
     private static Dictionary<string, string> ParseHeaders(string[] lines)
     {
-        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, string> headers = new(comparer: StringComparer.OrdinalIgnoreCase);
         string currentName = null;
 
         foreach (string line in lines)
         {
-            if ((line.StartsWith(' ') || line.StartsWith('\t')) && currentName != null)
+            if ((line.StartsWith(value: ' ') || line.StartsWith(value: '\t')) && currentName != null)
             {
                 headers[currentName] += " " + line.Trim();
                 continue;
             }
 
-            int separatorIndex = line.IndexOf(':');
+            int separatorIndex = line.IndexOf(value: ':');
 
             if (separatorIndex <= 0)
                 continue;
@@ -172,23 +182,24 @@ internal sealed partial class ImapMailReceiverService(
     }
 
     private static string Header(Dictionary<string, string> headers, string name) =>
-        headers.TryGetValue(name, out string value) ? value : null;
+        headers.TryGetValue(key: name, value: out string value) ? value : null;
 
     private static string DecodeHeader(string value) =>
-        string.IsNullOrWhiteSpace(value)
+        string.IsNullOrWhiteSpace(value: value)
             ? value
-            : EncodedWordRegex().Replace(value, match =>
+            : EncodedWordRegex()
+        .Replace(input: value, evaluator: match =>
             {
                 string encoding = match.Groups["encoding"].Value;
                 string encodedText = match.Groups["text"].Value;
 
-                return string.Equals(encoding, "B", StringComparison.OrdinalIgnoreCase)
-                    ? Encoding.UTF8.GetString(Convert.FromBase64String(encodedText))
-                    : encodedText.Replace('_', ' ');
+                return string.Equals(a: encoding, b: "B", comparisonType: StringComparison.OrdinalIgnoreCase)
+                    ? Encoding.UTF8.GetString(bytes: Convert.FromBase64String(s: encodedText))
+                    : encodedText.Replace(oldChar: '_', newChar: ' ');
             });
 
     private static DateTimeOffset ParseDate(string value) =>
-        DateTimeOffset.TryParse(value, out DateTimeOffset parsed)
+        DateTimeOffset.TryParse(input: value, result: out DateTimeOffset parsed)
             ? parsed
             : DateTimeOffset.MinValue;
 
@@ -202,29 +213,30 @@ internal sealed partial class ImapMailReceiverService(
     }
 
     private static string Escape(string value) =>
-        (value ?? string.Empty).Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
+        (value ?? string.Empty).Replace(oldValue: "\\", newValue: "\\\\", comparisonType: StringComparison.Ordinal)
+        .Replace(oldValue: "\"", newValue: "\\\"", comparisonType: StringComparison.Ordinal);
 
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
-            throw new ArgumentNullException(nameof(request));
+            throw new ArgumentNullException(paramName: nameof(request));
 
-        if (string.IsNullOrWhiteSpace(request.Host))
-            throw new InvalidOperationException("Mailbox host is required.");
+        if (string.IsNullOrWhiteSpace(value: request.Host))
+            throw new InvalidOperationException(message: "Mailbox host is required.");
 
         if (request.Port <= 0)
-            throw new InvalidOperationException("Mailbox port is required.");
+            throw new InvalidOperationException(message: "Mailbox port is required.");
 
-        if (string.IsNullOrWhiteSpace(request.User))
-            throw new InvalidOperationException("Mailbox user is required.");
+        if (string.IsNullOrWhiteSpace(value: request.User))
+            throw new InvalidOperationException(message: "Mailbox user is required.");
 
-        if (string.IsNullOrWhiteSpace(request.Password))
-            throw new InvalidOperationException("Mailbox password is required.");
+        if (string.IsNullOrWhiteSpace(value: request.Password))
+            throw new InvalidOperationException(message: "Mailbox password is required.");
     }
 
     private static string ReadRequiredConfiguration(string value, string configurationName) =>
-        string.IsNullOrWhiteSpace(value)
-            ? throw new InvalidOperationException($"{configurationName} is required to receive mailbox messages.")
+        string.IsNullOrWhiteSpace(value: value)
+            ? throw new InvalidOperationException(message: $"{configurationName} is required to receive mailbox messages.")
             : value;
 
     [GeneratedRegex(@"^\* SEARCH (?<ids>.*)$", RegexOptions.Multiline)]

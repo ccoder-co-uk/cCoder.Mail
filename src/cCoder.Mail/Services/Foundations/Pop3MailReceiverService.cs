@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Models;
@@ -15,14 +19,14 @@ internal sealed partial class Pop3MailReceiverService(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default)
     {
-        string[][] rawMessages = await ReceiveRawMessagesAsync(request, cancellationToken);
+        string[][] rawMessages = await ReceiveRawMessagesAsync(request: request, cancellationToken: cancellationToken);
 
         return
         [
             .. rawMessages
-                .Select(ParseMessage)
-                .Where(message => IsWithinPeriod(message.ReceivedOn, request.From, request.To))
-                .OrderByDescending(message => message.ReceivedOn)
+                .Select(selector: ParseMessage)
+            .Where(predicate: message => IsWithinPeriod(receivedOn: message.ReceivedOn, from: request.From, to: request.To))
+            .OrderByDescending(keySelector: message => message.ReceivedOn)
         ];
     }
 
@@ -31,47 +35,49 @@ internal sealed partial class Pop3MailReceiverService(
         CancellationToken cancellationToken = default)
     {
         string[][] rawMessages = await ReceiveRawMessagesAsync(
-            new MailboxReceiveRequest
-            {
-                ProviderName = MailProviderNames.Pop3,
-                Host = ReadRequiredConfiguration(mailConfiguration.Pop3.Host, "POP3 mailbox host"),
-                Port = mailConfiguration.Pop3.Port,
-                EnableSSL = mailConfiguration.Pop3.EnableSSL,
-                User = ReadRequiredConfiguration(mailConfiguration.Pop3.User, "POP3 mailbox user"),
-                Password = ReadRequiredConfiguration(mailConfiguration.Pop3.Password, "POP3 mailbox password"),
-                MaximumMessages = count,
-            },
-            cancellationToken);
+request: new MailboxReceiveRequest
+{
+    ProviderName = MailProviderNames.Pop3,
+    Host = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Host, configurationName: "POP3 mailbox host"),
+    Port = mailConfiguration.Pop3.Port,
+    EnableSSL = mailConfiguration.Pop3.EnableSSL,
+    User = ReadRequiredConfiguration(value: mailConfiguration.Pop3.User, configurationName: "POP3 mailbox user"),
+    Password = ReadRequiredConfiguration(value: mailConfiguration.Pop3.Password, configurationName: "POP3 mailbox password"),
+    MaximumMessages = count,
+},
+cancellationToken: cancellationToken);
 
-        return [.. rawMessages.Select(ParseMessage).OrderByDescending(message => message.ReceivedOn)];
+        return [.. rawMessages.Select(selector: ParseMessage)
+            .OrderByDescending(keySelector: message => message.ReceivedOn)];
     }
 
     private async Task<string[][]> ReceiveRawMessagesAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken)
     {
-        ValidateReceiveRequest(request);
+        ValidateReceiveRequest(request: request);
 
-        using MailClientTextConnection connection = await OpenConnectionAsync(request, cancellationToken);
-        await ExpectOkAsync(connection, cancellationToken);
-        await SendCommandAsync(connection, $"USER {request.User}", cancellationToken);
-        await SendCommandAsync(connection, $"PASS {request.Password}", cancellationToken);
+        using MailClientTextConnection connection = await OpenConnectionAsync(request: request, cancellationToken: cancellationToken);
+        await ExpectOkAsync(connection: connection, cancellationToken: cancellationToken);
+        await SendCommandAsync(connection: connection, command: $"USER {request.User}", cancellationToken: cancellationToken);
+        await SendCommandAsync(connection: connection, command: $"PASS {request.Password}", cancellationToken: cancellationToken);
 
-        string stat = await SendCommandAsync(connection, "STAT", cancellationToken);
-        int count = ParseMessageCount(stat);
+        string stat = await SendCommandAsync(connection: connection, command: "STAT", cancellationToken: cancellationToken);
+        int count = ParseMessageCount(stat: stat);
+
         int maximumMessages = request.MaximumMessages <= 0
             ? count
-            : Math.Min(request.MaximumMessages, count);
+            : Math.Min(val1: request.MaximumMessages, val2: count);
 
         List<string[]> messages = [];
 
         for (int index = count; index > 0 && messages.Count < maximumMessages; index--)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            messages.Add(await RetrieveMessageAsync(connection, index, cancellationToken));
+            messages.Add(item: await RetrieveMessageAsync(connection: connection, index: index, cancellationToken: cancellationToken));
         }
 
-        await pop3MailReceiverBroker.WriteLineAsync(connection, "QUIT", cancellationToken);
+        await pop3MailReceiverBroker.WriteLineAsync(connection: connection, line: "QUIT", cancellationToken: cancellationToken);
         return [.. messages];
     }
 
@@ -79,27 +85,27 @@ internal sealed partial class Pop3MailReceiverService(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken) =>
         request.EnableSSL
-            ? pop3MailReceiverBroker.OpenSslAsync(request.Host, request.Port, cancellationToken)
-            : pop3MailReceiverBroker.OpenAsync(request.Host, request.Port, cancellationToken);
+            ? pop3MailReceiverBroker.OpenSslAsync(host: request.Host, port: request.Port, cancellationToken: cancellationToken)
+            : pop3MailReceiverBroker.OpenAsync(host: request.Host, port: request.Port, cancellationToken: cancellationToken);
 
     private async Task<string> SendCommandAsync(
         MailClientTextConnection connection,
         string command,
         CancellationToken cancellationToken)
     {
-        await pop3MailReceiverBroker.WriteLineAsync(connection, command, cancellationToken);
-        return await ExpectOkAsync(connection, cancellationToken);
+        await pop3MailReceiverBroker.WriteLineAsync(connection: connection, line: command, cancellationToken: cancellationToken);
+        return await ExpectOkAsync(connection: connection, cancellationToken: cancellationToken);
     }
 
     private async Task<string> ExpectOkAsync(
         MailClientTextConnection connection,
         CancellationToken cancellationToken)
     {
-        string line = await pop3MailReceiverBroker.ReadLineAsync(connection, cancellationToken)
-            ?? throw new InvalidOperationException("The mail server closed the connection.");
+        string line = await pop3MailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException(message: "The mail server closed the connection.");
 
-        if (!line.StartsWith("+OK", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException(line);
+        if (!line.StartsWith(value: "+OK", comparisonType: StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException(message: line);
 
         return line;
     }
@@ -109,16 +115,16 @@ internal sealed partial class Pop3MailReceiverService(
         int index,
         CancellationToken cancellationToken)
     {
-        await SendCommandAsync(connection, $"RETR {index}", cancellationToken);
+        await SendCommandAsync(connection: connection, command: $"RETR {index}", cancellationToken: cancellationToken);
 
         List<string> lines = [];
 
-        while (await pop3MailReceiverBroker.ReadLineAsync(connection, cancellationToken) is { } line)
+        while (await pop3MailReceiverBroker.ReadLineAsync(connection: connection, cancellationToken: cancellationToken) is { } line)
         {
             if (line == ".")
                 break;
 
-            lines.Add(line.StartsWith("..", StringComparison.Ordinal) ? line[1..] : line);
+            lines.Add(item: line.StartsWith(value: "..", comparisonType: StringComparison.Ordinal) ? line[1..] : line);
         }
 
         return [.. lines];
@@ -126,47 +132,47 @@ internal sealed partial class Pop3MailReceiverService(
 
     private static int ParseMessageCount(string stat)
     {
-        string[] parts = stat.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        return parts.Length >= 2 && int.TryParse(parts[1], out int count) ? count : 0;
+        string[] parts = stat.Split(separator: ' ', options: StringSplitOptions.RemoveEmptyEntries);
+        return parts.Length >= 2 && int.TryParse(s: parts[1], result: out int count) ? count : 0;
     }
 
     private static ReceivedEmail ParseMessage(string[] lines)
     {
-        int separatorIndex = Array.FindIndex(lines, string.IsNullOrWhiteSpace);
+        int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
         string[] headerLines = separatorIndex >= 0 ? lines[..separatorIndex] : lines;
         string[] bodyLines = separatorIndex >= 0 ? lines[(separatorIndex + 1)..] : [];
-        Dictionary<string, string> headers = ParseHeaders(headerLines);
-        string contentType = Header(headers, "Content-Type");
-        string transferEncoding = Header(headers, "Content-Transfer-Encoding");
-        ParsedBody body = ParseBody(bodyLines, contentType, transferEncoding);
+        Dictionary<string, string> headers = ParseHeaders(lines: headerLines);
+        string contentType = Header(headers: headers, name: "Content-Type");
+        string transferEncoding = Header(headers: headers, name: "Content-Transfer-Encoding");
+        ParsedBody body = ParseBody(bodyLines: bodyLines, contentType: contentType, transferEncoding: transferEncoding);
 
         return new ReceivedEmail
         {
-            MessageId = Header(headers, "Message-ID"),
-            From = Header(headers, "From"),
-            To = Header(headers, "To"),
-            CC = Header(headers, "Cc"),
-            Subject = DecodeHeader(Header(headers, "Subject")),
+            MessageId = Header(headers: headers, name: "Message-ID"),
+            From = Header(headers: headers, name: "From"),
+            To = Header(headers: headers, name: "To"),
+            CC = Header(headers: headers, name: "Cc"),
+            Subject = DecodeHeader(value: Header(headers: headers, name: "Subject")),
             Content = body.Content,
             IsBodyHtml = body.IsBodyHtml,
-            ReceivedOn = ParseDate(Header(headers, "Date")),
+            ReceivedOn = ParseDate(value: Header(headers: headers, name: "Date")),
         };
     }
 
     private static Dictionary<string, string> ParseHeaders(string[] lines)
     {
-        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, string> headers = new(comparer: StringComparer.OrdinalIgnoreCase);
         string currentName = null;
 
         foreach (string line in lines)
         {
-            if ((line.StartsWith(' ') || line.StartsWith('\t')) && currentName != null)
+            if ((line.StartsWith(value: ' ') || line.StartsWith(value: '\t')) && currentName != null)
             {
                 headers[currentName] += " " + line.Trim();
                 continue;
             }
 
-            int separatorIndex = line.IndexOf(':');
+            int separatorIndex = line.IndexOf(value: ':');
 
             if (separatorIndex <= 0)
                 continue;
@@ -183,69 +189,75 @@ internal sealed partial class Pop3MailReceiverService(
         string contentType,
         string transferEncoding)
     {
-        if (contentType?.StartsWith("multipart/", StringComparison.OrdinalIgnoreCase) == true)
-            return ParseMultipartBody(bodyLines, contentType);
+        if (contentType?.StartsWith(value: "multipart/", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+            return ParseMultipartBody(bodyLines: bodyLines, contentType: contentType);
 
-        string content = DecodeBody(string.Join("\n", bodyLines), transferEncoding);
+        string content = DecodeBody(content: string.Join(separator: "\n", value: bodyLines), transferEncoding: transferEncoding);
 
         return new ParsedBody(
-            content,
-            contentType?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) == true);
+Content: content,
+IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true);
     }
 
     private static ParsedBody ParseMultipartBody(string[] bodyLines, string contentType)
     {
-        string boundary = BoundaryRegex().Match(contentType ?? string.Empty).Groups["boundary"].Value;
+        string boundary = BoundaryRegex()
+            .Match(input: contentType ?? string.Empty)
+            .Groups["boundary"].Value;
 
-        if (string.IsNullOrWhiteSpace(boundary))
-            return new ParsedBody(string.Join("\n", bodyLines), false);
+        if (string.IsNullOrWhiteSpace(value: boundary))
+            return new ParsedBody(Content: string.Join(separator: "\n", value: bodyLines), IsBodyHtml: false);
 
-        string rawBody = string.Join("\n", bodyLines);
-        string[] sections = rawBody.Split($"--{boundary}", StringSplitOptions.RemoveEmptyEntries);
-        ParsedBody fallback = new(string.Empty, false);
+        string rawBody = string.Join(separator: "\n", value: bodyLines);
+        string[] sections = rawBody.Split(separator: $"--{boundary}", options: StringSplitOptions.RemoveEmptyEntries);
+        ParsedBody fallback = new(Content: string.Empty, IsBodyHtml: false);
 
         foreach (string section in sections)
         {
             string normalized = section.Trim('\r', '\n', '-');
 
-            if (string.IsNullOrWhiteSpace(normalized))
+            if (string.IsNullOrWhiteSpace(value: normalized))
                 continue;
 
-            string[] lines = normalized.Split('\n').Select(line => line.TrimEnd('\r')).ToArray();
-            int separatorIndex = Array.FindIndex(lines, string.IsNullOrWhiteSpace);
+            string[] lines = normalized.Split(separator: '\n')
+                .Select(selector: line => line.TrimEnd(trimChar: '\r'))
+                .ToArray();
+
+            int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
 
             if (separatorIndex < 0)
                 continue;
 
-            Dictionary<string, string> headers = ParseHeaders(lines[..separatorIndex]);
-            string partContentType = Header(headers, "Content-Type");
-            string partTransferEncoding = Header(headers, "Content-Transfer-Encoding");
+            Dictionary<string, string> headers = ParseHeaders(lines: lines[..separatorIndex]);
+            string partContentType = Header(headers: headers, name: "Content-Type");
+            string partTransferEncoding = Header(headers: headers, name: "Content-Transfer-Encoding");
+
             string content = DecodeBody(
-                string.Join("\n", lines[(separatorIndex + 1)..]),
-                partTransferEncoding);
+content: string.Join(separator: "\n", value: lines[(separatorIndex + 1)..]),
+transferEncoding: partTransferEncoding);
 
-            if (partContentType?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) == true)
-                return new ParsedBody(content, true);
+            if (partContentType?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+                return new ParsedBody(Content: content, IsBodyHtml: true);
 
-            if (partContentType?.StartsWith("text/plain", StringComparison.OrdinalIgnoreCase) == true)
-                fallback = new ParsedBody(content, false);
+            if (partContentType?.StartsWith(value: "text/plain", comparisonType: StringComparison.OrdinalIgnoreCase) == true)
+                fallback = new ParsedBody(Content: content, IsBodyHtml: false);
         }
 
         return fallback;
     }
 
     private static string DecodeBody(string content, string transferEncoding) =>
-        transferEncoding?.Equals("base64", StringComparison.OrdinalIgnoreCase) == true
-            ? DecodeBase64(content)
-            : transferEncoding?.Equals("quoted-printable", StringComparison.OrdinalIgnoreCase) == true
-                ? DecodeQuotedPrintable(content)
+        transferEncoding?.Equals(value: "base64", comparisonType: StringComparison.OrdinalIgnoreCase) == true
+            ? DecodeBase64(content: content)
+            : transferEncoding?.Equals(value: "quoted-printable", comparisonType: StringComparison.OrdinalIgnoreCase) == true
+                ? DecodeQuotedPrintable(content: content)
                 : content;
 
     private static string DecodeBase64(string content)
     {
         try
         {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(RemoveWhitespace(content)));
+            return Encoding.UTF8.GetString(bytes: Convert.FromBase64String(s: RemoveWhitespace(value: content)));
         }
         catch (FormatException)
         {
@@ -255,30 +267,34 @@ internal sealed partial class Pop3MailReceiverService(
 
     private static string DecodeQuotedPrintable(string content)
     {
-        string unfolded = content.Replace("=\r\n", string.Empty).Replace("=\n", string.Empty);
-        return QuotedPrintableRegex().Replace(
-            unfolded,
-            match => ((char)Convert.ToByte(match.Groups[1].Value, 16)).ToString());
+        string unfolded = content.Replace(oldValue: "=\r\n", newValue: string.Empty)
+            .Replace(oldValue: "=\n", newValue: string.Empty);
+
+        return QuotedPrintableRegex()
+            .Replace(
+input: unfolded,
+evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase: 16)).ToString());
     }
 
     private static string DecodeHeader(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        if (string.IsNullOrWhiteSpace(value: value))
             return value;
 
-        return EncodedWordRegex().Replace(value, match =>
+        return EncodedWordRegex()
+            .Replace(input: value, evaluator: match =>
         {
             string encoding = match.Groups["encoding"].Value;
             string encodedText = match.Groups["text"].Value;
 
-            return string.Equals(encoding, "B", StringComparison.OrdinalIgnoreCase)
-                ? DecodeBase64(encodedText)
-                : DecodeQuotedPrintable(encodedText.Replace('_', ' '));
+            return string.Equals(a: encoding, b: "B", comparisonType: StringComparison.OrdinalIgnoreCase)
+                ? DecodeBase64(content: encodedText)
+                : DecodeQuotedPrintable(content: encodedText.Replace(oldChar: '_', newChar: ' '));
         });
     }
 
     private static DateTimeOffset ParseDate(string value) =>
-        DateTimeOffset.TryParse(value, out DateTimeOffset parsed)
+        DateTimeOffset.TryParse(input: value, result: out DateTimeOffset parsed)
             ? parsed
             : DateTimeOffset.MinValue;
 
@@ -292,32 +308,32 @@ internal sealed partial class Pop3MailReceiverService(
     }
 
     private static string Header(Dictionary<string, string> headers, string name) =>
-        headers.TryGetValue(name, out string value) ? value : null;
+        headers.TryGetValue(key: name, value: out string value) ? value : null;
 
     private static string RemoveWhitespace(string value) =>
-        string.Concat((value ?? string.Empty).Where(character => !char.IsWhiteSpace(character)));
+        string.Concat(values: (value ?? string.Empty).Where(predicate: character => !char.IsWhiteSpace(c: character)));
 
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
         if (request == null)
-            throw new ArgumentNullException(nameof(request));
+            throw new ArgumentNullException(paramName: nameof(request));
 
-        if (string.IsNullOrWhiteSpace(request.Host))
-            throw new InvalidOperationException("Mailbox host is required.");
+        if (string.IsNullOrWhiteSpace(value: request.Host))
+            throw new InvalidOperationException(message: "Mailbox host is required.");
 
         if (request.Port <= 0)
-            throw new InvalidOperationException("Mailbox port is required.");
+            throw new InvalidOperationException(message: "Mailbox port is required.");
 
-        if (string.IsNullOrWhiteSpace(request.User))
-            throw new InvalidOperationException("Mailbox user is required.");
+        if (string.IsNullOrWhiteSpace(value: request.User))
+            throw new InvalidOperationException(message: "Mailbox user is required.");
 
-        if (string.IsNullOrWhiteSpace(request.Password))
-            throw new InvalidOperationException("Mailbox password is required.");
+        if (string.IsNullOrWhiteSpace(value: request.Password))
+            throw new InvalidOperationException(message: "Mailbox password is required.");
     }
 
     private static string ReadRequiredConfiguration(string value, string configurationName) =>
-        string.IsNullOrWhiteSpace(value)
-            ? throw new InvalidOperationException($"{configurationName} is required to receive mailbox messages.")
+        string.IsNullOrWhiteSpace(value: value)
+            ? throw new InvalidOperationException(message: $"{configurationName} is required to receive mailbox messages.")
             : value;
 
     private readonly record struct ParsedBody(string Content, bool IsBodyHtml);

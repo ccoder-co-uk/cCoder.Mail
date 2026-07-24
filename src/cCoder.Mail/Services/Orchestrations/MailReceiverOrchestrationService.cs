@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
@@ -18,13 +22,13 @@ internal sealed class MailReceiverOrchestrationService(
         if (mailConfiguration.IsMigrating)
             return;
 
-        using PeriodicTimer timer = new(TimeSpan.FromMinutes(1));
+        using PeriodicTimer timer = new(period: TimeSpan.FromMinutes(minutes: 1));
 
-        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken))
+        while (!cancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync(cancellationToken: cancellationToken))
         {
             try
             {
-                await RunAsync(cancellationToken);
+                await RunAsync(cancellationToken: cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -32,7 +36,7 @@ internal sealed class MailReceiverOrchestrationService(
             }
             catch (Exception ex)
             {
-                log.LogError(ex, ex.Message);
+                log.LogError(exception: ex, message: ex.Message);
             }
         }
     }
@@ -44,42 +48,43 @@ internal sealed class MailReceiverOrchestrationService(
         foreach (MailReceiver receiver in receivers)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await ReceiveAsync(receiver, cancellationToken);
+            await ReceiveAsync(receiver: receiver, cancellationToken: cancellationToken);
         }
     }
 
     private async Task ReceiveAsync(MailReceiver receiver, CancellationToken cancellationToken)
     {
-        DateTimeOffset from = receiver.LastReceivedOn ?? DateTimeOffset.UtcNow.AddDays(-1);
+        DateTimeOffset from = receiver.LastReceivedOn ?? DateTimeOffset.UtcNow.AddDays(days: -1);
         DateTimeOffset to = DateTimeOffset.UtcNow;
+
         ReceivedEmail[] receivedEmails = await mailReceivingService.ReceiveAsync(
-            new MailboxReceiveRequest
-            {
-                ProviderName = receiver.ProviderName,
-                AppId = receiver.AppId,
-                MailReceiverId = receiver.Id,
-                Host = receiver.Host,
-                Port = receiver.Port,
-                EnableSSL = receiver.EnableSSL,
-                User = receiver.User,
-                Password = receiver.Password,
-                From = from,
-                To = to,
-                MaximumMessages = 100,
-            },
-            cancellationToken);
+request: new MailboxReceiveRequest
+{
+    ProviderName = receiver.ProviderName,
+    AppId = receiver.AppId,
+    MailReceiverId = receiver.Id,
+    Host = receiver.Host,
+    Port = receiver.Port,
+    EnableSSL = receiver.EnableSSL,
+    User = receiver.User,
+    Password = receiver.Password,
+    From = from,
+    To = to,
+    MaximumMessages = 100,
+},
+cancellationToken: cancellationToken);
 
         ReceivedEmail[] newEmails =
         [
             .. receivedEmails
-                .Where(email => !receivedEmailProcessingService.Exists(receiver.Id, email.MessageId))
-                .Select(email => Prepare(email, receiver))
+                .Where(predicate: email => !receivedEmailProcessingService.Exists(mailReceiverId: receiver.Id, messageId: email.MessageId))
+            .Select(selector: email => Prepare(email: email, receiver: receiver))
         ];
 
-        await receivedEmailProcessingService.AddRangeAsync(newEmails, cancellationToken);
+        await receivedEmailProcessingService.AddRangeAsync(entities: newEmails, cancellationToken: cancellationToken);
 
         receiver.LastReceivedOn = to;
-        await mailReceiverProcessingService.UpdateAsync(receiver);
+        await mailReceiverProcessingService.UpdateAsync(entity: receiver);
     }
 
     private static ReceivedEmail Prepare(ReceivedEmail email, MailReceiver receiver)

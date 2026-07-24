@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Services.Orchestrations;
@@ -18,45 +22,51 @@ public class AppOrchestrationServiceTests
 
     public AppOrchestrationServiceTests()
     {
-        mailServerOrchestrationServiceMock = new Mock<IMailServerOrchestrationService>(MockBehavior.Strict);
-        mailSenderConfigurationOrchestrationServiceMock = new Mock<IMailSenderConfigurationOrchestrationService>(MockBehavior.Strict);
-        mailReceiverConfigurationOrchestrationServiceMock = new Mock<IMailReceiverConfigurationOrchestrationService>(MockBehavior.Strict);
-        queuedEmailOrchestrationServiceMock = new Mock<IQueuedEmailOrchestrationService>(MockBehavior.Strict);
-        sentEmailOrchestrationServiceMock = new Mock<ISentEmailOrchestrationService>(MockBehavior.Strict);
-        receivedEmailOrchestrationServiceMock = new Mock<IReceivedEmailOrchestrationService>(MockBehavior.Strict);
+        mailServerOrchestrationServiceMock = new Mock<IMailServerOrchestrationService>(behavior: MockBehavior.Strict);
+        mailSenderConfigurationOrchestrationServiceMock = new Mock<IMailSenderConfigurationOrchestrationService>(behavior: MockBehavior.Strict);
+        mailReceiverConfigurationOrchestrationServiceMock = new Mock<IMailReceiverConfigurationOrchestrationService>(behavior: MockBehavior.Strict);
+        queuedEmailOrchestrationServiceMock = new Mock<IQueuedEmailOrchestrationService>(behavior: MockBehavior.Strict);
+        sentEmailOrchestrationServiceMock = new Mock<ISentEmailOrchestrationService>(behavior: MockBehavior.Strict);
+        receivedEmailOrchestrationServiceMock = new Mock<IReceivedEmailOrchestrationService>(behavior: MockBehavior.Strict);
+
         service = new AppOrchestrationService(
-            mailServerOrchestrationServiceMock.Object,
-            mailSenderConfigurationOrchestrationServiceMock.Object,
-            mailReceiverConfigurationOrchestrationServiceMock.Object,
-            queuedEmailOrchestrationServiceMock.Object,
-            sentEmailOrchestrationServiceMock.Object,
-            receivedEmailOrchestrationServiceMock.Object);
+mailServerOrchestrationService: mailServerOrchestrationServiceMock.Object,
+mailSenderConfigurationOrchestrationService: mailSenderConfigurationOrchestrationServiceMock.Object,
+mailReceiverConfigurationOrchestrationService: mailReceiverConfigurationOrchestrationServiceMock.Object,
+queuedEmailOrchestrationService: queuedEmailOrchestrationServiceMock.Object,
+sentEmailOrchestrationService: sentEmailOrchestrationServiceMock.Object,
+receivedEmailOrchestrationService: receivedEmailOrchestrationServiceMock.Object);
     }
 
     [Fact]
     public async Task ShouldDeleteAppOwnedMailRowsByAppIdWhenDeleteAsync()
     {
-        mailServerOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
-        mailSenderConfigurationOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
-        mailReceiverConfigurationOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
-        queuedEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
-        sentEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
-        receivedEmailOrchestrationServiceMock.Setup(x => x.DeleteByAppIdAsync(5))
-            .Returns(ValueTask.CompletedTask);
+        mailServerOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
 
-        await service.DeleteAsync(5);
+        mailSenderConfigurationOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
 
-        mailServerOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        mailSenderConfigurationOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        mailReceiverConfigurationOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        queuedEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        sentEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
-        receivedEmailOrchestrationServiceMock.Verify(x => x.DeleteByAppIdAsync(5), Times.Once);
+        mailReceiverConfigurationOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
+
+        queuedEmailOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
+
+        sentEmailOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
+
+        receivedEmailOrchestrationServiceMock.Setup(expression: x => x.DeleteByAppIdAsync(appId: 5))
+            .Returns(value: ValueTask.CompletedTask);
+
+        await service.DeleteAsync(appId: 5);
+
+        mailServerOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
+        mailSenderConfigurationOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
+        mailReceiverConfigurationOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
+        queuedEmailOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
+        sentEmailOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
+        receivedEmailOrchestrationServiceMock.Verify(expression: x => x.DeleteByAppIdAsync(appId: 5), times: Times.Once);
         mailServerOrchestrationServiceMock.VerifyNoOtherCalls();
         mailSenderConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
         mailReceiverConfigurationOrchestrationServiceMock.VerifyNoOtherCalls();
@@ -76,17 +86,19 @@ public class AppOrchestrationServiceTests
             SentMail = [new SentEmail { Id = 3, Subject = "Sent" }]
         };
 
-        mailServerOrchestrationServiceMock.Setup(x => x.AddOrUpdate(
-                It.Is<IEnumerable<MailServer>>(items => items.All(server => server.AppId == 9))))
-            .Returns(ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<MailServer>>>([]));
-        queuedEmailOrchestrationServiceMock.Setup(x => x.AddOrUpdate(
-                It.Is<IEnumerable<QueuedEmail>>(items => items.All(email => email.AppId == 9))))
-            .Returns(ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<QueuedEmail>>>([]));
-        sentEmailOrchestrationServiceMock.Setup(x => x.AddOrUpdate(
-                It.Is<IEnumerable<SentEmail>>(items => items.All(email => email.AppId == 9))))
-            .Returns(ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>([]));
+        mailServerOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdate(
+items: It.Is<IEnumerable<MailServer>>(match: items => items.All(predicate: server => server.AppId == 9))))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<MailServer>>>(result: []));
 
-        await service.AddAsync(app);
+        queuedEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdate(
+items: It.Is<IEnumerable<QueuedEmail>>(match: items => items.All(predicate: email => email.AppId == 9))))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<QueuedEmail>>>(result: []));
+
+        sentEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdate(
+items: It.Is<IEnumerable<SentEmail>>(match: items => items.All(predicate: email => email.AppId == 9))))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>(result: []));
+
+        await service.AddAsync(app: app);
 
         mailServerOrchestrationServiceMock.VerifyAll();
         queuedEmailOrchestrationServiceMock.VerifyAll();

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,11 +16,12 @@ public sealed partial class SentEmailControllerTests
     {
         // Given
         SeededSentEmailContext seededContext = await SeedDatabase();
-        SentEmail createdSentEmail = await CreateSentEmailAsync(new
+
+        SentEmail createdSentEmail = await CreateSentEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
-            subject = Unique("SentEmail"),
+            subject = Unique(prefix: "SentEmail"),
             content = "Acceptance email content",
             to = "acceptance@example.com",
             cc = string.Empty,
@@ -24,28 +29,29 @@ public sealed partial class SentEmailControllerTests
             from = "acceptance@example.com",
             sentOn = DateTimeOffset.UtcNow,
         });
-        string updatedSubject = Unique("PatchedSentEmail");
+
+        string updatedSubject = Unique(prefix: "PatchedSentEmail");
         SentEmail actualSentEmail;
 
         // When
-        await PatchSentEmailAsync(createdSentEmail.Id, new
+
+        await PatchSentEmailAsync(id: createdSentEmail.Id, payload: new
         {
             subject = updatedSubject,
             cc = "patched@example.com",
         });
 
-        actualSentEmail = await GetSentEmailAsync(createdSentEmail.Id);
+        actualSentEmail = await GetSentEmailAsync(id: createdSentEmail.Id);
 
         // Then
-        actualSentEmail.Subject.Should().Be(updatedSubject);
-        actualSentEmail.CC.Should().Be("patched@example.com");
 
-        await DeleteSentEmailAsync(createdSentEmail.Id);
-        await Teardown(seededContext);
+        actualSentEmail.Subject.Should()
+            .Be(expected: updatedSubject);
+
+        actualSentEmail.CC.Should()
+            .Be(expected: "patched@example.com");
+
+        await DeleteSentEmailAsync(id: createdSentEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

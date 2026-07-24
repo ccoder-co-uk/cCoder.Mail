@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -20,29 +24,43 @@ public partial class SentEmailServiceTests
 
         cCoder.Data.Models.Mail.SentEmail submitted = null;
 
-        sentEmailBrokerMock.Setup(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>())).Returns((int?)7);
+        sentEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
+            .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(x => x.Authorize((int?)7, "SentEmail_update"));
+        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"));
 
         sentEmailBrokerMock
-            .Setup(x => x.UpdateSentEmailAsync(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
-            .Callback<cCoder.Data.Models.Mail.SentEmail>(candidate => submitted = candidate)
-            .ReturnsAsync((cCoder.Data.Models.Mail.SentEmail value) => value);
+            .Setup(expression: x => x.UpdateSentEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
+            .Callback<cCoder.Data.Models.Mail.SentEmail>(action: candidate => submitted = candidate)
+            .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.SentEmail value) => value);
 
         // When
-        SentEmail result = await sentEmailService.UpdateAsync(sentEmail);
+        SentEmail result = await sentEmailService.UpdateAsync(sentEmail: sentEmail);
 
         // Then
-        result.Should().BeSameAs(sentEmail);
-        submitted.Should().NotBeNull();
-        submitted.Should().NotBeSameAs(sentEmail);
-        result.Should().NotBeSameAs(submitted);
-        submitted.Should().BeEquivalentTo(sentEmail);
-        result.Should().BeEquivalentTo(sentEmail);
-        sentEmailBrokerMock.Verify(x => x.UpdateSentEmailAsync(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.Once);
-        sentEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.AtMostOnce());
+
+        result.Should()
+            .BeSameAs(expected: sentEmail);
+
+        submitted.Should()
+            .NotBeNull();
+
+        submitted.Should()
+            .NotBeSameAs(unexpected: sentEmail);
+
+        result.Should()
+            .NotBeSameAs(unexpected: submitted);
+
+        submitted.Should()
+            .BeEquivalentTo(expectation: sentEmail);
+
+        result.Should()
+            .BeEquivalentTo(expectation: sentEmail);
+
+        sentEmailBrokerMock.Verify(expression: x => x.UpdateSentEmailAsync(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "SentEmail_update"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -53,27 +71,22 @@ public partial class SentEmailServiceTests
         SentEmail sentEmail = CreateRandomSentEmail(appId: 7);
 
         authorizationBrokerMock
-            .Setup(x => x.Authorize((int?)7, "SentEmail_update"))
-            .Throws(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"))
+            .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await sentEmailService.UpdateAsync(sentEmail);
+        Func<Task> action = async () => await sentEmailService.UpdateAsync(sentEmail: sentEmail);
 
         // Then
-        await action.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        sentEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.AtMostOnce());
+
+        await action.Should()
+            .ThrowAsync<SecurityException>()
+            .WithMessage(expectedWildcardPattern: "Access Denied!");
+
+        sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "SentEmail_update"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_update"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-

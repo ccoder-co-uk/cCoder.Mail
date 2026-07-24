@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
 using Xunit;
@@ -12,12 +16,13 @@ public sealed partial class QueuedEmailControllerTests
     {
         // Given
         SeededQueuedEmailContext seededContext = await SeedDatabase();
-        string subject = Unique("QueuedEmail");
+        string subject = Unique(prefix: "QueuedEmail");
         QueuedEmail expectedQueuedEmail;
         QueuedEmail actualQueuedEmail;
 
         // When
-        expectedQueuedEmail = await CreateQueuedEmailAsync(new
+
+        expectedQueuedEmail = await CreateQueuedEmailAsync(payload: new
         {
             appId = seededContext.AppId,
             sentByUserId = "Guest",
@@ -29,17 +34,14 @@ public sealed partial class QueuedEmailControllerTests
             mailServerName = "Default",
         });
 
-        actualQueuedEmail = await GetQueuedEmailAsync(expectedQueuedEmail.Id);
+        actualQueuedEmail = await GetQueuedEmailAsync(id: expectedQueuedEmail.Id);
 
         // Then
-        actualQueuedEmail.Subject.Should().Be(subject);
 
-        await DeleteQueuedEmailAsync(expectedQueuedEmail.Id);
-        await Teardown(seededContext);
+        actualQueuedEmail.Subject.Should()
+            .Be(expected: subject);
+
+        await DeleteQueuedEmailAsync(id: expectedQueuedEmail.Id);
+        await Teardown(seededContext: seededContext);
     }
 }
-
-
-
-
-

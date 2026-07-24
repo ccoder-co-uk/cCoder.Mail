@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -16,14 +20,16 @@ public partial class SentEmailProcessingServiceTests
     {
         // Given
         SentEmail sentEmail = CreateRandomSentEmail();
-        sentEmailServiceMock.Setup(x => x.AddAsync(sentEmail)).ReturnsAsync(sentEmail);
+
+        sentEmailServiceMock.Setup(expression: x => x.AddAsync(sentEmail: sentEmail))
+            .ReturnsAsync(value: sentEmail);
 
         // When
-        SentEmail result = await sentEmailProcessingService.AddAsync(sentEmail);
+        SentEmail result = await sentEmailProcessingService.AddAsync(entity: sentEmail);
 
         // Then
-        Assert.Same(sentEmail, result);
-        sentEmailServiceMock.Verify(x => x.AddAsync(sentEmail), Times.Once);
+        Assert.Same(expected: sentEmail, actual: result);
+        sentEmailServiceMock.Verify(expression: x => x.AddAsync(sentEmail: sentEmail), times: Times.Once);
     }
 
     [Fact]
@@ -33,24 +39,16 @@ public partial class SentEmailProcessingServiceTests
         SentEmail sentEmail = CreateRandomSentEmail();
 
         sentEmailServiceMock
-            .Setup(x => x.AddAsync(sentEmail))
-            .ThrowsAsync(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.AddAsync(sentEmail: sentEmail))
+            .ThrowsAsync(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        await Assert.ThrowsAsync<SecurityException>(async () =>
-            await sentEmailProcessingService.AddAsync(sentEmail)
+
+        await Assert.ThrowsAsync<SecurityException>(testCode: async () =>
+            await sentEmailProcessingService.AddAsync(entity: sentEmail)
         );
 
         // Then
     }
 
 }
-
-
-
-
-
-
-
-
-

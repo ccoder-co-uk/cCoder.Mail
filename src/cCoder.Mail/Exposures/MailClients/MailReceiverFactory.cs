@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Exposures.MailClients;
@@ -8,9 +12,9 @@ internal sealed class MailReceiverFactory(
     : IMailReceiverFactory
 {
     private readonly IReadOnlyDictionary<string, IMailReceiverProvider> receivers =
-        receivers.ToDictionary(receiver => receiver.ProviderName, StringComparer.OrdinalIgnoreCase);
+        receivers.ToDictionary(keySelector: receiver => receiver.ProviderName, comparer: StringComparer.OrdinalIgnoreCase);
 
     public IMailReceiverProvider GetReceiver(string providerName) =>
-        receivers.GetValueOrDefault(mailConfiguration.ResolveReceiverProviderName(providerName))
-        ?? throw new InvalidOperationException($"No mail receiver provider named '{providerName}' is registered.");
+        receivers.GetValueOrDefault(key: mailConfiguration.ResolveReceiverProviderName(providerName: providerName))
+        ?? throw new InvalidOperationException(message: $"No mail receiver provider named '{providerName}' is registered.");
 }

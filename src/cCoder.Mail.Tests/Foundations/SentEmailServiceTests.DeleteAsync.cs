@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -18,41 +22,47 @@ public partial class SentEmailServiceTests
         // Given
         SentEmail sentEmail = CreateRandomSentEmail(id: 9, appId: 7);
 
-        sentEmailBrokerMock.Setup(x => x.GetAllSentEmails(true)).Returns(new[] { ToExternalSentEmail(sentEmail) }.AsQueryable());
+        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: true))
+            .Returns(value: new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable());
 
-        sentEmailBrokerMock.Setup(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>())).Returns((int?)7);
-        authorizationBrokerMock.Setup(x => x.Authorize((int?)7, "SentEmail_delete"));
+        sentEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
+            .Returns(value: (int?)7);
+
+        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"));
+
         sentEmailBrokerMock
-            .Setup(x =>
+            .Setup(expression: x =>
                 x.DeleteSentEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.SentEmail>(candidate =>
+entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
                         candidate.Id == sentEmail.Id
                         && candidate.AppId == sentEmail.AppId
                         && candidate.Subject == sentEmail.Subject
                     )
                 )
             )
-            .ReturnsAsync(1);
+            .ReturnsAsync(value: 1);
 
         // When
-        await sentEmailService.DeleteAsync(9);
+        await sentEmailService.DeleteAsync(id: 9);
 
         // Then
-        sentEmailBrokerMock.Verify(x => x.GetAllSentEmails(true), Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
+
         sentEmailBrokerMock.Verify(
-            x =>
+expression: x =>
                 x.DeleteSentEmailAsync(
-                    It.Is<cCoder.Data.Models.Mail.SentEmail>(candidate =>
+entity: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
                         candidate.Id == sentEmail.Id
                         && candidate.AppId == sentEmail.AppId
                         && candidate.Subject == sentEmail.Subject
                     )
                 ),
-            Times.Once
+times: Times.Once
         );
-        sentEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.AtMostOnce());
+
+        sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "SentEmail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -62,31 +72,27 @@ public partial class SentEmailServiceTests
         // Given
         SentEmail sentEmail = CreateRandomSentEmail(id: 9, appId: 7);
 
-        sentEmailBrokerMock.Setup(x => x.GetAllSentEmails(true)).Returns(new[] { ToExternalSentEmail(sentEmail) }.AsQueryable());
+        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: true))
+            .Returns(value: new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable());
 
         authorizationBrokerMock
-            .Setup(x => x.Authorize((int?)7, "SentEmail_delete"))
-            .Throws(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"))
+            .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await sentEmailService.DeleteAsync(9);
+        Func<Task> action = async () => await sentEmailService.DeleteAsync(id: 9);
 
         // Then
-        await action.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        sentEmailBrokerMock.Verify(x => x.GetAllSentEmails(true), Times.Once);
-        sentEmailBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), Times.AtMostOnce());
+
+        await action.Should()
+            .ThrowAsync<SecurityException>()
+            .WithMessage(expectedWildcardPattern: "Access Denied!");
+
+        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "SentEmail_delete"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-

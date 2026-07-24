@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,12 +20,3 @@ public interface ISentEmailService
     ValueTask DeleteAllForAppAsync(IEnumerable<SentEmail> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }
-
-
-
-
-
-
-
-
-

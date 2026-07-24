@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -17,27 +21,21 @@ public partial class MailServerServiceTests
         // Given
         MailServer mailServer = CreateRandomMailServer(id: 7);
 
-        mailServerBrokerMock.Setup(x => x.GetAllMailServers(false)).Returns(new[] { ToExternalMailServer(mailServer) }.AsQueryable());
+        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServers(ignoreFilters: false))
+            .Returns(value: new[] { ToExternalMailServer(item: mailServer) }.AsQueryable());
 
         // When
-        MailServer result = mailServerService.Get(7);
+        MailServer result = mailServerService.Get(id: 7);
 
         // Then
-        result.Should().BeEquivalentTo(mailServer);
-        mailServerBrokerMock.Verify(x => x.GetAllMailServers(false), Times.Once);
-        mailServerBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.MailServer>()), Times.AtMostOnce());
+
+        result.Should()
+            .BeEquivalentTo(expectation: mailServer);
+
+        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: false), times: Times.Once);
+        mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-
-

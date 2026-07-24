@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -10,56 +14,57 @@ internal class QueuedEmailOrchestrationService(IQueuedEmailProcessingService pro
 {
     public QueuedEmail Get(int id)
     {
-        return processingService.Get(id);
+        return processingService.Get(id: id);
     }
 
     public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false)
     {
-        return processingService.GetAll(ignoreFilters);
+        return processingService.GetAll(ignoreFilters: ignoreFilters);
     }
 
     public async ValueTask<QueuedEmail> AddAsync(QueuedEmail entity)
     {
-        QueuedEmail result = await processingService.AddAsync(entity);
-        await eventService.RaiseQueuedEmailAddEventAsync(result);
+        QueuedEmail result = await processingService.AddAsync(entity: entity);
+        await eventService.RaiseQueuedEmailAddEventAsync(entity: result);
         return result;
     }
 
     public async ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity)
     {
-        QueuedEmail result = await processingService.UpdateAsync(entity);
-        await eventService.RaiseQueuedEmailUpdateEventAsync(result);
+        QueuedEmail result = await processingService.UpdateAsync(entity: entity);
+        await eventService.RaiseQueuedEmailUpdateEventAsync(entity: result);
         return result;
     }
 
     public async ValueTask DeleteAsync(int id)
     {
-        QueuedEmail entity = processingService.GetAll(ignoreFilters: true).FirstOrDefault(item => item.Id == id);
+        QueuedEmail entity = processingService.GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: item => item.Id == id);
 
         if (entity is null)
             return;
 
-        await eventService.RaiseQueuedEmailDeleteEventAsync(entity);
-        await processingService.DeleteAsync(id);
+        await eventService.RaiseQueuedEmailDeleteEventAsync(entity: entity);
+        await processingService.DeleteAsync(id: id);
     }
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        processingService.DeleteByAppIdAsync(appId);
+        processingService.DeleteByAppIdAsync(appId: appId);
 
     public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
     {
-        return processingService.AddOrUpdate(items);
+        return processingService.AddOrUpdate(items: items);
     }
 
     public ValueTask DeleteAllAsync(IEnumerable<QueuedEmail> items)
     {
-        return processingService.DeleteAllAsync(items);
+        return processingService.DeleteAllAsync(items: items);
     }
 
     public async ValueTask<QueuedEmail> AddAsync(QueuedEmail entity, bool checkPrivs)
     {
-        QueuedEmail result = await processingService.AddAsync(entity, checkPrivs);
-        await eventService.RaiseQueuedEmailAddEventAsync(result);
+        QueuedEmail result = await processingService.AddAsync(entity: entity, checkPrivs: checkPrivs);
+        await eventService.RaiseQueuedEmailAddEventAsync(entity: result);
         return result;
     }
 }

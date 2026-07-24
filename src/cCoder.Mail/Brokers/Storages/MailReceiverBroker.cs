@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +25,7 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
     public IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return ignoreFilters
             ? coreDataContext.MailReceivers.IgnoreQueryFilters()
             : coreDataContext.MailReceivers;
@@ -29,16 +34,17 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
     public MailReceiver[] GetEnabledMailReceivers()
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return coreDataContext.MailReceivers
             .IgnoreQueryFilters()
-            .Where(receiver => receiver.IsEnabled)
+            .Where(predicate: receiver => receiver.IsEnabled)
             .ToArray();
     }
 
     public async ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailReceiver result = (await coreDataContext.MailReceivers.AddAsync(entity)).Entity;
+        MailReceiver result = (await coreDataContext.MailReceivers.AddAsync(entity: entity)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -46,7 +52,10 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
     public async ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailReceiver result = coreDataContext.MailReceivers.Update(entity).Entity;
+
+        MailReceiver result = coreDataContext.MailReceivers.Update(entity: entity)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -54,7 +63,7 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
     public async ValueTask<int> DeleteMailReceiverAsync(MailReceiver entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailReceivers.Remove(entity);
+        coreDataContext.MailReceivers.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -64,7 +73,7 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailReceivers.RemoveRange(items);
+        coreDataContext.MailReceivers.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -74,9 +83,10 @@ public class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailR
 
         await coreDataContext.MailReceivers
             .IgnoreQueryFilters()
-            .Where(receiver => receiver.AppId == appId)
+            .Where(predicate: receiver => receiver.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(MailReceiver entity) => entity.AppId;
+    public int? GetAppId(MailReceiver entity) =>
+        entity.AppId;
 }

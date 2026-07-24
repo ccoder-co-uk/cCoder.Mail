@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -20,46 +24,56 @@ public partial class MailServerServiceTests
 
         cCoder.Data.Models.Mail.MailServer submitted = null;
 
-        mailServerBrokerMock.Setup(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.MailServer>())).Returns((int?)7);
+        mailServerBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()))
+            .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(x => x.Authorize((int?)7, "MailServer_create"));
+        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_create"));
 
         mailServerBrokerMock
-            .Setup(x =>
+            .Setup(expression: x =>
                 x.AddMailServerAsync(
-                    It.Is<cCoder.Data.Models.Mail.MailServer>(candidate => !ReferenceEquals(candidate, mailServer))
+entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
                 )
             )
-            .Callback<cCoder.Data.Models.Mail.MailServer>(candidate => submitted = candidate)
-            .ReturnsAsync((cCoder.Data.Models.Mail.MailServer value) => value);
+            .Callback<cCoder.Data.Models.Mail.MailServer>(action: candidate => submitted = candidate)
+            .ReturnsAsync(valueFunction: (cCoder.Data.Models.Mail.MailServer value) => value);
 
         // When
-        MailServer result = await mailServerService.AddAsync(mailServer);
+        MailServer result = await mailServerService.AddAsync(mailServer: mailServer);
 
         // Then
-        result.Should().BeSameAs(mailServer);
-        submitted.Should().NotBeNull();
-        submitted.Should().NotBeSameAs(mailServer);
-        result.Should().NotBeSameAs(submitted);
+
+        result.Should()
+            .BeSameAs(expected: mailServer);
+
+        submitted.Should()
+            .NotBeNull();
+
+        submitted.Should()
+            .NotBeSameAs(unexpected: mailServer);
+
+        result.Should()
+            .NotBeSameAs(unexpected: submitted);
 
         submitted
             .Should()
-            .BeEquivalentTo(mailServer, options => options.Excluding(candidate => candidate.Id));
+            .BeEquivalentTo(expectation: mailServer, config: options => options.Excluding(expression: candidate => candidate.Id));
 
         result
             .Should()
-            .BeEquivalentTo(mailServer, options => options.Excluding(candidate => candidate.Id));
+            .BeEquivalentTo(expectation: mailServer, config: options => options.Excluding(expression: candidate => candidate.Id));
 
         mailServerBrokerMock.Verify(
-            x =>
+expression: x =>
                 x.AddMailServerAsync(
-                    It.Is<cCoder.Data.Models.Mail.MailServer>(candidate => !ReferenceEquals(candidate, mailServer))
+entity: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate => !ReferenceEquals(objA: candidate, objB: mailServer))
                 ),
-            Times.Once
+times: Times.Once
         );
-        mailServerBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.MailServer>()), Times.AtMostOnce());
+
+        mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "MailServer_create"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_create"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -70,27 +84,22 @@ public partial class MailServerServiceTests
         MailServer mailServer = CreateRandomMailServer(id: 0, appId: 7);
 
         authorizationBrokerMock
-            .Setup(x => x.Authorize((int?)7, "MailServer_create"))
-            .Throws(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_create"))
+            .Throws(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        Func<Task> action = async () => await mailServerService.AddAsync(mailServer);
+        Func<Task> action = async () => await mailServerService.AddAsync(mailServer: mailServer);
 
         // Then
-        await action.Should().ThrowAsync<SecurityException>().WithMessage("Access Denied!");
-        mailServerBrokerMock.Verify(x => x.GetAppId(It.IsAny<cCoder.Data.Models.Mail.MailServer>()), Times.AtMostOnce());
+
+        await action.Should()
+            .ThrowAsync<SecurityException>()
+            .WithMessage(expectedWildcardPattern: "Access Denied!");
+
+        mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(x => x.Authorize((int?)7, "MailServer_create"), Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_create"), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-

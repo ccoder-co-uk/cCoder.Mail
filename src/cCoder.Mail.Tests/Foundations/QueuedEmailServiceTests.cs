@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -23,11 +27,12 @@ public partial class QueuedEmailServiceTests
 
     public QueuedEmailServiceTests()
     {
-        queuedEmailBrokerMock = new Mock<IQueuedEmailBroker>(MockBehavior.Strict);
-        authorizationBrokerMock = new Mock<IAuthorizationBroker>(MockBehavior.Strict);
+        queuedEmailBrokerMock = new Mock<IQueuedEmailBroker>(behavior: MockBehavior.Strict);
+        authorizationBrokerMock = new Mock<IAuthorizationBroker>(behavior: MockBehavior.Strict);
+
         queuedEmailService = new QueuedEmailService(
-            queuedEmailBrokerMock.Object,
-            authorizationBrokerMock.Object
+queuedEmailBroker: queuedEmailBrokerMock.Object,
+authorizationBroker: authorizationBrokerMock.Object
         );
     }
 
@@ -35,23 +40,23 @@ public partial class QueuedEmailServiceTests
     {
         QueuedEmail queuedEmail = Builder<QueuedEmail>
             .CreateNew()
-            .With(x => x.Id = id)
-            .With(x => x.AppId = appId)
-            .With(x => x.SentByUserId = $"user-{Guid.NewGuid():N}")
-            .With(x => x.Subject = $"Subject-{Guid.NewGuid():N}")
-            .With(x => x.Content = "Email body")
-            .With(x => x.To = $"to-{Guid.NewGuid():N}@test.local")
-            .With(x => x.CC = $"cc-{Guid.NewGuid():N}@test.local")
-            .With(x => x.IsBodyHtml = true)
-            .With(x => x.MailServerName = $"smtp-{Guid.NewGuid():N}")
-            .With(x => x.MailSenderId = Guid.Parse("00000000-0000-0000-0000-000000000001"))
-            .With(x => x.MailSender = new MailSender
+            .With(func: x => x.Id = id)
+            .With(func: x => x.AppId = appId)
+            .With(func: x => x.SentByUserId = $"user-{Guid.NewGuid():N}")
+            .With(func: x => x.Subject = $"Subject-{Guid.NewGuid():N}")
+            .With(func: x => x.Content = "Email body")
+            .With(func: x => x.To = $"to-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.CC = $"cc-{Guid.NewGuid():N}@test.local")
+            .With(func: x => x.IsBodyHtml = true)
+            .With(func: x => x.MailServerName = $"smtp-{Guid.NewGuid():N}")
+            .With(func: x => x.MailSenderId = Guid.Parse(input: "00000000-0000-0000-0000-000000000001"))
+            .With(func: x => x.MailSender = new MailSender
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Id = Guid.Parse(input: "00000000-0000-0000-0000-000000000001"),
                 Name = "Default",
                 ProviderName = "SMTP",
             })
-            .With(x => x.FailedSends = Array.Empty<EmailSendFailure>())
+            .With(func: x => x.FailedSends = Array.Empty<EmailSendFailure>())
             .Build();
 
         return queuedEmail;
@@ -82,7 +87,8 @@ public partial class QueuedEmailServiceTests
                     },
                 App = item.App == null ? null : new DataApp { Id = item.App.Id, Name = item.App.Name },
                 SentBy = item.SentBy == null ? null : new DataUser { Id = item.SentBy.Id, DisplayName = item.SentBy.DisplayName, Email = item.SentBy.Email },
-                FailedSends = item.FailedSends?.Select(ToExternalEmailSendFailure).ToArray(),
+                FailedSends = item.FailedSends?.Select(selector: ToExternalEmailSendFailure)
+        .ToArray(),
             };
 
     private static DataEmailSendFailure ToExternalEmailSendFailure(EmailSendFailure item) =>
@@ -96,16 +102,3 @@ public partial class QueuedEmailServiceTests
                 FailureReason = item.FailureReason,
             };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.CMS;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Services.Orchestrations;
@@ -15,16 +19,16 @@ internal class EventHandlerService(IEventHubBroker eventHubBroker) : IEventHandl
 
     private void ListenToAppAddEvents() =>
         eventHubBroker.ListenToEvent<App, IAppOrchestrationService>(
-            "app_add",
-            (service, app) => service.AddAsync(app));
+eventName: "app_add",
+handler: (service, app) => service.AddAsync(app: app));
 
     private void ListenToAppUpdateEvents() =>
         eventHubBroker.ListenToEvent<App, IAppOrchestrationService>(
-            "app_update",
-            (service, app) => service.UpdateAsync(app));
+eventName: "app_update",
+handler: (service, app) => service.UpdateAsync(app: app));
 
     private void ListenToAppDeleteEvents() =>
         eventHubBroker.ListenToEvent<App, IAppOrchestrationService>(
-            "app_delete",
-            (service, app) => service.DeleteAsync(app.Id));
+eventName: "app_delete",
+handler: (service, app) => service.DeleteAsync(appId: app.Id));
 }

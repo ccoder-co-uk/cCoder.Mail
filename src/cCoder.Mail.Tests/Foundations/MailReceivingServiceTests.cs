@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Services.Foundations;
 using Moq;
@@ -11,7 +15,7 @@ public partial class MailReceivingServiceTests
 
     public MailReceivingServiceTests()
     {
-        mailReceiverClientBrokerMock = new Mock<IMailReceiverClientBroker>(MockBehavior.Strict);
-        mailReceivingService = new MailReceivingService(mailReceiverClientBrokerMock.Object);
+        mailReceiverClientBrokerMock = new Mock<IMailReceiverClientBroker>(behavior: MockBehavior.Strict);
+        mailReceivingService = new MailReceivingService(mailReceiverClientBroker: mailReceiverClientBrokerMock.Object);
     }
 }

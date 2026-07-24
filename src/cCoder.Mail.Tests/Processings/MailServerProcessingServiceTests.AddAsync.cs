@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -16,14 +20,16 @@ public partial class MailServerProcessingServiceTests
     {
         // Given
         MailServer mailServer = CreateRandomMailServer();
-        mailServerServiceMock.Setup(x => x.AddAsync(mailServer)).ReturnsAsync(mailServer);
+
+        mailServerServiceMock.Setup(expression: x => x.AddAsync(mailServer: mailServer))
+            .ReturnsAsync(value: mailServer);
 
         // When
-        MailServer result = await mailServerProcessingService.AddAsync(mailServer);
+        MailServer result = await mailServerProcessingService.AddAsync(entity: mailServer);
 
         // Then
-        Assert.Same(mailServer, result);
-        mailServerServiceMock.Verify(x => x.AddAsync(mailServer), Times.Once);
+        Assert.Same(expected: mailServer, actual: result);
+        mailServerServiceMock.Verify(expression: x => x.AddAsync(mailServer: mailServer), times: Times.Once);
     }
 
     [Fact]
@@ -33,24 +39,16 @@ public partial class MailServerProcessingServiceTests
         MailServer mailServer = CreateRandomMailServer();
 
         mailServerServiceMock
-            .Setup(x => x.AddAsync(mailServer))
-            .ThrowsAsync(new SecurityException("Access Denied!"));
+            .Setup(expression: x => x.AddAsync(mailServer: mailServer))
+            .ThrowsAsync(exception: new SecurityException(message: "Access Denied!"));
 
         // When
-        await Assert.ThrowsAsync<SecurityException>(async () =>
-            await mailServerProcessingService.AddAsync(mailServer)
+
+        await Assert.ThrowsAsync<SecurityException>(testCode: async () =>
+            await mailServerProcessingService.AddAsync(entity: mailServer)
         );
 
         // Then
     }
 
 }
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,31 @@
+{
+  "Classes": [
+    {
+      "Name": "Mail.HostedServices.Program",
+      "StandardElementType": "App",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "Main",
+          "Inputs": [
+            {
+              "Name": "args",
+              "Type": "System.String[]"
+            }
+          ],
+          "ReturnType": "System.Void"
+        }
+      ]
+    }
+  ],
+  "Links": [],
+  "AnalysisItems": [
+    {
+      "Code": "STXAPP005",
+      "Description": "Program.cs must compose the app through IServiceCollection using SDK namespaces and one local composition namespace only.",
+      "Severity": "Warning",
+      "Type": "Mail.HostedServices.Program",
+      "LineNumber": 12
+    }
+  ]
+}

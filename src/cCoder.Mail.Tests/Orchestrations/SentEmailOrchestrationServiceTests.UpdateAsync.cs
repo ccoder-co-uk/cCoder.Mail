@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,27 +20,24 @@ public partial class SentEmailOrchestrationServiceTests
     {
         // Given
         SentEmail entity = CreateRandomSentEmail();
-        sentEmailProcessingServiceMock.Setup(x => x.UpdateAsync(entity)).ReturnsAsync(entity);
+
+        sentEmailProcessingServiceMock.Setup(expression: x => x.UpdateAsync(entity: entity))
+            .ReturnsAsync(value: entity);
 
         sentEmailEventProcessingServiceMock
-            .Setup(x => x.RaiseSentEmailUpdateEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseSentEmailUpdateEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        SentEmail result = await orchestrationService.UpdateAsync(entity);
+        SentEmail result = await orchestrationService.UpdateAsync(entity: entity);
 
         // Then
-        result.Should().BeSameAs(entity);
-        sentEmailProcessingServiceMock.Verify(x => x.UpdateAsync(entity), Times.Once);
-        sentEmailEventProcessingServiceMock.Verify(x => x.RaiseSentEmailUpdateEventAsync(entity), Times.Once);
+
+        result.Should()
+            .BeSameAs(expected: entity);
+
+        sentEmailProcessingServiceMock.Verify(expression: x => x.UpdateAsync(entity: entity), times: Times.Once);
+        sentEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseSentEmailUpdateEventAsync(entity: entity), times: Times.Once);
     }
 
 }
-
-
-
-
-
-
-
-

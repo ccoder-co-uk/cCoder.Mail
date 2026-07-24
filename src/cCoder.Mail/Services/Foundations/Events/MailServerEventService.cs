@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
@@ -20,10 +24,10 @@ internal class MailServerEventService(
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerAddEventAsync(message);
+        await mailServerEventBroker.RaiseMailServerAddEventAsync(message: message);
     }
 
     public async ValueTask RaiseMailServerUpdateEventAsync(MailServer entity)
@@ -31,10 +35,10 @@ internal class MailServerEventService(
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message);
+        await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message: message);
     }
 
     public async ValueTask RaiseMailServerDeleteEventAsync(MailServer entity)
@@ -42,10 +46,10 @@ internal class MailServerEventService(
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalMailServer(entity),
+            Data = ToExternalMailServer(entity: entity),
         };
 
-        await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message);
+        await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message: message);
     }
 
     private static DataMailServer ToExternalMailServer(MailServer entity) =>
@@ -62,13 +66,3 @@ internal class MailServerEventService(
             EnableSSL = entity.EnableSSL,
         };
 }
-
-
-
-
-
-
-
-
-
-

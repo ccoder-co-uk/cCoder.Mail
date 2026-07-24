@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using System.Security;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Models;
@@ -12,42 +16,45 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
 {
     public QueuedEmail Get(int id)
     {
-        return service.Get(id);
+        return service.Get(id: id);
     }
 
     public IQueryable<QueuedEmail> GetAll(bool ignoreFilters = false)
     {
-        return service.GetAll(ignoreFilters);
+        return service.GetAll(ignoreFilters: ignoreFilters);
     }
 
     public ValueTask<QueuedEmail> AddAsync(QueuedEmail entity)
     {
-        return AddAsync(entity, checkPrivs: false);
+        return AddAsync(email: entity, checkPrivs: false);
     }
 
     public ValueTask<QueuedEmail> AddAsync(QueuedEmail email, bool checkPrivs)
     {
-        return service.AddAsync(email, checkPrivs);
+        return service.AddAsync(queuedEmail: email, checkPrivileges: checkPrivs);
     }
 
     public ValueTask<QueuedEmail> UpdateAsync(QueuedEmail entity)
     {
-        return service.UpdateAsync(entity);
+        return service.UpdateAsync(queuedEmail: entity);
     }
 
     public async ValueTask DeleteAsync(int id)
     {
-        QueuedEmail queuedEmail = GetAll(ignoreFilters: true).FirstOrDefault((QueuedEmail r) => r.Id == id);
+        QueuedEmail queuedEmail = GetAll(ignoreFilters: true)
+            .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == id);
+
         if (queuedEmail == null)
         {
-            throw new SecurityException("Access Denied!");
+            throw new SecurityException(message: "Access Denied!");
         }
-        authorizationBroker.Authorize(queuedEmail.AppId, "queuedemail_delete");
-        await service.DeleteAsync(queuedEmail.Id, checkPrivileges: false);
+
+        authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: "queuedemail_delete");
+        await service.DeleteAsync(id: queuedEmail.Id, checkPrivileges: false);
     }
 
     public ValueTask DeleteByAppIdAsync(int appId) =>
-        service.DeleteAllByAppIdAsync(appId);
+        service.DeleteAllByAppIdAsync(appId: appId);
 
     public async ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdate(IEnumerable<QueuedEmail> items)
     {
@@ -59,10 +66,10 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
             {
                 QueuedEmail savedItem =
                     item.Id == 0
-                        ? await AddAsync(item)
-                        : await UpdateAsync(item);
+                        ? await AddAsync(entity: item)
+                        : await UpdateAsync(entity: item);
 
-                results.Add(new Result<QueuedEmail>
+                results.Add(item: new Result<QueuedEmail>
                 {
                     Success = true,
                     Item = savedItem,
@@ -71,7 +78,7 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
             }
             catch (Exception ex)
             {
-                results.Add(new Result<QueuedEmail>
+                results.Add(item: new Result<QueuedEmail>
                 {
                     Success = false,
                     Item = item,
@@ -87,7 +94,7 @@ internal class QueuedEmailProcessingService(IQueuedEmailService service, IAuthor
     {
         foreach (QueuedEmail item in items)
         {
-            await DeleteAsync(item.Id);
+            await DeleteAsync(id: item.Id);
         }
     }
 }

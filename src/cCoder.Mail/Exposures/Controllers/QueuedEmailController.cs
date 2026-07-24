@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
@@ -34,11 +38,11 @@ public partial class QueuedEmailController : ODataController
 
         return isExtendedMetaRequest
             ? Ok(
-                new cCoder.Mail.Exposures.OData.MailModelBuilder()
+value: new cCoder.Mail.Exposures.OData.MailModelBuilder()
                     .Build()
-                    .EDMModel.GetExtendedMetadataForType("Mail", typeof(QueuedEmail))
+            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(QueuedEmail))
             )
-            : Ok(new MetadataContainer(typeof(QueuedEmail), true, true));
+            : Ok(value: new MetadataContainer(type: typeof(QueuedEmail), isEntity: true, hasEndpoint: true));
     }
 
     [HttpGet]
@@ -51,7 +55,8 @@ public partial class QueuedEmailController : ODataController
         MaxExpansionDepth = 5
     )]
     [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<QueuedEmail> queryOptions) => Ok(Service.GetAll());
+    public IActionResult GetAll(ODataQueryOptions<QueuedEmail> queryOptions) =>
+        Ok(value: Service.GetAll());
 
     [HttpGet]
     [AllowAnonymous]
@@ -67,8 +72,10 @@ public partial class QueuedEmailController : ODataController
     {
         try
         {
-            IQueryable<QueuedEmail> result = Service.GetAll().Where(queuedEmail => queuedEmail.Id == key);
-            return Ok(SingleResult.Create(result));
+            IQueryable<QueuedEmail> result = Service.GetAll()
+                .Where(predicate: queuedEmail => queuedEmail.Id == key);
+
+            return Ok(value: SingleResult.Create(queryable: result));
         }
         catch (System.Security.SecurityException)
         {
@@ -88,9 +95,9 @@ public partial class QueuedEmailController : ODataController
     public async Task<IActionResult> Post([FromBody] QueuedEmail entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
 
-        return Ok(await Service.AddAsync(entity));
+        return Ok(value: await Service.AddAsync(entity: entity));
     }
 
     [HttpPut]
@@ -105,30 +112,27 @@ public partial class QueuedEmailController : ODataController
     public async Task<IActionResult> Put([FromRoute] int key, [FromBody] QueuedEmail entity)
     {
         if (!ModelState.IsValid)
-            return new cCoder.Mail.Exposures.OData.BadRequestResult(ModelState);
+            return new cCoder.Mail.Exposures.OData.BadRequestResult(modelState: ModelState);
 
-        return Ok(await Service.UpdateAsync(entity));
+        return Ok(value: await Service.UpdateAsync(entity: entity));
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Patch([FromRoute] int key, Delta<QueuedEmail> delta)
     {
-        QueuedEmail originalEntity = Service.Get(key);
+        QueuedEmail originalEntity = Service.Get(id: key);
+
         if (originalEntity == null)
             return NotFound();
 
-        delta.Patch(originalEntity);
-        return Ok(await Service.UpdateAsync(originalEntity));
+        delta.Patch(original: originalEntity);
+        return Ok(value: await Service.UpdateAsync(entity: originalEntity));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await Service.DeleteAsync(key);
+        await Service.DeleteAsync(id: key);
         return Ok();
     }
 }
-
-
-
-

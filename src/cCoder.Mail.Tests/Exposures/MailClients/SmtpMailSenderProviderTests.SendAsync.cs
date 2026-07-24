@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -16,15 +20,18 @@ public partial class SmtpMailSenderProviderTests
         CancellationToken cancellationToken = new();
 
         smtpMailSenderServiceMock
-            .Setup(service => service.SendAsync(email, cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Setup(expression: service => service.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Returns(value: Task.CompletedTask);
 
         // When
-        await smtpMailSenderProvider.SendAsync(email, cancellationToken);
+        await smtpMailSenderProvider.SendAsync(email: email, cancellationToken: cancellationToken);
 
         // Then
-        smtpMailSenderProvider.ProviderName.Should().Be(MailProviderNames.Smtp);
-        smtpMailSenderServiceMock.Verify(service => service.SendAsync(email, cancellationToken), Times.Once);
+
+        smtpMailSenderProvider.ProviderName.Should()
+            .Be(expected: MailProviderNames.Smtp);
+
+        smtpMailSenderServiceMock.Verify(expression: service => service.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
         smtpMailSenderServiceMock.VerifyNoOtherCalls();
     }
 }

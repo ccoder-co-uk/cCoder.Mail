@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Models;
@@ -20,10 +24,10 @@ internal class SentEmailEventService(
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailAddEventAsync(message);
+        await sentEmailEventBroker.RaiseSentEmailAddEventAsync(message: message);
     }
 
     public async ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity)
@@ -31,10 +35,10 @@ internal class SentEmailEventService(
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailUpdateEventAsync(message);
+        await sentEmailEventBroker.RaiseSentEmailUpdateEventAsync(message: message);
     }
 
     public async ValueTask RaiseSentEmailDeleteEventAsync(SentEmail entity)
@@ -42,10 +46,10 @@ internal class SentEmailEventService(
         EventMessage<DataSentEmail> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfo.SSOUserId },
-            Data = ToExternalSentEmail(entity),
+            Data = ToExternalSentEmail(entity: entity),
         };
 
-        await sentEmailEventBroker.RaiseSentEmailDeleteEventAsync(message);
+        await sentEmailEventBroker.RaiseSentEmailDeleteEventAsync(message: message);
     }
 
     private static DataSentEmail ToExternalSentEmail(SentEmail entity) =>
@@ -63,13 +67,3 @@ internal class SentEmailEventService(
             From = entity.From,
         };
 }
-
-
-
-
-
-
-
-
-
-

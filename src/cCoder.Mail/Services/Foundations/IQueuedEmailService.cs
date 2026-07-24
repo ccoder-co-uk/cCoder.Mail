@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -23,12 +27,3 @@ public interface IQueuedEmailService
     ValueTask DeleteAllForAppAsync(IEnumerable<QueuedEmail> items);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }
-
-
-
-
-
-
-
-
-

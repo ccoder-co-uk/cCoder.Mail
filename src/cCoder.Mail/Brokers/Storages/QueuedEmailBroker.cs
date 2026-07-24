@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +35,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
     public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return ignoreFilters
             ? coreDataContext.QueuedMail.IgnoreQueryFilters()
             : coreDataContext.QueuedMail;
@@ -42,17 +47,17 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
 
         return coreDataContext.QueuedMail
             .IgnoreQueryFilters()
-            .Include(email => email.FailedSends)
-            .Include(email => email.MailSender)
-            .Where(email => email.FailedSends.Count < maxFailures)
-            .Take(batchSize)
+            .Include(navigationPropertyPath: email => email.FailedSends)
+            .Include(navigationPropertyPath: email => email.MailSender)
+            .Where(predicate: email => email.FailedSends.Count < maxFailures)
+            .Take(count: batchSize)
             .ToArray();
     }
 
     public async ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        QueuedEmail result = (await coreDataContext.QueuedMail.AddAsync(entity)).Entity;
+        QueuedEmail result = (await coreDataContext.QueuedMail.AddAsync(entity: entity)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -60,7 +65,10 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
     public async ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        QueuedEmail result = coreDataContext.QueuedMail.Update(entity).Entity;
+
+        QueuedEmail result = coreDataContext.QueuedMail.Update(entity: entity)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -70,13 +78,13 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
         EmailSendFailure[] failures = coreDataContext.SendFailures
-            .Where(failure => failure.EmailId == entity.Id)
+            .Where(predicate: failure => failure.EmailId == entity.Id)
             .ToArray();
 
         if (failures.Length > 0)
-            coreDataContext.SendFailures.RemoveRange(failures);
+            coreDataContext.SendFailures.RemoveRange(entities: failures);
 
-        coreDataContext.QueuedMail.Remove(entity);
+        coreDataContext.QueuedMail.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -88,15 +96,15 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
         await coreDataContext.SendFailures.AddAsync(
-            new EmailSendFailure
-            {
-                AttemptedOn = DateTimeOffset.UtcNow,
-                EmailId = emailId,
-                FailureReason = reason,
-            },
-            cancellationToken);
+entity: new EmailSendFailure
+{
+    AttemptedOn = DateTimeOffset.UtcNow,
+    EmailId = emailId,
+    FailureReason = reason,
+},
+cancellationToken: cancellationToken);
 
-        _ = await coreDataContext.SaveChangesAsync(cancellationToken);
+        _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
     public async ValueTask MarkQueuedEmailAsSentAsync(
@@ -108,33 +116,33 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
         QueuedEmail queuedEmail = await coreDataContext.QueuedMail
-            .Include(email => email.FailedSends)
-            .FirstOrDefaultAsync(email => email.Id == entity.Id, cancellationToken);
+            .Include(navigationPropertyPath: email => email.FailedSends)
+            .FirstOrDefaultAsync(predicate: email => email.Id == entity.Id, cancellationToken: cancellationToken);
 
         if (queuedEmail == null)
             return;
 
         await coreDataContext.SentMail.AddAsync(
-            new SentEmail
-            {
-                AppId = queuedEmail.AppId,
-                SentByUserId = queuedEmail.SentByUserId,
-                Subject = queuedEmail.Subject,
-                Content = queuedEmail.Content,
-                To = queuedEmail.To,
-                CC = queuedEmail.CC,
-                IsBodyHtml = queuedEmail.IsBodyHtml,
-                SentOn = DateTimeOffset.UtcNow,
-                From = fromAddress,
-                MailSenderId = mailSenderId,
-            },
-            cancellationToken);
+entity: new SentEmail
+{
+    AppId = queuedEmail.AppId,
+    SentByUserId = queuedEmail.SentByUserId,
+    Subject = queuedEmail.Subject,
+    Content = queuedEmail.Content,
+    To = queuedEmail.To,
+    CC = queuedEmail.CC,
+    IsBodyHtml = queuedEmail.IsBodyHtml,
+    SentOn = DateTimeOffset.UtcNow,
+    From = fromAddress,
+    MailSenderId = mailSenderId,
+},
+cancellationToken: cancellationToken);
 
         if (queuedEmail.FailedSends?.Any() == true)
-            coreDataContext.SendFailures.RemoveRange(queuedEmail.FailedSends);
+            coreDataContext.SendFailures.RemoveRange(entities: queuedEmail.FailedSends);
 
-        coreDataContext.QueuedMail.Remove(queuedEmail);
-        _ = await coreDataContext.SaveChangesAsync(cancellationToken);
+        coreDataContext.QueuedMail.Remove(entity: queuedEmail);
+        _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
     public async ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> items)
@@ -143,7 +151,7 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.SendFailures.RemoveRange(items);
+        coreDataContext.SendFailures.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -153,27 +161,28 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.QueuedMail.RemoveRange(items);
+        coreDataContext.QueuedMail.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
     public async ValueTask DeleteAllQueuedEmailsByAppIdAsync(int appId)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         IQueryable<int> queuedEmailIds =
             coreDataContext.QueuedMail
                 .IgnoreQueryFilters()
-                .Where(email => email.AppId == appId)
-                .Select(email => email.Id);
+            .Where(predicate: email => email.AppId == appId)
+            .Select(selector: email => email.Id);
 
         await coreDataContext.SendFailures
             .IgnoreQueryFilters()
-            .Where(failure => queuedEmailIds.Contains(failure.EmailId))
+            .Where(predicate: failure => queuedEmailIds.Contains(item: failure.EmailId))
             .ExecuteDeleteAsync();
 
         await coreDataContext.QueuedMail
             .IgnoreQueryFilters()
-            .Where(email => email.AppId == appId)
+            .Where(predicate: email => email.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
@@ -182,10 +191,3 @@ public class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueued
         return entity.AppId;
     }
 }
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -16,28 +20,24 @@ public partial class SentEmailOrchestrationServiceTests
         // Given
         int id = 1;
         SentEmail entity = CreateRandomSentEmail();
-        sentEmailProcessingServiceMock.Setup(x => x.GetAll(true)).Returns(new[] { entity }.AsQueryable());
-        sentEmailProcessingServiceMock.Setup(x => x.DeleteAsync(id)).Returns(ValueTask.CompletedTask);
+
+        sentEmailProcessingServiceMock.Setup(expression: x => x.GetAll(ignoreFilters: true))
+            .Returns(value: new[] { entity }.AsQueryable());
+
+        sentEmailProcessingServiceMock.Setup(expression: x => x.DeleteAsync(id: id))
+            .Returns(value: ValueTask.CompletedTask);
 
         sentEmailEventProcessingServiceMock
-            .Setup(x => x.RaiseSentEmailDeleteEventAsync(entity))
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseSentEmailDeleteEventAsync(entity: entity))
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await orchestrationService.DeleteAsync(id);
+        await orchestrationService.DeleteAsync(id: id);
 
         // Then
-        sentEmailProcessingServiceMock.Verify(x => x.GetAll(true), Times.Once);
-        sentEmailProcessingServiceMock.Verify(x => x.DeleteAsync(id), Times.Once);
-        sentEmailEventProcessingServiceMock.Verify(x => x.RaiseSentEmailDeleteEventAsync(entity), Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.GetAll(ignoreFilters: true), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.DeleteAsync(id: id), times: Times.Once);
+        sentEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseSentEmailDeleteEventAsync(entity: entity), times: Times.Once);
     }
 
 }
-
-
-
-
-
-
-
-

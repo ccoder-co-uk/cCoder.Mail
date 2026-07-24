@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
 using FluentAssertions;
@@ -11,41 +15,49 @@ public partial class MailSenderFactoryTests
     public void ShouldReturnDefaultSenderWhenProviderNameIsMissing()
     {
         // When
-        IMailSenderProvider actualProvider = mailSenderFactory.GetSender(null);
+        IMailSenderProvider actualProvider = mailSenderFactory.GetSender(providerName: null);
 
         // Then
-        actualProvider.Should().BeSameAs(smtpSenderProviderMock.Object);
+
+        actualProvider.Should()
+            .BeSameAs(expected: smtpSenderProviderMock.Object);
     }
 
     [Fact]
     public void ShouldReturnMicrosoftGraphSenderWhenProviderAliasIsGraphHost()
     {
         // When
-        IMailSenderProvider actualProvider = mailSenderFactory.GetSender("graph.microsoft.com");
+        IMailSenderProvider actualProvider = mailSenderFactory.GetSender(providerName: "graph.microsoft.com");
 
         // Then
-        actualProvider.Should().BeSameAs(graphSenderProviderMock.Object);
+
+        actualProvider.Should()
+            .BeSameAs(expected: graphSenderProviderMock.Object);
     }
 
     [Fact]
     public void ShouldReturnDefaultSenderWhenProviderNameIsAnUnmappedSmtpHost()
     {
         // When
-        IMailSenderProvider actualProvider = mailSenderFactory.GetSender("smtp.office365.com");
+        IMailSenderProvider actualProvider = mailSenderFactory.GetSender(providerName: "smtp.office365.com");
 
         // Then
-        actualProvider.Should().BeSameAs(smtpSenderProviderMock.Object);
+
+        actualProvider.Should()
+            .BeSameAs(expected: smtpSenderProviderMock.Object);
     }
 
     [Fact]
     public void ShouldThrowWhenSenderProviderNameIsUnknown()
     {
         // When
-        Action action = () => mailSenderFactory.GetSender("Unknown");
+        Action action = () => mailSenderFactory.GetSender(providerName: "Unknown");
 
         // Then
-        action.Should().Throw<InvalidOperationException>()
-            .WithMessage("No mail sender provider named 'Unknown' is registered.");
+
+        action.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage(expectedWildcardPattern: "No mail sender provider named 'Unknown' is registered.");
     }
 
     [Fact]
@@ -55,9 +67,11 @@ public partial class MailSenderFactoryTests
         mailConfiguration.AddMicrosoftGraphSender(name: "CorporateGraph");
 
         // When
-        IMailSenderProvider actualProvider = mailSenderFactory.GetSender("CorporateGraph");
+        IMailSenderProvider actualProvider = mailSenderFactory.GetSender(providerName: "CorporateGraph");
 
         // Then
-        actualProvider.Should().BeSameAs(graphSenderProviderMock.Object);
+
+        actualProvider.Should()
+            .BeSameAs(expected: graphSenderProviderMock.Object);
     }
 }

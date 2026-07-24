@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +26,7 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
     public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters)
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+
         return ignoreFilters
             ? coreDataContext.MailServers.IgnoreQueryFilters()
             : coreDataContext.MailServers;
@@ -30,7 +35,7 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
     public async ValueTask<MailServer> AddMailServerAsync(MailServer entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailServer result = (await coreDataContext.MailServers.AddAsync(entity)).Entity;
+        MailServer result = (await coreDataContext.MailServers.AddAsync(entity: entity)).Entity;
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -38,7 +43,10 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
     public async ValueTask<MailServer> UpdateMailServerAsync(MailServer entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        MailServer result = coreDataContext.MailServers.Update(entity).Entity;
+
+        MailServer result = coreDataContext.MailServers.Update(entity: entity)
+            .Entity;
+
         _ = await coreDataContext.SaveChangesAsync();
         return result;
     }
@@ -46,7 +54,7 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
     public async ValueTask<int> DeleteMailServerAsync(MailServer entity)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailServers.Remove(entity);
+        coreDataContext.MailServers.Remove(entity: entity);
         return await coreDataContext.SaveChangesAsync();
     }
 
@@ -56,7 +64,7 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
             return;
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
-        coreDataContext.MailServers.RemoveRange(items);
+        coreDataContext.MailServers.RemoveRange(entities: items);
         _ = await coreDataContext.SaveChangesAsync();
     }
 
@@ -66,7 +74,7 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
 
         await coreDataContext.MailServers
             .IgnoreQueryFilters()
-            .Where(server => server.AppId == appId)
+            .Where(predicate: server => server.AppId == appId)
             .ExecuteDeleteAsync();
     }
 
@@ -75,10 +83,3 @@ public class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailSer
         return entity.AppId;
     }
 }
-
-
-
-
-
-
-

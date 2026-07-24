@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -20,33 +24,33 @@ public partial class QueuedEmailEventServiceTests
         EventMessage<cCoder.Data.Models.Mail.QueuedEmail> actualMessage = null;
 
         queuedEmailEventBrokerMock
-            .Setup(x => x.RaiseQueuedEmailDeleteEventAsync(It.IsAny<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>()))
-            .Callback<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>(message => actualMessage = message)
-            .Returns(ValueTask.CompletedTask);
+            .Setup(expression: x => x.RaiseQueuedEmailDeleteEventAsync(message: It.IsAny<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>()))
+            .Callback<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>(action: message => actualMessage = message)
+            .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await service.RaiseQueuedEmailDeleteEventAsync(entity);
+        await service.RaiseQueuedEmailDeleteEventAsync(entity: entity);
 
         // Then
-        actualMessage.Should().NotBeNull();
-        actualMessage!.Data.Should().BeEquivalentTo(entity);
-        actualMessage.AuthInfo.Should().NotBeNull();
-        actualMessage.AuthInfo.SSOUserId.Should().Be(CurrentUserId);
+
+        actualMessage.Should()
+            .NotBeNull();
+
+        actualMessage!.Data.Should()
+            .BeEquivalentTo(expectation: entity);
+
+        actualMessage.AuthInfo.Should()
+            .NotBeNull();
+
+        actualMessage.AuthInfo.SSOUserId.Should()
+            .Be(expected: CurrentUserId);
+
         queuedEmailEventBrokerMock.Verify(
-            x => x.RaiseQueuedEmailDeleteEventAsync(It.IsAny<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>()),
-            Times.Once
+expression: x => x.RaiseQueuedEmailDeleteEventAsync(message: It.IsAny<EventMessage<cCoder.Data.Models.Mail.QueuedEmail>>()),
+times: Times.Once
         );
+
         queuedEmailEventBrokerMock.VerifyNoOtherCalls();
     }
 
 }
-
-
-
-
-
-
-
-
-
-

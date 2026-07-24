@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -18,22 +22,16 @@ public partial class SentEmailOrchestrationServiceTests
 
     public SentEmailOrchestrationServiceTests()
     {
-        sentEmailProcessingServiceMock = new Mock<ISentEmailProcessingService>(MockBehavior.Strict);
-        sentEmailEventProcessingServiceMock = new Mock<ISentEmailEventProcessingService>(MockBehavior.Strict);
+        sentEmailProcessingServiceMock = new Mock<ISentEmailProcessingService>(behavior: MockBehavior.Strict);
+        sentEmailEventProcessingServiceMock = new Mock<ISentEmailEventProcessingService>(behavior: MockBehavior.Strict);
+
         orchestrationService = new SentEmailOrchestrationService(
-            sentEmailProcessingServiceMock.Object,
-            sentEmailEventProcessingServiceMock.Object
+processingService: sentEmailProcessingServiceMock.Object,
+eventService: sentEmailEventProcessingServiceMock.Object
         );
     }
 
-    private static SentEmail CreateRandomSentEmail() => Builder<SentEmail>.CreateNew().Build();
+    private static SentEmail CreateRandomSentEmail() =>
+        Builder<SentEmail>.CreateNew()
+        .Build();
 }
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +21,9 @@ public sealed class ReceivedEmailOperationsController(
         CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            return BadRequest(modelState: ModelState);
 
-        return Ok(await service.ReceiveAsync(request, cancellationToken));
+        return Ok(value: await service.ReceiveAsync(request: request, cancellationToken: cancellationToken));
     }
 
     [HttpGet("ReceiveTop/{count:int}")]
@@ -28,8 +32,8 @@ public sealed class ReceivedEmailOperationsController(
         CancellationToken cancellationToken)
     {
         if (count <= 0)
-            return BadRequest("Count must be greater than zero.");
+            return BadRequest(error: "Count must be greater than zero.");
 
-        return Ok(await service.ReceiveTopAsync(count, cancellationToken));
+        return Ok(value: await service.ReceiveTopAsync(count: count, cancellationToken: cancellationToken));
     }
 }

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
@@ -11,13 +15,13 @@ internal sealed class MailReceiverClientBroker(IMailReceiverFactory mailReceiver
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default) =>
         mailReceiverFactory
-            .GetReceiver(request?.ProviderName)
-            .ReceiveAsync(request, cancellationToken);
+            .GetReceiver(providerName: request?.ProviderName)
+        .ReceiveAsync(request: request, cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
         int count,
         CancellationToken cancellationToken = default) =>
         mailReceiverFactory
-            .GetReceiver(null)
-            .ReceiveTopAsync(count, cancellationToken);
+            .GetReceiver(providerName: null)
+        .ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
 }

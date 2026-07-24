@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -9,17 +13,12 @@ namespace cCoder.Mail.Services.Processings;
 
 internal class MailServerEventProcessingService(IMailServerEventService eventService) : IMailServerEventProcessingService
 {
-    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) => eventService.RaiseMailServerAddEventAsync(entity);
+    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
+        eventService.RaiseMailServerAddEventAsync(entity: entity);
 
-    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) => eventService.RaiseMailServerUpdateEventAsync(entity);
+    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
+        eventService.RaiseMailServerUpdateEventAsync(entity: entity);
 
-    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) => eventService.RaiseMailServerDeleteEventAsync(entity);
+    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
+        eventService.RaiseMailServerDeleteEventAsync(entity: entity);
 }
-
-
-
-
-
-
-
-

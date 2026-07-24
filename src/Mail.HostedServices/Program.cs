@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 using cCoder.Mail;
 using cCoder.Mail.Models;
 using cCoder.Eventing;
@@ -9,27 +13,29 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args: args);
 
-        string coreConnection = builder.Configuration.GetConnectionString("Core")
-            ?? throw new InvalidOperationException("ConnectionStrings:Core is required.");
+        string coreConnection = builder.Configuration.GetConnectionString(name: "Core")
+            ?? throw new InvalidOperationException(message: "ConnectionStrings:Core is required.");
 
         cCoder.Data.IServiceCollectionExtensions.AddCoreData(
-            builder.Services,
-            coreConnection);
+services: builder.Services,
+connectionString: coreConnection);
 
         MailConfig config = new();
-        builder.Configuration.Bind(config);
-        builder.Services.AddSingleton(config);
+        builder.Configuration.Bind(instance: config);
+        builder.Services.AddSingleton(implementationInstance: config);
         builder.Services.AddEventing();
-        builder.Services.AddMailHostedServices(mailConfiguration =>
-            ConfigureMailProviders(builder.Configuration, mailConfiguration));
+
+        builder.Services.AddMailHostedServices(configure: mailConfiguration =>
+            ConfigureMailProviders(configuration: builder.Configuration, mailConfiguration: mailConfiguration));
 
         WebApplication app = builder.Build();
 
-        app.MapGet("/", (IHostEnvironment environment) =>
-            Results.Text(BuildHostedServicesReport(environment), "text/plain"));
-        app.MapGet("/Health", () => Results.Text("Healthy"));
+        app.MapGet(pattern: "/", handler: (IHostEnvironment environment) =>
+            Results.Text(content: BuildHostedServicesReport(environment: environment), contentType: "text/plain"));
+
+        app.MapGet(pattern: "/Health", handler: () => Results.Text(content: "Healthy"));
 
         app.StartMailHostedServices();
         app.Run();
@@ -37,7 +43,7 @@ public class Program
 
     private static string BuildHostedServicesReport(IHostEnvironment environment) =>
         string.Join(
-            Environment.NewLine,
+separator: Environment.NewLine,
             "cCoder.Mail Hosted Services",
             "Status: Healthy",
             $"Environment: {environment.EnvironmentName}",
@@ -56,16 +62,16 @@ public class Program
         IConfiguration configuration,
         MailConfiguration mailConfiguration)
     {
-        ConfigureRuntime(configuration, mailConfiguration);
-        ConfigureMailbox(configuration, mailConfiguration.Pop3, "POP", 995);
-        ConfigureMailbox(configuration, mailConfiguration.Imap, "IMAP", 993);
+        ConfigureRuntime(configuration: configuration, mailConfiguration: mailConfiguration);
+        ConfigureMailbox(configuration: configuration, mailboxConfiguration: mailConfiguration.Pop3, providerPrefix: "POP", defaultPort: 995);
+        ConfigureMailbox(configuration: configuration, mailboxConfiguration: mailConfiguration.Imap, providerPrefix: "IMAP", defaultPort: 993);
 
         mailConfiguration
             .AddSmtpSender()
             .AddPop3Receiver()
             .AddImapReceiver()
-            .AddMicrosoftGraphSender(graphConfiguration => ConfigureGraph(configuration, graphConfiguration))
-            .AddMicrosoftGraphReceiver(graphConfiguration => ConfigureGraph(configuration, graphConfiguration));
+            .AddMicrosoftGraphSender(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration))
+            .AddMicrosoftGraphReceiver(configure: graphConfiguration => ConfigureGraph(configuration: configuration, graphConfiguration: graphConfiguration));
     }
 
     private static void ConfigureGraph(
@@ -76,9 +82,11 @@ public class Program
         graphConfiguration.ClientId = configuration["CCODER_MAIL_GRAPH_CLIENT_ID"] ?? graphConfiguration.ClientId;
         graphConfiguration.ClientSecret = configuration["CCODER_MAIL_GRAPH_CLIENT_SECRET"] ?? graphConfiguration.ClientSecret;
         graphConfiguration.GraphBaseUrl = configuration["CCODER_MAIL_GRAPH_BASE_URL"] ?? graphConfiguration.GraphBaseUrl;
+
         graphConfiguration.LoginBaseUrl = configuration["CCODER_MAIL_GRAPH_LOGIN_BASE_URL"]
             ?? configuration["CCODER_MAIL_GRAPH_LOGIN_URL"]
             ?? graphConfiguration.LoginBaseUrl;
+
         graphConfiguration.ReceiveUser = configuration["CCODER_MAIL_RECEIVE_USER"]
             ?? configuration["CCODER_MAIL_INTEGRATION_RECEIVE_USER"]
             ?? configuration["CCODER_MAIL_INTEGRATION_SEND_USER"]
@@ -91,7 +99,7 @@ public class Program
         MailConfiguration mailConfiguration)
     {
         mailConfiguration.IsMigrating =
-            int.TryParse(configuration["MIGRATING"], out int result) && result == 1;
+            int.TryParse(s: configuration["MIGRATING"], result: out int result) && result == 1;
     }
 
     private static void ConfigureMailbox(
@@ -103,20 +111,24 @@ public class Program
         mailboxConfiguration.Host = configuration[$"CCODER_MAIL_{providerPrefix}_HOST"]
             ?? configuration["CCODER_MAIL_RECEIVE_HOST"]
             ?? mailboxConfiguration.Host;
+
         mailboxConfiguration.Port = int.TryParse(
-            configuration[$"CCODER_MAIL_{providerPrefix}_PORT"]
+s: configuration[$"CCODER_MAIL_{providerPrefix}_PORT"]
             ?? configuration["CCODER_MAIL_RECEIVE_PORT"],
-            out int port)
+result: out int port)
                 ? port
                 : defaultPort;
+
         mailboxConfiguration.EnableSSL = !bool.TryParse(
-            configuration[$"CCODER_MAIL_{providerPrefix}_SSL"]
+value: configuration[$"CCODER_MAIL_{providerPrefix}_SSL"]
             ?? configuration["CCODER_MAIL_RECEIVE_SSL"],
-            out bool enableSsl)
+result: out bool enableSsl)
                 || enableSsl;
+
         mailboxConfiguration.User = configuration[$"CCODER_MAIL_{providerPrefix}_USER"]
             ?? configuration["CCODER_MAIL_RECEIVE_USER"]
             ?? mailboxConfiguration.User;
+
         mailboxConfiguration.Password = configuration[$"CCODER_MAIL_{providerPrefix}_PASSWORD"]
             ?? configuration["CCODER_MAIL_RECEIVE_PASSWORD"]
             ?? mailboxConfiguration.Password;

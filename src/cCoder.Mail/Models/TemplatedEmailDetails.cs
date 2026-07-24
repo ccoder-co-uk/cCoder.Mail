@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Paul.Ward@ccoder.co.uk
+// ---------------------------------------------------------------
+
 namespace cCoder.Mail.Models;
 
 public class TemplatedEmailDetails
@@ -9,4 +13,3 @@ public class TemplatedEmailDetails
     public object Model { get; set; }
     public string ToEmail { get; set; }
 }
-
