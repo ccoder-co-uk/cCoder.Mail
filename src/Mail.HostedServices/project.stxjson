@@ -1,6 +1,12 @@
 {
   "Classes": [
     {
+      "Name": "Mail.HostedServices.Hosting.WebApplicationExtensions",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
       "Name": "Mail.HostedServices.Program",
       "StandardElementType": "App",
       "Properties": [],
@@ -19,13 +25,5 @@
     }
   ],
   "Links": [],
-  "AnalysisItems": [
-    {
-      "Code": "STXAPP005",
-      "Description": "Program.cs must compose the app through IServiceCollection using SDK namespaces and one local composition namespace only.",
-      "Severity": "Warning",
-      "Type": "Mail.HostedServices.Program",
-      "LineNumber": 12
-    }
-  ]
+  "AnalysisItems": []
 }

@@ -189,6 +189,7 @@ public sealed partial class QueuedEmailControllerTests(WebAcceptanceFixture fixt
         return JsonSerializer.Deserialize<ODataEnvelope<QueuedEmail>>(json: content, options: JsonOptions)?.Value
             ?? throw new InvalidOperationException(message: "Expected queued email OData payload.");
     }
+
     private async Task<int> GetQueuedEmailStatusCodeAsync(int id)
     {
         using HttpResponseMessage response = await Client.GetAsync(requestUri: $"{BaseUrl}({id})");

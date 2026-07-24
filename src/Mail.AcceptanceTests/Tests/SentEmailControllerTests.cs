@@ -182,6 +182,7 @@ public sealed partial class SentEmailControllerTests(WebAcceptanceFixture fixtur
         return JsonSerializer.Deserialize<ODataEnvelope<SentEmail>>(json: content, options: JsonOptions)?.Value
             ?? throw new InvalidOperationException(message: "Expected sent email OData payload.");
     }
+
     private async Task<int> GetSentEmailStatusCodeAsync(int id)
     {
         using HttpResponseMessage response = await Client.GetAsync(requestUri: $"{BaseUrl}({id})");

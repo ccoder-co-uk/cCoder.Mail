@@ -137,7 +137,9 @@ requestUri: $"/Api/Core/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringTo
                 && (email.Content ?? string.Empty).Contains(value: content, comparisonType: StringComparison.Ordinal));
 
             if (receivedEmail is not null)
+            {
                 return receivedEmail;
+            }
 
             observedSubjects = [.. receivedEmails.Select(selector: email => email.Subject)
                 .Where(predicate: value => !string.IsNullOrWhiteSpace(value: value))];
@@ -301,7 +303,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
         string connectionString = ReadRequired(variableName: variableName);
 
         if (string.IsNullOrWhiteSpace(value: connectionString))
+        {
             return string.Empty;
+        }
 
         SqlConnectionStringBuilder builder = new(connectionString: connectionString)
         {
@@ -310,7 +314,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
         };
 
         if (string.IsNullOrWhiteSpace(value: builder.InitialCatalog))
+        {
             return builder.ConnectionString;
+        }
 
         builder.InitialCatalog = $"{builder.InitialCatalog}-{suffix}";
         return builder.ConnectionString;
@@ -321,7 +327,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
         string value = TestConfiguration[variableName];
 
         if (!string.IsNullOrWhiteSpace(value: value))
+        {
             return value;
+        }
 
         return fallbackVariableName is null ? string.Empty : ReadRequired(variableName: fallbackVariableName);
     }
@@ -331,10 +339,14 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
         string value = ReadRequired(variableName: variableName);
 
         if (string.IsNullOrWhiteSpace(value: value))
+        {
             return defaultValue;
+        }
 
         if (int.TryParse(s: value, result: out int numericValue))
+        {
             return numericValue != 0;
+        }
 
         return bool.Parse(value: value);
     }
@@ -459,7 +471,7 @@ implementationInstance: new cCoder.Data.Config
 });
 
                 services.AddSingleton<ISecurityDbContextFactory>(
-                    _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString));
+implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString));
 
                 services.AddCoreData(connectionString: settings.CoreConnectionString);
             });
@@ -512,17 +524,23 @@ implementationInstance: new cCoder.Data.Config
         private static void EnsureSafeIntegrationDatabase(string connectionString, string protectedDatabaseName)
         {
             if (string.IsNullOrWhiteSpace(value: connectionString))
+            {
                 throw new InvalidOperationException(message: "Integration database connection string is empty.");
+            }
 
             SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString: connectionString);
             string databaseName = builder.InitialCatalog ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(value: databaseName))
+            {
                 throw new InvalidOperationException(message: "Integration database name is empty.");
+            }
 
             if (databaseName.Equals(value: protectedDatabaseName, comparisonType: StringComparison.OrdinalIgnoreCase))
+            {
                 throw new InvalidOperationException(
-message: $"Refusing to run integration database operations against protected database '{protectedDatabaseName}'.");
+            message: $"Refusing to run integration database operations against protected database '{protectedDatabaseName}'.");
+            }
 
             if (!databaseName.Contains(value: "integration", comparisonType: StringComparison.OrdinalIgnoreCase)
                 && !databaseName.Contains(value: "accept", comparisonType: StringComparison.OrdinalIgnoreCase))
@@ -535,13 +553,17 @@ message: $"Refusing to run integration database operations against non-integrati
         private static void ForceDropDatabase(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(value: connectionString))
+            {
                 return;
+            }
 
             SqlConnectionStringBuilder builder = CreateConnectionStringBuilder(connectionString: connectionString);
             string databaseName = builder.InitialCatalog ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(value: databaseName))
+            {
                 return;
+            }
 
             builder.InitialCatalog = "master";
 

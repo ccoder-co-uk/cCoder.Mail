@@ -110,6 +110,7 @@ value: new MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
+    [ActionName("Patch")]
     public async Task<IActionResult> Put([FromRoute] int key, Delta<ReceivedEmail> updatedReceivedEmail)
     {
         ReceivedEmail originalEntity = service.GetReceivedEmail(iReceivedEmailId: key);

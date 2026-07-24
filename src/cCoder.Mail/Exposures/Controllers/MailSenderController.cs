@@ -110,6 +110,7 @@ value: new MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
+    [ActionName("Patch")]
     public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailSender> updatedMailSender)
     {
         MailSender originalEntity = service.GetMailSender(iMailSenderId: key);

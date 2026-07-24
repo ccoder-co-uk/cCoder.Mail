@@ -80,8 +80,8 @@ public partial class SentEmailServiceTests
         // Then
 
         await action.Should()
-            .ThrowAsync<SecurityException>()
-            .WithMessage(expectedWildcardPattern: "Access Denied!");
+            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();

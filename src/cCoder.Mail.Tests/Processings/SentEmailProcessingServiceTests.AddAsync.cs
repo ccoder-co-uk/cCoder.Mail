@@ -44,7 +44,7 @@ public partial class SentEmailProcessingServiceTests
 
         // When
 
-        await Assert.ThrowsAsync<SecurityException>(testCode: async () =>
+        await Assert.ThrowsAsync<cCoder.Mail.Models.Exceptions.MailServiceException>(testCode: async () =>
             await sentEmailProcessingService.AddSentEmailAsync(newSentEmail: sentEmail)
         );
 

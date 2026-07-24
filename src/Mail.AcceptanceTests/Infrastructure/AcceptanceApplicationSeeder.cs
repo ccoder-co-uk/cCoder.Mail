@@ -39,7 +39,9 @@ internal sealed class AcceptanceApplicationSeeder(IServiceProvider services)
     {
         if (await core.Set<App>()
             .AnyAsync(predicate: app => app.Id == AppId))
+        {
             return;
+        }
 
         core.Add(entity: new App
         {
@@ -58,7 +60,9 @@ internal sealed class AcceptanceApplicationSeeder(IServiceProvider services)
     {
         if (await core.Set<User>()
             .AnyAsync(predicate: existing => existing.Id == "Guest"))
+        {
             return;
+        }
 
         core.Add(entity: new User
         {
@@ -92,10 +96,13 @@ internal sealed class AcceptanceApplicationSeeder(IServiceProvider services)
             core.Add(entity: role);
             await core.SaveChangesAsync();
         }
-        else if (role.Privs != AcceptanceAdminPrivileges)
+        else
         {
-            role.Privs = AcceptanceAdminPrivileges;
-            await core.SaveChangesAsync();
+            if (role.Privs != AcceptanceAdminPrivileges)
+            {
+                role.Privs = AcceptanceAdminPrivileges;
+                await core.SaveChangesAsync();
+            }
         }
 
         bool hasGuestRole = await core.Set<UserRole>()

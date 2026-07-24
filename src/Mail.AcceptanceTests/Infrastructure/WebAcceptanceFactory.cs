@@ -65,7 +65,7 @@ implementationInstance: new cCoder.Data.Config
 });
 
             services.AddSingleton<ISecurityDbContextFactory>(
-                _ => new MSSQLSecurityDbContextFactory(settings.SsoConnectionString)
+implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString)
             );
 
             services.AddCoreData(connectionString: settings.CoreConnectionString);

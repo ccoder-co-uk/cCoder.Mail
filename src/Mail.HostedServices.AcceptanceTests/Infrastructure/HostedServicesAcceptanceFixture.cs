@@ -39,7 +39,9 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
         Client?.Dispose();
 
         if (Factory is not null)
+        {
             await Factory.DisposeAsync();
+        }
     }
 
     private static string AddDatabaseSuffix(string variableName)
@@ -48,7 +50,9 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
             ?? ReadConfiguredConnectionString(variableName: variableName);
 
         if (string.IsNullOrWhiteSpace(value: connectionString))
+        {
             return string.Empty;
+        }
 
         SqlConnectionStringBuilder builder = new(connectionString: connectionString)
         {
@@ -59,7 +63,9 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
         string databaseName = builder.InitialCatalog ?? string.Empty;
 
         if (string.IsNullOrWhiteSpace(value: databaseName))
+        {
             return connectionString;
+        }
 
         builder.InitialCatalog = $"{databaseName}-mail-hostedservices";
         return builder.ConnectionString;

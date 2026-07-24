@@ -85,7 +85,13 @@ public sealed partial class MailServerControllerTests
     [Fact]
     public async Task Get_WithoutReadPrivilege_ReturnsNotFound()
     {
-        SeededMailServerContext seededContext = await SeedDatabase("mailserver_create", "mailserver_update", "mailserver_delete");
+        // Given
+        SeededMailServerContext seededContext = await SeedDatabase(
+privileges: [
+                "mailserver_create",
+                "mailserver_update",
+                "mailserver_delete",
+            ]);
 
         using IServiceScope scope = fixture.Factory.Services.CreateScope();
 
@@ -105,7 +111,10 @@ public sealed partial class MailServerControllerTests
             EnableSSL = false,
         });
 
+        // When
         int actualStatusCode = await GetMailServerStatusCodeAsync(id: hiddenMailServer.Id);
+
+        // Then
 
         actualStatusCode.Should()
             .Be(expected: (int)HttpStatusCode.NotFound);

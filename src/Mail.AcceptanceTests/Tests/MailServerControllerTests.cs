@@ -183,6 +183,7 @@ public sealed partial class MailServerControllerTests(WebAcceptanceFixture fixtu
 
         return JsonSerializer.Deserialize<ODataEnvelope<MailServer>>(json: content, options: JsonOptions)!.Value;
     }
+
     private async Task<int> GetMailServerStatusCodeAsync(int id)
     {
         using HttpResponseMessage response = await Client.GetAsync(requestUri: $"{BaseUrl}({id})");

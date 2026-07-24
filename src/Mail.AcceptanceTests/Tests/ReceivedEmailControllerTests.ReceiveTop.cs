@@ -14,6 +14,8 @@ public sealed partial class ReceivedEmailControllerTests
     [Fact]
     public async Task ReceiveTop_ReturnsTopEmailsFromConfiguredMailbox()
     {
+        // Given
+
         // When
         ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(count: 1);
 

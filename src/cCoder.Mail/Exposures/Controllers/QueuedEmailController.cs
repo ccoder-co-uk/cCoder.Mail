@@ -114,6 +114,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
+    [ActionName("Patch")]
     public async Task<IActionResult> Put([FromRoute] int key, Delta<QueuedEmail> updatedQueuedEmail)
     {
         QueuedEmail originalEntity = service.GetQueuedEmail(iQueuedEmailId: key);

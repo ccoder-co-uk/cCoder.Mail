@@ -45,10 +45,14 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
         Client?.Dispose();
 
         if (databaseManager is not null)
+        {
             await databaseManager.DropDatabasesAsync();
+        }
 
         if (Factory is not null)
+        {
             await Factory.DisposeAsync();
+        }
     }
 
     private Task SeedAsync() =>
@@ -60,7 +64,9 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
             ?? ReadConfiguredConnectionString(variableName: variableName);
 
         if (string.IsNullOrWhiteSpace(value: connectionString))
+        {
             return string.Empty;
+        }
 
         SqlConnectionStringBuilder builder = new(connectionString: connectionString)
         {
@@ -71,7 +77,9 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
         string databaseName = builder.InitialCatalog ?? string.Empty;
 
         if (string.IsNullOrWhiteSpace(value: databaseName))
+        {
             return connectionString;
+        }
 
         string suffix = typeof(WebAcceptanceFixture).Assembly.GetName()
             .Name!
