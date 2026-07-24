@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models;
-using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cCoder.Mail.Exposures.Controllers;
@@ -12,7 +12,7 @@ namespace cCoder.Mail.Exposures.Controllers;
 [Route("Api/Mail/ReceivedEmail")]
 [Route("Api/Core/ReceivedEmail")]
 public sealed class ReceivedEmailOperationsController(
-    IReceivedEmailOrchestrationService service)
+    IMailReceivingService service)
     : ControllerBase
 {
     [HttpPost("Receive")]

@@ -4,9 +4,9 @@
 
 using cCoder.Mail.Dependencies;
 
-namespace cCoder.Mail.Services.Orchestrations;
+namespace cCoder.Mail.Services.Aggregations;
 
-internal partial class AppOrchestrationService
+internal partial class AppAggregationService
 {
     private static void ValidateAppOnAdd(object[] inputs) =>
         ValidationRulesEngine.Validate(inputs: inputs);

@@ -5,7 +5,7 @@
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Dependencies.OData;
-using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class ReceivedEmailController(
-    IReceivedEmailOrchestrationService service)
+    IReceivedEmailProcessingService service)
     : ODataController
 {
     [HttpGet]

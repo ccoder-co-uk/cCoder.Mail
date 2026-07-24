@@ -43,7 +43,7 @@ cancellationToken: cancellationToken);
             IsBodyHtml = newQueuedEmail.IsBodyHtml,
             Subject = newQueuedEmail.Subject,
             Body = newQueuedEmail.Content,
-            From = CreateFromAddress(newMailSender: newMailSender),
+            From = CreateMailAddress(newMailSender: newMailSender),
         };
 
         message.To.Add(addresses: newQueuedEmail.To);
@@ -56,7 +56,7 @@ cancellationToken: cancellationToken);
         return message;
     }
 
-    private static MailAddress CreateFromAddress(MailSender newMailSender)
+    private static MailAddress CreateMailAddress(MailSender newMailSender)
     {
         if (!string.IsNullOrWhiteSpace(value: newMailSender.FromEmail))
         {

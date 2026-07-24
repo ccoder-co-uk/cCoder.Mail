@@ -4,9 +4,9 @@
 
 using cCoder.Mail.Models.Exceptions;
 
-namespace cCoder.Mail.Services.Orchestrations;
+namespace cCoder.Mail.Services.Aggregations;
 
-internal partial class MailSenderConfigurationOrchestrationService
+internal partial class AppAggregationService
 {
     private static void TryCatch(Action operation)
     {

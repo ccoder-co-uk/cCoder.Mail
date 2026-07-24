@@ -5,7 +5,7 @@
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Dependencies.OData;
-using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class MailReceiverController(
-    IMailReceiverConfigurationOrchestrationService service)
+    IMailReceiverProcessingService service)
     : ODataController
 {
     [HttpGet]
@@ -112,7 +112,7 @@ value: new MailModelBuilder()
     [AcceptVerbs("PATCH", "MERGE")]
     public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailReceiver> updatedMailReceiver)
     {
-        MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverConfigurationId: key);
+        MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverId: key);
 
         if (originalEntity == null)
         {
@@ -126,7 +126,7 @@ value: new MailModelBuilder()
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] Guid key)
     {
-        await service.DeleteAsync(iMailReceiverConfigurationId: key);
+        await service.DeleteAsync(iMailReceiverId: key);
         return Ok();
     }
 }

@@ -3134,6 +3134,43 @@
       "Methods": []
     },
     {
+      "Name": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "StandardElementType": "AggregationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "AddAppAsync",
+          "Inputs": [
+            {
+              "Name": "newApp",
+              "Type": "cCoder.Data.Models.CMS.App"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        },
+        {
+          "Name": "DeleteAsync",
+          "Inputs": [
+            {
+              "Name": "appId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        },
+        {
+          "Name": "UpdateAppAsync",
+          "Inputs": [
+            {
+              "Name": "updatedApp",
+              "Type": "cCoder.Data.Models.CMS.App"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask"
+        }
+      ]
+    },
+    {
       "Name": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
       "StandardElementType": "FoundationService",
       "Properties": [],
@@ -4029,43 +4066,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "StandardElementType": "OrchestrationService",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "AddAppAsync",
-          "Inputs": [
-            {
-              "Name": "newApp",
-              "Type": "cCoder.Data.Models.CMS.App"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
-          "Name": "DeleteAsync",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
-          "Name": "UpdateAppAsync",
-          "Inputs": [
-            {
-              "Name": "updatedApp",
-              "Type": "cCoder.Data.Models.CMS.App"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
       "StandardElementType": "OrchestrationService",
       "Properties": [],
@@ -4115,73 +4115,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "StandardElementType": "OrchestrationService",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "AddMailReceiverAsync",
-          "Inputs": [
-            {
-              "Name": "newMailReceiver",
-              "Type": "cCoder.Data.Models.Mail.MailReceiver"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-        },
-        {
-          "Name": "DeleteAsync",
-          "Inputs": [
-            {
-              "Name": "mailReceiverConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Int32\u003E"
-        },
-        {
-          "Name": "DeleteByAppIdAsync",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
-          "Name": "GetAllMailReceiver",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-        },
-        {
-          "Name": "GetMailReceiver",
-          "Inputs": [
-            {
-              "Name": "mailReceiverConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailReceiver"
-        },
-        {
-          "Name": "UpdateMailReceiverAsync",
-          "Inputs": [
-            {
-              "Name": "updatedMailReceiver",
-              "Type": "cCoder.Data.Models.Mail.MailReceiver"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
       "StandardElementType": "OrchestrationService",
       "Properties": [],
@@ -4205,73 +4138,6 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.Task"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "StandardElementType": "OrchestrationService",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "AddMailSenderAsync",
-          "Inputs": [
-            {
-              "Name": "newMailSender",
-              "Type": "cCoder.Data.Models.Mail.MailSender"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailSender\u003E"
-        },
-        {
-          "Name": "DeleteAsync",
-          "Inputs": [
-            {
-              "Name": "mailSenderConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Int32\u003E"
-        },
-        {
-          "Name": "DeleteByAppIdAsync",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
-          "Name": "GetAllMailSender",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
-        },
-        {
-          "Name": "GetMailSender",
-          "Inputs": [
-            {
-              "Name": "mailSenderConfigurationId",
-              "Type": "System.Guid"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.MailSender"
-        },
-        {
-          "Name": "UpdateMailSenderAsync",
-          "Inputs": [
-            {
-              "Name": "updatedMailSender",
-              "Type": "cCoder.Data.Models.Mail.MailSender"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         }
       ]
     },
@@ -4487,101 +4353,6 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "StandardElementType": "OrchestrationService",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "AddReceivedEmailAsync",
-          "Inputs": [
-            {
-              "Name": "newReceivedEmail",
-              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-        },
-        {
-          "Name": "DeleteAsync",
-          "Inputs": [
-            {
-              "Name": "receivedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Int32\u003E"
-        },
-        {
-          "Name": "DeleteByAppIdAsync",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask"
-        },
-        {
-          "Name": "GetAllReceivedEmail",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-        },
-        {
-          "Name": "GetReceivedEmail",
-          "Inputs": [
-            {
-              "Name": "receivedEmailId",
-              "Type": "System.Int32"
-            }
-          ],
-          "ReturnType": "cCoder.Data.Models.Mail.ReceivedEmail"
-        },
-        {
-          "Name": "ReceiveMailboxReceiveRequestAsync",
-          "Inputs": [
-            {
-              "Name": "request",
-              "Type": "cCoder.Mail.Models.MailboxReceiveRequest"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "ReceiveTopAsync",
-          "Inputs": [
-            {
-              "Name": "count",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "cancellationToken",
-              "Type": "System.Threading.CancellationToken"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
-        },
-        {
-          "Name": "UpdateReceivedEmailAsync",
-          "Inputs": [
-            {
-              "Name": "updatedReceivedEmail",
-              "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         }
       ]
     },
@@ -5397,11 +5168,11 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "ToType": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService"
+      "ToType": "cCoder.Mail.Services.Processings.MailReceiverProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "ToType": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService"
+      "ToType": "cCoder.Mail.Services.Processings.MailSenderProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailServerController",
@@ -5413,11 +5184,11 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "ToType": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService"
+      "ToType": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "ToType": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService"
+      "ToType": "cCoder.Mail.Services.Foundations.MailReceivingService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.SentEmailController",
@@ -5429,11 +5200,35 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailAppExposure",
-      "ToType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService"
+      "ToType": "cCoder.Mail.Services.Aggregations.AppAggregationService"
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailManagerExposure",
       "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Processings.MailReceiverProcessingService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Processings.MailSenderProcessingService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "ToType": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
@@ -5544,40 +5339,12 @@
       "ToType": "cCoder.Mail.Brokers.MailClients.SmtpMailSenderBroker"
     },
     {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService"
-    },
-    {
       "FromType": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
       "ToType": "cCoder.Mail.Services.Foundations.MailReceivingService"
     },
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.MailClientOrchestrationService",
       "ToType": "cCoder.Mail.Services.Foundations.MailSendingService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Processings.MailReceiverProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
@@ -5594,10 +5361,6 @@
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService",
       "ToType": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Processings.MailSenderProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
@@ -5626,14 +5389,6 @@
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService",
       "ToType": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Foundations.MailReceivingService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "ToType": "cCoder.Mail.Services.Processings.ReceivedEmailProcessingService"
     },
     {
       "FromType": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService",
@@ -5847,11 +5602,11 @@
       "LineNumber": 10
     },
     {
-      "Code": "STXAPP003",
-      "Description": "Configuration objects should be registered as singletons.",
+      "Code": "STXA001",
+      "Description": "An aggregation service may have any number of dependencies, but they must share the same service variation.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.IServiceCollectionExtensions",
-      "LineNumber": 155
+      "Type": "cCoder.Mail.Services.Aggregations.AppAggregationService",
+      "LineNumber": 14
     },
     {
       "Code": "STXF002",
@@ -5903,34 +5658,6 @@
       "LineNumber": 13
     },
     {
-      "Code": "STX0022",
-      "Description": "Creation method names must include the concrete type they create.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Foundations.SmtpMailSenderService",
-      "LineNumber": 59
-    },
-    {
-      "Code": "STX0004",
-      "Description": "A service must not depend on another service at the same layer.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXO001",
-      "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.AppOrchestrationService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXO001",
-      "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailReceiverConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
@@ -5938,25 +5665,18 @@
       "LineNumber": 12
     },
     {
-      "Code": "STXO001",
-      "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.MailSenderConfigurationOrchestrationService",
-      "LineNumber": 10
-    },
-    {
       "Code": "STX0004",
       "Description": "A service must not depend on another service at the same layer.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
+      "LineNumber": 14
     },
     {
       "Code": "STXO001",
       "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService",
-      "LineNumber": 13
+      "LineNumber": 14
     },
     {
       "Code": "STX0007",
@@ -5964,13 +5684,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Services.Orchestrations.MailServerOrchestrationService",
       "LineNumber": 13
-    },
-    {
-      "Code": "STXO001",
-      "Description": "An orchestration must have two or three foundation or processing dependencies and must not mix them.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService",
-      "LineNumber": 12
     },
     {
       "Code": "STX0007",

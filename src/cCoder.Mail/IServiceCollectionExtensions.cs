@@ -16,6 +16,7 @@ using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Services.Foundations.Events;
 using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Services.Aggregations;
 using cCoder.Mail.Services.Processings;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
@@ -147,16 +148,13 @@ public static partial class IServiceCollectionExtensions
 
     private static void AddOrchestrations(this IServiceCollection services)
     {
-        services.AddTransient<IAppOrchestrationService, AppOrchestrationService>();
+        services.AddTransient<IAppAggregationService, AppAggregationService>();
         services.AddTransient<IMailClientOrchestrationService, MailClientOrchestrationService>();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddTransient<IMailReceiverOrchestrationService, MailReceiverOrchestrationService>();
         services.AddTransient<IMailServerOrchestrationService, MailServerOrchestrationService>();
-        services.AddTransient<IMailSenderConfigurationOrchestrationService, MailSenderConfigurationOrchestrationService>();
-        services.AddTransient<IMailReceiverConfigurationOrchestrationService, MailReceiverConfigurationOrchestrationService>();
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();
         services.AddTransient<ISentEmailOrchestrationService, SentEmailOrchestrationService>();
-        services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
     }
 
     private static void AddEventHandlers(this IServiceCollection services)
