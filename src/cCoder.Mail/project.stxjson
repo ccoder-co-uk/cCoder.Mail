@@ -1771,18 +1771,6 @@
       "Methods": []
     },
     {
-      "Name": "cCoder.Mail.Exposures.Controllers.BaselineController",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "Get",
-          "Inputs": [],
-          "ReturnType": "IActionResult"
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
       "StandardElementType": "Exposure",
       "Properties": [],
@@ -2410,29 +2398,6 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.Setup.UIBaseline",
-      "StandardElementType": "Dependency",
-      "Properties": [
-        {
-          "Name": "Packages",
-          "Type": "cCoder.Data.Models.Packaging.Package[]"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Exposures.UIBaselineExposure",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "GetPackages",
-          "Inputs": [],
-          "ReturnType": "System.Object"
         }
       ]
     },
@@ -5445,10 +5410,6 @@
     {
       "FromType": "cCoder.Mail.Dependencies.MailClients.SmtpMailSenderProvider",
       "ToType": "cCoder.Mail.Services.Foundations.SmtpMailSenderService"
-    },
-    {
-      "FromType": "cCoder.Mail.Exposures.Controllers.BaselineController",
-      "ToType": "cCoder.Mail.Exposures.UIBaselineExposure"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailProvidersController",

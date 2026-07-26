@@ -98,7 +98,6 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IEventHubBroker, EventHubBroker>();
         services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
         services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
-        services.AddSingleton<IUIBaselineExposure, UIBaselineExposure>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
