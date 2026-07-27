@@ -20,7 +20,7 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
     {
         AcceptanceSettings settings = new()
         {
-            CoreConnectionString = AddDatabaseSuffix(variableName: "CCODER_ACCEPTANCE_CORE_CONNECTION_STRING"),
+            CoreConnectionString = AddDatabaseSuffix(variableName: "ConnectionStrings__Core"),
         };
 
         Factory = new HostedServicesAcceptanceFactory(settings: settings);
@@ -67,7 +67,7 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
             return connectionString;
         }
 
-        builder.InitialCatalog = $"{databaseName}-mail-hostedservices";
+        builder.InitialCatalog = $"{databaseName}-acceptance-{Guid.NewGuid():N}";
         return builder.ConnectionString;
     }
 
