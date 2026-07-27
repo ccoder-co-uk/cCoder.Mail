@@ -39,7 +39,7 @@ jobs:
         run: dotnet build src/cCoder.Mail.sln -c Release --no-restore -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false /p:Version="${{ steps.version.outputs.value }}"
 
       - name: Test
-        run: dotnet test src/cCoder.Mail.sln -c Release --no-build -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
+        run: dotnet test src/cCoder.Mail.sln -c Release --no-build --filter "Category!=ExternalIntegration" -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false
 
       - name: Pack
         run: |

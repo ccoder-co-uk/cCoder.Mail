@@ -11,6 +11,7 @@ namespace Mail.IntegrationTests.Tests;
 public sealed partial class MailDeliveryTests
 {
     [Fact]
+    [Trait("Category", "ExternalIntegration")]
     public async Task ReceiveTopAsync_ReturnsTopEmailFromConfiguredMailbox()
     {
         // Given
