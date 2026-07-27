@@ -12,6 +12,7 @@ namespace Mail.IntegrationTests.Tests;
 public sealed partial class MailDeliveryTests
 {
     [Fact]
+    [Trait("Category", "ExternalIntegration")]
     public async Task SendAndReceiveAsync_SendsQueuedMailAndReceivesItFromMailbox()
     {
         // Given
