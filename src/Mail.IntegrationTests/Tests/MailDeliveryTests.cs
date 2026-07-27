@@ -31,8 +31,8 @@ namespace Mail.IntegrationTests.Tests;
 public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 {
     private const string MailServerName = "Integration";
-    private const string CoreConnectionVariableName = "CCODER_ACCEPTANCE_CORE_CONNECTION_STRING";
-    private const string SsoConnectionVariableName = "CCODER_ACCEPTANCE_SSO_CONNECTION_STRING";
+    private const string CoreConnectionVariableName = "ConnectionStrings__Core";
+    private const string SsoConnectionVariableName = "ConnectionStrings__SSO";
 
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
     private static IConfigurationRoot TestConfiguration { get; } =
@@ -282,8 +282,8 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
 
         return new()
         {
-            CoreConnectionString = AddDatabaseSuffix(variableName: CoreConnectionVariableName, suffix: "mail-integration"),
-            SsoConnectionString = AddDatabaseSuffix(variableName: SsoConnectionVariableName, suffix: "mail-integration"),
+            CoreConnectionString = AddDatabaseSuffix(variableName: CoreConnectionVariableName),
+            SsoConnectionString = AddDatabaseSuffix(variableName: SsoConnectionVariableName),
             SendHost = string.IsNullOrWhiteSpace(value: sendHost) ? "graph.microsoft.com" : sendHost,
             SendUser = sendUser,
             From = string.IsNullOrWhiteSpace(value: from) ? sendUser : from,
@@ -298,7 +298,7 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
     private static string ODataString(string value) =>
         (value ?? string.Empty).Replace(oldValue: "'", newValue: "''", comparisonType: StringComparison.Ordinal);
 
-    private static string AddDatabaseSuffix(string variableName, string suffix)
+    private static string AddDatabaseSuffix(string variableName)
     {
         string connectionString = ReadRequired(variableName: variableName);
 
@@ -318,7 +318,7 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
             return builder.ConnectionString;
         }
 
-        builder.InitialCatalog = $"{builder.InitialCatalog}-{suffix}";
+        builder.InitialCatalog = $"{builder.InitialCatalog}-acceptance-{Guid.NewGuid():N}";
         return builder.ConnectionString;
     }
 
