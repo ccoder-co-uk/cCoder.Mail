@@ -5,7 +5,7 @@
 using cCoder.Data;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Security;
-using cCoder.Mail.Dependencies;
+using cCoder.Mail.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -33,7 +33,7 @@ internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAu
 
         return user != null
             && appId.HasValue
-            && AuthorizationDependency.HasAppAdminPrivilege(
+            && cCoder.Mail.Extensions.AuthorizationExtensions.HasAppAdminPrivilege(
                 user: user,
                 appId: appId.Value);
     }
@@ -57,7 +57,7 @@ internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAu
     {
         User user = GetCurrentUser();
 
-        AuthorizationDependency.Authorize(
+        cCoder.Mail.Extensions.AuthorizationExtensions.Authorize(
             user: user,
             appId: appId,
             privilege: privilege);

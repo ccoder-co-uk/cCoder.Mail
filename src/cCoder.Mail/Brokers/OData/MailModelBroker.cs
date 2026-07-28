@@ -3,17 +3,20 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models;
+using cCoder.Mail.Models.OData;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 
-namespace cCoder.Mail.Dependencies.OData;
+namespace cCoder.Mail.Brokers.OData;
 
-internal class MailModelBuilder : ODataModelBuilder
+internal sealed class MailModelBroker
+    : ODataModelBroker,
+      IMailModelBroker
 {
-    public MailModelBuilder(ODataConventionModelBuilder builder = null)
+    public MailModelBroker(ODataConventionModelBuilder builder = null)
         : base(builder)
     {
     }
@@ -36,7 +39,7 @@ internal class MailModelBuilder : ODataModelBuilder
     private IEdmModel BuildEdmModel()
     {
         ConfigureModel();
-        return base.Builder.GetEdmModel();
+        return builder.GetEdmModel();
     }
 
     private void ConfigureModel()
@@ -48,6 +51,6 @@ internal class MailModelBuilder : ODataModelBuilder
         AddSet<QueuedEmail, int>();
         AddSet<SentEmail, int>();
         AddSet<ReceivedEmail, int>();
-        base.Builder.Namespace = "";
+        builder.Namespace = "";
     }
 }

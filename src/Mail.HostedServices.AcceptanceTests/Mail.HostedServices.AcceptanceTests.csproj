@@ -21,9 +21,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\Testing\AcceptanceTestConfiguration.cs" Link="Testing\AcceptanceTestConfiguration.cs" />
     <ProjectReference Include="..\Mail.HostedServices\Mail.HostedServices.csproj" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Shared\Testing\appsettings.testing.json" Link="appsettings.testing.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

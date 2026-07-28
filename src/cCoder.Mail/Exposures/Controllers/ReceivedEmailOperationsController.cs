@@ -10,7 +10,6 @@ namespace cCoder.Mail.Exposures.Controllers;
 
 [ApiController]
 [Route("Api/Mail/ReceivedEmail")]
-[Route("Api/Core/ReceivedEmail")]
 public sealed class ReceivedEmailOperationsController(
     IMailReceivingService service)
     : ControllerBase

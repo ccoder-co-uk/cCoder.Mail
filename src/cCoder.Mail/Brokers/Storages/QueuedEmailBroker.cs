@@ -4,7 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Dependencies;
+using cCoder.Mail.Extensions;
 using Microsoft.EntityFrameworkCore;
 using DataEmailSendFailure = cCoder.Data.Models.Mail.EmailSendFailure;
 
@@ -37,7 +37,7 @@ internal sealed class QueuedEmailBroker(ICoreContextFactory coreContextFactory) 
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        return StorageBrokerDependency.SelectAll(
+        return StorageBrokerExtensions.SelectAll(
             entities: coreDataContext.QueuedMail,
             ignoreFilters: ignoreFilters);
     }
@@ -112,7 +112,7 @@ cancellationToken: cancellationToken);
         Guid mailSenderId,
         string fromAddress,
         CancellationToken cancellationToken = default) =>
-        QueuedEmailStorageDependency.MarkQueuedEmailAsSentAsync(
+        QueuedEmailStorageExtensions.MarkQueuedEmailAsSentAsync(
             coreContextFactory: coreContextFactory,
             entity: entity,
             mailSenderId: mailSenderId,
@@ -123,7 +123,7 @@ cancellationToken: cancellationToken);
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        DataEmailSendFailure[] entities = StorageBrokerDependency.Normalize(
+        DataEmailSendFailure[] entities = StorageBrokerExtensions.Normalize(
             entities: deletedEmailSendFailure);
 
         coreDataContext.SendFailures.RemoveRange(entities: entities);
@@ -134,7 +134,7 @@ cancellationToken: cancellationToken);
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        QueuedEmail[] entities = StorageBrokerDependency.Normalize(
+        QueuedEmail[] entities = StorageBrokerExtensions.Normalize(
             entities: deletedQueuedEmail);
 
         coreDataContext.QueuedMail.RemoveRange(entities: entities);

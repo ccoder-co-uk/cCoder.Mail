@@ -10,9 +10,7 @@ public class MailConfiguration
 {
     public MailConfiguration()
     {
-        ConnectionStrings = new Dictionary<string, string>();
-        Settings = new Dictionary<string, string>();
-        Services = new Dictionary<string, string>();
+        ConnectionString = string.Empty;
 
         SenderProviders = new Dictionary<string, string>(
             comparer: StringComparer.OrdinalIgnoreCase);
@@ -22,7 +20,6 @@ public class MailConfiguration
 
         MicrosoftGraph = new MicrosoftGraphMailConfiguration();
         RootPath = "Api/Mail";
-        IncludeLegacyCoreContext = true;
         DefaultSenderProviderName = MailProviderNames.Smtp;
         DefaultReceiverProviderName = MailProviderNames.MicrosoftGraph;
         Pop3 = new MailboxReceiveConfiguration { Port = 995 };
@@ -36,16 +33,13 @@ public class MailConfiguration
         MailConfigurationExtensions.AddMicrosoftGraphReceiver(newMailConfiguration: this);
     }
 
-    public IDictionary<string, string> ConnectionStrings { get; set; }
-    public IDictionary<string, string> Settings { get; set; }
-    public IDictionary<string, string> Services { get; set; }
+    public string ConnectionString { get; set; }
     public IDictionary<string, string> SenderProviders { get; }
     public IDictionary<string, string> ReceiverProviders { get; }
     public MicrosoftGraphMailConfiguration MicrosoftGraph { get; }
     public bool DebugInfo { get; set; }
     public bool LogSQL { get; set; }
     public string RootPath { get; set; }
-    public bool IncludeLegacyCoreContext { get; set; }
     public bool IsMigrating { get; set; }
     public string DefaultSenderProviderName { get; set; }
     public string DefaultReceiverProviderName { get; set; }

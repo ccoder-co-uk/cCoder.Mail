@@ -22,9 +22,10 @@ internal sealed class HostedServicesAcceptanceFactory(AcceptanceSettings setting
         {
             config.AddInMemoryCollection(
 initialData: [
-                new KeyValuePair<string, string>(key: "ConnectionStrings:Core", value: settings.CoreConnectionString),
-                new KeyValuePair<string, string>(key: "Settings:enableExternalEventing", value: "false"),
-                new KeyValuePair<string, string>(key: "MIGRATING", value: "1"),
+                new KeyValuePair<string, string>(key: "Mail:ConnectionString", value: settings.CoreConnectionString),
+                new KeyValuePair<string, string>(key: "Data:ConnectionString", value: settings.CoreConnectionString),
+                new KeyValuePair<string, string>(key: "Eventing:ProviderType", value: string.Empty),
+                new KeyValuePair<string, string>(key: "Mail:IsMigrating", value: "true"),
             ]);
         });
     }

@@ -4,7 +4,9 @@
 
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Brokers.OData;
+using cCoder.Mail.Extensions.OData;
+using cCoder.Mail.Models.OData;
 using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,7 @@ public partial class MailReceiverController(
 
         return isExtendedMetaRequest
             ? Ok(
-value: new MailModelBuilder()
+value: new MailModelBroker()
                     .Build()
             .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(MailReceiver))
             )
@@ -84,7 +86,7 @@ value: new MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver));
@@ -103,7 +105,7 @@ value: new MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver));

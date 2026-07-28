@@ -9,7 +9,6 @@ namespace cCoder.Mail.Exposures.Controllers;
 
 [ApiController]
 [Route("Api/Mail/MailProviders")]
-[Route("Api/Core/MailProviders")]
 public sealed class MailProvidersController(
     IMailConfigurationExposure mailConfigurationExposure) : ControllerBase
 {

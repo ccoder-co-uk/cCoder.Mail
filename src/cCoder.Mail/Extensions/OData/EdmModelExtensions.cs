@@ -2,13 +2,13 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Models.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OData.Edm;
 
 
-namespace cCoder.Mail.Dependencies.OData
+namespace cCoder.Mail.Extensions.OData
 {
     public static class EdmModelExtensions
     {
@@ -174,10 +174,4 @@ namespace cCoder.Mail.Dependencies.OData
             .ToJsonForOdata();
     }
 
-    public sealed class ModelStateError
-    {
-        public string Key { get; set; } = string.Empty;
-        public object Value { get; set; }
-        public string[] Errors { get; set; }
-    }
 }

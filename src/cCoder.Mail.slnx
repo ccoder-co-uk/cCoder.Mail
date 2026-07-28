@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Apps/">
+    <Project Path="Mail.HostedServices/Mail.HostedServices.csproj" />
+    <Project Path="Mail.Web/Mail.Web.csproj" />
+  </Folder>
+  <Project Path="cCoder.Mail.Tests/cCoder.Mail.Tests.csproj" />
+  <Project Path="cCoder.Mail/cCoder.Mail.csproj" />
+  <Project Path="Mail.AcceptanceTests/Mail.AcceptanceTests.csproj" />
+  <Project Path="Mail.HostedServices.AcceptanceTests/Mail.HostedServices.AcceptanceTests.csproj" />
+  <Project Path="Mail.IntegrationTests/Mail.IntegrationTests.csproj" />
+</Solution>

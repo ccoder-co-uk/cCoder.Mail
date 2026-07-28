@@ -2,8 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models;
+using cCoder.Data;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
@@ -14,58 +15,34 @@ using Microsoft.OpenApi;
 
 namespace cCoder.Mail;
 
-public static partial class IServiceCollectionExtensions
+internal static class MailServiceCollectionConfigurationExtensions
 {
-    private static MailConfiguration AddConfiguredMail(
-        this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
-    {
-        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
-        services.AddMail();
-        return configuration;
-    }
-
-    private static MailConfiguration AddConfiguredMailWeb(
-        this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> newMailConfiguration,
-        ODataConventionModelBuilder builder = null)
-    {
-        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
-        services.AddMailWeb(builder: builder);
-
-        services.AddConfiguredApi(
-newMailConfiguration: configuration,
-documentName: "Mail",
-configureModel: static modelBuilder => modelBuilder.ConfigureMailApiModel(),
-builder: builder);
-
-        return configuration;
-    }
-
-    private static MailConfiguration AddConfiguredMailHostedServices(
-        this IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
-    {
-        MailConfiguration configuration = CreateConfiguration(services: services, newMailConfiguration: newMailConfiguration);
-        services.AddMailHostedServices();
-        return configuration;
-    }
-
     public static void ConfigureMailApiModel(this ODataConventionModelBuilder builder) =>
-        new MailModelBuilder(builder: builder).Configure();
+        new MailModelBroker(builder: builder).Configure();
 
-    private static MailConfiguration CreateConfiguration(
-        IServiceCollection services,
-        Action<IServiceCollection, MailConfiguration> newMailConfiguration)
+    internal static void RegisterConfiguration(
+        this IServiceCollection services,
+        MailConfiguration configuration)
     {
-        MailConfiguration configuration = new();
-        newMailConfiguration?.Invoke(arg1: services, arg2: configuration);
+        ArgumentNullException.ThrowIfNull(argument: configuration);
         services.AddSingleton(implementationInstance: configuration);
+
+        if (!string.IsNullOrWhiteSpace(
+            value: configuration.ConnectionString))
+        {
+            services.AddData(
+                configuration: new cCoder.Data.Models.DataConfiguration
+                {
+                    ConnectionString = configuration.ConnectionString,
+                    DebugInfo = configuration.DebugInfo,
+                    LogSQL = configuration.LogSQL,
+                });
+        }
+
         services.AddEventProviders(eventProviders: configuration.EventProviders);
-        return configuration;
     }
 
-    private static void AddConfiguredApi(
+    internal static void AddConfiguredApi(
         this IServiceCollection services,
         MailConfiguration newMailConfiguration,
         string documentName,
@@ -109,12 +86,6 @@ builder: builder);
                 .SetMaxTop(maxTopValue: 1000)
                 .AddRouteComponents(routePrefix: rootPath, model: routeModel, batchHandler: batchHandler);
 
-            if (builder is null
-                && newMailConfiguration.IncludeLegacyCoreContext
-                && !string.Equals(a: rootPath, b: "Api/Core", comparisonType: StringComparison.OrdinalIgnoreCase))
-            {
-                _ = options.AddRouteComponents(routePrefix: "Api/Core", model: routeModel, batchHandler: batchHandler);
-            }
         });
     }
 
@@ -122,8 +93,7 @@ builder: builder);
         IServiceCollection services,
         string documentName,
         MailConfiguration newMailConfiguration,
-        bool useFullSchemaIds)
-    {
+        bool useFullSchemaIds) =>
         services.AddSwaggerGen(setupAction: options =>
         {
             options.ResolveConflictingActions(resolver: apiDescriptions => apiDescriptions.First());
@@ -151,34 +121,16 @@ configuration: newMailConfiguration));
                 Scheme = "bearer",
             });
         });
-    }
 
     private static void AddSwaggerDocuments(
         Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions options,
         string documentName,
-        MailConfiguration newMailConfiguration)
-    {
+        MailConfiguration newMailConfiguration) =>
         options.SwaggerDoc(name: documentName, info: new OpenApiInfo
         {
             Title = $"{documentName} API definition",
             Version = documentName,
         });
-
-        if (newMailConfiguration.IncludeLegacyCoreContext)
-        {
-            options.SwaggerDoc(name: "Core", info: new OpenApiInfo
-            {
-                Title = "Core API definition",
-                Version = "Core",
-            });
-
-            options.SwaggerDoc(name: "v1", info: new OpenApiInfo
-            {
-                Title = "Core API definition",
-                Version = "v1",
-            });
-        }
-    }
 
     private static bool ShouldIncludeInDocument(
         string swaggerDocumentName,
@@ -191,20 +143,19 @@ configuration: newMailConfiguration));
             return false;
         }
 
-        if (string.Equals(a: swaggerDocumentName, b: "v1", comparisonType: StringComparison.OrdinalIgnoreCase))
-        {
-            swaggerDocumentName = "Core";
-        }
-
         string path = NormalizePath(relativePath: relativePath);
 
         string rootPath = string.IsNullOrWhiteSpace(value: configuration.RootPath)
             ? $"Api/{documentName}"
             : configuration.RootPath;
 
-        return string.Equals(a: swaggerDocumentName, b: "Core", comparisonType: StringComparison.OrdinalIgnoreCase)
-            ? configuration.IncludeLegacyCoreContext && MatchesContextRoute(path: path, rootPath: "Api/Core")
-            : MatchesContextRoute(path: path, rootPath: rootPath);
+        return string.Equals(
+            a: swaggerDocumentName,
+            b: documentName,
+            comparisonType: StringComparison.OrdinalIgnoreCase)
+            && MatchesContextRoute(
+                path: path,
+                rootPath: rootPath);
     }
 
     private static bool MatchesContextRoute(string path, string rootPath)

@@ -2,6 +2,15 @@
 
 `cCoder.Mail` contains the Mail domain for the cCoder platform. It provides mail-server configuration, queued email, sent email, mailbox receive support, event handling, and the background sender loop used by cCoder applications.
 
+## Local Configuration
+
+Configuration binds directly into `MailConfiguration`. Leave secrets empty in
+appsettings and define `Mail__ConnectionString` plus any configured provider
+secrets, such as `Mail__MicrosoftGraph__ClientSecret`, as user-level or
+machine-level environment variables. Restart Visual Studio, select the Web and
+HostedServices startup projects, and press F5. No configuration conversion step
+is required.
+
 ## Functionality
 
 - Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
@@ -36,13 +45,13 @@
 ## Build
 
 ```powershell
-dotnet build src/cCoder.Mail.sln -v minimal
+dotnet build src/cCoder.Mail.slnx -v minimal
 ```
 
 ## Test
 
 ```powershell
-dotnet test src/cCoder.Mail.sln -v minimal --no-build
+dotnet test src/cCoder.Mail.slnx -v minimal --no-build
 ```
 
 The solution test run includes unit tests, app acceptance suites, and the mail delivery integration suite. Acceptance tests actively call the hosted HTTP surfaces, including health endpoints and the manual tools shell.
@@ -62,7 +71,6 @@ Useful `Mail.Web` endpoints:
 - `/tools/index.html` opens the manual domain tester.
 - `/swagger` opens the API explorer.
 - `/Health` returns `OK`.
-- `/Api/Core/ReceivedEmail/Receive` fetches Microsoft Graph mailbox messages using the supplied mailbox user and date range.
 - `/Api/Mail/ReceivedEmail/Receive` exposes the same receive endpoint on the Mail route.
 
 Useful `Mail.HostedServices` endpoints:
@@ -70,20 +78,20 @@ Useful `Mail.HostedServices` endpoints:
 - `/` returns a plain-text hosted-services report.
 - `/Health` returns `Healthy`.
 
-## Local Configuration
+The runnable apps bind the structured settings directly. Their required secrets
+are:
 
-The runnable apps read local secrets from environment variables rather than committed config.
+- `Mail__ConnectionString`
+- `Data__ConnectionString`
+- `Security__ConnectionString` (Web only)
+- `Security__DecryptionKey` (Web only)
+- `Mail__MicrosoftGraph__TenantId`
+- `Mail__MicrosoftGraph__ClientId`
+- `Mail__MicrosoftGraph__ClientSecret`
+- `Mail__MicrosoftGraph__ReceiveUser`
 
-Before running `src/Mail.Web` or `src/Mail.HostedServices`, set:
-
-- `ConnectionStrings__Core`
-
-Before running `src/Mail.Web`, also set:
-
-- `ConnectionStrings__SSO`
-- `Settings__DecryptionKey`
-
-The committed `appsettings.json` keeps these values blank so user or machine environment variables can supply them during local development.
+Provider-specific POP3 and IMAP secrets use the matching structured paths, such
+as `Mail__Pop3__Password` and `Mail__Imap__Password`.
 
 ## Provider Configuration
 
@@ -114,13 +122,13 @@ Custom providers can be added by registering an implementation of `IMailSenderPr
 
 The real send-and-receive integration test requires these variables on the runner:
 
-- `CCODER_ACCEPTANCE_CORE_CONNECTION_STRING`
-- `CCODER_ACCEPTANCE_SSO_CONNECTION_STRING`
-- `CCODER_MAIL_GRAPH_TENANT_ID`
-- `CCODER_MAIL_GRAPH_CLIENT_ID`
-- `CCODER_MAIL_GRAPH_CLIENT_SECRET`
-- `CCODER_MAIL_GRAPH_BASE_URL` (defaults to `https://graph.microsoft.com/v1.0`)
-- `CCODER_MAIL_GRAPH_LOGIN_BASE_URL` (defaults to `https://login.microsoftonline.com`)
+- `Mail__ConnectionString`
+- `Security__ConnectionString`
+- `Security__DecryptionKey`
+- `Mail__MicrosoftGraph__TenantId`
+- `Mail__MicrosoftGraph__ClientId`
+- `Mail__MicrosoftGraph__ClientSecret`
+- `Mail__MicrosoftGraph__ReceiveUser`
 - `CCODER_MAIL_INTEGRATION_SEND_USER` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
 - `CCODER_MAIL_INTEGRATION_SEND_HOST` (defaults to `graph.microsoft.com`)
 - `CCODER_MAIL_INTEGRATION_SMTP_FROM` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
@@ -130,7 +138,8 @@ The real send-and-receive integration test requires these variables on the runne
 - `CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS` (defaults to `120`)
 - `CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS` (defaults to `10`)
 
-The test creates disposable integration databases by appending `-mail-integration` to the acceptance Core and SSO database names.
+The test creates disposable integration databases by appending
+`-acceptance-{guid}` to the configured Mail and Security database names.
 The Graph application registration must have `Mail.Send` and `Mail.Read` application permissions with admin consent applied.
 
 ## Package

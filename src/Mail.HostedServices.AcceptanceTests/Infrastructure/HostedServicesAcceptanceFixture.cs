@@ -3,9 +3,8 @@
 // ---------------------------------------------------------------
 
 using HostedServices.AcceptanceTests.Models;
+using cCoder.Mail.Testing;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace HostedServices.AcceptanceTests.Infrastructure;
@@ -18,9 +17,12 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
 
     public Task InitializeAsync()
     {
+        AcceptanceTestConfiguration configuration =
+            AcceptanceTestConfiguration.Load();
+
         AcceptanceSettings settings = new()
         {
-            CoreConnectionString = AddDatabaseSuffix(variableName: "ConnectionStrings__Core"),
+            CoreConnectionString = configuration.CoreConnectionString
         };
 
         Factory = new HostedServicesAcceptanceFactory(settings: settings);
@@ -44,50 +46,6 @@ public sealed class HostedServicesAcceptanceFixture : IAsyncLifetime
         }
     }
 
-    private static string AddDatabaseSuffix(string variableName)
-    {
-        string connectionString = BuildConfiguration()[variableName]
-            ?? ReadConfiguredConnectionString(variableName: variableName);
-
-        if (string.IsNullOrWhiteSpace(value: connectionString))
-        {
-            return string.Empty;
-        }
-
-        SqlConnectionStringBuilder builder = new(connectionString: connectionString)
-        {
-            Encrypt = true,
-            TrustServerCertificate = true,
-        };
-
-        string databaseName = builder.InitialCatalog ?? string.Empty;
-
-        if (string.IsNullOrWhiteSpace(value: databaseName))
-        {
-            return connectionString;
-        }
-
-        builder.InitialCatalog = $"{databaseName}-acceptance-{Guid.NewGuid():N}";
-        return builder.ConnectionString;
-    }
-
-    private static string ReadConfiguredConnectionString(string variableName)
-    {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(basePath: AppContext.BaseDirectory)
-            .AddJsonFile(path: "appsettings.testing.json", optional: true)
-            .AddEnvironmentVariables()
-            .Build();
-
-        return configuration.GetConnectionString(name: "Core") ?? string.Empty;
-    }
-
-    private static IConfigurationRoot BuildConfiguration() =>
-        new ConfigurationBuilder()
-            .SetBasePath(basePath: AppContext.BaseDirectory)
-        .AddJsonFile(path: "appsettings.testing.json", optional: true)
-        .AddEnvironmentVariables()
-        .Build();
 }
 
 [CollectionDefinition(Name)]

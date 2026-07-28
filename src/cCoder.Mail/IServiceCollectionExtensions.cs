@@ -4,7 +4,7 @@
 
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;
@@ -34,52 +34,98 @@ using JsonBroker = cCoder.Mail.Brokers.JsonBroker;
 
 namespace cCoder.Mail;
 
-public static partial class IServiceCollectionExtensions
+public static class IServiceCollectionExtensions
 {
     public static void AddMail(
         this IServiceCollection services,
-        Action<MailConfiguration> newMailConfiguration = null) =>
-        services.AddConfiguredMail(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
+        Action<MailConfiguration> newMailConfiguration = null)
+    {
+        MailConfiguration configuration = new();
+        newMailConfiguration?.Invoke(obj: configuration);
+        services.AddMail(configuration: configuration);
+    }
+
+    public static void AddMail(
+        this IServiceCollection services,
+        MailConfiguration configuration)
+    {
+        ArgumentNullException.ThrowIfNull(argument: configuration);
+        services.RegisterConfiguration(configuration: configuration);
+        services.AddEventingTypes();
+        services.AddBrokers();
+        services.AddFoundations();
+        services.AddProcessings();
+        services.AddOrchestrations();
+        services.AddExposures();
+    }
 
     public static void AddMailWeb(
         this IServiceCollection services,
         Action<MailConfiguration> newMailConfiguration = null,
-        ODataConventionModelBuilder builder = null) =>
-        services.AddConfiguredMailWeb(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration), builder: builder);
+        ODataConventionModelBuilder builder = null)
+    {
+        MailConfiguration configuration = new();
+        newMailConfiguration?.Invoke(obj: configuration);
+        services.AddMailWeb(configuration: configuration, builder: builder);
+    }
+
+    public static void AddMailWeb(
+        this IServiceCollection services,
+        MailConfiguration configuration,
+        ODataConventionModelBuilder builder = null)
+    {
+        ArgumentNullException.ThrowIfNull(argument: configuration);
+        services.RegisterConfiguration(configuration: configuration);
+        services.AddEventingTypes();
+        services.AddBrokers();
+        services.AddFoundations();
+        services.AddProcessings();
+        services.AddOrchestrations();
+        services.AddExposures();
+        services.AddConfiguredApi(
+            newMailConfiguration: configuration,
+            documentName: "Mail",
+            configureModel: static modelBuilder =>
+                modelBuilder.ConfigureMailApiModel(),
+            builder: builder);
+    }
 
     public static void AddMailHostedServices(
         this IServiceCollection services,
-        Action<MailConfiguration> newMailConfiguration = null) =>
-        services.AddConfiguredMailHostedServices(newMailConfiguration: (_, configuration) => newMailConfiguration?.Invoke(obj: configuration));
-
-    private static void AddMail(this IServiceCollection services)
+        Action<MailConfiguration> newMailConfiguration = null)
     {
+        MailConfiguration configuration = new();
+        newMailConfiguration?.Invoke(obj: configuration);
+        services.AddMailHostedServices(configuration: configuration);
+    }
+
+    public static void AddMailHostedServices(
+        this IServiceCollection services,
+        MailConfiguration configuration)
+    {
+        ArgumentNullException.ThrowIfNull(argument: configuration);
+        services.RegisterConfiguration(configuration: configuration);
         services.AddEventingTypes();
         services.AddBrokers();
         services.AddFoundations();
         services.AddProcessings();
         services.AddOrchestrations();
-        services.AddEventHandlers();
+        services.AddExposures();
+        services.AddHostedServiceExposures();
     }
 
-    private static void AddMailWeb(this IServiceCollection services, ODataConventionModelBuilder builder = null)
+    private static void AddHostedServiceExposures(
+        this IServiceCollection services)
     {
-        services.AddMail();
-
-    }
-
-    private static void AddMailHostedServices(this IServiceCollection services)
-    {
-        services.AddEventingTypes();
-        services.AddBrokers();
-        services.AddFoundations();
-        services.AddProcessings();
-        services.AddOrchestrations();
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
         services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
-        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailSenderHostedService>());
+        services.AddHostedService(
+            implementationFactory: provider =>
+                provider.GetRequiredService<IMailSenderHostedService>());
         services.AddSingleton<IMailReceiverHostedService, MailReceiverHostedService>();
-        services.AddHostedService(implementationFactory: provider => provider.GetRequiredService<IMailReceiverHostedService>());
+        services.AddHostedService(
+            implementationFactory: provider =>
+                provider.GetRequiredService<IMailReceiverHostedService>());
     }
 
     private static void AddEventingTypes(this IServiceCollection services)
@@ -130,7 +176,9 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailAppExposure, MailAppExposure>();
         services.AddTransient<IMailManagerExposure, MailManagerExposure>();
         services.AddTransient<IMailMetadataTypeService, MailMetadataTypeService>();
-        services.AddTransient<Services.Foundations.Events.IEventHandlerService, Services.Foundations.Events.EventHandlerService>();
+        services.AddTransient<
+            Services.Foundations.Events.IEventHandlerService,
+            Services.Foundations.Events.EventHandlerService>();
         services.AddTransient<IMailServerService, MailServerService>();
         services.AddTransient<IMailSenderService, MailSenderService>();
         services.AddTransient<IMailReceiverService, MailReceiverService>();
@@ -160,7 +208,7 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
     }
 
-    private static void AddEventHandlers(this IServiceCollection services)
+    private static void AddExposures(this IServiceCollection services)
     {
         services.AddTransient<IMailEventHandlers, MailEventHandlers>();
     }

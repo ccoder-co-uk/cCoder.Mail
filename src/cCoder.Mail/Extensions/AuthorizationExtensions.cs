@@ -5,9 +5,9 @@
 using System.Security;
 using cCoder.Data.Models.Security;
 
-namespace cCoder.Mail.Dependencies;
+namespace cCoder.Mail.Extensions;
 
-internal static class AuthorizationDependency
+internal static class AuthorizationExtensions
 {
     internal static void Authorize(
         User user,
