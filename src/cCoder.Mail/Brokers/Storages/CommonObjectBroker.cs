@@ -4,7 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models;
-using cCoder.Mail.Dependencies;
+using cCoder.Mail.Extensions;
 
 
 namespace cCoder.Mail.Brokers.Storages;
@@ -17,7 +17,7 @@ public interface ICommonObjectBroker
 internal sealed class CommonObjectBroker(ICoreContextFactory coreContextFactory) : ICommonObjectBroker
 {
     public CommonObject[] GetLatestCommonObjectsPaged(int pageSize = 500) =>
-        CommonObjectStorageDependency.SelectLatestCommonObjectsPaged(
+        CommonObjectStorageExtensions.SelectLatestCommonObjectsPaged(
             coreContextFactory: coreContextFactory,
             pageSize: pageSize);
 }

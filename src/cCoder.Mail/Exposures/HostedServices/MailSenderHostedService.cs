@@ -9,17 +9,12 @@ using Microsoft.Extensions.Hosting;
 namespace cCoder.Mail.Exposures.HostedServices;
 
 public sealed class MailSenderHostedService(
-    IServiceScopeFactory serviceScopeFactory)
+    IMailSenderOrchestrationService orchestrationService)
     : BackgroundService,
         IMailSenderHostedService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        using IServiceScope scope = serviceScopeFactory.CreateScope();
-
-        IMailSenderOrchestrationService mailSenderOrchestrationService =
-            scope.ServiceProvider.GetRequiredService<IMailSenderOrchestrationService>();
-
-        await mailSenderOrchestrationService.RunContinuouslyAsync(cancellationToken: stoppingToken);
-    }
+    protected override Task ExecuteAsync(
+        CancellationToken stoppingToken) =>
+        orchestrationService.RunContinuouslyAsync(
+            cancellationToken: stoppingToken);
 }

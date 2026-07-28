@@ -22,7 +22,7 @@ namespace Web.AcceptanceTests.Tests.Mail;
 public sealed partial class SentEmailControllerTests(WebAcceptanceFixture fixture)
 {
     private HttpClient Client { get; } = fixture.Client;
-    private string BaseUrl { get; } = "/Api/Core/SentEmail";
+    private string BaseUrl { get; } = "/Api/Mail/SentEmail";
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
 
     private static string Unique(string prefix) =>

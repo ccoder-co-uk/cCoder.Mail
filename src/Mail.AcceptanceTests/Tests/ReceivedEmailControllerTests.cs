@@ -18,7 +18,7 @@ public sealed partial class ReceivedEmailControllerTests(WebAcceptanceFixture fi
 {
     private HttpClient Client { get; } = fixture.Client;
 
-    private string BaseUrl { get; } = "/Api/Core/ReceivedEmail/Receive";
+    private string BaseUrl { get; } = "/Api/Mail/ReceivedEmail/Receive";
 
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
 
@@ -36,7 +36,7 @@ public sealed partial class ReceivedEmailControllerTests(WebAcceptanceFixture fi
 
     private async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(int count)
     {
-        using HttpResponseMessage response = await Client.GetAsync(requestUri: $"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
+        using HttpResponseMessage response = await Client.GetAsync(requestUri: $"/Api/Mail/ReceivedEmail/ReceiveTop/{count}");
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()

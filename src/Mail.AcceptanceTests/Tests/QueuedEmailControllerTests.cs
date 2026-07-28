@@ -22,7 +22,7 @@ namespace Web.AcceptanceTests.Tests.Mail;
 public sealed partial class QueuedEmailControllerTests(WebAcceptanceFixture fixture)
 {
     private HttpClient Client { get; } = fixture.Client;
-    private string BaseUrl { get; } = "/Api/Core/QueuedEmail";
+    private string BaseUrl { get; } = "/Api/Mail/QueuedEmail";
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
 
     private static string Unique(string prefix) =>

@@ -6,9 +6,9 @@ using cCoder.Data;
 using cCoder.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace cCoder.Mail.Dependencies;
+namespace cCoder.Mail.Extensions;
 
-internal static class CommonObjectStorageDependency
+internal static class CommonObjectStorageExtensions
 {
     internal static CommonObject[] SelectLatestCommonObjectsPaged(
         ICoreContextFactory coreContextFactory,

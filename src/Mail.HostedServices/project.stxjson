@@ -1,9 +1,47 @@
 {
   "Classes": [
     {
-      "Name": "Mail.HostedServices.Hosting.WebApplicationExtensions",
-      "StandardElementType": "Dependency",
+      "Name": "Mail.HostedServices.IServiceCollectionExtensions",
+      "StandardElementType": "App",
       "Properties": [],
+      "Methods": [
+        {
+          "Name": "AddMailHostedServices",
+          "Inputs": [
+            {
+              "Name": "services",
+              "Type": "IServiceCollection"
+            },
+            {
+              "Name": "configuration",
+              "Type": "IConfiguration"
+            },
+            {
+              "Name": "configure",
+              "Type": "System.Action\u003CMail.HostedServices.Models.MailHostedServicesConfiguration\u003E"
+            }
+          ],
+          "ReturnType": "IServiceCollection"
+        }
+      ]
+    },
+    {
+      "Name": "Mail.HostedServices.Models.MailHostedServicesConfiguration",
+      "StandardElementType": "Model",
+      "Properties": [
+        {
+          "Name": "Data",
+          "Type": "cCoder.Data.Models.DataConfiguration"
+        },
+        {
+          "Name": "Eventing",
+          "Type": "cCoder.Eventing.Models.EventingConfiguration"
+        },
+        {
+          "Name": "Mail",
+          "Type": "cCoder.Mail.Models.MailConfiguration"
+        }
+      ],
       "Methods": []
     },
     {
@@ -20,6 +58,23 @@
             }
           ],
           "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "Mail.HostedServices.WebApplicationExtensions",
+      "StandardElementType": "App",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "UseMailHostedServicesApplication",
+          "Inputs": [
+            {
+              "Name": "app",
+              "Type": "WebApplication"
+            }
+          ],
+          "ReturnType": "WebApplication"
         }
       ]
     }

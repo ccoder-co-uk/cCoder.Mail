@@ -1,5 +1,5 @@
 window.MailGrids = {
-    apiRoot: "/Api/Core",
+    apiRoot: "/Api/Mail",
     initialized: false,
     senderProviders: [],
     receiverProviders: [],

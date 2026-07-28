@@ -4,9 +4,9 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace cCoder.Mail.Dependencies;
+namespace cCoder.Mail.Extensions;
 
-internal static class StorageBrokerDependency
+internal static class StorageBrokerExtensions
 {
     internal static IQueryable<T> SelectAll<T>(
         DbSet<T> entities,

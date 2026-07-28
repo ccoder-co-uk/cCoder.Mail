@@ -4,7 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Dependencies;
+using cCoder.Mail.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace cCoder.Mail.Brokers.Storages;
@@ -28,7 +28,7 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        return StorageBrokerDependency.SelectAll(
+        return StorageBrokerExtensions.SelectAll(
             entities: coreDataContext.ReceivedMail,
             ignoreFilters: ignoreFilters);
     }
@@ -63,7 +63,7 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
         IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default)
     {
-        ReceivedEmail[] items = StorageBrokerDependency.Normalize(
+        ReceivedEmail[] items = StorageBrokerExtensions.Normalize(
             entities: newReceivedEmail);
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
@@ -87,7 +87,7 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        ReceivedEmail[] entities = StorageBrokerDependency.Normalize(
+        ReceivedEmail[] entities = StorageBrokerExtensions.Normalize(
             entities: deletedReceivedEmail);
 
         coreDataContext.ReceivedMail.RemoveRange(entities: entities);

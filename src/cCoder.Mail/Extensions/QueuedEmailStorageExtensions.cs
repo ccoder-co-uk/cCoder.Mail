@@ -6,9 +6,9 @@ using cCoder.Data;
 using cCoder.Data.Models.Mail;
 using Microsoft.EntityFrameworkCore;
 
-namespace cCoder.Mail.Dependencies;
+namespace cCoder.Mail.Extensions;
 
-internal static class QueuedEmailStorageDependency
+internal static class QueuedEmailStorageExtensions
 {
     internal static async ValueTask MarkQueuedEmailAsSentAsync(
         ICoreContextFactory coreContextFactory,

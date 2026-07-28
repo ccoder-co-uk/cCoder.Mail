@@ -1,47 +1,6 @@
 {
   "Classes": [
     {
-      "Name": "Apps.Shared.DomainApiHosting",
-      "StandardElementType": "Dependency",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "UseDomainApiShell",
-          "Inputs": [
-            {
-              "Name": "app",
-              "Type": "WebApplication"
-            }
-          ],
-          "ReturnType": "System.Void"
-        },
-        {
-          "Name": "UseDomainDefaultCors",
-          "Inputs": [
-            {
-              "Name": "app",
-              "Type": "WebApplication"
-            }
-          ],
-          "ReturnType": "System.Void"
-        },
-        {
-          "Name": "UseDomainExceptionHandling",
-          "Inputs": [
-            {
-              "Name": "app",
-              "Type": "WebApplication"
-            },
-            {
-              "Name": "errorHandler",
-              "Type": "RequestDelegate"
-            }
-          ],
-          "ReturnType": "System.Void"
-        }
-      ]
-    },
-    {
       "Name": "Apps.Shared.Hosting.NoOpSession",
       "StandardElementType": "Dependency",
       "Properties": [
@@ -140,36 +99,51 @@
       "Methods": []
     },
     {
-      "Name": "Apps.Shared.Models.Config",
+      "Name": "Mail.Web.IServiceCollectionExtensions",
+      "StandardElementType": "App",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "AddMailWeb",
+          "Inputs": [
+            {
+              "Name": "services",
+              "Type": "IServiceCollection"
+            },
+            {
+              "Name": "configuration",
+              "Type": "IConfiguration"
+            },
+            {
+              "Name": "configure",
+              "Type": "System.Action\u003CMail.Web.Models.MailWebConfiguration\u003E"
+            }
+          ],
+          "ReturnType": "IServiceCollection"
+        }
+      ]
+    },
+    {
+      "Name": "Mail.Web.Models.MailWebConfiguration",
       "StandardElementType": "Model",
       "Properties": [
         {
-          "Name": "ConnectionStrings",
-          "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
+          "Name": "Data",
+          "Type": "cCoder.Data.Models.DataConfiguration"
         },
         {
-          "Name": "DebugInfo",
-          "Type": "System.Boolean"
+          "Name": "Eventing",
+          "Type": "cCoder.Eventing.Models.EventingConfiguration"
         },
         {
-          "Name": "LogSQL",
-          "Type": "System.Boolean"
+          "Name": "Mail",
+          "Type": "cCoder.Mail.Models.MailConfiguration"
         },
         {
-          "Name": "Services",
-          "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
-        },
-        {
-          "Name": "Settings",
-          "Type": "System.Collections.Generic.IDictionary\u003CSystem.String, System.String\u003E"
+          "Name": "Security",
+          "Type": "cCoder.Security.Objects.SecurityConfiguration"
         }
       ],
-      "Methods": []
-    },
-    {
-      "Name": "Mail.Web.Hosting.WebApplicationExtensions",
-      "StandardElementType": "Dependency",
-      "Properties": [],
       "Methods": []
     },
     {
@@ -186,6 +160,23 @@
             }
           ],
           "ReturnType": "System.Void"
+        }
+      ]
+    },
+    {
+      "Name": "Mail.Web.WebApplicationExtensions",
+      "StandardElementType": "App",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "UseMailApplication",
+          "Inputs": [
+            {
+              "Name": "app",
+              "Type": "WebApplication"
+            }
+          ],
+          "ReturnType": "WebApplication"
         }
       ]
     }

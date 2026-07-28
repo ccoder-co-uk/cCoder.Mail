@@ -2,7 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Dependencies.OData;
+using cCoder.Mail.Brokers.OData;
+using cCoder.Mail.Extensions.OData;
+using cCoder.Mail.Models.OData;
 using cCoder.Mail.Models;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.CMS;
@@ -30,7 +32,7 @@ public partial class SentEmailController(
 
         return isExtendedMetaRequest
             ? Ok(
-value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
+value: new cCoder.Mail.Brokers.OData.MailModelBroker()
                     .Build()
             .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(SentEmail))
             )
@@ -88,7 +90,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
@@ -107,7 +109,7 @@ value: new cCoder.Mail.Dependencies.OData.MailModelBuilder()
     {
         if (!ModelState.IsValid)
         {
-            return new cCoder.Mail.Dependencies.OData.BadRequestResult(modelState: ModelState);
+            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
         }
 
         return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: updatedSentEmail));

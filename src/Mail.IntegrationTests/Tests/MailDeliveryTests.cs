@@ -31,8 +31,10 @@ namespace Mail.IntegrationTests.Tests;
 public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 {
     private const string MailServerName = "Integration";
-    private const string CoreConnectionVariableName = "ConnectionStrings__Core";
-    private const string SsoConnectionVariableName = "ConnectionStrings__SSO";
+    private const string CoreConnectionVariableName =
+        "Mail:ConnectionString";
+    private const string SsoConnectionVariableName =
+        "Security:ConnectionString";
 
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
     private static IConfigurationRoot TestConfiguration { get; } =
@@ -71,7 +73,7 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
         string to)
     {
         using HttpResponseMessage response = await client.PostAsJsonAsync(
-requestUri: "/Api/Core/QueuedEmail",
+requestUri: "/Api/Mail/QueuedEmail",
 value: new
 {
     appId,
@@ -107,7 +109,7 @@ value: new
     private static async Task<IReadOnlyList<SentEmail>> GetSentEmailsAsync(HttpClient client, string subject)
     {
         using HttpResponseMessage response = await client.GetAsync(
-requestUri: $"/Api/Core/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringToEscape: $"Subject eq '{ODataString(value: subject)}'")}");
+requestUri: $"/Api/Mail/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringToEscape: $"Subject eq '{ODataString(value: subject)}'")}");
 
         string content = await response.Content.ReadAsStringAsync();
 
@@ -159,7 +161,7 @@ message: $"The sent email was not received within {settings.ReceiveTimeout}. " +
         DateTimeOffset from)
     {
         using HttpResponseMessage response = await client.PostAsJsonAsync(
-requestUri: "/Api/Core/ReceivedEmail/Receive",
+requestUri: "/Api/Mail/ReceivedEmail/Receive",
 value: new MailboxReceiveRequest
 {
     User = settings.ReceiveUser,
@@ -181,7 +183,7 @@ value: new MailboxReceiveRequest
         HttpClient client,
         int count)
     {
-        using HttpResponseMessage response = await client.GetAsync(requestUri: $"/Api/Core/ReceivedEmail/ReceiveTop/{count}");
+        using HttpResponseMessage response = await client.GetAsync(requestUri: $"/Api/Mail/ReceivedEmail/ReceiveTop/{count}");
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
@@ -284,6 +286,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
         {
             CoreConnectionString = AddDatabaseSuffix(variableName: CoreConnectionVariableName),
             SsoConnectionString = AddDatabaseSuffix(variableName: SsoConnectionVariableName),
+            DecryptionKey =
+                ReadRequired(
+                    variableName: "Security:DecryptionKey"),
             SendHost = string.IsNullOrWhiteSpace(value: sendHost) ? "graph.microsoft.com" : sendHost,
             SendUser = sendUser,
             From = string.IsNullOrWhiteSpace(value: from) ? sendUser : from,
@@ -365,6 +370,8 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
 
         public string SsoConnectionString { get; init; }
 
+        public string DecryptionKey { get; init; }
+
         public string SendHost { get; init; }
 
         public string SendUser { get; init; }
@@ -399,9 +406,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
             [
             CoreConnectionVariableName,
             SsoConnectionVariableName,
-            "CCODER_MAIL_GRAPH_TENANT_ID",
-            "CCODER_MAIL_GRAPH_CLIENT_ID",
-            "CCODER_MAIL_GRAPH_CLIENT_SECRET",
+            "Mail:MicrosoftGraph:TenantId",
+            "Mail:MicrosoftGraph:ClientId",
+            "Mail:MicrosoftGraph:ClientSecret",
         ];
     }
 
@@ -442,38 +449,30 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
             {
                 config.AddInMemoryCollection(
 initialData: [
-                    new KeyValuePair<string, string>(key: "ConnectionStrings:Core", value: settings.CoreConnectionString),
-                    new KeyValuePair<string, string>(key: "ConnectionStrings:SSO", value: settings.SsoConnectionString),
-                    new KeyValuePair<string, string>(key: "Settings:DecryptionKey", value: "000000000000000000000000000000000000000000000000"),
-                    new KeyValuePair<string, string>(key: "Settings:enableExternalEventing", value: "false"),
+                    new KeyValuePair<string, string>(key: "Mail:ConnectionString", value: settings.CoreConnectionString),
+                    new KeyValuePair<string, string>(key: "Data:ConnectionString", value: settings.CoreConnectionString),
+                    new KeyValuePair<string, string>(key: "Security:ConnectionString", value: settings.SsoConnectionString),
+                    new KeyValuePair<string, string>(key: "Security:DecryptionKey", value: settings.DecryptionKey),
+                    new KeyValuePair<string, string>(key: "Eventing:ProviderType", value: string.Empty),
                 ]);
             });
 
             builder.ConfigureTestServices(servicesConfiguration: services =>
             {
                 services.RemoveAll<ICoreContextFactory>();
+                services.RemoveAll<CoreDataContext>();
+                services.RemoveAll<IDbContextFactory<CoreDataContext>>();
+                services.RemoveAll<cCoder.Data.Models.DataConfiguration>();
                 services.RemoveAll<ISecurityDbContextFactory>();
-
-                services.AddSingleton(
-implementationInstance: new cCoder.Data.Config
-{
-    ConnectionStrings = new Dictionary<string, string>
-    {
-        ["Core"] = settings.CoreConnectionString,
-        ["SSO"] = settings.SsoConnectionString,
-    },
-    Settings = new Dictionary<string, string>
-    {
-        ["DecryptionKey"] = "000000000000000000000000000000000000000000000000",
-        ["enableExternalEventing"] = "false",
-    },
-    Services = new Dictionary<string, string>(),
-});
 
                 services.AddSingleton<ISecurityDbContextFactory>(
 implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString));
 
-                services.AddCoreData(connectionString: settings.CoreConnectionString);
+                services.AddData(
+                    configuration: new cCoder.Data.Models.DataConfiguration
+                    {
+                        ConnectionString = settings.CoreConnectionString
+                    });
             });
         }
     }
