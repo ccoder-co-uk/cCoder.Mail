@@ -82,7 +82,6 @@ The runnable apps bind the structured settings directly. Their required secrets
 are:
 
 - `Mail__ConnectionString`
-- `Data__ConnectionString`
 - `Security__ConnectionString` (Web only)
 - `Security__DecryptionKey` (Web only)
 - `Mail__MicrosoftGraph__TenantId`

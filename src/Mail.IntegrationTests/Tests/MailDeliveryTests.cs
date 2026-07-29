@@ -11,6 +11,7 @@ using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using cCoder.Mail.Models;
 using cCoder.Mail.Services.Orchestrations;
+using cCoder.Mail.Testing;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
@@ -32,17 +33,10 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 {
     private const string MailServerName = "Integration";
     private const string CoreConnectionVariableName =
-        "Mail:ConnectionString";
+        "Mail__ConnectionString";
     private const string SsoConnectionVariableName =
-        "Security:ConnectionString";
-
+        "Security__ConnectionString";
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
-    private static IConfigurationRoot TestConfiguration { get; } =
-        new ConfigurationBuilder()
-            .SetBasePath(basePath: AppContext.BaseDirectory)
-        .AddJsonFile(path: "appsettings.testing.json", optional: true)
-        .AddEnvironmentVariables()
-        .Build();
 
     private ITestOutputHelper Output { get; } = output;
 
@@ -268,6 +262,9 @@ value: new MailboxReceiveRequest
 
     private static IntegrationSettings ReadSettings()
     {
+        AcceptanceTestConfiguration configuration =
+            AcceptanceTestConfiguration.Load();
+
         string sendHost = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_SEND_HOST");
 
         string sendUser = ReadRequired(
@@ -284,11 +281,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
 
         return new()
         {
-            CoreConnectionString = AddDatabaseSuffix(variableName: CoreConnectionVariableName),
-            SsoConnectionString = AddDatabaseSuffix(variableName: SsoConnectionVariableName),
-            DecryptionKey =
-                ReadRequired(
-                    variableName: "Security:DecryptionKey"),
+            CoreConnectionString = configuration.CoreConnectionString,
+            SsoConnectionString = configuration.SecurityConnectionString,
+            DecryptionKey = configuration.SecurityDecryptionKey,
             SendHost = string.IsNullOrWhiteSpace(value: sendHost) ? "graph.microsoft.com" : sendHost,
             SendUser = sendUser,
             From = string.IsNullOrWhiteSpace(value: from) ? sendUser : from,
@@ -303,33 +298,16 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
     private static string ODataString(string value) =>
         (value ?? string.Empty).Replace(oldValue: "'", newValue: "''", comparisonType: StringComparison.Ordinal);
 
-    private static string AddDatabaseSuffix(string variableName)
-    {
-        string connectionString = ReadRequired(variableName: variableName);
-
-        if (string.IsNullOrWhiteSpace(value: connectionString))
-        {
-            return string.Empty;
-        }
-
-        SqlConnectionStringBuilder builder = new(connectionString: connectionString)
-        {
-            Encrypt = true,
-            TrustServerCertificate = true,
-        };
-
-        if (string.IsNullOrWhiteSpace(value: builder.InitialCatalog))
-        {
-            return builder.ConnectionString;
-        }
-
-        builder.InitialCatalog = $"{builder.InitialCatalog}-acceptance-{Guid.NewGuid():N}";
-        return builder.ConnectionString;
-    }
-
     private static string ReadRequired(string variableName, string fallbackVariableName = null)
     {
-        string value = TestConfiguration[variableName];
+        string value =
+            Environment.GetEnvironmentVariable(variable: variableName)
+            ?? Environment.GetEnvironmentVariable(
+                variable: variableName,
+                target: EnvironmentVariableTarget.User)
+            ?? Environment.GetEnvironmentVariable(
+                variable: variableName,
+                target: EnvironmentVariableTarget.Machine);
 
         if (!string.IsNullOrWhiteSpace(value: value))
         {
@@ -406,9 +384,9 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
             [
             CoreConnectionVariableName,
             SsoConnectionVariableName,
-            "Mail:MicrosoftGraph:TenantId",
-            "Mail:MicrosoftGraph:ClientId",
-            "Mail:MicrosoftGraph:ClientSecret",
+            "Mail__MicrosoftGraph__TenantId",
+            "Mail__MicrosoftGraph__ClientId",
+            "Mail__MicrosoftGraph__ClientSecret",
         ];
     }
 
