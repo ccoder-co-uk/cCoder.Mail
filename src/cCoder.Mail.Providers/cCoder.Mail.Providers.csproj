@@ -33,7 +33,7 @@
     <PackageReference Remove="cCoder.CodeAnalysis" />
     <PackageReference
       Include="cCoder.CodeAnalysis"
-      Version="2026.7.29.1330"
+      Version="2026.7.29.2324"
       PrivateAssets="all"
     />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

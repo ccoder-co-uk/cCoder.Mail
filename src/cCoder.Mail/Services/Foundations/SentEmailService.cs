@@ -24,7 +24,7 @@ internal partial class SentEmailService(
         ValidateSentEmailOnGet(inputs: [sentEmailId]);
 
         SentEmail sentEmail = sentEmailBroker
-            .GetAllSentEmails(ignoreFilters: false)
+            .GetAllSentEmails()
             .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (sentEmail is not null)
@@ -33,7 +33,7 @@ internal partial class SentEmailService(
         }
 
         SentEmail unrestrictedSentEmail = sentEmailBroker
-            .GetAllSentEmails(ignoreFilters: true)
+            .GetAllSentEmailsIgnoringFilters()
             .FirstOrDefault(predicate: i => i.Id == sentEmailId);
 
         if (unrestrictedSentEmail is not null)
@@ -49,7 +49,9 @@ internal partial class SentEmailService(
         {
             ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
 
-            return sentEmailBroker.GetAllSentEmails(ignoreFilters: ignoreFilters);
+            return ignoreFilters
+                ? sentEmailBroker.GetAllSentEmailsIgnoringFilters()
+                : sentEmailBroker.GetAllSentEmails();
         });
 
     public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
@@ -57,7 +59,7 @@ internal partial class SentEmailService(
     {
         ValidateSentEmailOnAdd(inputs: [newSentEmail]);
 
-        authorizationBroker.Authorize(appId: newSentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: newSentEmail.AppId, privilege: $"{nameof(SentEmail)}_create");
         SentEmail result = await sentEmailBroker.AddSentEmailAsync(newSentEmail: Copy(sentEmail: newSentEmail));
         newSentEmail.Id = result.Id;
         newSentEmail.AppId = result.AppId;
@@ -78,7 +80,7 @@ internal partial class SentEmailService(
     {
         ValidateSentEmailOnUpdate(inputs: [updatedSentEmail]);
 
-        authorizationBroker.Authorize(appId: updatedSentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: updatedSentEmail.AppId, privilege: $"{nameof(SentEmail)}_update");
         SentEmail result = await sentEmailBroker.UpdateSentEmailAsync(updatedSentEmail: Copy(sentEmail: updatedSentEmail));
         updatedSentEmail.Id = result.Id;
         updatedSentEmail.AppId = result.AppId;
@@ -101,7 +103,7 @@ internal partial class SentEmailService(
         ValidateDeleteAsync(inputs: [sentEmailId]);
 
         SentEmail sentEmail = sentEmailBroker
-            .GetAllSentEmails(ignoreFilters: true)
+            .GetAllSentEmailsIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == sentEmailId);
 
         if (sentEmail is null)
@@ -109,7 +111,7 @@ internal partial class SentEmailService(
             return;
         }
 
-        authorizationBroker.Authorize(appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: sentEmail.AppId, privilege: $"{nameof(SentEmail)}_delete");
         _ = await sentEmailBroker.DeleteSentEmailAsync(deletedSentEmail: Copy(sentEmail: sentEmail));
     }, isValueTask: true);
 

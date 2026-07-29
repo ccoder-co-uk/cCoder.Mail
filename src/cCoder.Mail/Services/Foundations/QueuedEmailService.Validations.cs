@@ -2,10 +2,21 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Data.Models.Security;
+using System.Security;
+
 namespace cCoder.Mail.Services.Foundations;
 
 internal partial class QueuedEmailService
 {
+    private static void Authorize(User user, int? appId, string privilege)
+    {
+        if (!user.Can(appId: appId, operation: privilege))
+        {
+            throw new SecurityException(message: "Access Denied!");
+        }
+    }
+
     private static void ValidateQueuedEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 

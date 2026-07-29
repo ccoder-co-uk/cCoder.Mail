@@ -11,7 +11,8 @@ namespace cCoder.Mail.Brokers.Storages;
 
 public interface IReceivedEmailBroker
 {
-    IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters);
+    IQueryable<ReceivedEmail> GetAllReceivedEmails();
+    IQueryable<ReceivedEmail> GetAllReceivedEmailsIgnoringFilters();
     ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail);
     ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail);
     ValueTask<int> DeleteReceivedEmailAsync(ReceivedEmail deletedReceivedEmail);
@@ -24,13 +25,16 @@ public interface IReceivedEmailBroker
 
 internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory) : IReceivedEmailBroker
 {
-    public IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters)
+    public IQueryable<ReceivedEmail> GetAllReceivedEmails()
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.ReceivedMail;
+    }
 
-        return StorageBrokerExtensions.SelectAll(
-            entities: coreDataContext.ReceivedMail,
-            ignoreFilters: ignoreFilters);
+    public IQueryable<ReceivedEmail> GetAllReceivedEmailsIgnoringFilters()
+    {
+        CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.ReceivedMail.IgnoreQueryFilters();
     }
 
     public async ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail)
@@ -63,8 +67,7 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
         IEnumerable<ReceivedEmail> newReceivedEmail,
         CancellationToken cancellationToken = default)
     {
-        ReceivedEmail[] items = StorageBrokerExtensions.Normalize(
-            entities: newReceivedEmail);
+        ReceivedEmail[] items = newReceivedEmail?.ToArray() ?? [];
 
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
         await coreDataContext.ReceivedMail.AddRangeAsync(entities: items, cancellationToken: cancellationToken);
@@ -87,8 +90,7 @@ internal sealed class ReceivedEmailBroker(ICoreContextFactory coreContextFactory
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        ReceivedEmail[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedReceivedEmail);
+        ReceivedEmail[] entities = deletedReceivedEmail?.ToArray() ?? [];
 
         coreDataContext.ReceivedMail.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();

@@ -20,7 +20,7 @@ internal partial class ReceivedEmailService(
         ValidateReceivedEmailOnGet(inputs: [receivedEmailId]);
 
         ReceivedEmail receivedEmail = receivedEmailBroker
-            .GetAllReceivedEmails(ignoreFilters: false)
+            .GetAllReceivedEmails()
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (receivedEmail is not null)
@@ -29,12 +29,12 @@ internal partial class ReceivedEmailService(
         }
 
         ReceivedEmail unrestrictedReceivedEmail = receivedEmailBroker
-            .GetAllReceivedEmails(ignoreFilters: true)
+            .GetAllReceivedEmailsIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
         if (unrestrictedReceivedEmail is not null)
         {
-            authorizationBroker.Authorize(appId: unrestrictedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_read");
+            Authorize(user: authorizationBroker.GetCurrentUser(), appId: unrestrictedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_read");
         }
 
         return unrestrictedReceivedEmail;
@@ -45,7 +45,9 @@ internal partial class ReceivedEmailService(
         {
             ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
 
-            return receivedEmailBroker.GetAllReceivedEmails(ignoreFilters: ignoreFilters);
+            return ignoreFilters
+                ? receivedEmailBroker.GetAllReceivedEmailsIgnoringFilters()
+                : receivedEmailBroker.GetAllReceivedEmails();
         });
 
     public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>
@@ -53,7 +55,7 @@ internal partial class ReceivedEmailService(
     {
         ValidateReceivedEmailOnAdd(inputs: [newReceivedEmail]);
 
-        authorizationBroker.Authorize(appId: newReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_create");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: newReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_create");
         return await receivedEmailBroker.AddReceivedEmailAsync(newReceivedEmail: Copy(entity: newReceivedEmail));
     }, isValueTask: true);
 
@@ -62,7 +64,7 @@ internal partial class ReceivedEmailService(
     {
         ValidateReceivedEmailOnUpdate(inputs: [updatedReceivedEmail]);
 
-        authorizationBroker.Authorize(appId: updatedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_update");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: updatedReceivedEmail.AppId, privilege: $"{nameof(ReceivedEmail)}_update");
         return await receivedEmailBroker.UpdateReceivedEmailAsync(updatedReceivedEmail: Copy(entity: updatedReceivedEmail));
     }, isValueTask: true);
 
@@ -73,10 +75,10 @@ internal partial class ReceivedEmailService(
         ValidateDeleteAsync(inputs: [receivedEmailId]);
 
         ReceivedEmail entity = receivedEmailBroker
-            .GetAllReceivedEmails(ignoreFilters: true)
+            .GetAllReceivedEmailsIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == receivedEmailId);
 
-        authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(ReceivedEmail)}_delete");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: entity.AppId, privilege: $"{nameof(ReceivedEmail)}_delete");
         return await receivedEmailBroker.DeleteReceivedEmailAsync(deletedReceivedEmail: Copy(entity: entity));
     }, isValueTask: true);
 

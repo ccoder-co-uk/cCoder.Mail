@@ -3,8 +3,6 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models.OData;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OData.Edm;
 
 
@@ -157,21 +155,4 @@ namespace cCoder.Mail.Extensions.OData
         new() { Name = "Delete", Url = $"{type.Category}/{type.Name}({{key}})", HttpVerb = "DELETE" },
         ];
     }
-
-    public sealed class BadRequestResult : BadRequestObjectResult
-    {
-        public BadRequestResult(ModelStateDictionary modelState)
-            : base(modelState) =>
-            Value = modelState
-                .Select(selector: item => new ModelStateError
-                {
-                    Key = item.Key,
-                    Value = item.Value?.RawValue,
-                    Errors = item.Value?.Errors?.Select(selector: error => $"{error.ErrorMessage} - {error.Exception?.Message}")
-            .ToArray(),
-                })
-            .ToArray()
-            .ToJsonForOdata();
-    }
-
 }

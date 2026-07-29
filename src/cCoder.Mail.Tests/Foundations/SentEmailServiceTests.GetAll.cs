@@ -22,7 +22,7 @@ public partial class SentEmailServiceTests
         SentEmail sentEmail = CreateRandomSentEmail();
         IQueryable<cCoder.Data.Models.Mail.SentEmail> sentEmails = new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable();
 
-        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: false))
+        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails())
             .Returns(value: sentEmails);
 
         // When
@@ -35,7 +35,7 @@ public partial class SentEmailServiceTests
             .Which.Should()
             .BeEquivalentTo(expectation: sentEmail);
 
-        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: false), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(), times: Times.Once);
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();

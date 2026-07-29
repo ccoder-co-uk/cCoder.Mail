@@ -12,7 +12,8 @@ namespace cCoder.Mail.Brokers.Storages;
 
 public interface IMailServerBroker
 {
-    IQueryable<MailServer> GetAllMailServers(bool ignoreFilters);
+    IQueryable<MailServer> GetAllMailServers();
+    IQueryable<MailServer> GetAllMailServersIgnoringFilters();
     ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer);
     ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer);
     ValueTask<int> DeleteMailServerAsync(MailServer deletedMailServer);
@@ -24,13 +25,16 @@ public interface IMailServerBroker
 internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) : IMailServerBroker
 {
 
-    public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters)
+    public IQueryable<MailServer> GetAllMailServers()
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.MailServers;
+    }
 
-        return StorageBrokerExtensions.SelectAll(
-            entities: coreDataContext.MailServers,
-            ignoreFilters: ignoreFilters);
+    public IQueryable<MailServer> GetAllMailServersIgnoringFilters()
+    {
+        CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.MailServers.IgnoreQueryFilters();
     }
 
     public async ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer)
@@ -63,8 +67,7 @@ internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) :
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        MailServer[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedMailServer);
+        MailServer[] entities = deletedMailServer?.ToArray() ?? [];
 
         coreDataContext.MailServers.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();

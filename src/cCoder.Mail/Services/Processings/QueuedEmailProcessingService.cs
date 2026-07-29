@@ -118,7 +118,11 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             throw new SecurityException(message: "Access Denied!");
         }
 
-        authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: "queuedemail_delete");
+        Authorize(
+            user: authorizationBroker.GetCurrentUser(),
+            appId: queuedEmail.AppId,
+            privilege: "queuedemail_delete");
+
         await service.DeleteAsync(iQueuedEmailId: queuedEmail.Id, checkPrivileges: false);
     }, isValueTask: true);
 

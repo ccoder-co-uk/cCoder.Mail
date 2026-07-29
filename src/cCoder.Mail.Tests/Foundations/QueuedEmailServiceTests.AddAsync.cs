@@ -27,7 +27,8 @@ public partial class QueuedEmailServiceTests
         queuedEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()))
             .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateAuthorized(appId: (int?)7, privilege: "QueuedEmail_create"));
 
         queuedEmailBrokerMock
             .Setup(expression: x =>
@@ -77,7 +78,7 @@ times: Times.Once
 
         queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -87,9 +88,8 @@ times: Times.Once
         // Given
         QueuedEmail queuedEmail = CreateRandomQueuedEmail(id: 0, appId: 7);
 
-        authorizationBrokerMock
-            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"))
-            .Throws(exception: new SecurityException(message: "Access Denied!"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateUnauthorized());
 
         // When
         Func<Task> action = async () => await queuedEmailService.AddQueuedEmailAsync(newQueuedEmail: queuedEmail);
@@ -102,7 +102,7 @@ times: Times.Once
 
         queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "QueuedEmail_create"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
