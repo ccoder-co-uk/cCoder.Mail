@@ -54,6 +54,7 @@ to: settings.To);
         ReceivedEmail receivedEmail = await ReceiveEmailAsync(
 client: application.Client,
 settings: settings,
+mailReceiverId: application.MailReceiverId,
 subject: subject,
 content: content,
 from: receiveFrom);

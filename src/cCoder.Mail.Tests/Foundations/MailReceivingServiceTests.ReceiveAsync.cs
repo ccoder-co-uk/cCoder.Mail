@@ -46,22 +46,23 @@ public partial class MailReceivingServiceTests
     public async Task ShouldDelegateToBrokerWhenReceiveTopAsync()
     {
         // Given
+        Guid mailReceiverId = Guid.NewGuid();
         ReceivedEmail[] expectedEmails = [new() { Subject = "Received" }];
         CancellationToken cancellationToken = new();
 
         mailReceiverClientBrokerMock
-            .Setup(expression: broker => broker.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken))
+            .Setup(expression: broker => broker.ReceiveTopAsync(mailReceiverId: mailReceiverId, count: 1, cancellationToken: cancellationToken))
             .ReturnsAsync(value: expectedEmails);
 
         // When
-        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken);
+        ReceivedEmail[] actualEmails = await mailReceivingService.ReceiveTopAsync(mailReceiverId: mailReceiverId, count: 1, cancellationToken: cancellationToken);
 
         // Then
 
         actualEmails.Should()
             .BeSameAs(expected: expectedEmails);
 
-        mailReceiverClientBrokerMock.Verify(expression: broker => broker.ReceiveTopAsync(count: 1, cancellationToken: cancellationToken), times: Times.Once);
+        mailReceiverClientBrokerMock.Verify(expression: broker => broker.ReceiveTopAsync(mailReceiverId: mailReceiverId, count: 1, cancellationToken: cancellationToken), times: Times.Once);
         mailReceiverClientBrokerMock.VerifyNoOtherCalls();
     }
 }

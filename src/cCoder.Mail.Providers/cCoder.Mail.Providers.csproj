@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>true</IsPackable>
+    <NoWarn>1591</NoWarn>
+    <PackageId>cCoder.Mail.Providers</PackageId>
+    <PackageTags>cCoder;Mail;Providers;SPAL</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <ProjectUrl>https://github.com/ccoder-co-uk/cCoder.Mail</ProjectUrl>
+    <RepositoryUrl>https://github.com/ccoder-co-uk/cCoder.Mail.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>Standardised provider abstractions and implementations for cCoder.Mail.</Description>
+    <Authors>cCoder</Authors>
+    <Copyright>2026 Paul Ward</Copyright>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LocalDataProject>..\..\..\cCoder.Data\src\cCoder.Data\cCoder.Data.csproj</LocalDataProject>
+    <UseLocalData Condition="'$(UseLocalData)' == ''">false</UseLocalData>
+    <UseLocalData Condition="'$(UseLocalData)' == 'true' and !Exists('$(LocalDataProject)')">false</UseLocalData>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseLocalData)' == 'true'">
+    <ProjectReference Include="$(LocalDataProject)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Remove="cCoder.CodeAnalysis" />
+    <PackageReference
+      Include="cCoder.CodeAnalysis"
+      Version="2026.7.29.1330"
+      PrivateAssets="all"
+    />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="cCoder.Data" Version="2026.7.29.205" Condition="'$(UseLocalData)' != 'true'" />
+  </ItemGroup>
+</Project>

@@ -66,7 +66,7 @@ public partial class QueuedEmailProcessingServiceTests
         // Then
 
         await act.Should()
-            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
@@ -100,7 +100,7 @@ public partial class QueuedEmailProcessingServiceTests
         // Then
 
         await act.Should()
-            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);

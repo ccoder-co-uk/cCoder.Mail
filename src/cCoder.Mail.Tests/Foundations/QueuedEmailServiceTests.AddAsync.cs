@@ -97,7 +97,7 @@ times: Times.Once
         // Then
 
         await action.Should()
-            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());

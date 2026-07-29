@@ -2,33 +2,39 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Dependencies;
-
 namespace cCoder.Mail.Services.Orchestrations;
 
 internal partial class QueuedEmailOrchestrationService
 {
     private static void ValidateQueuedEmailOnGet(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateAllQueuedEmailOnGet(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateQueuedEmailOnAdd(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateQueuedEmailOnUpdate(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateByAppIdOnDelete(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateOrUpdateQueuedEmailResultOnAdd(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
 
     private static void ValidateAllQueuedEmailOnDelete(object[] inputs) =>
-        ValidationRulesEngine.Validate(inputs: inputs);
+        Validate(inputs: inputs);
+
+    private static void Validate(params object[] inputs)
+    {
+        foreach (object input in inputs)
+        {
+            ArgumentNullException.ThrowIfNull(argument: input);
+        }
+    }
 }

@@ -6,17 +6,18 @@
 
 Configuration binds directly into `MailConfiguration`. Leave secrets empty in
 appsettings and define `Mail__ConnectionString` plus any configured provider
-secrets, such as `Mail__MicrosoftGraph__ClientSecret`, as user-level or
-machine-level environment variables. Restart Visual Studio, select the Web and
-HostedServices startup projects, and press F5. No configuration conversion step
-is required.
+secrets as user-level or machine-level environment variables. For the supplied
+configuration, Microsoft Graph is provider index `3`, so its secret is
+`Mail__Providers__3__MicrosoftGraph__ClientSecret`. Restart Visual Studio,
+select the Web and HostedServices startup projects, and press F5. No
+configuration conversion step is required.
 
 ## Functionality
 
 - Mail server management: configure application-owned SMTP settings, including host, port, SSL, sender, and credentials.
 - Queued email management: create and inspect pending outbound emails.
 - Sent email management: inspect emails that have been successfully dispatched.
-- Mail provider abstraction: sender and receiver factories route mail work to named providers, with SMTP, POP3, and Microsoft Graph providers registered by default.
+- Mail provider abstraction: `cCoder.Mail.Providers` supplies the SPAL factory and the SMTP, POP3, IMAP, and Microsoft Graph implementations.
 - Received email inspection: `ReceivedEmailController` can fetch Microsoft 365 mailbox messages without persisting them.
 - Sender hosted service: checks the queue every minute and attempts SMTP delivery for pending messages.
 - App lifecycle event handling: listens for app add, update, and delete events so mail-owned app data stays aligned.
@@ -29,6 +30,8 @@ is required.
 
 - `src/cCoder.Mail`
   The main library package published to NuGet.
+- `src/cCoder.Mail.Providers`
+  The provider abstraction, factory, and provider implementations.
 - `src/Mail.Web`
   The standalone web host for the Mail domain.
 - `src/Mail.HostedServices`
@@ -84,40 +87,40 @@ are:
 - `Mail__ConnectionString`
 - `Security__ConnectionString` (Web only)
 - `Security__DecryptionKey` (Web only)
-- `Mail__MicrosoftGraph__TenantId`
-- `Mail__MicrosoftGraph__ClientId`
-- `Mail__MicrosoftGraph__ClientSecret`
-- `Mail__MicrosoftGraph__SendUser`
-- `Mail__MicrosoftGraph__ReceiveUser`
-
-Provider-specific POP3 and IMAP secrets use the matching structured paths, such
-as `Mail__Pop3__Password` and `Mail__Imap__Password`.
+- `Mail__Providers__3__MicrosoftGraph__TenantId`
+- `Mail__Providers__3__MicrosoftGraph__ClientId`
+- `Mail__Providers__3__MicrosoftGraph__ClientSecret`
 
 ## Provider Configuration
 
-Library consumers can configure sender and receiver providers when adding Mail services:
+Provider availability is expressed by entries in `Mail:Providers`. Omit a
+provider to make it unavailable; there is no separate `Enabled` flag.
 
-```csharp
-services.AddMail(mailConfig =>
+```json
 {
-    mailConfig.AddMicrosoftGraphSender(graphConfig =>
-    {
-        graphConfig.TenantId = tenantId;
-        graphConfig.ClientId = clientId;
-        graphConfig.ClientSecret = clientSecret;
-        graphConfig.SendUser = sendUser;
-        graphConfig.ReceiveUser = receiveUser;
-    });
-
-    mailConfig.AddMicrosoftGraphReceiver();
-});
+  "Mail": {
+    "Providers": [
+      { "Name": "Smtp" },
+      { "Name": "Pop3" },
+      { "Name": "Imap" },
+      {
+        "Name": "MicrosoftGraph",
+        "MicrosoftGraph": {
+          "TenantId": "",
+          "ClientId": "",
+          "ClientSecret": ""
+        }
+      }
+    ]
+  }
+}
 ```
 
-Registered sender providers are resolved by provider name. SMTP remains the default sender, so existing `MailServer.Host` values such as `smtp.office365.com` continue to use the SMTP provider. Microsoft Graph can be selected with provider names or aliases such as `MicrosoftGraph`, `graph.microsoft.com`, `https://graph.microsoft.com`, or `microsoft-graph`.
-
-Registered receiver providers are resolved by provider name. Microsoft Graph is the default receiver for direct mailbox receive calls, while POP3 remains available through the `Pop3` provider.
-
-Custom providers can be added by registering an implementation of `IMailSenderProvider` or `IMailReceiverProvider`, then mapping the public provider name with `AddSenderProvider` or `AddReceiverProvider`.
+`MailSender.ProviderName` and `MailReceiver.ProviderName` select the client at
+runtime. Their database records contain mailbox-specific host, port, user, and
+password values. Platform-wide Graph application credentials remain in
+configuration. Every provider implements `IMailClient`; invoking an unsupported
+send or receive operation throws `UnsupportedMailClientOperationException`.
 
 ## Mail Delivery Integration
 
@@ -126,11 +129,9 @@ The real send-and-receive integration test requires these variables on the runne
 - `Mail__ConnectionString`
 - `Security__ConnectionString`
 - `Security__DecryptionKey`
-- `Mail__MicrosoftGraph__TenantId`
-- `Mail__MicrosoftGraph__ClientId`
-- `Mail__MicrosoftGraph__ClientSecret`
-- `Mail__MicrosoftGraph__SendUser`
-- `Mail__MicrosoftGraph__ReceiveUser`
+- `Mail__Providers__3__MicrosoftGraph__TenantId`
+- `Mail__Providers__3__MicrosoftGraph__ClientId`
+- `Mail__Providers__3__MicrosoftGraph__ClientSecret`
 
 The test creates disposable integration databases by appending
 `-acceptance-{guid}` to the configured Mail and Security database names.
@@ -140,9 +141,10 @@ The Graph application registration must have `Mail.Send` and `Mail.Read` applica
 
 ## Package
 
-The NuGet package produced by this repository is:
+The NuGet packages produced by this repository are:
 
 - `cCoder.Mail`
+- `cCoder.Mail.Providers`
 
 ## Publishing
 

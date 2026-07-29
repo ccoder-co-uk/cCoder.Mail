@@ -1,0 +1,751 @@
+{
+  "Classes": [
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.ImapMailReceiverBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveEmailAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E"
+        },
+        {
+          "Name": "SendEmailAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.Pop3MailReceiverBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[][]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker",
+      "StandardElementType": "Broker",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "SelectMailReceiverByIdAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Dependencies.MailClients.ImapMailClientDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Dependencies.MailClients.MicrosoftGraphMailClientDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Dependencies.MailClients.Pop3MailClientDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Dependencies.MailClients.SmtpMailClientDependency",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetProviderNames",
+          "Inputs": [],
+          "ReturnType": "System.String[]"
+        },
+        {
+          "Name": "GetSupportedOperations",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+        },
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "CreateMailClient",
+          "Inputs": [
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient"
+        },
+        {
+          "Name": "CreateMailClientAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetProviderNames",
+          "Inputs": [],
+          "ReturnType": "System.String[]"
+        },
+        {
+          "Name": "GetSupportedOperations",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+        },
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetProviderNames",
+          "Inputs": [],
+          "ReturnType": "System.String[]"
+        },
+        {
+          "Name": "GetSupportedOperations",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+        },
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetProviderNames",
+          "Inputs": [],
+          "ReturnType": "System.String[]"
+        },
+        {
+          "Name": "GetSupportedOperations",
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+        },
+        {
+          "Name": "ReceiveAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        },
+        {
+          "Name": "SendAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.IServiceCollectionExtensions",
+      "StandardElementType": "App",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "AddMailProviders",
+          "Inputs": [
+            {
+              "Name": "services",
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
+            },
+            {
+              "Name": "providers",
+              "Type": "cCoder.Mail.Providers.Models.MailProviderRegistration[]"
+            }
+          ],
+          "ReturnType": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException",
+      "StandardElementType": "Dependency",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MailProviderNames",
+      "StandardElementType": "Model",
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MailProviderRegistration",
+      "StandardElementType": "Model",
+      "Properties": [
+        {
+          "Name": "MicrosoftGraph",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MailboxReceiveRequest",
+      "StandardElementType": "Model",
+      "Properties": [
+        {
+          "Name": "AppId",
+          "Type": "System.Int32?"
+        },
+        {
+          "Name": "EnableSSL",
+          "Type": "System.Boolean"
+        },
+        {
+          "Name": "From",
+          "Type": "System.DateTimeOffset?"
+        },
+        {
+          "Name": "Host",
+          "Type": "System.String"
+        },
+        {
+          "Name": "MailReceiverId",
+          "Type": "System.Guid?"
+        },
+        {
+          "Name": "MaximumMessages",
+          "Type": "System.Int32"
+        },
+        {
+          "Name": "Password",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Port",
+          "Type": "System.Int32"
+        },
+        {
+          "Name": "ProviderName",
+          "Type": "System.String"
+        },
+        {
+          "Name": "To",
+          "Type": "System.DateTimeOffset?"
+        },
+        {
+          "Name": "User",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration",
+      "StandardElementType": "Model",
+      "Properties": [
+        {
+          "Name": "ClientId",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ClientSecret",
+          "Type": "System.String"
+        },
+        {
+          "Name": "GraphBaseUrl",
+          "Type": "System.String"
+        },
+        {
+          "Name": "LoginBaseUrl",
+          "Type": "System.String"
+        },
+        {
+          "Name": "TenantId",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveMailReceiverAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.MailProviderService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "GetMailReceiverProviderNameAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.String\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveMailReceiverAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "SendQueuedEmailAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "ReceiveMailReceiverAsync",
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService",
+      "StandardElementType": "FoundationService",
+      "Properties": [],
+      "Methods": [
+        {
+          "Name": "SendQueuedEmailAsync",
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task"
+        }
+      ]
+    }
+  ],
+  "Links": [
+    {
+      "FromType": "cCoder.Mail.Providers.Brokers.MailClients.ImapMailReceiverBroker",
+      "ToType": "cCoder.Mail.Providers.Dependencies.MailClients.ImapMailClientDependency"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker",
+      "ToType": "cCoder.Mail.Providers.Dependencies.MailClients.MicrosoftGraphMailClientDependency"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Brokers.MailClients.Pop3MailReceiverBroker",
+      "ToType": "cCoder.Mail.Providers.Dependencies.MailClients.Pop3MailClientDependency"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker",
+      "ToType": "cCoder.Mail.Providers.Dependencies.MailClients.SmtpMailClientDependency"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.MailProviderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient",
+      "ToType": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.ImapMailReceiverBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MailProviderService",
+      "ToType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
+      "ToType": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.Pop3MailReceiverBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker"
+    }
+  ],
+  "AnalysisItems": []
+}

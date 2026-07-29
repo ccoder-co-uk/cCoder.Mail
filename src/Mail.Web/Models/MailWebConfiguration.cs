@@ -5,7 +5,7 @@
 using cCoder.Data.Models;
 using cCoder.Eventing.Models;
 using cCoder.Mail.Models;
-using cCoder.Security.Objects;
+using cCoder.Security.Models;
 
 namespace Mail.Web.Models;
 

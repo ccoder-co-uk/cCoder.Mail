@@ -4,6 +4,7 @@
 
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models;
+using cCoder.Mail.Providers;
 using cCoder.Data;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
@@ -17,7 +18,8 @@ namespace cCoder.Mail;
 
 internal static class MailServiceCollectionConfigurationExtensions
 {
-    public static void ConfigureMailApiModel(this ODataConventionModelBuilder builder) =>
+    public static void ConfigureMailApiModel(
+        this ODataConventionModelBuilder builder) =>
         new MailModelBroker(builder: builder).Configure();
 
     internal static void RegisterConfiguration(
@@ -25,7 +27,11 @@ internal static class MailServiceCollectionConfigurationExtensions
         MailConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(argument: configuration);
+
         services.AddSingleton(implementationInstance: configuration);
+
+        services.AddMailProviders(
+            providers: configuration.Providers);
 
         if (!string.IsNullOrWhiteSpace(
             value: configuration.ConnectionString))

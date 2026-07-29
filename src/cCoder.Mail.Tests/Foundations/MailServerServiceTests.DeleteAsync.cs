@@ -85,7 +85,7 @@ times: Times.Once
         // Then
 
         await action.Should()
-            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: true), times: Times.Once);

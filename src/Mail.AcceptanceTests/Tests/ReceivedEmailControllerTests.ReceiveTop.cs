@@ -17,7 +17,9 @@ public sealed partial class ReceivedEmailControllerTests
         // Given
 
         // When
-        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(count: 1);
+        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(
+            mailReceiverId: Guid.NewGuid(),
+            count: 1);
 
         // Then
 

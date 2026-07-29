@@ -3,15 +3,17 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Exposures.MailClients;
+using cCoder.Mail.Providers.Exposures.MailClients;
 
 namespace cCoder.Mail.Brokers.MailClients;
 
-internal sealed class MailSenderClientBroker(IMailSenderFactory mailSenderFactory)
+internal sealed class MailSenderClientBroker(IMailClientFactory mailClientFactory)
     : IMailSenderClientBroker
 {
     public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
-        mailSenderFactory
-            .GetSender(providerName: email?.MailSender?.ProviderName)
+        mailClientFactory
+            .CreateMailClient(
+                providerName:
+                    email?.MailSender?.ProviderName)
         .SendAsync(email: email, cancellationToken: cancellationToken);
 }

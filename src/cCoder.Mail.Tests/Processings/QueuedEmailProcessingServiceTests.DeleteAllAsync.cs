@@ -4,7 +4,7 @@
 
 using System.Security;
 using cCoder.Mail.Models;
-using cCoder.Mail.Models.Exceptions;
+using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
@@ -53,7 +53,7 @@ innerException: new SecurityException(message: "Access Denied!")));
         // Then
 
         await act.Should()
-            .ThrowAsync<cCoder.Mail.Models.Exceptions.MailServiceException>()
+            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         queuedEmailServiceMock.Verify(
