@@ -16,5 +16,7 @@ public sealed class MicrosoftGraphMailConfiguration
 
     public string LoginBaseUrl { get; set; }
 
+    public string SendUser { get; set; }
+
     public string ReceiveUser { get; set; }
 }

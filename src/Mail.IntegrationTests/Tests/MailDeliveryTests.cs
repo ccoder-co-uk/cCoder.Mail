@@ -32,15 +32,11 @@ namespace Mail.IntegrationTests.Tests;
 public sealed partial class MailDeliveryTests(ITestOutputHelper output)
 {
     private const string MailServerName = "Integration";
-    private const string CoreConnectionVariableName =
-        "Mail__ConnectionString";
-    private const string SsoConnectionVariableName =
-        "Security__ConnectionString";
     private static JsonSerializerOptions JsonOptions { get; } = new() { PropertyNameCaseInsensitive = true };
 
     private ITestOutputHelper Output { get; } = output;
 
-    private static async Task<IntegrationApplication> StartApplicationAsync(IntegrationSettings settings)
+    private static async Task<IntegrationApplication> StartApplicationAsync(MailIntegrationTestConfiguration settings)
     {
         IntegrationWebApplicationFactory factory = new(settings: settings);
         IntegrationDatabaseManager databaseManager = new(services: factory.Services);
@@ -116,7 +112,7 @@ requestUri: $"/Api/Mail/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringTo
 
     private async Task<ReceivedEmail> ReceiveEmailAsync(
         HttpClient client,
-        IntegrationSettings settings,
+        MailIntegrationTestConfiguration settings,
         string subject,
         string content,
         DateTimeOffset from)
@@ -151,7 +147,7 @@ message: $"The sent email was not received within {settings.ReceiveTimeout}. " +
 
     private static async Task<ReceivedEmail[]> ReceiveEmailsAsync(
         HttpClient client,
-        IntegrationSettings settings,
+        MailIntegrationTestConfiguration settings,
         DateTimeOffset from)
     {
         using HttpResponseMessage response = await client.PostAsJsonAsync(
@@ -187,7 +183,7 @@ value: new MailboxReceiveRequest
             ?? throw new InvalidOperationException(message: "Expected received email payload.");
     }
 
-    private static async Task<IntegrationSeed> SeedAsync(IServiceProvider services, IntegrationSettings settings)
+    private static async Task<IntegrationSeed> SeedAsync(IServiceProvider services, MailIntegrationTestConfiguration settings)
     {
         using IServiceScope scope = services.CreateScope();
 
@@ -260,135 +256,13 @@ value: new MailboxReceiveRequest
         return new IntegrationSeed(AppId: app.Id, MailSenderId: mailSender.Id);
     }
 
-    private static IntegrationSettings ReadSettings()
-    {
-        AcceptanceTestConfiguration configuration =
-            AcceptanceTestConfiguration.Load();
-
-        string sendHost = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_SEND_HOST");
-
-        string sendUser = ReadRequired(
-variableName: "CCODER_MAIL_INTEGRATION_SEND_USER",
-fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER");
-
-        string receiveUser = ReadRequired(
-variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_USER",
-fallbackVariableName: "CCODER_MAIL_INTEGRATION_SEND_USER");
-
-        string to = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_TO");
-        string from = ReadRequired(variableName: "CCODER_MAIL_INTEGRATION_SMTP_FROM");
-        receiveUser = string.IsNullOrWhiteSpace(value: receiveUser) ? sendUser : receiveUser;
-
-        return new()
-        {
-            CoreConnectionString = configuration.CoreConnectionString,
-            SsoConnectionString = configuration.SecurityConnectionString,
-            DecryptionKey = configuration.SecurityDecryptionKey,
-            SendHost = string.IsNullOrWhiteSpace(value: sendHost) ? "graph.microsoft.com" : sendHost,
-            SendUser = sendUser,
-            From = string.IsNullOrWhiteSpace(value: from) ? sendUser : from,
-            ReceiveUser = receiveUser,
-            To = string.IsNullOrWhiteSpace(value: to) ? receiveUser : to,
-            MaximumMessages = ReadInt(variableName: "CCODER_MAIL_INTEGRATION_MAX_MESSAGES", defaultValue: 50),
-            ReceiveTimeout = TimeSpan.FromSeconds(seconds: ReadInt(variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS", defaultValue: 120)),
-            ReceivePollDelay = TimeSpan.FromSeconds(seconds: ReadInt(variableName: "CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS", defaultValue: 10)),
-        };
-    }
+    private static MailIntegrationTestConfiguration ReadSettings() =>
+        MailIntegrationTestConfiguration.Load();
 
     private static string ODataString(string value) =>
         (value ?? string.Empty).Replace(oldValue: "'", newValue: "''", comparisonType: StringComparison.Ordinal);
 
-    private static string ReadRequired(string variableName, string fallbackVariableName = null)
-    {
-        string value =
-            Environment.GetEnvironmentVariable(variable: variableName)
-            ?? Environment.GetEnvironmentVariable(
-                variable: variableName,
-                target: EnvironmentVariableTarget.User)
-            ?? Environment.GetEnvironmentVariable(
-                variable: variableName,
-                target: EnvironmentVariableTarget.Machine);
-
-        if (!string.IsNullOrWhiteSpace(value: value))
-        {
-            return value;
-        }
-
-        return fallbackVariableName is null ? string.Empty : ReadRequired(variableName: fallbackVariableName);
-    }
-
-    private static bool ReadBool(string variableName, bool defaultValue = false)
-    {
-        string value = ReadRequired(variableName: variableName);
-
-        if (string.IsNullOrWhiteSpace(value: value))
-        {
-            return defaultValue;
-        }
-
-        if (int.TryParse(s: value, result: out int numericValue))
-        {
-            return numericValue != 0;
-        }
-
-        return bool.Parse(value: value);
-    }
-
-    private static int ReadInt(string variableName, int defaultValue)
-    {
-        string value = ReadRequired(variableName: variableName);
-        return string.IsNullOrWhiteSpace(value: value) ? defaultValue : int.Parse(s: value);
-    }
-
     private sealed record ODataEnvelope<T>(List<T> Value);
-
-    private sealed class IntegrationSettings
-    {
-        public string CoreConnectionString { get; init; }
-
-        public string SsoConnectionString { get; init; }
-
-        public string DecryptionKey { get; init; }
-
-        public string SendHost { get; init; }
-
-        public string SendUser { get; init; }
-
-        public string From { get; init; }
-
-        public string ReceiveUser { get; init; }
-
-        public string To { get; init; }
-
-        public int MaximumMessages { get; init; }
-
-        public TimeSpan ReceiveTimeout { get; init; }
-
-        public TimeSpan ReceivePollDelay { get; init; }
-
-        public string[] MissingVariables() =>
-            [
-            .. RequiredVariableNames()
-            .Where(predicate: name => string.IsNullOrWhiteSpace(value: ReadRequired(variableName: name))),
-            .. string.IsNullOrWhiteSpace(value: ReadRequired(
-variableName: "CCODER_MAIL_INTEGRATION_SEND_USER",
-fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
-                ? ["CCODER_MAIL_INTEGRATION_SEND_USER or CCODER_MAIL_INTEGRATION_SMTP_USER"]
-                : Array.Empty<string>(),
-        ];
-
-        public static string RequiredVariableSummary() =>
-            string.Join(separator: ", ", value: RequiredVariableNames());
-
-        private static string[] RequiredVariableNames() =>
-            [
-            CoreConnectionVariableName,
-            SsoConnectionVariableName,
-            "Mail__MicrosoftGraph__TenantId",
-            "Mail__MicrosoftGraph__ClientId",
-            "Mail__MicrosoftGraph__ClientSecret",
-        ];
-    }
 
     private sealed record IntegrationSeed(int AppId, Guid MailSenderId);
 
@@ -416,7 +290,7 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
         }
     }
 
-    private sealed class IntegrationWebApplicationFactory(IntegrationSettings settings)
+    private sealed class IntegrationWebApplicationFactory(MailIntegrationTestConfiguration settings)
         : WebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -429,8 +303,8 @@ fallbackVariableName: "CCODER_MAIL_INTEGRATION_SMTP_USER"))
 initialData: [
                     new KeyValuePair<string, string>(key: "Mail:ConnectionString", value: settings.CoreConnectionString),
                     new KeyValuePair<string, string>(key: "Data:ConnectionString", value: settings.CoreConnectionString),
-                    new KeyValuePair<string, string>(key: "Security:ConnectionString", value: settings.SsoConnectionString),
-                    new KeyValuePair<string, string>(key: "Security:DecryptionKey", value: settings.DecryptionKey),
+                    new KeyValuePair<string, string>(key: "Security:ConnectionString", value: settings.SecurityConnectionString),
+                    new KeyValuePair<string, string>(key: "Security:DecryptionKey", value: settings.SecurityDecryptionKey),
                     new KeyValuePair<string, string>(key: "Eventing:ProviderType", value: string.Empty),
                 ]);
             });
@@ -444,7 +318,7 @@ initialData: [
                 services.RemoveAll<ISecurityDbContextFactory>();
 
                 services.AddSingleton<ISecurityDbContextFactory>(
-implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString));
+implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SecurityConnectionString));
 
                 services.AddData(
                     configuration: new cCoder.Data.Models.DataConfiguration

@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Testing;
 using FluentAssertions;
 using Xunit;
 
@@ -15,7 +16,7 @@ public sealed partial class MailDeliveryTests
     public async Task ReceiveTopAsync_ReturnsTopEmailFromConfiguredMailbox()
     {
         // Given
-        IntegrationSettings settings = ReadSettings();
+        MailIntegrationTestConfiguration settings = ReadSettings();
         string[] missingVariables = settings.MissingVariables();
 
         missingVariables.Should()
