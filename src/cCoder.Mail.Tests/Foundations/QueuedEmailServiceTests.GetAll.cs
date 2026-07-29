@@ -22,7 +22,7 @@ public partial class QueuedEmailServiceTests
         QueuedEmail queuedEmail = CreateRandomQueuedEmail();
         IQueryable<cCoder.Data.Models.Mail.QueuedEmail> queuedEmails = new[] { ToExternalQueuedEmail(item: queuedEmail) }.AsQueryable();
 
-        queuedEmailBrokerMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: false))
+        queuedEmailBrokerMock.Setup(expression: x => x.GetAllQueuedEmails())
             .Returns(value: queuedEmails);
 
         // When
@@ -35,7 +35,7 @@ public partial class QueuedEmailServiceTests
             .Which.Should()
             .BeEquivalentTo(expectation: queuedEmail);
 
-        queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: false), times: Times.Once);
+        queuedEmailBrokerMock.Verify(expression: x => x.GetAllQueuedEmails(), times: Times.Once);
         queuedEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.QueuedEmail>()), times: Times.AtMostOnce());
         queuedEmailBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();

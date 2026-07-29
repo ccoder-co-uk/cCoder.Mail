@@ -25,6 +25,8 @@
     <ProjectReference Include="..\Mail.Web\Mail.Web.csproj" />
     <Compile Include="..\Shared\Testing\AcceptanceTestConfiguration.cs"
              Link="Testing\AcceptanceTestConfiguration.cs" />
+    <Compile Include="..\Shared\Testing\MailIntegrationTestConfiguration.cs"
+             Link="Testing\MailIntegrationTestConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

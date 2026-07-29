@@ -27,7 +27,8 @@ public partial class SentEmailServiceTests
         sentEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
             .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_create"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateAuthorized(appId: (int?)7, privilege: "SentEmail_create"));
 
         sentEmailBrokerMock
             .Setup(expression: x =>
@@ -73,7 +74,7 @@ times: Times.Once
 
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_create"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -83,9 +84,8 @@ times: Times.Once
         // Given
         SentEmail sentEmail = CreateRandomSentEmail(id: 0, appId: 7);
 
-        authorizationBrokerMock
-            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_create"))
-            .Throws(exception: new SecurityException(message: "Access Denied!"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateUnauthorized());
 
         // When
         Func<Task> action = async () => await sentEmailService.AddSentEmailAsync(newSentEmail: sentEmail);
@@ -98,7 +98,7 @@ times: Times.Once
 
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_create"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 

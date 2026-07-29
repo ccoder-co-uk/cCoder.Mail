@@ -22,13 +22,14 @@ public partial class SentEmailServiceTests
         // Given
         SentEmail sentEmail = CreateRandomSentEmail(id: 9, appId: 7);
 
-        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: true))
+        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmailsIgnoringFilters())
             .Returns(value: new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable());
 
         sentEmailBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()))
             .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateAuthorized(appId: (int?)7, privilege: "SentEmail_delete"));
 
         sentEmailBrokerMock
             .Setup(expression: x =>
@@ -46,7 +47,7 @@ deletedSentEmail: It.Is<cCoder.Data.Models.Mail.SentEmail>(match: candidate =>
         await sentEmailService.DeleteAsync(sentEmailId: 9);
 
         // Then
-        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmailsIgnoringFilters(), times: Times.Once);
 
         sentEmailBrokerMock.Verify(
 expression: x =>
@@ -62,7 +63,7 @@ times: Times.Once
 
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -72,12 +73,11 @@ times: Times.Once
         // Given
         SentEmail sentEmail = CreateRandomSentEmail(id: 9, appId: 7);
 
-        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: true))
+        sentEmailBrokerMock.Setup(expression: x => x.GetAllSentEmailsIgnoringFilters())
             .Returns(value: new[] { ToExternalSentEmail(item: sentEmail) }.AsQueryable());
 
-        authorizationBrokerMock
-            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"))
-            .Throws(exception: new SecurityException(message: "Access Denied!"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateUnauthorized());
 
         // When
         Func<Task> action = async () => await sentEmailService.DeleteAsync(sentEmailId: 9);
@@ -88,10 +88,10 @@ times: Times.Once
             .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
-        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
+        sentEmailBrokerMock.Verify(expression: x => x.GetAllSentEmailsIgnoringFilters(), times: Times.Once);
         sentEmailBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.SentEmail>()), times: Times.AtMostOnce());
         sentEmailBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "SentEmail_delete"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 

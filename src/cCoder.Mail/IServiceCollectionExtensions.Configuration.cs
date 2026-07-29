@@ -2,7 +2,6 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers;
 using cCoder.Data;
@@ -16,12 +15,8 @@ using Microsoft.OpenApi;
 
 namespace cCoder.Mail;
 
-internal static class MailServiceCollectionConfigurationExtensions
+public static partial class IServiceCollectionExtensions
 {
-    public static void ConfigureMailApiModel(
-        this ODataConventionModelBuilder builder) =>
-        new MailModelBroker(builder: builder).Configure();
-
     internal static void RegisterConfiguration(
         this IServiceCollection services,
         MailConfiguration configuration)
@@ -70,15 +65,16 @@ internal static class MailServiceCollectionConfigurationExtensions
             AddApiDocumentation(services: services, documentName: documentName, newMailConfiguration: newMailConfiguration, useFullSchemaIds: useFullSchemaIds);
         }
 
-        IEdmModel routeModel = BuildRouteModel(configureModel: configureModel);
+        IEdmModel routeModel = services.BuildRouteModel(configureModel: configureModel);
         DefaultODataBatchHandler batchHandler = new();
 
         string rootPath = string.IsNullOrWhiteSpace(value: newMailConfiguration.RootPath)
             ? $"Api/{documentName}"
             : newMailConfiguration.RootPath;
 
-        services.AddControllers()
-            .AddOData(setupAction: options =>
+        IMvcBuilder mvcBuilder = services.AddControllers();
+
+        mvcBuilder.AddOData(setupAction: options =>
         {
             options.RouteOptions.EnableQualifiedOperationCall = false;
             options.EnableAttributeRouting = true;
@@ -96,18 +92,21 @@ internal static class MailServiceCollectionConfigurationExtensions
     }
 
     private static void AddApiDocumentation(
-        IServiceCollection services,
+        this IServiceCollection services,
         string documentName,
         MailConfiguration newMailConfiguration,
         bool useFullSchemaIds) =>
         services.AddSwaggerGen(setupAction: options =>
         {
             options.ResolveConflictingActions(resolver: apiDescriptions => apiDescriptions.First());
-            AddSwaggerDocuments(options: options, documentName: documentName, newMailConfiguration: newMailConfiguration);
+            services.AddSwaggerDocuments(
+                options: options,
+                documentName: documentName,
+                newMailConfiguration: newMailConfiguration);
 
             options.DocInclusionPredicate(
 predicate: (swaggerDocumentName, apiDescription) =>
-                    ShouldIncludeInDocument(
+                    services.ShouldIncludeInDocument(
 swaggerDocumentName: swaggerDocumentName,
 relativePath: apiDescription.RelativePath,
 documentName: documentName,
@@ -129,6 +128,7 @@ configuration: newMailConfiguration));
         });
 
     private static void AddSwaggerDocuments(
+        this IServiceCollection services,
         Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions options,
         string documentName,
         MailConfiguration newMailConfiguration) =>
@@ -139,6 +139,7 @@ configuration: newMailConfiguration));
         });
 
     private static bool ShouldIncludeInDocument(
+        this IServiceCollection services,
         string swaggerDocumentName,
         string relativePath,
         string documentName,
@@ -149,7 +150,7 @@ configuration: newMailConfiguration));
             return false;
         }
 
-        string path = NormalizePath(relativePath: relativePath);
+        string path = services.NormalizePath(relativePath: relativePath);
 
         string rootPath = string.IsNullOrWhiteSpace(value: configuration.RootPath)
             ? $"Api/{documentName}"
@@ -159,30 +160,37 @@ configuration: newMailConfiguration));
             a: swaggerDocumentName,
             b: documentName,
             comparisonType: StringComparison.OrdinalIgnoreCase)
-            && MatchesContextRoute(
+            && services.MatchesContextRoute(
                 path: path,
                 rootPath: rootPath);
     }
 
-    private static bool MatchesContextRoute(string path, string rootPath)
+    private static bool MatchesContextRoute(
+        this IServiceCollection services,
+        string path,
+        string rootPath)
     {
-        string normalizedPath = NormalizePath(relativePath: rootPath);
+        string normalizedPath = services.NormalizePath(relativePath: rootPath);
 
         return path.Equals(value: normalizedPath, comparisonType: StringComparison.OrdinalIgnoreCase)
             || path.StartsWith(value: $"{normalizedPath}/", comparisonType: StringComparison.OrdinalIgnoreCase);
     }
 
-    private static string NormalizePath(string relativePath) =>
+    private static string NormalizePath(
+        this IServiceCollection services,
+        string relativePath) =>
         relativePath.StartsWith(value: '/') ? relativePath : $"/{relativePath}";
 
-    private static IEdmModel BuildRouteModel(Action<ODataConventionModelBuilder> configureModel)
+    private static IEdmModel BuildRouteModel(
+        this IServiceCollection services,
+        Action<ODataConventionModelBuilder> configureModel)
     {
         ODataConventionModelBuilder builder = new();
         configureModel(obj: builder);
         return builder.GetEdmModel();
     }
 
-    private static void AddAspNet(IServiceCollection services)
+    private static void AddAspNet(this IServiceCollection services)
     {
         services.AddRouting();
         services.AddResponseCompression();

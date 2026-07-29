@@ -18,47 +18,9 @@
       "Properties": [],
       "Methods": [
         {
-          "Name": "Authorize",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32?"
-            },
-            {
-              "Name": "privilege",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "System.Void"
-        },
-        {
           "Name": "GetCurrentUser",
           "Inputs": [],
           "ReturnType": "cCoder.Data.Models.Security.User"
-        },
-        {
-          "Name": "IsAdmin",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "userName",
-              "Type": "System.String"
-            }
-          ],
-          "ReturnType": "System.Boolean"
-        },
-        {
-          "Name": "IsAdminOfApp",
-          "Inputs": [
-            {
-              "Name": "appId",
-              "Type": "System.Int32?"
-            }
-          ],
-          "ReturnType": "System.Boolean"
         }
       ]
     },
@@ -367,12 +329,12 @@
         },
         {
           "Name": "GetAllMailReceivers",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
+        },
+        {
+          "Name": "GetAllMailReceiversIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
         },
         {
@@ -449,12 +411,12 @@
         },
         {
           "Name": "GetAllMailSenders",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
+        },
+        {
+          "Name": "GetAllMailSendersIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailSender\u003E"
         },
         {
@@ -526,12 +488,12 @@
         },
         {
           "Name": "GetAllMailServers",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
+        },
+        {
+          "Name": "GetAllMailServersIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.MailServer\u003E"
         },
         {
@@ -631,12 +593,12 @@
         },
         {
           "Name": "GetAllQueuedEmails",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
+        },
+        {
+          "Name": "GetAllQueuedEmailsIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
         },
         {
@@ -772,12 +734,12 @@
         },
         {
           "Name": "GetAllReceivedEmails",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
+        },
+        {
+          "Name": "GetAllReceivedEmailsIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
         },
         {
@@ -849,12 +811,12 @@
         },
         {
           "Name": "GetAllSentEmails",
-          "Inputs": [
-            {
-              "Name": "ignoreFilters",
-              "Type": "System.Boolean"
-            }
-          ],
+          "Inputs": [],
+          "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
+        },
+        {
+          "Name": "GetAllSentEmailsIgnoringFilters",
+          "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
         },
         {
@@ -1532,12 +1494,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Extensions.AuthorizationExtensions",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": []
-    },
-    {
       "Name": "cCoder.Mail.Extensions.OData.BadRequestResult",
       "StandardElementType": "Dependency",
       "Properties": [],
@@ -1744,31 +1700,19 @@
       "Methods": []
     },
     {
-      "Name": "cCoder.Mail.Extensions.OData.MetadataTypeExtensions",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": []
-    },
-    {
       "Name": "cCoder.Mail.Extensions.OData.ObjectExtensions",
       "StandardElementType": "Exposure",
       "Properties": [],
       "Methods": []
     },
     {
+      "Name": "cCoder.Mail.Extensions.OData.PropertyInfoExtensions",
+      "StandardElementType": "Exposure",
+      "Properties": [],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Extensions.OData.TypeExtensions",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Extensions.QueuedEmailStorageExtensions",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Extensions.StorageBrokerExtensions",
       "StandardElementType": "Exposure",
       "Properties": [],
       "Methods": []
@@ -1863,23 +1807,6 @@
               "Name": "configuration",
               "Type": "cCoder.Mail.Models.MailConfiguration"
             },
-            {
-              "Name": "builder",
-              "Type": "Microsoft.OData.ModelBuilder.ODataConventionModelBuilder"
-            }
-          ],
-          "ReturnType": "System.Void"
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.MailServiceCollectionConfigurationExtensions",
-      "StandardElementType": "Exposure",
-      "Properties": [],
-      "Methods": [
-        {
-          "Name": "ConfigureMailApiModel",
-          "Inputs": [
             {
               "Name": "builder",
               "Type": "Microsoft.OData.ModelBuilder.ODataConventionModelBuilder"
@@ -2412,6 +2339,12 @@
           "Type": "System.String"
         }
       ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.ODataConventionModelBuilderExtensions",
+      "StandardElementType": "Exposure",
+      "Properties": [],
       "Methods": []
     },
     {

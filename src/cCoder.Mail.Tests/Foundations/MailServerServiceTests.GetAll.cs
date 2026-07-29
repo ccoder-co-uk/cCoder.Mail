@@ -22,7 +22,7 @@ public partial class MailServerServiceTests
         MailServer mailServer = CreateRandomMailServer();
         IQueryable<cCoder.Data.Models.Mail.MailServer> mailServers = new[] { ToExternalMailServer(item: mailServer) }.AsQueryable();
 
-        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServers(ignoreFilters: false))
+        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServers())
             .Returns(value: mailServers);
 
         // When
@@ -35,7 +35,7 @@ public partial class MailServerServiceTests
             .Which.Should()
             .BeEquivalentTo(expectation: mailServer);
 
-        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: false), times: Times.Once);
+        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(), times: Times.Once);
         mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
         authorizationBrokerMock.VerifyNoOtherCalls();

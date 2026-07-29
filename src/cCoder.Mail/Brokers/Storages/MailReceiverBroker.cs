@@ -11,7 +11,8 @@ namespace cCoder.Mail.Brokers.Storages;
 
 public interface IMailReceiverBroker
 {
-    IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters);
+    IQueryable<MailReceiver> GetAllMailReceivers();
+    IQueryable<MailReceiver> GetAllMailReceiversIgnoringFilters();
     MailReceiver[] GetEnabledMailReceivers();
     ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
     ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);
@@ -23,13 +24,16 @@ public interface IMailReceiverBroker
 
 internal sealed class MailReceiverBroker(ICoreContextFactory coreContextFactory) : IMailReceiverBroker
 {
-    public IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters)
+    public IQueryable<MailReceiver> GetAllMailReceivers()
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.MailReceivers;
+    }
 
-        return StorageBrokerExtensions.SelectAll(
-            entities: coreDataContext.MailReceivers,
-            ignoreFilters: ignoreFilters);
+    public IQueryable<MailReceiver> GetAllMailReceiversIgnoringFilters()
+    {
+        CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.MailReceivers.IgnoreQueryFilters();
     }
 
     public MailReceiver[] GetEnabledMailReceivers()
@@ -72,8 +76,7 @@ internal sealed class MailReceiverBroker(ICoreContextFactory coreContextFactory)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        MailReceiver[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedMailReceiver);
+        MailReceiver[] entities = deletedMailReceiver?.ToArray() ?? [];
 
         coreDataContext.MailReceivers.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();

@@ -34,7 +34,7 @@ using JsonBroker = cCoder.Mail.Brokers.JsonBroker;
 
 namespace cCoder.Mail;
 
-public static class IServiceCollectionExtensions
+public static partial class IServiceCollectionExtensions
 {
     public static void AddMail(
         this IServiceCollection services,

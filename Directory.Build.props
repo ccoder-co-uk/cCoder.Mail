@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference
       Include="cCoder.CodeAnalysis"
-      Version="2026.7.29.949"
+      Version="2026.7.29.2324"
       PrivateAssets="all"
     />
   </ItemGroup>

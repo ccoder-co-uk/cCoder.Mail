@@ -12,7 +12,8 @@ namespace cCoder.Mail.Brokers.Storages;
 
 public interface ISentEmailBroker
 {
-    IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters);
+    IQueryable<SentEmail> GetAllSentEmails();
+    IQueryable<SentEmail> GetAllSentEmailsIgnoringFilters();
     ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
     ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
     ValueTask<int> DeleteSentEmailAsync(SentEmail deletedSentEmail);
@@ -24,13 +25,16 @@ public interface ISentEmailBroker
 internal sealed class SentEmailBroker(ICoreContextFactory coreContextFactory) : ISentEmailBroker
 {
 
-    public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters)
+    public IQueryable<SentEmail> GetAllSentEmails()
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.SentMail;
+    }
 
-        return StorageBrokerExtensions.SelectAll(
-            entities: coreDataContext.SentMail,
-            ignoreFilters: ignoreFilters);
+    public IQueryable<SentEmail> GetAllSentEmailsIgnoringFilters()
+    {
+        CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.SentMail.IgnoreQueryFilters();
     }
 
     public async ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail)
@@ -63,8 +67,7 @@ internal sealed class SentEmailBroker(ICoreContextFactory coreContextFactory) : 
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        SentEmail[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedSentEmail);
+        SentEmail[] entities = deletedSentEmail?.ToArray() ?? [];
 
         coreDataContext.SentMail.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();

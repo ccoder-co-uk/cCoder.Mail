@@ -22,13 +22,14 @@ public partial class MailServerServiceTests
         // Given
         MailServer mailServer = CreateRandomMailServer(id: 9, appId: 7);
 
-        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServers(ignoreFilters: true))
+        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServersIgnoringFilters())
             .Returns(value: new[] { ToExternalMailServer(item: mailServer) }.AsQueryable());
 
         mailServerBrokerMock.Setup(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()))
             .Returns(value: (int?)7);
 
-        authorizationBrokerMock.Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_delete"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateAuthorized(appId: (int?)7, privilege: "MailServer_delete"));
 
         mailServerBrokerMock
             .Setup(expression: x =>
@@ -46,7 +47,7 @@ deletedMailServer: It.Is<cCoder.Data.Models.Mail.MailServer>(match: candidate =>
         await mailServerService.DeleteAsync(mailServerId: 9);
 
         // Then
-        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: true), times: Times.Once);
+        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServersIgnoringFilters(), times: Times.Once);
 
         mailServerBrokerMock.Verify(
 expression: x =>
@@ -62,7 +63,7 @@ times: Times.Once
 
         mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_delete"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
@@ -72,12 +73,11 @@ times: Times.Once
         // Given
         MailServer mailServer = CreateRandomMailServer(id: 9, appId: 7);
 
-        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServers(ignoreFilters: true))
+        mailServerBrokerMock.Setup(expression: x => x.GetAllMailServersIgnoringFilters())
             .Returns(value: new[] { ToExternalMailServer(item: mailServer) }.AsQueryable());
 
-        authorizationBrokerMock
-            .Setup(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_delete"))
-            .Throws(exception: new SecurityException(message: "Access Denied!"));
+        authorizationBrokerMock.Setup(expression: x => x.GetCurrentUser())
+            .Returns(value: AuthorizationTestUsers.CreateUnauthorized());
 
         // When
         Func<Task> action = async () => await mailServerService.DeleteAsync(mailServerId: 9);
@@ -88,10 +88,10 @@ times: Times.Once
             .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
-        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: true), times: Times.Once);
+        mailServerBrokerMock.Verify(expression: x => x.GetAllMailServersIgnoringFilters(), times: Times.Once);
         mailServerBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailServer>()), times: Times.AtMostOnce());
         mailServerBrokerMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.Authorize(appId: (int?)7, privilege: "MailServer_delete"), times: Times.Once);
+        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 

@@ -20,7 +20,7 @@ internal partial class MailSenderService(
         ValidateMailSenderOnGet(inputs: [mailSenderId]);
 
         MailSender mailSender = mailSenderBroker
-            .GetAllMailSenders(ignoreFilters: false)
+            .GetAllMailSenders()
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (mailSender is not null)
@@ -29,12 +29,12 @@ internal partial class MailSenderService(
         }
 
         MailSender unrestrictedMailSender = mailSenderBroker
-            .GetAllMailSenders(ignoreFilters: true)
+            .GetAllMailSendersIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
         if (unrestrictedMailSender is not null)
         {
-            authorizationBroker.Authorize(appId: unrestrictedMailSender.AppId, privilege: $"{nameof(MailSender)}_read");
+            Authorize(user: authorizationBroker.GetCurrentUser(), appId: unrestrictedMailSender.AppId, privilege: $"{nameof(MailSender)}_read");
         }
 
         return unrestrictedMailSender;
@@ -45,7 +45,9 @@ internal partial class MailSenderService(
         {
             ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
 
-            return mailSenderBroker.GetAllMailSenders(ignoreFilters: ignoreFilters);
+            return ignoreFilters
+                ? mailSenderBroker.GetAllMailSendersIgnoringFilters()
+                : mailSenderBroker.GetAllMailSenders();
         });
 
     public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
@@ -53,7 +55,7 @@ internal partial class MailSenderService(
     {
         ValidateMailSenderOnAdd(inputs: [newMailSender]);
 
-        authorizationBroker.Authorize(appId: newMailSender.AppId, privilege: $"{nameof(MailSender)}_create");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: newMailSender.AppId, privilege: $"{nameof(MailSender)}_create");
         return await mailSenderBroker.AddMailSenderAsync(newMailSender: Copy(entity: newMailSender));
     }, isValueTask: true);
 
@@ -62,7 +64,7 @@ internal partial class MailSenderService(
     {
         ValidateMailSenderOnUpdate(inputs: [updatedMailSender]);
 
-        authorizationBroker.Authorize(appId: updatedMailSender.AppId, privilege: $"{nameof(MailSender)}_update");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: updatedMailSender.AppId, privilege: $"{nameof(MailSender)}_update");
         return await mailSenderBroker.UpdateMailSenderAsync(updatedMailSender: Copy(entity: updatedMailSender));
     }, isValueTask: true);
 
@@ -73,10 +75,10 @@ internal partial class MailSenderService(
         ValidateDeleteAsync(inputs: [mailSenderId]);
 
         MailSender entity = mailSenderBroker
-            .GetAllMailSenders(ignoreFilters: true)
+            .GetAllMailSendersIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == mailSenderId);
 
-        authorizationBroker.Authorize(appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: entity.AppId, privilege: $"{nameof(MailSender)}_delete");
         return await mailSenderBroker.DeleteMailSenderAsync(deletedMailSender: Copy(entity: entity));
     }, isValueTask: true);
 

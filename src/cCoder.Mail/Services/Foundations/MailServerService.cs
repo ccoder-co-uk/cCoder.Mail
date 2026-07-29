@@ -24,7 +24,7 @@ internal partial class MailServerService(
         ValidateMailServerOnGet(inputs: [mailServerId]);
 
         MailServer mailServer = mailServerBroker
-            .GetAllMailServers(ignoreFilters: false)
+            .GetAllMailServers()
             .FirstOrDefault(predicate: i => i.Id == mailServerId);
 
         if (mailServer is not null)
@@ -33,7 +33,7 @@ internal partial class MailServerService(
         }
 
         MailServer unrestrictedMailServer = mailServerBroker
-            .GetAllMailServers(ignoreFilters: true)
+            .GetAllMailServersIgnoringFilters()
             .FirstOrDefault(predicate: i => i.Id == mailServerId);
 
         if (unrestrictedMailServer is not null)
@@ -49,7 +49,9 @@ internal partial class MailServerService(
         {
             ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
 
-            return mailServerBroker.GetAllMailServers(ignoreFilters: ignoreFilters);
+            return ignoreFilters
+                ? mailServerBroker.GetAllMailServersIgnoringFilters()
+                : mailServerBroker.GetAllMailServers();
         });
 
     public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
@@ -57,7 +59,7 @@ internal partial class MailServerService(
     {
         ValidateMailServerOnAdd(inputs: [newMailServer]);
 
-        authorizationBroker.Authorize(appId: newMailServer.AppId, privilege: $"{nameof(MailServer)}_create");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: newMailServer.AppId, privilege: $"{nameof(MailServer)}_create");
         MailServer result = await mailServerBroker.AddMailServerAsync(newMailServer: Copy(mailServer: newMailServer));
         newMailServer.Id = result.Id;
         newMailServer.AppId = result.AppId;
@@ -76,7 +78,7 @@ internal partial class MailServerService(
     {
         ValidateMailServerOnUpdate(inputs: [updatedMailServer]);
 
-        authorizationBroker.Authorize(appId: updatedMailServer.AppId, privilege: $"{nameof(MailServer)}_update");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: updatedMailServer.AppId, privilege: $"{nameof(MailServer)}_update");
         MailServer result = await mailServerBroker.UpdateMailServerAsync(updatedMailServer: Copy(mailServer: updatedMailServer));
         updatedMailServer.Id = result.Id;
         updatedMailServer.AppId = result.AppId;
@@ -97,7 +99,7 @@ internal partial class MailServerService(
         ValidateDeleteAsync(inputs: [mailServerId]);
 
         MailServer mailServer = mailServerBroker
-            .GetAllMailServers(ignoreFilters: true)
+            .GetAllMailServersIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == mailServerId);
 
         if (mailServer is null)
@@ -105,7 +107,7 @@ internal partial class MailServerService(
             return;
         }
 
-        authorizationBroker.Authorize(appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: mailServer.AppId, privilege: $"{nameof(MailServer)}_delete");
         _ = await mailServerBroker.DeleteMailServerAsync(deletedMailServer: Copy(mailServer: mailServer));
     }, isValueTask: true);
 

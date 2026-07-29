@@ -21,7 +21,7 @@ internal partial class QueuedEmailService(
         ValidateQueuedEmailOnGet(inputs: [queuedEmailId]);
 
         QueuedEmail queuedEmail = queuedEmailBroker
-            .GetAllQueuedEmails(ignoreFilters: false)
+            .GetAllQueuedEmails()
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (queuedEmail is not null)
@@ -30,7 +30,7 @@ internal partial class QueuedEmailService(
         }
 
         QueuedEmail unrestrictedQueuedEmail = queuedEmailBroker
-            .GetAllQueuedEmails(ignoreFilters: true)
+            .GetAllQueuedEmailsIgnoringFilters()
             .FirstOrDefault(predicate: i => i.Id == queuedEmailId);
 
         if (unrestrictedQueuedEmail is not null)
@@ -46,7 +46,9 @@ internal partial class QueuedEmailService(
         {
             ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
 
-            return queuedEmailBroker.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
+            return ignoreFilters
+                ? queuedEmailBroker.GetAllQueuedEmailsIgnoringFilters()
+                : queuedEmailBroker.GetAllQueuedEmails();
         });
 
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
@@ -65,7 +67,7 @@ internal partial class QueuedEmailService(
 
         if (checkPrivileges)
         {
-            authorizationBroker.Authorize(appId: newQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
+            Authorize(user: authorizationBroker.GetCurrentUser(), appId: newQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_create");
         }
 
         QueuedEmail result = await queuedEmailBroker.AddQueuedEmailAsync(newQueuedEmail: Copy(queuedEmail: newQueuedEmail));
@@ -88,7 +90,7 @@ internal partial class QueuedEmailService(
     {
         ValidateQueuedEmailOnUpdate(inputs: [updatedQueuedEmail]);
 
-        authorizationBroker.Authorize(appId: updatedQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
+        Authorize(user: authorizationBroker.GetCurrentUser(), appId: updatedQueuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_update");
         QueuedEmail result = await queuedEmailBroker.UpdateQueuedEmailAsync(updatedQueuedEmail: Copy(queuedEmail: updatedQueuedEmail));
         updatedQueuedEmail.Id = result.Id;
         updatedQueuedEmail.AppId = result.AppId;
@@ -157,7 +159,7 @@ internal partial class QueuedEmailService(
         bool checkPrivileges)
     {
         QueuedEmail queuedEmail = queuedEmailBroker
-            .GetAllQueuedEmails(ignoreFilters: true)
+            .GetAllQueuedEmailsIgnoringFilters()
             .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
 
         if (queuedEmail is null)
@@ -167,7 +169,7 @@ internal partial class QueuedEmailService(
 
         if (checkPrivileges)
         {
-            authorizationBroker.Authorize(appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_delete");
+            Authorize(user: authorizationBroker.GetCurrentUser(), appId: queuedEmail.AppId, privilege: $"{nameof(QueuedEmail)}_delete");
         }
 
         await queuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(

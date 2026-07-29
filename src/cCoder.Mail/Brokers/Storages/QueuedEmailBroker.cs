@@ -13,7 +13,8 @@ namespace cCoder.Mail.Brokers.Storages;
 
 public interface IQueuedEmailBroker
 {
-    IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters);
+    IQueryable<QueuedEmail> GetAllQueuedEmails();
+    IQueryable<QueuedEmail> GetAllQueuedEmailsIgnoringFilters();
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
     ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail);
     ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
@@ -33,13 +34,16 @@ public interface IQueuedEmailBroker
 internal sealed class QueuedEmailBroker(ICoreContextFactory coreContextFactory) : IQueuedEmailBroker
 {
 
-    public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters)
+    public IQueryable<QueuedEmail> GetAllQueuedEmails()
     {
         CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.QueuedMail;
+    }
 
-        return StorageBrokerExtensions.SelectAll(
-            entities: coreDataContext.QueuedMail,
-            ignoreFilters: ignoreFilters);
+    public IQueryable<QueuedEmail> GetAllQueuedEmailsIgnoringFilters()
+    {
+        CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
+        return coreDataContext.QueuedMail.IgnoreQueryFilters();
     }
 
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures)
@@ -107,24 +111,52 @@ cancellationToken: cancellationToken);
         _ = await coreDataContext.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
-    public ValueTask MarkQueuedEmailAsSentAsync(
+    public async ValueTask MarkQueuedEmailAsSentAsync(
         QueuedEmail entity,
         Guid mailSenderId,
         string fromAddress,
-        CancellationToken cancellationToken = default) =>
-        QueuedEmailStorageExtensions.MarkQueuedEmailAsSentAsync(
-            coreContextFactory: coreContextFactory,
-            entity: entity,
-            mailSenderId: mailSenderId,
-            fromAddress: fromAddress,
+        CancellationToken cancellationToken = default)
+    {
+        using CoreDataContext coreDataContext =
+            coreContextFactory.CreateCoreContext();
+
+        QueuedEmail queuedEmail = await coreDataContext.QueuedMail
+            .Include(navigationPropertyPath: email => email.FailedSends)
+            .FirstAsync(
+                predicate: email => email.Id == entity.Id,
+                cancellationToken: cancellationToken);
+
+        await coreDataContext.SentMail.AddAsync(
+            entity: new SentEmail
+            {
+                AppId = queuedEmail.AppId,
+                SentByUserId = queuedEmail.SentByUserId,
+                Subject = queuedEmail.Subject,
+                Content = queuedEmail.Content,
+                To = queuedEmail.To,
+                CC = queuedEmail.CC,
+                IsBodyHtml = queuedEmail.IsBodyHtml,
+                SentOn = DateTimeOffset.UtcNow,
+                From = fromAddress,
+                MailSenderId = mailSenderId,
+            },
             cancellationToken: cancellationToken);
+
+        EmailSendFailure[] failures =
+            queuedEmail.FailedSends?.ToArray() ?? [];
+
+        coreDataContext.SendFailures.RemoveRange(entities: failures);
+        coreDataContext.QueuedMail.Remove(entity: queuedEmail);
+
+        _ = await coreDataContext.SaveChangesAsync(
+            cancellationToken: cancellationToken);
+    }
 
     public async ValueTask DeleteAllQueuedEmailSendFailuresAsync(IEnumerable<DataEmailSendFailure> deletedEmailSendFailure)
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        DataEmailSendFailure[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedEmailSendFailure);
+        DataEmailSendFailure[] entities = deletedEmailSendFailure?.ToArray() ?? [];
 
         coreDataContext.SendFailures.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();
@@ -134,8 +166,7 @@ cancellationToken: cancellationToken);
     {
         using CoreDataContext coreDataContext = coreContextFactory.CreateCoreContext();
 
-        QueuedEmail[] entities = StorageBrokerExtensions.Normalize(
-            entities: deletedQueuedEmail);
+        QueuedEmail[] entities = deletedQueuedEmail?.ToArray() ?? [];
 
         coreDataContext.QueuedMail.RemoveRange(entities: entities);
         _ = await coreDataContext.SaveChangesAsync();
