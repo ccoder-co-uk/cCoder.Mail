@@ -57,13 +57,21 @@ internal sealed partial class ReceivedEmailOrchestrationService(
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(
+        Guid mailReceiverId,
         int count,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
-            ValidateReceiveTopAsync(inputs: [count, cancellationToken]);
+            ValidateReceiveTopAsync(
+                inputs:
+                    [
+                        mailReceiverId,
+                        count,
+                        cancellationToken
+                    ]);
 
             return mailReceivingProcessingService.ReceiveTopAsync(
+                mailReceiverId: mailReceiverId,
                 count: count,
                 cancellationToken: cancellationToken);
         }, isTask: true);

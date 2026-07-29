@@ -27,8 +27,9 @@ public sealed class ReceivedEmailOperationsController(
         return Ok(value: await service.ReceiveMailboxReceiveRequestAsync(request: newMailboxReceiveRequest, cancellationToken: cancellationToken));
     }
 
-    [HttpGet("ReceiveTop/{count:int}")]
+    [HttpGet("ReceiveTop/{mailReceiverId:guid}/{count:int}")]
     public async Task<IActionResult> Get(
+        [FromRoute] Guid mailReceiverId,
         [FromRoute] int count,
         CancellationToken cancellationToken)
     {
@@ -37,6 +38,10 @@ public sealed class ReceivedEmailOperationsController(
             return BadRequest(error: "Count must be greater than zero.");
         }
 
-        return Ok(value: await service.ReceiveTopAsync(count: count, cancellationToken: cancellationToken));
+        return Ok(
+            value: await service.ReceiveTopAsync(
+                mailReceiverId: mailReceiverId,
+                count: count,
+                cancellationToken: cancellationToken));
     }
 }

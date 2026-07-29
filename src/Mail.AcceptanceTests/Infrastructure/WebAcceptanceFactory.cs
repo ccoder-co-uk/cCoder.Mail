@@ -7,10 +7,13 @@ using cCoder.Data.Models;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Models;
+using cCoder.Mail.Providers.Exposures.MailClients;
+using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
-using cCoder.Security.Objects;
+using cCoder.Security.Models;
 using Mail.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -50,9 +53,8 @@ initialData: [
             services.RemoveAll<IDbContextFactory<CoreDataContext>>();
             services.RemoveAll<DataConfiguration>();
             services.RemoveAll<ISecurityDbContextFactory>();
-            services.RemoveAll<IMicrosoftGraphClient>();
-            services.RemoveAll<IMailSenderProvider>();
-            services.RemoveAll<IMailReceiverProvider>();
+            services.RemoveAll<IMailClient>();
+            services.RemoveAll<IMailClientFactory>();
 
             services.AddSingleton<ISecurityDbContextFactory>(
 implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString)
@@ -65,80 +67,103 @@ implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: 
                 });
 
             services.AddTransient<AcceptanceMailClient>();
-            services.AddTransient<IMicrosoftGraphClient>(implementationFactory: provider => provider.GetRequiredService<AcceptanceMailClient>());
-            services.AddTransient<IMailSenderProvider, AcceptanceSmtpMailSenderProvider>();
-            services.AddTransient<IMailSenderProvider, AcceptanceGraphMailProvider>();
-            services.AddTransient<IMailReceiverProvider, AcceptanceGraphMailProvider>();
+            services.AddTransient<IMailClient, AcceptanceSmtpMailClient>();
+            services.AddTransient<IMailClient, AcceptanceGraphMailClient>();
+            services.AddTransient<IMailClientFactory, AcceptanceMailClientFactory>();
         });
     }
 
-    private sealed class AcceptanceMailClient : IMicrosoftGraphClient
+    private sealed class AcceptanceMailClient
     {
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
 
         public Task<ReceivedEmail[]> ReceiveAsync(
-            MailboxReceiveRequest request,
+            Guid mailReceiverId,
+            int maximumMessages,
             CancellationToken cancellationToken = default) =>
             Task.FromResult<ReceivedEmail[]>(
 result: [
                 new()
                 {
-                    MessageId = "<acceptance-message@example.test>",
-                    From = request.User,
+                    MessageId = maximumMessages == 1
+                        ? "<acceptance-top-message@example.test>"
+                        : "<acceptance-message@example.test>",
+                    From = maximumMessages == 1
+                        ? "configured@example.test"
+                        : "sender@example.test",
                     To = "recipient@example.test",
-                    Subject = $"Acceptance receive from {request.User}",
-                    Content = "Acceptance receive content",
-                    IsBodyHtml = false,
-                    ReceivedOn = request.From?.AddMinutes(minutes: 1) ?? DateTimeOffset.UtcNow,
-                }
-            ]);
-
-        public Task<ReceivedEmail[]> ReceiveTopAsync(
-            int count,
-            CancellationToken cancellationToken = default) =>
-            Task.FromResult<ReceivedEmail[]>(
-result: [
-                new()
-                {
-                    MessageId = "<acceptance-top-message@example.test>",
-                    From = "configured@example.test",
-                    To = "recipient@example.test",
-                    Subject = $"Acceptance top {count}",
-                    Content = "Acceptance top receive content",
+                    Subject = maximumMessages == 1
+                        ? "Acceptance top 1"
+                        : "Acceptance receive from sender@example.test",
+                    Content = maximumMessages == 1
+                        ? "Acceptance top receive content"
+                        : "Acceptance receive content",
                     IsBodyHtml = false,
                     ReceivedOn = DateTimeOffset.UtcNow,
                 }
             ]);
     }
 
-    private sealed class AcceptanceSmtpMailSenderProvider : IMailSenderProvider
+    private sealed class AcceptanceMailClientFactory(
+        IEnumerable<IMailClient> mailClients)
+        : IMailClientFactory
     {
-        public string ProviderName =>
-            MailProviderNames.Smtp;
+        public IMailClient CreateMailClient(string providerName) =>
+            mailClients.Single(
+                predicate: client =>
+                    client.GetProviderNames()
+                        .Contains(
+                            value: providerName,
+                            comparer: StringComparer.OrdinalIgnoreCase));
+
+        public ValueTask<IMailClient> CreateMailClientAsync(
+            Guid mailReceiverId,
+            CancellationToken cancellationToken = default) =>
+            ValueTask.FromResult(
+                result: CreateMailClient(
+                    providerName: MailProviderNames.MicrosoftGraph));
+    }
+
+    private sealed class AcceptanceSmtpMailClient : IMailClient
+    {
+        public string[] GetProviderNames() =>
+            [MailProviderNames.Smtp];
+
+        public MailClientOperation[] GetSupportedOperations() =>
+            [MailClientOperation.Send];
 
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
+
+        public Task<ReceivedEmail[]> ReceiveAsync(
+            Guid mailReceiverId,
+            int maximumMessages,
+            CancellationToken cancellationToken = default) =>
+            throw new UnsupportedMailClientOperationException(
+                providerName: MailProviderNames.Smtp,
+                operation: MailClientOperation.Receive.ToString());
     }
 
-    private sealed class AcceptanceGraphMailProvider(AcceptanceMailClient mailClient)
-        : IMailSenderProvider,
-            IMailReceiverProvider
+    private sealed class AcceptanceGraphMailClient(AcceptanceMailClient mailClient)
+        : IMailClient
     {
-        public string ProviderName =>
-            MailProviderNames.MicrosoftGraph;
+        public string[] GetProviderNames() =>
+            [MailProviderNames.MicrosoftGraph];
+
+        public MailClientOperation[] GetSupportedOperations() =>
+            [MailClientOperation.Send, MailClientOperation.Receive];
 
         public Task SendAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
             mailClient.SendAsync(email: email, cancellationToken: cancellationToken);
 
         public Task<ReceivedEmail[]> ReceiveAsync(
-            MailboxReceiveRequest request,
+            Guid mailReceiverId,
+            int maximumMessages,
             CancellationToken cancellationToken = default) =>
-            mailClient.ReceiveAsync(request: request, cancellationToken: cancellationToken);
-
-        public Task<ReceivedEmail[]> ReceiveTopAsync(
-            int count,
-            CancellationToken cancellationToken = default) =>
-            mailClient.ReceiveTopAsync(count: count, cancellationToken: cancellationToken);
+            mailClient.ReceiveAsync(
+                mailReceiverId: mailReceiverId,
+                maximumMessages: maximumMessages,
+                cancellationToken: cancellationToken);
     }
 }

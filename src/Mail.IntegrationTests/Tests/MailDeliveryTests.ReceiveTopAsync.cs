@@ -27,7 +27,10 @@ because: "the mail receive integration needs configured Microsoft Graph and acce
         await using IntegrationApplication application = await StartApplicationAsync(settings: settings);
 
         // When
-        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(client: application.Client, count: 1);
+        ReceivedEmail[] receivedEmails = await ReceiveTopEmailsAsync(
+            client: application.Client,
+            mailReceiverId: application.MailReceiverId,
+            count: 1);
 
         // Then
 

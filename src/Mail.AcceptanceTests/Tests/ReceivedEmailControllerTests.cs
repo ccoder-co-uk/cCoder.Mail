@@ -34,9 +34,14 @@ public sealed partial class ReceivedEmailControllerTests(WebAcceptanceFixture fi
             ?? throw new InvalidOperationException(message: "Expected received email payload.");
     }
 
-    private async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(int count)
+    private async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(
+        Guid mailReceiverId,
+        int count)
     {
-        using HttpResponseMessage response = await Client.GetAsync(requestUri: $"/Api/Mail/ReceivedEmail/ReceiveTop/{count}");
+        using HttpResponseMessage response = await Client.GetAsync(
+            requestUri:
+                $"/Api/Mail/ReceivedEmail/ReceiveTop/{mailReceiverId}/{count}");
+
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()

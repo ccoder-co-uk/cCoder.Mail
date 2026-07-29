@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Models;
+using cCoder.Mail.Exposures.MailClients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cCoder.Mail.Exposures.Controllers;
@@ -10,42 +10,20 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/MailProviders")]
 public sealed class MailProvidersController(
-    IMailConfigurationExposure mailConfigurationExposure) : ControllerBase
+    IMailProviderCatalog providerCatalog)
+    : ControllerBase
 {
-    private readonly MailConfiguration mailConfiguration =
-        mailConfigurationExposure.GetMailConfiguration();
-
     [HttpGet]
     public IActionResult Get() =>
-        Ok(value: GetSenderProviders()
-        .Concat(second: GetReceiverProviders())
+        Ok(value: providerCatalog.GetSenders()
+        .Concat(second: providerCatalog.GetReceivers())
         .ToArray());
 
     [HttpGet("Senders")]
     public IActionResult GetSenders() =>
-        Ok(value: GetSenderProviders());
+        Ok(value: providerCatalog.GetSenders());
 
     [HttpGet("Receivers")]
     public IActionResult GetReceivers() =>
-        Ok(value: GetReceiverProviders());
-
-    private MailProviderSummary[] GetSenderProviders() =>
-        [
-        .. mailConfiguration.SenderProviders.Select(selector: provider => new MailProviderSummary
-        {
-            Name = provider.Key,
-            ProviderName = provider.Value,
-            Direction = "Sender",
-        })
-    ];
-
-    private MailProviderSummary[] GetReceiverProviders() =>
-        [
-        .. mailConfiguration.ReceiverProviders.Select(selector: provider => new MailProviderSummary
-        {
-            Name = provider.Key,
-            ProviderName = provider.Value,
-            Direction = "Receiver",
-        })
-    ];
+        Ok(value: providerCatalog.GetReceivers());
 }

@@ -14,6 +14,7 @@ public interface IMailReceivingService
         CancellationToken cancellationToken = default);
 
     Task<ReceivedEmail[]> ReceiveTopAsync(
+        Guid mailReceiverId,
         int count,
         CancellationToken cancellationToken = default);
 }

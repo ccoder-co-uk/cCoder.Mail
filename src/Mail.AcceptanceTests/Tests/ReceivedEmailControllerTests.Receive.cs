@@ -21,6 +21,7 @@ public sealed partial class ReceivedEmailControllerTests
 
         ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(payload: new
         {
+            mailReceiverId = Guid.NewGuid(),
             user = "sender@example.test",
             from,
             to = DateTimeOffset.UtcNow.AddMinutes(minutes: 5),

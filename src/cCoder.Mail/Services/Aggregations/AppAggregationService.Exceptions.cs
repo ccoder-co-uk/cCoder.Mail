@@ -2,7 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Models.Exceptions;
+using cCoder.Mail.Providers.Models.Exceptions;
 
 namespace cCoder.Mail.Services.Aggregations;
 

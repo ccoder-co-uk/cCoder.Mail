@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace cCoder.Mail.Extensions.OData;
 
-internal static class ODataCollectionExtensions
+internal static class EnumerableExtensions
 {
     internal static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
     {
@@ -27,7 +27,7 @@ internal static class ODataCollectionExtensions
     }
 }
 
-internal static class ODataJsonExtensions
+internal static class ObjectExtensions
 {
     internal static string ToJsonForOdata(this object value) =>
         JsonConvert.SerializeObject(value: value, formatting: Formatting.None, settings: GetODataJsonSettings());
@@ -46,7 +46,7 @@ internal static class ODataJsonExtensions
         };
 }
 
-internal static class ODataTypeExtensions
+internal static class TypeExtensions
 {
     internal static string GetCSharpTypeName(this Type type)
     {

@@ -10,6 +10,7 @@ using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using cCoder.Mail.Models;
+using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Services.Orchestrations;
 using cCoder.Mail.Testing;
 using cCoder.Security.Data.EF;
@@ -51,7 +52,13 @@ public sealed partial class MailDeliveryTests(ITestOutputHelper output)
             BaseAddress = new Uri(uriString: "https://localhost"),
         });
 
-        return new IntegrationApplication(factory: factory, databaseManager: databaseManager, client: client, appId: seed.AppId, mailSenderId: seed.MailSenderId);
+        return new IntegrationApplication(
+            factory: factory,
+            databaseManager: databaseManager,
+            client: client,
+            appId: seed.AppId,
+            mailSenderId: seed.MailSenderId,
+            mailReceiverId: seed.MailReceiverId);
     }
 
     private async Task<QueuedEmail> QueueEmailAsync(
@@ -113,6 +120,7 @@ requestUri: $"/Api/Mail/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringTo
     private async Task<ReceivedEmail> ReceiveEmailAsync(
         HttpClient client,
         MailIntegrationTestConfiguration settings,
+        Guid mailReceiverId,
         string subject,
         string content,
         DateTimeOffset from)
@@ -122,7 +130,11 @@ requestUri: $"/Api/Mail/SentEmail?$top=10&$filter={Uri.EscapeDataString(stringTo
 
         do
         {
-            ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(client: client, settings: settings, from: from);
+            ReceivedEmail[] receivedEmails = await ReceiveEmailsAsync(
+                client: client,
+                mailReceiverId: mailReceiverId,
+                settings: settings,
+                from: from);
 
             ReceivedEmail receivedEmail = receivedEmails.FirstOrDefault(predicate: email =>
                 string.Equals(a: email.Subject, b: subject, comparisonType: StringComparison.Ordinal)
@@ -147,6 +159,7 @@ message: $"The sent email was not received within {settings.ReceiveTimeout}. " +
 
     private static async Task<ReceivedEmail[]> ReceiveEmailsAsync(
         HttpClient client,
+        Guid mailReceiverId,
         MailIntegrationTestConfiguration settings,
         DateTimeOffset from)
     {
@@ -154,6 +167,7 @@ message: $"The sent email was not received within {settings.ReceiveTimeout}. " +
 requestUri: "/Api/Mail/ReceivedEmail/Receive",
 value: new MailboxReceiveRequest
 {
+    MailReceiverId = mailReceiverId,
     User = settings.ReceiveUser,
     From = from,
     To = DateTimeOffset.UtcNow.AddMinutes(minutes: 5),
@@ -171,9 +185,13 @@ value: new MailboxReceiveRequest
 
     private static async Task<ReceivedEmail[]> ReceiveTopEmailsAsync(
         HttpClient client,
+        Guid mailReceiverId,
         int count)
     {
-        using HttpResponseMessage response = await client.GetAsync(requestUri: $"/Api/Mail/ReceivedEmail/ReceiveTop/{count}");
+        using HttpResponseMessage response = await client.GetAsync(
+            requestUri:
+                $"/Api/Mail/ReceivedEmail/ReceiveTop/{mailReceiverId}/{count}");
+
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
@@ -252,8 +270,27 @@ value: new MailboxReceiveRequest
         core.Set<MailSender>()
             .Add(entity: mailSender);
 
+        MailReceiver mailReceiver = new()
+        {
+            AppId = app.Id,
+            Name = MailServerName,
+            ProviderName = MailProviderNames.MicrosoftGraph,
+            Host = settings.SendHost,
+            Port = 443,
+            EnableSSL = true,
+            User = settings.ReceiveUser,
+            Password = string.Empty,
+        };
+
+        core.Set<MailReceiver>()
+            .Add(entity: mailReceiver);
+
         await core.SaveChangesAsync();
-        return new IntegrationSeed(AppId: app.Id, MailSenderId: mailSender.Id);
+
+        return new IntegrationSeed(
+            AppId: app.Id,
+            MailSenderId: mailSender.Id,
+            MailReceiverId: mailReceiver.Id);
     }
 
     private static MailIntegrationTestConfiguration ReadSettings() =>
@@ -264,14 +301,18 @@ value: new MailboxReceiveRequest
 
     private sealed record ODataEnvelope<T>(List<T> Value);
 
-    private sealed record IntegrationSeed(int AppId, Guid MailSenderId);
+    private sealed record IntegrationSeed(
+        int AppId,
+        Guid MailSenderId,
+        Guid MailReceiverId);
 
     private sealed class IntegrationApplication(
         IntegrationWebApplicationFactory factory,
         IntegrationDatabaseManager databaseManager,
         HttpClient client,
         int appId,
-        Guid mailSenderId)
+        Guid mailSenderId,
+        Guid mailReceiverId)
         : IAsyncDisposable
     {
         public IntegrationWebApplicationFactory Factory { get; } = factory;
@@ -281,6 +322,8 @@ value: new MailboxReceiveRequest
         public int AppId { get; } = appId;
 
         public Guid MailSenderId { get; } = mailSenderId;
+
+        public Guid MailReceiverId { get; } = mailReceiverId;
 
         public async ValueTask DisposeAsync()
         {
@@ -297,17 +340,37 @@ value: new MailboxReceiveRequest
         {
             builder.UseEnvironment(environment: "Acceptance");
 
-            builder.ConfigureAppConfiguration(configureDelegate: (_, config) =>
-            {
-                config.AddInMemoryCollection(
-initialData: [
-                    new KeyValuePair<string, string>(key: "Mail:ConnectionString", value: settings.CoreConnectionString),
-                    new KeyValuePair<string, string>(key: "Data:ConnectionString", value: settings.CoreConnectionString),
-                    new KeyValuePair<string, string>(key: "Security:ConnectionString", value: settings.SecurityConnectionString),
-                    new KeyValuePair<string, string>(key: "Security:DecryptionKey", value: settings.SecurityDecryptionKey),
-                    new KeyValuePair<string, string>(key: "Eventing:ProviderType", value: string.Empty),
-                ]);
-            });
+            builder.UseSetting(
+                key: "Mail:ConnectionString",
+                value: settings.CoreConnectionString);
+
+            builder.UseSetting(
+                key: "Mail:Providers:3:MicrosoftGraph:TenantId",
+                value: settings.TenantId);
+
+            builder.UseSetting(
+                key: "Mail:Providers:3:MicrosoftGraph:ClientId",
+                value: settings.ClientId);
+
+            builder.UseSetting(
+                key: "Mail:Providers:3:MicrosoftGraph:ClientSecret",
+                value: settings.ClientSecret);
+
+            builder.UseSetting(
+                key: "Data:ConnectionString",
+                value: settings.CoreConnectionString);
+
+            builder.UseSetting(
+                key: "Security:ConnectionString",
+                value: settings.SecurityConnectionString);
+
+            builder.UseSetting(
+                key: "Security:DecryptionKey",
+                value: settings.SecurityDecryptionKey);
+
+            builder.UseSetting(
+                key: "Eventing:ProviderType",
+                value: string.Empty);
 
             builder.ConfigureTestServices(servicesConfiguration: services =>
             {
