@@ -247,7 +247,7 @@ values: recipients.EnumerateArray()
     private string ReadConfiguredReceiveUser() =>
         ReadConfiguredValue(configuredValue: mailConfiguration.MicrosoftGraph.ReceiveUser)
         ?? throw new InvalidOperationException(
-message: "CCODER_MAIL_RECEIVE_USER is required for Microsoft Graph mailbox receive.");
+            message: "Mail:MicrosoftGraph:ReceiveUser is required for Microsoft Graph mailbox receive.");
 
     private static string ReadRequiredConfiguredValue(string configuredValue, string configurationName) =>
         ReadConfiguredValue(configuredValue: configuredValue)

@@ -87,6 +87,7 @@ are:
 - `Mail__MicrosoftGraph__TenantId`
 - `Mail__MicrosoftGraph__ClientId`
 - `Mail__MicrosoftGraph__ClientSecret`
+- `Mail__MicrosoftGraph__SendUser`
 - `Mail__MicrosoftGraph__ReceiveUser`
 
 Provider-specific POP3 and IMAP secrets use the matching structured paths, such
@@ -104,6 +105,7 @@ services.AddMail(mailConfig =>
         graphConfig.TenantId = tenantId;
         graphConfig.ClientId = clientId;
         graphConfig.ClientSecret = clientSecret;
+        graphConfig.SendUser = sendUser;
         graphConfig.ReceiveUser = receiveUser;
     });
 
@@ -127,18 +129,13 @@ The real send-and-receive integration test requires these variables on the runne
 - `Mail__MicrosoftGraph__TenantId`
 - `Mail__MicrosoftGraph__ClientId`
 - `Mail__MicrosoftGraph__ClientSecret`
+- `Mail__MicrosoftGraph__SendUser`
 - `Mail__MicrosoftGraph__ReceiveUser`
-- `CCODER_MAIL_INTEGRATION_SEND_USER` (defaults to `CCODER_MAIL_INTEGRATION_SMTP_USER`)
-- `CCODER_MAIL_INTEGRATION_SEND_HOST` (defaults to `graph.microsoft.com`)
-- `CCODER_MAIL_INTEGRATION_SMTP_FROM` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
-- `CCODER_MAIL_INTEGRATION_RECEIVE_USER` (defaults to `CCODER_MAIL_INTEGRATION_SEND_USER`)
-- `CCODER_MAIL_INTEGRATION_TO` (defaults to `CCODER_MAIL_INTEGRATION_RECEIVE_USER`)
-- `CCODER_MAIL_INTEGRATION_MAX_MESSAGES` (defaults to `50`)
-- `CCODER_MAIL_INTEGRATION_RECEIVE_TIMEOUT_SECONDS` (defaults to `120`)
-- `CCODER_MAIL_INTEGRATION_RECEIVE_POLL_SECONDS` (defaults to `10`)
 
 The test creates disposable integration databases by appending
 `-acceptance-{guid}` to the configured Mail and Security database names.
+It sends from `SendUser` to `ReceiveUser`, polls every 10 seconds for up to
+120 seconds, and retrieves at most 50 messages.
 The Graph application registration must have `Mail.Send` and `Mail.Read` application permissions with admin consent applied.
 
 ## Package

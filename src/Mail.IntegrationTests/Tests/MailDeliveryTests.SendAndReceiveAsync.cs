@@ -4,6 +4,7 @@
 
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
+using cCoder.Mail.Testing;
 using FluentAssertions;
 using Xunit;
 
@@ -16,7 +17,7 @@ public sealed partial class MailDeliveryTests
     public async Task SendAndReceiveAsync_SendsQueuedMailAndReceivesItFromMailbox()
     {
         // Given
-        IntegrationSettings settings = ReadSettings();
+        MailIntegrationTestConfiguration settings = ReadSettings();
 
         string[] missingVariables = settings.MissingVariables();
 
