@@ -9,7 +9,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Processings;
 
-public interface ISentEmailProcessingService
+internal interface ISentEmailProcessingService
 {
     SentEmail GetSentEmail(int iSentEmailId);
 

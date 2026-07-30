@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class MailSenderController(
-    IMailSenderProcessingService service)
+    IMailSenderManager service)
     : ODataController
 {
     [HttpGet]

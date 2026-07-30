@@ -4,9 +4,9 @@
 
 using cCoder.Data.Models.Mail;
 
-namespace cCoder.Mail.Services.Foundations;
+namespace cCoder.Mail.Exposures;
 
-internal interface IMailReceiverService
+public interface IMailReceiverManager
 {
     MailReceiver GetMailReceiver(Guid iMailReceiverId);
     IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false);
@@ -14,6 +14,6 @@ internal interface IMailReceiverService
     ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
     ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);
     ValueTask<int> DeleteAsync(Guid iMailReceiverId);
+    ValueTask DeleteByAppIdAsync(int appId);
     ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver);
-    ValueTask DeleteAllByAppIdAsync(int appId);
 }

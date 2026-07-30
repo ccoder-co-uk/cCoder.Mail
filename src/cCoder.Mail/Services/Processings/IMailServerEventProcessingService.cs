@@ -10,7 +10,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Processings;
 
-public interface IMailServerEventProcessingService
+internal interface IMailServerEventProcessingService
 {
     ValueTask RaiseMailServerAddEventAsync(MailServer entity);
     ValueTask RaiseMailServerUpdateEventAsync(MailServer entity);

@@ -2,23 +2,19 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Models;
-using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Data.Models.Security;
+using cCoder.Mail.Models;
 
+namespace cCoder.Mail.Exposures;
 
-namespace cCoder.Mail.Services.Foundations;
-
-internal interface IMailServerService
+public interface IMailServerManager
 {
     MailServer GetMailServer(int iMailServerId);
     IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false);
-    ValueTask<MailServer> AddMailServerAsync(
-        MailServer newMailServer,
-        bool checkPrivileges = true);
+    ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer);
     ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer);
     ValueTask DeleteAsync(int iMailServerId);
-    ValueTask DeleteAllForAppMailServerAsync(IEnumerable<MailServer> deletedMailServer);
-    ValueTask DeleteAllByAppIdAsync(int appId);
+    ValueTask DeleteByAppIdAsync(int appId);
+    ValueTask<IEnumerable<Result<MailServer>>> AddOrUpdateMailServerResult(IEnumerable<MailServer> newMailServer);
+    ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer);
 }

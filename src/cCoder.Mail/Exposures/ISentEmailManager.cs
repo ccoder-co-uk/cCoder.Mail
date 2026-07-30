@@ -2,21 +2,19 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Models;
-using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
-using cCoder.Data.Models.Security;
+using cCoder.Mail.Models;
 
+namespace cCoder.Mail.Exposures;
 
-namespace cCoder.Mail.Services.Foundations;
-
-internal interface ISentEmailService
+public interface ISentEmailManager
 {
     SentEmail GetSentEmail(int iSentEmailId);
     IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
     ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
     ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
     ValueTask DeleteAsync(int iSentEmailId);
-    ValueTask DeleteAllForAppSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
-    ValueTask DeleteAllByAppIdAsync(int appId);
+    ValueTask DeleteByAppIdAsync(int appId);
+    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail);
+    ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
 }

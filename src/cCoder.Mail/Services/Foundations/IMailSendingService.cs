@@ -6,7 +6,7 @@ using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Foundations;
 
-public interface IMailSendingService
+internal interface IMailSendingService
 {
     Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default);
 }

@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class SentEmailController(
-    ISentEmailOrchestrationService service)
+    ISentEmailManager service)
         : ODataController
 {
     [HttpGet]

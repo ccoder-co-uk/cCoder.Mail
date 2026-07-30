@@ -4,15 +4,15 @@
 
 using cCoder.Data.Models.Mail;
 
-namespace cCoder.Mail.Services.Foundations;
+namespace cCoder.Mail.Exposures;
 
-internal interface IMailSenderService
+public interface IMailSenderManager
 {
     MailSender GetMailSender(Guid iMailSenderId);
     IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false);
     ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender);
     ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender);
     ValueTask<int> DeleteAsync(Guid iMailSenderId);
+    ValueTask DeleteByAppIdAsync(int appId);
     ValueTask DeleteAllMailSenderAsync(IEnumerable<MailSender> deletedMailSender);
-    ValueTask DeleteAllByAppIdAsync(int appId);
 }

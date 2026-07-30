@@ -10,7 +10,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Foundations;
 
-public interface IQueuedEmailService
+internal interface IQueuedEmailService
 {
     QueuedEmail GetQueuedEmail(int iQueuedEmailId);
     IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);

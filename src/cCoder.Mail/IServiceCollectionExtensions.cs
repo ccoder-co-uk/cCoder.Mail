@@ -173,6 +173,14 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailReceiverService, MailReceiverService>();
         services.AddTransient<IMailSendingService, MailSendingService>();
         services.AddTransient<IMailReceivingService, MailReceivingService>();
+        services.AddTransient<IMailDispatchManager, MailSenderOrchestrationService>();
+        services.AddTransient<IMailReceiverManager, MailReceiverProcessingService>();
+        services.AddTransient<IMailSenderManager, MailSenderProcessingService>();
+        services.AddTransient<IMailServerManager, MailServerOrchestrationService>();
+        services.AddTransient<IQueuedEmailManager, QueuedEmailOrchestrationService>();
+        services.AddTransient<IReceivedEmailManager, ReceivedEmailProcessingService>();
+        services.AddTransient<IMailReceivingManager, MailReceivingService>();
+        services.AddTransient<ISentEmailManager, SentEmailOrchestrationService>();
         services.AddTransient<IQueuedEmailService, QueuedEmailService>();
         services.AddTransient<ISentEmailService, SentEmailService>();
         services.AddTransient<IReceivedEmailService, ReceivedEmailService>();

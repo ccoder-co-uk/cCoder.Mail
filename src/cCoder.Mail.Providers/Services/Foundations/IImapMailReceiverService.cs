@@ -7,7 +7,7 @@ using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-public interface IImapMailReceiverService
+internal interface IImapMailReceiverService
 {
     Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,

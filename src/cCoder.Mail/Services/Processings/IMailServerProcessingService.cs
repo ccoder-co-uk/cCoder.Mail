@@ -9,7 +9,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Processings;
 
-public interface IMailServerProcessingService
+internal interface IMailServerProcessingService
 {
     MailServer GetMailServer(int iMailServerId);
 

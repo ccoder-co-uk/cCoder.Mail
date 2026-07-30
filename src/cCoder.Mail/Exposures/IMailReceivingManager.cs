@@ -5,14 +5,10 @@
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 
-namespace cCoder.Mail.Services.Processings;
+namespace cCoder.Mail.Exposures;
 
-internal interface IMailReceivingProcessingService
+public interface IMailReceivingManager
 {
-    bool IsMigrationInProgress();
-
-    void LogError(Exception exception);
-
     Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
         MailboxReceiveRequest request,
         CancellationToken cancellationToken = default);

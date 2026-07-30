@@ -10,7 +10,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-public interface ISentEmailEventService
+internal interface ISentEmailEventService
 {
     ValueTask RaiseSentEmailAddEventAsync(SentEmail entity);
     ValueTask RaiseSentEmailUpdateEventAsync(SentEmail entity);

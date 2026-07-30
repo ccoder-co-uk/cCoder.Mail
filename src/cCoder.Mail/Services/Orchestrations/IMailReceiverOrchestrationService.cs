@@ -6,7 +6,7 @@ using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-public interface IMailReceiverOrchestrationService
+internal interface IMailReceiverOrchestrationService
 {
     ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
 

@@ -7,7 +7,7 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-public interface IReceivedEmailOrchestrationService
+internal interface IReceivedEmailOrchestrationService
 {
     ValueTask<ReceivedEmail> AddReceivedEmailAsync(
         ReceivedEmail newReceivedEmail);
