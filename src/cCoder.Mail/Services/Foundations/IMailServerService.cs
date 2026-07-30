@@ -14,7 +14,9 @@ public interface IMailServerService
 {
     MailServer GetMailServer(int iMailServerId);
     IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false);
-    ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer);
+    ValueTask<MailServer> AddMailServerAsync(
+        MailServer newMailServer,
+        bool checkPrivileges = true);
     ValueTask<MailServer> UpdateMailServerAsync(MailServer updatedMailServer);
     ValueTask DeleteAsync(int iMailServerId);
     ValueTask DeleteAllForAppMailServerAsync(IEnumerable<MailServer> deletedMailServer);

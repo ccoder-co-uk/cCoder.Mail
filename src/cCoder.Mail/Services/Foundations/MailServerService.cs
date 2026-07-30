@@ -54,12 +54,22 @@ internal partial class MailServerService(
                 : mailServerBroker.GetAllMailServers();
         });
 
-    public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
+    public ValueTask<MailServer> AddMailServerAsync(
+        MailServer newMailServer,
+        bool checkPrivileges = true) =>
         TryCatch<MailServer>(operation: async () =>
     {
-        ValidateMailServerOnAdd(inputs: [newMailServer]);
+        ValidateMailServerOnAdd(
+            inputs: [newMailServer, checkPrivileges]);
 
-        Authorize(user: authorizationBroker.GetCurrentUser(), appId: newMailServer.AppId, privilege: $"{nameof(MailServer)}_create");
+        if (checkPrivileges)
+        {
+            Authorize(
+                user: authorizationBroker.GetCurrentUser(),
+                appId: newMailServer.AppId,
+                privilege: $"{nameof(MailServer)}_create");
+        }
+
         MailServer result = await mailServerBroker.AddMailServerAsync(newMailServer: Copy(mailServer: newMailServer));
         newMailServer.Id = result.Id;
         newMailServer.AppId = result.AppId;
