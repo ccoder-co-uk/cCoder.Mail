@@ -20,6 +20,7 @@ internal sealed class MailReceiverStorageBroker(
             coreContextFactory.CreateCoreContext();
 
         return await context.MailReceivers
+            .IgnoreQueryFilters()
             .SingleOrDefaultAsync(
                 predicate: receiver =>
                     receiver.Id == mailReceiverId,
