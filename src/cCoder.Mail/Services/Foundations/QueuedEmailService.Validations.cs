@@ -11,10 +11,31 @@ internal partial class QueuedEmailService
 {
     private static void Authorize(User user, int? appId, string privilege)
     {
-        if (!user.Can(appId: appId, operation: privilege))
+        if (!Can(user: user, appId: appId, operation: privilege))
         {
             throw new SecurityException(message: "Access Denied!");
         }
+    }
+
+    private static bool Can(
+        User user,
+        int? appId,
+        string operation)
+    {
+        string normalizedOperation =
+            operation?.ToLowerInvariant() ?? string.Empty;
+
+        return user is not null
+            && ((appId.HasValue
+                    && user.Roles?.Any(predicate: userRole =>
+                        userRole.Role?.AppId == appId.Value
+                        && userRole.Role.Privileges.Contains(
+                            item: "app_admin")) == true)
+                || user.Roles?.Any(predicate: userRole =>
+                    (!appId.HasValue
+                        || userRole.Role?.AppId == appId.Value)
+                    && userRole.Role?.Privileges.Contains(
+                        item: normalizedOperation) == true) == true);
     }
 
     private static void ValidateQueuedEmailOnGet(object[] inputs) =>
