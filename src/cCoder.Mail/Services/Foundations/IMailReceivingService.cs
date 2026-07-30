@@ -2,19 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Data.Models.Mail;
-using cCoder.Mail.Models;
+using cCoder.Mail.Exposures;
 
 namespace cCoder.Mail.Services.Foundations;
 
-public interface IMailReceivingService
-{
-    Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
-        MailboxReceiveRequest request,
-        CancellationToken cancellationToken = default);
-
-    Task<ReceivedEmail[]> ReceiveTopAsync(
-        Guid mailReceiverId,
-        int count,
-        CancellationToken cancellationToken = default);
-}
+internal interface IMailReceivingService : IMailReceivingManager { }

@@ -11,7 +11,7 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/ReceivedEmail")]
 public sealed class ReceivedEmailOperationsController(
-    IMailReceivingService service)
+    IMailReceivingManager service)
     : ControllerBase
 {
     [HttpPost("Receive")]

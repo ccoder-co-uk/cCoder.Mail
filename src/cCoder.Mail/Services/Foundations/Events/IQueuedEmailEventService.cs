@@ -10,7 +10,7 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
-public interface IQueuedEmailEventService
+internal interface IQueuedEmailEventService
 {
     ValueTask RaiseQueuedEmailAddEventAsync(QueuedEmail entity);
     ValueTask RaiseQueuedEmailUpdateEventAsync(QueuedEmail entity);

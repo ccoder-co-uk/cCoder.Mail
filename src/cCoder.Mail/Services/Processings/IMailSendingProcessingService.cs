@@ -6,7 +6,7 @@ using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Processings;
 
-public interface IMailSendingProcessingService
+internal interface IMailSendingProcessingService
 {
     bool IsMigrationInProgress();
 

@@ -10,8 +10,8 @@ using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
 using cCoder.Mail.Models;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Providers.Models;
-using cCoder.Mail.Services.Orchestrations;
 using cCoder.Mail.Testing;
 using cCoder.Security.Data.EF;
 using cCoder.Security.Data.EF.Dependencies;
@@ -97,8 +97,8 @@ value: new
     {
         using IServiceScope scope = services.CreateScope();
 
-        IMailSenderOrchestrationService mailSender =
-            scope.ServiceProvider.GetRequiredService<IMailSenderOrchestrationService>();
+        IMailDispatchManager mailSender =
+            scope.ServiceProvider.GetRequiredService<IMailDispatchManager>();
 
         await mailSender.RunAsync();
     }

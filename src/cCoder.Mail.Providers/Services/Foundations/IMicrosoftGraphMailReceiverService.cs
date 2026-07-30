@@ -7,7 +7,7 @@ using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-public interface IMicrosoftGraphMailReceiverService
+internal interface IMicrosoftGraphMailReceiverService
 {
     Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,

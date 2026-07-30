@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models;
+using cCoder.Mail.Exposures;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
 using cCoder.Data.Models.Security;
@@ -75,7 +76,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
         }, isValueTask: true);
 
     ValueTask<IEnumerable<Result<MailServer>>>
-        IMailServerOrchestrationService.AddOrUpdateMailServerResult(
+        IMailServerManager.AddOrUpdateMailServerResult(
             IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {

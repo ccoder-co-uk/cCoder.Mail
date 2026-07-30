@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 namespace cCoder.Mail.Exposures.Controllers;
 
 public partial class QueuedEmailController(
-    IQueuedEmailOrchestrationService service)
+    IQueuedEmailManager service)
         : ODataController
 {
     [HttpGet]
