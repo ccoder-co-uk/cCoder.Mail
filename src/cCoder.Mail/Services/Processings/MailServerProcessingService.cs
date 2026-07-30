@@ -75,7 +75,9 @@ internal partial class MailServerProcessingService(IMailServerService service) :
             {
                 MailServer savedItem =
                     item.Id == 0
-                        ? await service.AddMailServerAsync(newMailServer: item)
+                        ? await service.AddMailServerAsync(
+                            newMailServer: item,
+                            checkPrivileges: false)
                         : await service.UpdateMailServerAsync(updatedMailServer: item);
 
                 results.Add(item: new Result<MailServer>

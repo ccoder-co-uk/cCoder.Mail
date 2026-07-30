@@ -2749,6 +2749,10 @@
             {
               "Name": "newMailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
+            },
+            {
+              "Name": "checkPrivileges",
+              "Type": "System.Boolean"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailServer\u003E"
