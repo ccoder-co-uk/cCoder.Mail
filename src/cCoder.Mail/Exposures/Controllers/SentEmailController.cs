@@ -2,66 +2,53 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Data.Extensions;
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Extensions.OData;
 using cCoder.Mail.Models.OData;
-using cCoder.Mail.Models;
-using cCoder.Data.Extensions;
-using cCoder.Data.Models.CMS;
-using cCoder.Data.Models.Mail;
-using cCoder.Data.Models.Security;
+using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Orchestrations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class SentEmailController(
-    ISentEmailManager service)
-        : ODataController
+public partial class SentEmailController(ISentEmailManager service)
+    : ODataController
 {
-    [HttpGet]
-    public IActionResult GetMetadata()
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        bool isExtendedMetaRequest = Request.Query["extend"] == "true";
+        try
+        {
+            await service.DeleteAsync(iSentEmailId: key);
 
-        return isExtendedMetaRequest
-            ? Ok(
-value: new cCoder.Mail.Brokers.OData.MailModelBroker()
-                    .Build()
-            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(SentEmail))
-            )
-            : Ok(value: new MetadataContainer(type: typeof(SentEmail), isEntity: true, hasEndpoint: true));
+            return NoContent();
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [HttpGet]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
-    [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<SentEmail> queryOptions) =>
-        Ok(value: service.GetAllSentEmail());
-
-    [HttpGet]
-    [AllowAnonymous]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 3,
-        MaxExpansionDepth = 3
-    )]
+    [EnableQuery(MaxAnyAllExpressionDepth = 3, MaxExpansionDepth = 3)]
     public IActionResult Get([FromRoute] int key)
     {
         try
@@ -69,71 +56,191 @@ value: new cCoder.Mail.Brokers.OData.MailModelBroker()
             IQueryable<SentEmail> result = service.GetAllSentEmail()
                 .Where(predicate: sentEmail => sentEmail.Id == key);
 
+            SentEmail sentEmail = result.FirstOrDefault();
+
+            if (sentEmail is null)
+            {
+                return NotFound();
+            }
+
             return Ok(value: SingleResult.Create(queryable: result));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException)
         {
-            return NotFound();
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
+    }
+
+    [HttpGet]
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
+    [ActionName("Get")]
+    public IActionResult GetAll()
+    {
+        try
+        {
+            return Ok(value: service.GetAllSentEmail());
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetMetadata()
+    {
+        try
+        {
+            bool isExtendedMetaRequest = Request.Query["extend"] == "true";
+
+            return isExtendedMetaRequest
+                ? Ok(value: new MailModelBroker()
+                    .Build()
+                    .EDMModel
+                    .GetExtendedMetadataForType(
+                        context: "Mail",
+                        type: typeof(SentEmail)))
+                : Ok(value: new MetadataContainer(
+                    type: typeof(SentEmail),
+                    isEntity: true,
+                    hasEndpoint: true));
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail metadata operation failed.");
         }
     }
 
     [HttpPost]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
     public async Task<IActionResult> Post([FromBody] SentEmail newSentEmail)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(modelState: ModelState);
+            }
 
-        return Ok(value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
+            return StatusCode(
+                statusCode: StatusCodes.Status201Created,
+                value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [HttpPut]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
-    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] SentEmail updatedSentEmail)
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
+    public async Task<IActionResult> Put(
+        [FromRoute] int key,
+        [FromBody] SentEmail updatedSentEmail)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(modelState: ModelState);
+            }
 
-        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: updatedSentEmail));
+            updatedSentEmail.Id = key;
+
+            return Ok(value: await service.UpdateSentEmailAsync(
+                updatedSentEmail: updatedSentEmail));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     [ActionName("Patch")]
-    public async Task<IActionResult> Put([FromRoute] int key, Delta<SentEmail> updatedSentEmail)
+    public async Task<IActionResult> Put(
+        [FromRoute] int key,
+        Delta<SentEmail> updatedSentEmail)
     {
-        SentEmail originalEntity = service.GetSentEmail(iSentEmailId: key);
-
-        if (originalEntity == null)
+        try
         {
-            return NotFound();
+            SentEmail originalEntity = service.GetSentEmail(iSentEmailId: key);
+
+            if (originalEntity is null)
+            {
+                return NotFound();
+            }
+
+            updatedSentEmail.Patch(original: originalEntity);
+
+            return Ok(value: await service.UpdateSentEmailAsync(
+                updatedSentEmail: originalEntity));
         }
-
-        updatedSentEmail.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateSentEmailAsync(updatedSentEmail: originalEntity));
-    }
-
-    [HttpDelete]
-    public async Task<IActionResult> Delete([FromRoute] int key)
-    {
-        await service.DeleteAsync(iSentEmailId: key);
-        return Ok();
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 }

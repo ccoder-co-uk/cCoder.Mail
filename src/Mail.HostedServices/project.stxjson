@@ -1,12 +1,25 @@
 {
+  "SchemaVersion": 2,
+  "Project": {
+    "Id": "Mail.HostedServices",
+    "Name": "Mail.HostedServices",
+    "AssemblyName": "Mail.HostedServices"
+  },
   "Classes": [
     {
       "Name": "Mail.HostedServices.IServiceCollectionExtensions",
       "StandardElementType": "App",
+      "LineNumber": 11,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.HostedServices.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,IConfiguration,System.Action\u003CMail.HostedServices.Models.MailHostedServicesConfiguration\u003E)",
           "Name": "AddMailHostedServices",
+          "LineNumber": 13,
           "Inputs": [
             {
               "Name": "services",
@@ -21,13 +34,46 @@
               "Type": "System.Action\u003CMail.HostedServices.Models.MailHostedServicesConfiguration\u003E"
             }
           ],
-          "ReturnType": "IServiceCollection"
+          "ReturnType": "IServiceCollection",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "System.Action\u003CT\u003E",
+              "MethodName": "Invoke",
+              "MethodId": "System.Action\u003CT\u003E.Invoke(T)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.IServiceCollectionExtensions",
+              "MethodName": "AddMailHostedServices",
+              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "Mail.HostedServices.Models.MailHostedServicesConfiguration",
       "StandardElementType": "Model",
+      "LineNumber": 11,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "Data",
@@ -47,38 +93,87 @@
     {
       "Name": "Mail.HostedServices.Program",
       "StandardElementType": "App",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.HostedServices.Program.Main(System.String[])",
           "Name": "Main",
+          "LineNumber": 9,
           "Inputs": [
             {
               "Name": "args",
               "Type": "System.String[]"
             }
           ],
-          "ReturnType": "System.Void"
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "Mail.HostedServices.WebApplicationExtensions",
+              "MethodName": "UseMailHostedServicesApplication",
+              "MethodId": "Mail.HostedServices.WebApplicationExtensions.UseMailHostedServicesApplication(WebApplication)",
+              "StandardElementType": "App",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "Mail.HostedServices.WebApplicationExtensions",
       "StandardElementType": "App",
+      "LineNumber": 10,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.HostedServices.WebApplicationExtensions.UseMailHostedServicesApplication(WebApplication)",
           "Name": "UseMailHostedServicesApplication",
+          "LineNumber": 12,
           "Inputs": [
             {
               "Name": "app",
               "Type": "WebApplication"
             }
           ],
-          "ReturnType": "WebApplication"
+          "ReturnType": "WebApplication",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     }
   ],
+  "Interfaces": [],
   "Links": [],
   "AnalysisItems": []
 }

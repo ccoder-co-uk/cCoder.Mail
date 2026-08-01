@@ -87,7 +87,7 @@ value: new
         string responseContent = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: responseContent);
+            .Be(expected: HttpStatusCode.Created, because: responseContent);
 
         return JsonSerializer.Deserialize<QueuedEmail>(json: responseContent, options: JsonOptions)
             ?? throw new InvalidOperationException(message: "Expected queued email payload.");
@@ -177,7 +177,7 @@ value: new MailboxReceiveRequest
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: content);
+            .Be(expected: HttpStatusCode.Created, because: content);
 
         return JsonSerializer.Deserialize<ReceivedEmail[]>(json: content, options: JsonOptions)
             ?? throw new InvalidOperationException(message: "Expected received email payload.");

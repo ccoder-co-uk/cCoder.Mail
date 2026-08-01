@@ -7,8 +7,8 @@ using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Extensions.OData;
 using cCoder.Mail.Models.OData;
+using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Processings;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
@@ -17,47 +17,38 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class MailReceiverController(
-    IMailReceiverManager service)
+public partial class MailReceiverController(IMailReceiverManager service)
     : ODataController
 {
-    [HttpGet]
-    public IActionResult GetMetadata()
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromRoute] Guid key)
     {
-        bool isExtendedMetaRequest = Request.Query["extend"] == "true";
+        try
+        {
+            await service.DeleteAsync(iMailReceiverId: key);
 
-        return isExtendedMetaRequest
-            ? Ok(
-value: new MailModelBroker()
-                    .Build()
-            .EDMModel.GetExtendedMetadataForType(context: "Mail", type: typeof(MailReceiver))
-            )
-            : Ok(value: new MetadataContainer(type: typeof(MailReceiver), isEntity: true, hasEndpoint: true));
+            return NoContent();
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [HttpGet]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
-    [ActionName("Get")]
-    public IActionResult GetAll(ODataQueryOptions<MailReceiver> queryOptions) =>
-        Ok(value: service.GetAllMailReceiver());
-
-    [HttpGet]
-    [AllowAnonymous]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 3,
-        MaxExpansionDepth = 3
-    )]
+    [EnableQuery(MaxAnyAllExpressionDepth = 3, MaxExpansionDepth = 3)]
     public IActionResult Get([FromRoute] Guid key)
     {
         try
@@ -65,71 +56,191 @@ value: new MailModelBroker()
             IQueryable<MailReceiver> result = service.GetAllMailReceiver()
                 .Where(predicate: mailReceiver => mailReceiver.Id == key);
 
+            MailReceiver mailReceiver = result.FirstOrDefault();
+
+            if (mailReceiver is null)
+            {
+                return NotFound();
+            }
+
             return Ok(value: SingleResult.Create(queryable: result));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException)
         {
-            return NotFound();
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
+    }
+
+    [HttpGet]
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
+    [ActionName("Get")]
+    public IActionResult GetAll()
+    {
+        try
+        {
+            return Ok(value: service.GetAllMailReceiver());
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetMetadata()
+    {
+        try
+        {
+            bool isExtendedMetaRequest = Request.Query["extend"] == "true";
+
+            return isExtendedMetaRequest
+                ? Ok(value: new MailModelBroker()
+                    .Build()
+                    .EDMModel
+                    .GetExtendedMetadataForType(
+                        context: "Mail",
+                        type: typeof(MailReceiver)))
+                : Ok(value: new MetadataContainer(
+                    type: typeof(MailReceiver),
+                    isEntity: true,
+                    hasEndpoint: true));
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail metadata operation failed.");
         }
     }
 
     [HttpPost]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
     public async Task<IActionResult> Post([FromBody] MailReceiver newMailReceiver)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(modelState: ModelState);
+            }
 
-        return Ok(value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver));
+            return StatusCode(
+                statusCode: StatusCodes.Status201Created,
+                value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [HttpPut]
-    [EnableQuery(
-        AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-        AllowedFunctions = AllowedFunctions.AllFunctions,
-        AllowedLogicalOperators = AllowedLogicalOperators.All,
-        AllowedQueryOptions = AllowedQueryOptions.All,
-        MaxAnyAllExpressionDepth = 5,
-        MaxExpansionDepth = 5
-    )]
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] MailReceiver updatedMailReceiver)
+    [EnableQuery(MaxAnyAllExpressionDepth = 5, MaxExpansionDepth = 5)]
+    public async Task<IActionResult> Put(
+        [FromRoute] Guid key,
+        [FromBody] MailReceiver updatedMailReceiver)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return new cCoder.Mail.Extensions.OData.BadRequestResult(modelState: ModelState);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(modelState: ModelState);
+            }
 
-        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: updatedMailReceiver));
+            updatedMailReceiver.Id = key;
+
+            return Ok(value: await service.UpdateMailReceiverAsync(
+                updatedMailReceiver: updatedMailReceiver));
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 
     [AcceptVerbs("PATCH", "MERGE")]
     [ActionName("Patch")]
-    public async Task<IActionResult> Put([FromRoute] Guid key, Delta<MailReceiver> updatedMailReceiver)
+    public async Task<IActionResult> Put(
+        [FromRoute] Guid key,
+        Delta<MailReceiver> updatedMailReceiver)
     {
-        MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverId: key);
-
-        if (originalEntity == null)
+        try
         {
-            return NotFound();
+            MailReceiver originalEntity = service.GetMailReceiver(iMailReceiverId: key);
+
+            if (originalEntity is null)
+            {
+                return NotFound();
+            }
+
+            updatedMailReceiver.Patch(original: originalEntity);
+
+            return Ok(value: await service.UpdateMailReceiverAsync(
+                updatedMailReceiver: originalEntity));
         }
-
-        updatedMailReceiver.Patch(original: originalEntity);
-        return Ok(value: await service.UpdateMailReceiverAsync(updatedMailReceiver: originalEntity));
-    }
-
-    [HttpDelete]
-    public async Task<IActionResult> Delete([FromRoute] Guid key)
-    {
-        await service.DeleteAsync(iMailReceiverId: key);
-        return Ok();
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
     }
 }

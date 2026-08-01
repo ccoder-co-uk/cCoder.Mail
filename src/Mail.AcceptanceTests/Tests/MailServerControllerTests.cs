@@ -71,7 +71,7 @@ public sealed partial class MailServerControllerTests(WebAcceptanceFixture fixtu
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: content);
+            .Be(expected: HttpStatusCode.Created, because: content);
 
         return JsonSerializer.Deserialize<MailServer>(json: content, options: JsonOptions)!;
     }
@@ -109,7 +109,7 @@ public sealed partial class MailServerControllerTests(WebAcceptanceFixture fixtu
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: content);
+            .Be(expected: HttpStatusCode.NoContent, because: content);
 
         return (int)response.StatusCode;
     }
