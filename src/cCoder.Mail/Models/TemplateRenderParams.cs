@@ -2,14 +2,11 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
+using cCoder.Data.Models.CMS;
+using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Models;
 
-public class Result
-{
-    [Key]
-    public virtual string Id { get; set; }
-    public string Message { get; set; }
-    public bool Success { get; set; }
-}
+public class TemplateRenderParams(App app, User user, string culture)
+    : RenderParams(app: app, user: user, culture: culture)
+{ }

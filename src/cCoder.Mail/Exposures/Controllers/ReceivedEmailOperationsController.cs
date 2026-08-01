@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models;
+using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +20,33 @@ public sealed class ReceivedEmailOperationsController(
         [FromBody] MailboxReceiveRequest newMailboxReceiveRequest,
         CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return BadRequest(modelState: ModelState);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(modelState: ModelState);
+            }
 
-        return Ok(value: await service.ReceiveMailboxReceiveRequestAsync(request: newMailboxReceiveRequest, cancellationToken: cancellationToken));
+            return StatusCode(
+                statusCode: StatusCodes.Status201Created,
+                value: await service.ReceiveMailboxReceiveRequestAsync(
+                    request: newMailboxReceiveRequest,
+                    cancellationToken: cancellationToken));
+        }
+        catch (ArgumentException)
+        {
+            return BadRequest(error: "The mail receive request is invalid.");
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail receive request is invalid.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail receive operation failed.");
+        }
     }
 
     [HttpGet("ReceiveTop/{mailReceiverId:guid}/{count:int}")]
@@ -33,15 +55,32 @@ public sealed class ReceivedEmailOperationsController(
         [FromRoute] int count,
         CancellationToken cancellationToken)
     {
-        if (count <= 0)
+        try
         {
-            return BadRequest(error: "Count must be greater than zero.");
-        }
+            if (count <= 0)
+            {
+                return BadRequest(error: "Count must be greater than zero.");
+            }
 
-        return Ok(
-            value: await service.ReceiveTopAsync(
-                mailReceiverId: mailReceiverId,
-                count: count,
-                cancellationToken: cancellationToken));
+            return Ok(
+                value: await service.ReceiveTopAsync(
+                    mailReceiverId: mailReceiverId,
+                    count: count,
+                    cancellationToken: cancellationToken));
+        }
+        catch (ArgumentException)
+        {
+            return BadRequest(error: "The mail receive request is invalid.");
+        }
+        catch (MailValidationException)
+        {
+            return BadRequest(error: "The mail receive request is invalid.");
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail receive operation failed.");
+        }
     }
 }

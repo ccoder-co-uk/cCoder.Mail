@@ -14,16 +14,49 @@ public sealed class MailProvidersController(
     : ControllerBase
 {
     [HttpGet]
-    public IActionResult Get() =>
-        Ok(value: providerCatalog.GetSenders()
-        .Concat(second: providerCatalog.GetReceivers())
-        .ToArray());
+    public IActionResult Get()
+    {
+        try
+        {
+            return Ok(value: providerCatalog.GetSenders()
+                .Concat(second: providerCatalog.GetReceivers())
+                .ToArray());
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail provider operation failed.");
+        }
+    }
 
     [HttpGet("Senders")]
-    public IActionResult GetSenders() =>
-        Ok(value: providerCatalog.GetSenders());
+    public IActionResult GetSenders()
+    {
+        try
+        {
+            return Ok(value: providerCatalog.GetSenders());
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail provider operation failed.");
+        }
+    }
 
     [HttpGet("Receivers")]
-    public IActionResult GetReceivers() =>
-        Ok(value: providerCatalog.GetReceivers());
+    public IActionResult GetReceivers()
+    {
+        try
+        {
+            return Ok(value: providerCatalog.GetReceivers());
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail provider operation failed.");
+        }
+    }
 }

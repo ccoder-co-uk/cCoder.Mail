@@ -1,12 +1,36 @@
 {
+  "SchemaVersion": 2,
+  "Project": {
+    "Id": "cCoder.Mail.Providers",
+    "Name": "cCoder.Mail.Providers",
+    "AssemblyName": "cCoder.Mail.Providers"
+  },
   "Classes": [
     {
       "Name": "cCoder.Mail.Providers.Brokers.MailClients.ImapMailReceiverBroker",
       "StandardElementType": "Broker",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.MailClients.IImapMailReceiverBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.MailClients.IImapMailReceiverBroker",
+          "Name": "IImapMailReceiverBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.ImapMailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "request",
@@ -17,17 +41,56 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IImapMailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker",
       "StandardElementType": "Broker",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker",
+          "Name": "IMicrosoftGraphBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "ReceiveEmailAsync",
+          "LineNumber": 24,
           "Inputs": [
             {
               "Name": "request",
@@ -42,10 +105,33 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "SendEmailAsync",
+          "LineNumber": 15,
           "Inputs": [
             {
               "Name": "email",
@@ -60,17 +146,56 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Brokers.MailClients.Pop3MailReceiverBroker",
       "StandardElementType": "Broker",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.MailClients.IPop3MailReceiverBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.MailClients.IPop3MailReceiverBroker",
+          "Name": "IPop3MailReceiverBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.Pop3MailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "request",
@@ -81,17 +206,56 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[][]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[][]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IPop3MailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker",
       "StandardElementType": "Broker",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker",
+          "Name": "ISmtpMailSenderBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendAsync",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "email",
@@ -102,17 +266,56 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker",
       "StandardElementType": "Broker",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+          "Name": "IMailReceiverStorageBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.Storages",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
           "Name": "SelectMailReceiverByIdAsync",
+          "LineNumber": 15,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -123,51 +326,196 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
+              "MethodName": "IgnoreQueryFilters",
+              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
+              "MethodName": "SingleOrDefaultAsync",
+              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleOrDefaultAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E,System.Threading.CancellationToken)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Data.ICoreContextFactory",
+              "MethodName": "CreateCoreContext",
+              "MethodId": "cCoder.Data.ICoreContextFactory.CreateCoreContext()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Dependencies.MailClients.ImapMailClientDependency",
       "StandardElementType": "Dependency",
+      "LineNumber": 12,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Net.Sockets:System.Net.Sockets.TcpClient",
+        "FullName": "System.Net.Sockets.TcpClient",
+        "Name": "TcpClient",
+        "Namespace": "System.Net.Sockets",
+        "AssemblyName": "System.Net.Sockets",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Dependencies.MailClients.MicrosoftGraphMailClientDependency",
       "StandardElementType": "Dependency",
+      "LineNumber": 13,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Net.Http:System.Net.Http.HttpClient",
+        "FullName": "System.Net.Http.HttpClient",
+        "Name": "HttpClient",
+        "Namespace": "System.Net.Http",
+        "AssemblyName": "System.Net.Http",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Dependencies.MailClients.Pop3MailClientDependency",
       "StandardElementType": "Dependency",
+      "LineNumber": 12,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Net.Sockets:System.Net.Sockets.TcpClient",
+        "FullName": "System.Net.Sockets.TcpClient",
+        "Name": "TcpClient",
+        "Namespace": "System.Net.Sockets",
+        "AssemblyName": "System.Net.Sockets",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Dependencies.MailClients.SmtpMailClientDependency",
       "StandardElementType": "Dependency",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Net.Mail:System.Net.Mail.SmtpClient",
+        "FullName": "System.Net.Mail.SmtpClient",
+        "Name": "SmtpClient",
+        "Namespace": "System.Net.Mail",
+        "AssemblyName": "System.Net.Mail",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient",
       "StandardElementType": "Exposure",
+      "LineNumber": 12,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "FullName": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Name": "IMailClient",
+          "Namespace": "cCoder.Mail.Providers.Exposures.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Exposure"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient.GetProviderNames()",
           "Name": "GetProviderNames",
+          "LineNumber": 16,
           "Inputs": [],
-          "ReturnType": "System.String[]"
+          "ReturnType": "System.String[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetProviderNames()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient.GetSupportedOperations()",
           "Name": "GetSupportedOperations",
+          "LineNumber": 19,
           "Inputs": [],
-          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetSupportedOperations()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 29,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -182,10 +530,49 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService",
+              "MethodName": "ReceiveMailReceiverAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendAsync",
+          "LineNumber": 22,
           "Inputs": [
             {
               "Name": "email",
@@ -196,27 +583,104 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
       "StandardElementType": "Exposure",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory",
+          "FullName": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory",
+          "Name": "IMailClientFactory",
+          "Namespace": "cCoder.Mail.Providers.Exposures.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Exposure"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory.CreateMailClient(System.String)",
           "Name": "CreateMailClient",
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "providerName",
               "Type": "System.String"
             }
           ],
-          "ReturnType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient"
+          "ReturnType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory.CreateMailClient(System.String)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Collections.Generic.CollectionExtensions",
+              "MethodName": "GetValueOrDefault",
+              "MethodId": "System.Collections.Generic.CollectionExtensions.GetValueOrDefault(System.Collections.Generic.IReadOnlyDictionary\u003CTKey, TValue\u003E,TKey)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory.CreateMailClientAsync(System.Guid,System.Threading.CancellationToken)",
           "Name": "CreateMailClientAsync",
+          "LineNumber": 35,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -227,27 +691,124 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E"
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory.CreateMailClientAsync(System.Guid,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
+              "MethodName": "CreateMailClient",
+              "MethodId": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory.CreateMailClient(System.String)",
+              "StandardElementType": "Exposure",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.IMailProviderService",
+              "MethodName": "GetMailReceiverProviderNameAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.IMailProviderService.GetMailReceiverProviderNameAsync(System.Guid,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient",
       "StandardElementType": "Exposure",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "FullName": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Name": "IMailClient",
+          "Namespace": "cCoder.Mail.Providers.Exposures.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Exposure"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient.GetProviderNames()",
           "Name": "GetProviderNames",
+          "LineNumber": 16,
           "Inputs": [],
-          "ReturnType": "System.String[]"
+          "ReturnType": "System.String[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetProviderNames()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient.GetSupportedOperations()",
           "Name": "GetSupportedOperations",
+          "LineNumber": 24,
           "Inputs": [],
-          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetSupportedOperations()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 37,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -262,10 +823,49 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService",
+              "MethodName": "ReceiveMailReceiverAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.MicrosoftGraphMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendAsync",
+          "LineNumber": 30,
           "Inputs": [
             {
               "Name": "email",
@@ -276,27 +876,115 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService",
+              "MethodName": "SendQueuedEmailAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient",
       "StandardElementType": "Exposure",
+      "LineNumber": 12,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "FullName": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Name": "IMailClient",
+          "Namespace": "cCoder.Mail.Providers.Exposures.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Exposure"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient.GetProviderNames()",
           "Name": "GetProviderNames",
+          "LineNumber": 16,
           "Inputs": [],
-          "ReturnType": "System.String[]"
+          "ReturnType": "System.String[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetProviderNames()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient.GetSupportedOperations()",
           "Name": "GetSupportedOperations",
+          "LineNumber": 19,
           "Inputs": [],
-          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetSupportedOperations()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 29,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -311,10 +999,49 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService",
+              "MethodName": "ReceiveMailReceiverAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.PopMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendAsync",
+          "LineNumber": 22,
           "Inputs": [
             {
               "Name": "email",
@@ -325,27 +1052,100 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient",
       "StandardElementType": "Exposure",
+      "LineNumber": 12,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "FullName": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Name": "IMailClient",
+          "Namespace": "cCoder.Mail.Providers.Exposures.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Exposure"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient.GetProviderNames()",
           "Name": "GetProviderNames",
+          "LineNumber": 16,
           "Inputs": [],
-          "ReturnType": "System.String[]"
+          "ReturnType": "System.String[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetProviderNames()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient.GetSupportedOperations()",
           "Name": "GetSupportedOperations",
+          "LineNumber": 19,
           "Inputs": [],
-          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]"
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetSupportedOperations()"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveAsync",
+          "LineNumber": 29,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -360,10 +1160,33 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendAsync",
+          "LineNumber": 22,
           "Inputs": [
             {
               "Name": "email",
@@ -374,17 +1197,60 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService",
+              "MethodName": "SendQueuedEmailAsync",
+              "MethodId": "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.IServiceCollectionExtensions",
       "StandardElementType": "App",
+      "LineNumber": 15,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.IServiceCollectionExtensions.AddMailProviders(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Providers.Models.MailProviderRegistration[])",
           "Name": "AddMailProviders",
+          "LineNumber": 17,
           "Inputs": [
             {
               "Name": "services",
@@ -395,43 +1261,130 @@
               "Type": "cCoder.Mail.Providers.Models.MailProviderRegistration[]"
             }
           ],
-          "ReturnType": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
+          "ReturnType": "Microsoft.Extensions.DependencyInjection.IServiceCollection",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions",
+              "MethodName": "AddSingleton",
+              "MethodId": "Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions.AddSingleton(Microsoft.Extensions.DependencyInjection.IServiceCollection,TService)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
       "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Private.CoreLib:System.Exception",
+        "FullName": "System.Exception",
+        "Name": "Exception",
+        "Namespace": "System",
+        "AssemblyName": "System.Private.CoreLib",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
       "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Private.CoreLib:System.Exception",
+        "FullName": "System.Exception",
+        "Name": "Exception",
+        "Namespace": "System",
+        "AssemblyName": "System.Private.CoreLib",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
       "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Private.CoreLib:System.Exception",
+        "FullName": "System.Exception",
+        "Name": "Exception",
+        "Namespace": "System",
+        "AssemblyName": "System.Private.CoreLib",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException",
       "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Private.CoreLib:System.NotSupportedException",
+        "FullName": "System.NotSupportedException",
+        "Name": "NotSupportedException",
+        "Namespace": "System",
+        "AssemblyName": "System.Private.CoreLib",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Models.MailProviderNames",
       "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": []
     },
     {
       "Name": "cCoder.Mail.Providers.Models.MailProviderRegistration",
       "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "MicrosoftGraph",
@@ -447,6 +1400,11 @@
     {
       "Name": "cCoder.Mail.Providers.Models.MailboxReceiveRequest",
       "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "AppId",
@@ -498,6 +1456,11 @@
     {
       "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration",
       "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "ClientId",
@@ -525,10 +1488,28 @@
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 14,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService",
+          "Name": "IImapMailReceiverService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 23,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -543,17 +1524,81 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+              "MethodName": "SelectMailReceiverByIdAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.MailProviderService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.IMailProviderService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.IMailProviderService",
+          "Name": "IMailProviderService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.MailProviderService.GetMailReceiverProviderNameAsync(System.Guid,System.Threading.CancellationToken)",
           "Name": "GetMailReceiverProviderNameAsync",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -564,17 +1609,79 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.String\u003E"
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.String\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.IMailProviderService.GetMailReceiverProviderNameAsync(System.Guid,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+              "MethodName": "SelectMailReceiverByIdAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 13,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService",
+          "Name": "IMicrosoftGraphMailReceiverService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 19,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -589,17 +1696,81 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+              "MethodName": "SelectMailReceiverByIdAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService",
+          "Name": "IMicrosoftGraphMailSenderService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendQueuedEmailAsync",
+          "LineNumber": 16,
           "Inputs": [
             {
               "Name": "email",
@@ -610,17 +1781,79 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker",
+              "MethodName": "SendEmailAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 14,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService",
+          "Name": "IPop3MailReceiverService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 31,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -635,17 +1868,95 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E"
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.InvalidOperationException",
+              "MethodName": ".ctor",
+              "MethodId": "System.InvalidOperationException..ctor(System.String?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Linq.Enumerable",
+              "MethodName": "OrderByDescending",
+              "MethodId": "System.Linq.Enumerable.OrderByDescending(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, TKey\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Linq.Enumerable",
+              "MethodName": "Select",
+              "MethodId": "System.Linq.Enumerable.Select(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, TResult\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+              "MethodName": "SelectMailReceiverByIdAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.ArgumentNullException",
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService",
       "StandardElementType": "FoundationService",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService",
+          "FullName": "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService",
+          "Name": "ISmtpMailSenderService",
+          "Namespace": "cCoder.Mail.Providers.Services.Foundations",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "FoundationService"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
           "Name": "SendQueuedEmailAsync",
+          "LineNumber": 13,
           "Inputs": [
             {
               "Name": "email",
@@ -656,7 +1967,726 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [
+            "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker",
+              "MethodName": "SendAsync",
+              "MethodId": "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.InvalidOperationException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    }
+  ],
+  "Interfaces": [
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.IImapMailReceiverBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IImapMailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
+          "Name": "ReceiveAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 10,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Name": "ReceiveEmailAsync",
+          "LineNumber": 17,
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Name": "SendEmailAsync",
+          "LineNumber": 12,
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "configuration",
+              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.IPop3MailReceiverBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IPop3MailReceiverBroker.ReceiveAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
+          "Name": "ReceiveAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "request",
+              "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CSystem.String[][]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.ISmtpMailSenderBroker.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+          "Name": "SendAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.Storages.IMailReceiverStorageBroker.SelectMailReceiverByIdAsync(System.Guid,System.Threading.CancellationToken)",
+          "Name": "SelectMailReceiverByIdAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Data.Models.Mail.MailReceiver\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+      "StandardElementType": "Exposure",
+      "LineNumber": 10,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetProviderNames()",
+          "Name": "GetProviderNames",
+          "LineNumber": 12,
+          "Inputs": [],
+          "ReturnType": "System.String[]",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.GetSupportedOperations()",
+          "Name": "GetSupportedOperations",
+          "LineNumber": 14,
+          "Inputs": [],
+          "ReturnType": "cCoder.Mail.Providers.Models.MailClientOperation[]",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.ReceiveAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+          "Name": "ReceiveAsync",
+          "LineNumber": 20,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient.SendAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+          "Name": "SendAsync",
+          "LineNumber": 16,
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory",
+      "StandardElementType": "Exposure",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory.CreateMailClient(System.String)",
+          "Name": "CreateMailClient",
+          "LineNumber": 9,
+          "Inputs": [
+            {
+              "Name": "providerName",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory.CreateMailClientAsync(System.Guid,System.Threading.CancellationToken)",
+          "Name": "CreateMailClientAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.IImapMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+          "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 12,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.IMailProviderService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.IMailProviderService.GetMailReceiverProviderNameAsync(System.Guid,System.Threading.CancellationToken)",
+          "Name": "GetMailReceiverProviderNameAsync",
+          "LineNumber": 9,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.String\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+          "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 12,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 9,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.IMicrosoftGraphMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+          "Name": "SendQueuedEmailAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 10,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.IPop3MailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
+          "Name": "ReceiveMailReceiverAsync",
+          "LineNumber": 12,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            },
+            {
+              "Name": "maximumMessages",
+              "Type": "System.Int32"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Data.Models.Mail.ReceivedEmail[]\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService",
+      "StandardElementType": "FoundationService",
+      "LineNumber": 9,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Services.Foundations.ISmtpMailSenderService.SendQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Threading.CancellationToken)",
+          "Name": "SendQueuedEmailAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "email",
+              "Type": "cCoder.Data.Models.Mail.QueuedEmail"
+            },
+            {
+              "Name": "cancellationToken",
+              "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     }

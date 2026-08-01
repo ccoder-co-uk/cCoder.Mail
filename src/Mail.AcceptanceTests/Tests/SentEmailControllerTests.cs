@@ -69,7 +69,7 @@ public sealed partial class SentEmailControllerTests(WebAcceptanceFixture fixtur
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: content);
+            .Be(expected: HttpStatusCode.Created, because: content);
 
         return JsonSerializer.Deserialize<SentEmail>(json: content, options: JsonOptions)
             ?? throw new InvalidOperationException(message: "Expected sent email payload.");
@@ -108,7 +108,7 @@ public sealed partial class SentEmailControllerTests(WebAcceptanceFixture fixtur
         string content = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should()
-            .Be(expected: HttpStatusCode.OK, because: content);
+            .Be(expected: HttpStatusCode.NoContent, because: content);
 
         return (int)response.StatusCode;
     }

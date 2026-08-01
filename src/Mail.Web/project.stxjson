@@ -1,8 +1,28 @@
 {
+  "SchemaVersion": 2,
+  "Project": {
+    "Id": "Mail.Web",
+    "Name": "Mail.Web",
+    "AssemblyName": "Mail.Web"
+  },
   "Classes": [
     {
       "Name": "Apps.Shared.Hosting.NoOpSession",
       "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "Mail.Web:ISession",
+        "FullName": "ISession",
+        "Name": "ISession",
+        "Namespace": "\u003Cglobal namespace\u003E",
+        "AssemblyName": "Mail.Web",
+        "Kind": "Class",
+        "IsInCurrentProject": true,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "Id",
@@ -23,42 +43,104 @@
       ],
       "Methods": [
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.Clear()",
           "Name": "Clear",
+          "LineNumber": 30,
           "Inputs": [],
-          "ReturnType": "System.Void"
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.CommitAsync(System.Threading.CancellationToken)",
           "Name": "CommitAsync",
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "cancellationToken",
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.LoadAsync(System.Threading.CancellationToken)",
           "Name": "LoadAsync",
+          "LineNumber": 18,
           "Inputs": [
             {
               "Name": "cancellationToken",
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task"
+          "ReturnType": "System.Threading.Tasks.Task",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.Remove(System.String)",
           "Name": "Remove",
+          "LineNumber": 29,
           "Inputs": [
             {
               "Name": "key",
               "Type": "System.String"
             }
           ],
-          "ReturnType": "System.Void"
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.Set(System.String,System.Byte[])",
           "Name": "Set",
+          "LineNumber": 28,
           "Inputs": [
             {
               "Name": "key",
@@ -69,10 +151,25 @@
               "Type": "System.Byte[]"
             }
           ],
-          "ReturnType": "System.Void"
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         },
         {
+          "Id": "Apps.Shared.Hosting.NoOpSession.TryGetValue(System.String,System.Byte[])",
           "Name": "TryGetValue",
+          "LineNumber": 22,
           "Inputs": [
             {
               "Name": "key",
@@ -83,13 +180,40 @@
               "Type": "System.Byte[]"
             }
           ],
-          "ReturnType": "System.Boolean"
+          "ReturnType": "System.Boolean",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "Apps.Shared.Hosting.NoOpSessionFeature",
       "StandardElementType": "Dependency",
+      "LineNumber": 10,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "Mail.Web:ISessionFeature",
+        "FullName": "ISessionFeature",
+        "Name": "ISessionFeature",
+        "Namespace": "\u003Cglobal namespace\u003E",
+        "AssemblyName": "Mail.Web",
+        "Kind": "Class",
+        "IsInCurrentProject": true,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "Session",
@@ -101,10 +225,17 @@
     {
       "Name": "Mail.Web.IServiceCollectionExtensions",
       "StandardElementType": "App",
+      "LineNumber": 12,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.Web.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,IConfiguration,System.Action\u003CMail.Web.Models.MailWebConfiguration\u003E)",
           "Name": "AddMailWeb",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "services",
@@ -119,13 +250,46 @@
               "Type": "System.Action\u003CMail.Web.Models.MailWebConfiguration\u003E"
             }
           ],
-          "ReturnType": "IServiceCollection"
+          "ReturnType": "IServiceCollection",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "System.Action\u003CT\u003E",
+              "MethodName": "Invoke",
+              "MethodId": "System.Action\u003CT\u003E.Invoke(T)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.IServiceCollectionExtensions",
+              "MethodName": "AddMailWeb",
+              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "Mail.Web.Models.MailWebConfiguration",
       "StandardElementType": "Model",
+      "LineNumber": 12,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [
         {
           "Name": "Data",
@@ -149,38 +313,95 @@
     {
       "Name": "Mail.Web.Program",
       "StandardElementType": "App",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.Web.Program.Main(System.String[])",
           "Name": "Main",
+          "LineNumber": 9,
           "Inputs": [
             {
               "Name": "args",
               "Type": "System.String[]"
             }
           ],
-          "ReturnType": "System.Void"
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "Mail.Web.WebApplicationExtensions",
+              "MethodName": "UseMailApplication",
+              "MethodId": "Mail.Web.WebApplicationExtensions.UseMailApplication(WebApplication)",
+              "StandardElementType": "App",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     },
     {
       "Name": "Mail.Web.WebApplicationExtensions",
       "StandardElementType": "App",
+      "LineNumber": 12,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
       "Properties": [],
       "Methods": [
         {
+          "Id": "Mail.Web.WebApplicationExtensions.UseMailApplication(WebApplication)",
           "Name": "UseMailApplication",
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "app",
               "Type": "WebApplication"
             }
           ],
-          "ReturnType": "WebApplication"
+          "ReturnType": "WebApplication",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.OData.ODataApplicationBuilderExtensions",
+              "MethodName": "UseODataRouteDebug",
+              "MethodId": "Microsoft.AspNetCore.OData.ODataApplicationBuilderExtensions.UseODataRouteDebug(Microsoft.AspNetCore.Builder.IApplicationBuilder)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
         }
       ]
     }
   ],
+  "Interfaces": [],
   "Links": [],
   "AnalysisItems": []
 }
