@@ -49,7 +49,7 @@ jobs:
           }
 
       - name: Build
-        run: dotnet build src/cCoder.Mail.slnx -c Release --no-restore /p:Version="${{ steps.version.outputs.value }}"
+        run: dotnet build src/cCoder.Mail.slnx -c Release --no-restore -m:1 /p:BuildInParallel=false /p:UseSharedCompilation=false /p:Version="${{ steps.version.outputs.value }}"
 
       - name: Test
         run: dotnet test src/cCoder.Mail.slnx -c Release --no-build --filter "Category!=ExternalIntegration"
