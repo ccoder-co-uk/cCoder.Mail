@@ -9,7 +9,7 @@ using cCoder.Mail.Providers.Models;
 namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailSenderService(
-    MicrosoftGraphProviderConfiguration configuration,
+    MailProviderConfiguration configuration,
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailSenderService
 {

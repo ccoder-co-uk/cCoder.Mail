@@ -11,7 +11,7 @@ using cCoder.Mail.Providers.Models;
 namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailReceiverService(
-    MicrosoftGraphProviderConfiguration configuration,
+    MailProviderConfiguration configuration,
     IMailReceiverStorageBroker mailReceiverStorageBroker,
     IMicrosoftGraphBroker microsoftGraphBroker)
     : IMicrosoftGraphMailReceiverService

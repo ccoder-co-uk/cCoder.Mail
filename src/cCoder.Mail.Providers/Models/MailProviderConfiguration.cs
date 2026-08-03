@@ -4,7 +4,7 @@
 
 namespace cCoder.Mail.Providers.Models;
 
-public sealed class MicrosoftGraphProviderConfiguration
+public sealed class MailProviderConfiguration
 {
     public string TenantId { get; set; }
 

@@ -345,15 +345,15 @@ value: new MailboxReceiveRequest
                 value: settings.CoreConnectionString);
 
             builder.UseSetting(
-                key: "Mail:Providers:3:MicrosoftGraph:TenantId",
+                key: "Mail:Providers:MicrosoftGraph:TenantId",
                 value: settings.TenantId);
 
             builder.UseSetting(
-                key: "Mail:Providers:3:MicrosoftGraph:ClientId",
+                key: "Mail:Providers:MicrosoftGraph:ClientId",
                 value: settings.ClientId);
 
             builder.UseSetting(
-                key: "Mail:Providers:3:MicrosoftGraph:ClientSecret",
+                key: "Mail:Providers:MicrosoftGraph:ClientSecret",
                 value: settings.ClientSecret);
 
             builder.UseSetting(

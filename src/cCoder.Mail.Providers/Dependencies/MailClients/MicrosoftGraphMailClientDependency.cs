@@ -20,7 +20,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
 
     internal async Task<HttpClientBrokerResponse> SendEmailAsync(
         QueuedEmail email,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default)
     {
         string accessToken = await GetAccessTokenAsync(
@@ -47,7 +47,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
 
     internal async Task<HttpClientBrokerResponse> ReceiveEmailAsync(
         MailboxReceiveRequest request,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default)
     {
         string accessToken = await GetAccessTokenAsync(
@@ -70,7 +70,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     }
 
     private async Task<string> GetAccessTokenAsync(
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken)
     {
         using HttpRequestMessage request = new(
@@ -144,7 +144,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
 
     private static string BuildSendUrl(
         QueuedEmail email,
-        MicrosoftGraphProviderConfiguration configuration)
+        MailProviderConfiguration configuration)
     {
         MailSender sender = email.MailSender
             ?? throw new InvalidOperationException(
@@ -161,7 +161,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     }
 
     private static string BuildTokenUrl(
-        MicrosoftGraphProviderConfiguration configuration)
+        MailProviderConfiguration configuration)
     {
         string tenantId = ReadRequiredConfiguredValue(
             configuredValue: configuration.TenantId,
@@ -178,7 +178,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
 
     private static string BuildMessagesUrl(
         MailboxReceiveRequest request,
-        MicrosoftGraphProviderConfiguration configuration)
+        MailProviderConfiguration configuration)
     {
         string graphBaseUrl =
             ReadConfiguredValue(
