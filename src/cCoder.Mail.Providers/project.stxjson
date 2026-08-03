@@ -88,7 +88,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "ReceiveEmailAsync",
           "LineNumber": 24,
           "Inputs": [
@@ -98,7 +98,7 @@
             },
             {
               "Name": "configuration",
-              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+              "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
               "Name": "cancellationToken",
@@ -107,7 +107,7 @@
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
           "Implements": [
-            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)"
+            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)"
           ],
           "Calls": [],
           "PossibleExceptionTypes": [
@@ -129,7 +129,7 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "SendEmailAsync",
           "LineNumber": 15,
           "Inputs": [
@@ -139,7 +139,7 @@
             },
             {
               "Name": "configuration",
-              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+              "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
               "Name": "cancellationToken",
@@ -148,7 +148,7 @@
           ],
           "ReturnType": "System.Threading.Tasks.Task\u003CcCoder.Mail.Providers.Models.HttpClientBrokerResponse\u003E",
           "Implements": [
-            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)"
+            "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)"
           ],
           "Calls": [],
           "PossibleExceptionTypes": [
@@ -1248,7 +1248,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "cCoder.Mail.Providers.IServiceCollectionExtensions.AddMailProviders(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Providers.Models.MailProviderRegistration[])",
+          "Id": "cCoder.Mail.Providers.IServiceCollectionExtensions.AddMailProviders(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Providers.Models.MailProviderConfigurations)",
           "Name": "AddMailProviders",
           "LineNumber": 17,
           "Inputs": [
@@ -1258,12 +1258,19 @@
             },
             {
               "Name": "providers",
-              "Type": "cCoder.Mail.Providers.Models.MailProviderRegistration[]"
+              "Type": "cCoder.Mail.Providers.Models.MailProviderConfigurations"
             }
           ],
           "ReturnType": "Microsoft.Extensions.DependencyInjection.IServiceCollection",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions",
+              "MethodName": "AddKeyedSingleton",
+              "MethodId": "Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions.AddKeyedSingleton(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Object?,TService)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "Microsoft.Extensions.DependencyInjection.ServiceCollectionServiceExtensions",
               "MethodName": "AddSingleton",
@@ -1367,18 +1374,7 @@
       "Methods": []
     },
     {
-      "Name": "cCoder.Mail.Providers.Models.MailProviderNames",
-      "StandardElementType": "Model",
-      "LineNumber": 7,
-      "IsPublic": true,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Providers.Models.MailProviderRegistration",
+      "Name": "cCoder.Mail.Providers.Models.MailProviderConfiguration",
       "StandardElementType": "Model",
       "LineNumber": 7,
       "IsPublic": true,
@@ -1387,14 +1383,57 @@
       "Interfaces": [],
       "Properties": [
         {
-          "Name": "MicrosoftGraph",
-          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+          "Name": "ClientId",
+          "Type": "System.String"
         },
         {
-          "Name": "Name",
+          "Name": "ClientSecret",
+          "Type": "System.String"
+        },
+        {
+          "Name": "GraphBaseUrl",
+          "Type": "System.String"
+        },
+        {
+          "Name": "LoginBaseUrl",
+          "Type": "System.String"
+        },
+        {
+          "Name": "TenantId",
           "Type": "System.String"
         }
       ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MailProviderConfigurations",
+      "StandardElementType": "Dependency",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": {
+        "Id": "System.Private.CoreLib:System.Collections.Generic.Dictionary\u003CSystem.String, cCoder.Mail.Providers.Models.MailProviderConfiguration\u003E",
+        "FullName": "System.Collections.Generic.Dictionary\u003CSystem.String, cCoder.Mail.Providers.Models.MailProviderConfiguration\u003E",
+        "Name": "Dictionary",
+        "Namespace": "System.Collections.Generic",
+        "AssemblyName": "System.Private.CoreLib",
+        "Kind": "Class",
+        "IsInCurrentProject": false,
+        "StandardElementType": "Dependency"
+      },
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MailProviderNames",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
       "Methods": []
     },
     {
@@ -1448,38 +1487,6 @@
         },
         {
           "Name": "User",
-          "Type": "System.String"
-        }
-      ],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration",
-      "StandardElementType": "Model",
-      "LineNumber": 7,
-      "IsPublic": true,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [
-        {
-          "Name": "ClientId",
-          "Type": "System.String"
-        },
-        {
-          "Name": "ClientSecret",
-          "Type": "System.String"
-        },
-        {
-          "Name": "GraphBaseUrl",
-          "Type": "System.String"
-        },
-        {
-          "Name": "LoginBaseUrl",
-          "Type": "System.String"
-        },
-        {
-          "Name": "TenantId",
           "Type": "System.String"
         }
       ],
@@ -1796,7 +1803,7 @@
             {
               "TypeName": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker",
               "MethodName": "SendEmailAsync",
-              "MethodId": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+              "MethodId": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             }
@@ -2062,7 +2069,7 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.ReceiveEmailAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "ReceiveEmailAsync",
           "LineNumber": 17,
           "Inputs": [
@@ -2072,7 +2079,7 @@
             },
             {
               "Name": "configuration",
-              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+              "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
               "Name": "cancellationToken",
@@ -2095,7 +2102,7 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration,System.Threading.CancellationToken)",
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMicrosoftGraphBroker.SendEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,cCoder.Mail.Providers.Models.MailProviderConfiguration,System.Threading.CancellationToken)",
           "Name": "SendEmailAsync",
           "LineNumber": 12,
           "Inputs": [
@@ -2105,7 +2112,7 @@
             },
             {
               "Name": "configuration",
-              "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+              "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
               "Name": "cancellationToken",
@@ -2754,7 +2761,7 @@
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "ToType": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+      "ToType": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
@@ -2762,7 +2769,7 @@
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
-      "ToType": "cCoder.Mail.Providers.Models.MicrosoftGraphProviderConfiguration"
+      "ToType": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",

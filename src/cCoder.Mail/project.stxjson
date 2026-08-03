@@ -7015,7 +7015,7 @@
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": false,
           "HasFromBodyParameter": false,
-          "HasKeyParameter": true,
+          "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
         },
@@ -9259,7 +9259,7 @@
         },
         {
           "Name": "Providers",
-          "Type": "cCoder.Mail.Providers.Models.MailProviderRegistration[]"
+          "Type": "cCoder.Mail.Providers.Models.MailProviderConfigurations"
         },
         {
           "Name": "RootPath",
@@ -27482,13 +27482,6 @@
       "LineNumber": 114
     },
     {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 142
-    },
-    {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
@@ -27536,13 +27529,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
       "LineNumber": 114
-    },
-    {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 142
     },
     {
       "Code": "STXAPI005",
@@ -27594,13 +27580,6 @@
       "LineNumber": 114
     },
     {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 142
-    },
-    {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
@@ -27650,13 +27629,6 @@
       "LineNumber": 114
     },
     {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 142
-    },
-    {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
@@ -27704,13 +27676,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
       "LineNumber": 114
-    },
-    {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 142
     },
     {
       "Code": "STXAPI005",
@@ -27774,13 +27739,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
       "LineNumber": 114
-    },
-    {
-      "Code": "ODATA0001",
-      "Description": "An OData entity creation must return the created resource in a 201 response.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 142
     },
     {
       "Code": "STXAPI005",

@@ -14,7 +14,7 @@ internal sealed class MicrosoftGraphBroker(
 {
     public Task<HttpClientBrokerResponse> SendEmailAsync(
         QueuedEmail email,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.SendEmailAsync(
             email: email,
@@ -23,7 +23,7 @@ internal sealed class MicrosoftGraphBroker(
 
     public Task<HttpClientBrokerResponse> ReceiveEmailAsync(
         MailboxReceiveRequest request,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveEmailAsync(
             request: request,

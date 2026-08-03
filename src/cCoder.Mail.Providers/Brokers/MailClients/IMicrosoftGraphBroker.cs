@@ -11,11 +11,11 @@ public interface IMicrosoftGraphBroker
 {
     Task<HttpClientBrokerResponse> SendEmailAsync(
         QueuedEmail email,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default);
 
     Task<HttpClientBrokerResponse> ReceiveEmailAsync(
         MailboxReceiveRequest request,
-        MicrosoftGraphProviderConfiguration configuration,
+        MailProviderConfiguration configuration,
         CancellationToken cancellationToken = default);
 }

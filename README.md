@@ -6,9 +6,9 @@
 
 Configuration binds directly into `MailConfiguration`. Leave secrets empty in
 appsettings and define `Mail__ConnectionString` plus any configured provider
-secrets as user-level or machine-level environment variables. For the supplied
-configuration, Microsoft Graph is provider index `3`, so its secret is
-`Mail__Providers__3__MicrosoftGraph__ClientSecret`. Restart Visual Studio,
+secrets as user-level or machine-level environment variables. Providers are
+keyed by name, so the Microsoft Graph secret is
+`Mail__Providers__MicrosoftGraph__ClientSecret`. Restart Visual Studio,
 select the Web and HostedServices startup projects, and press F5. No
 configuration conversion step is required.
 
@@ -87,9 +87,9 @@ are:
 - `Mail__ConnectionString`
 - `Security__ConnectionString` (Web only)
 - `Security__DecryptionKey` (Web only)
-- `Mail__Providers__3__MicrosoftGraph__TenantId`
-- `Mail__Providers__3__MicrosoftGraph__ClientId`
-- `Mail__Providers__3__MicrosoftGraph__ClientSecret`
+- `Mail__Providers__MicrosoftGraph__TenantId`
+- `Mail__Providers__MicrosoftGraph__ClientId`
+- `Mail__Providers__MicrosoftGraph__ClientSecret`
 
 ## Provider Configuration
 
@@ -99,19 +99,16 @@ provider to make it unavailable; there is no separate `Enabled` flag.
 ```json
 {
   "Mail": {
-    "Providers": [
-      { "Name": "Smtp" },
-      { "Name": "Pop3" },
-      { "Name": "Imap" },
-      {
-        "Name": "MicrosoftGraph",
-        "MicrosoftGraph": {
-          "TenantId": "",
-          "ClientId": "",
-          "ClientSecret": ""
-        }
+    "Providers": {
+      "Smtp": {},
+      "Pop3": {},
+      "Imap": {},
+      "MicrosoftGraph": {
+        "TenantId": "",
+        "ClientId": "",
+        "ClientSecret": ""
       }
-    ]
+    }
   }
 }
 ```
@@ -129,9 +126,9 @@ The real send-and-receive integration test requires these variables on the runne
 - `Mail__ConnectionString`
 - `Security__ConnectionString`
 - `Security__DecryptionKey`
-- `Mail__Providers__3__MicrosoftGraph__TenantId`
-- `Mail__Providers__3__MicrosoftGraph__ClientId`
-- `Mail__Providers__3__MicrosoftGraph__ClientSecret`
+- `Mail__Providers__MicrosoftGraph__TenantId`
+- `Mail__Providers__MicrosoftGraph__ClientId`
+- `Mail__Providers__MicrosoftGraph__ClientSecret`
 
 The test creates disposable integration databases by appending
 `-acceptance-{guid}` to the configured Mail and Security database names.

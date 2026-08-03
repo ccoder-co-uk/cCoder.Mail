@@ -4,9 +4,11 @@
 
 namespace cCoder.Mail.Providers.Models;
 
-public sealed class MailProviderRegistration
+public sealed class MailProviderConfigurations
+    : Dictionary<string, MailProviderConfiguration>
 {
-    public string Name { get; set; }
-
-    public MicrosoftGraphProviderConfiguration MicrosoftGraph { get; set; }
+    public MailProviderConfigurations()
+        : base(comparer: StringComparer.OrdinalIgnoreCase)
+    {
+    }
 }
