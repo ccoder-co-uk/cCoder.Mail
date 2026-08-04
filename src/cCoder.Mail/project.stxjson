@@ -4377,7 +4377,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Post(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4448,7 +4448,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -4553,7 +4553,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -4946,7 +4946,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Post(cCoder.Data.Models.Mail.MailSender)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -5017,7 +5017,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -5122,7 +5122,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,cCoder.Data.Models.Mail.MailSender)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -5515,7 +5515,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Post(cCoder.Data.Models.Mail.MailServer)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -5586,7 +5586,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -5691,7 +5691,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,cCoder.Data.Models.Mail.MailServer)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -6084,7 +6084,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -6155,7 +6155,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -6260,7 +6260,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -6653,7 +6653,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Post(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -6724,7 +6724,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -6829,7 +6829,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -7407,7 +7407,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Post(cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Post",
-          "LineNumber": 142,
+          "LineNumber": 141,
           "Inputs": [
             {
               "Name": "newSentEmail",
@@ -7478,7 +7478,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 210,
           "Inputs": [
             {
               "Name": "key",
@@ -7583,7 +7583,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Put",
-          "LineNumber": 175,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -8821,7 +8821,7 @@
     {
       "Name": "cCoder.Mail.Extensions.OData.TypeExtensions",
       "StandardElementType": "Exposure",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -9320,7 +9320,7 @@
     {
       "Name": "cCoder.Mail.Models.OData.MetadataContainer",
       "StandardElementType": "Model",
-      "LineNumber": 9,
+      "LineNumber": 7,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
@@ -10719,7 +10719,7 @@
     {
       "Name": "cCoder.Mail.Services.Foundations.MailMetadataTypeService",
       "StandardElementType": "FoundationService",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -10740,7 +10740,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailMetadataTypeService.GetKnownMetadata()",
           "Name": "GetKnownMetadata",
-          "LineNumber": 14,
+          "LineNumber": 15,
           "Inputs": [],
           "ReturnType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Models.OData.MetadataContainerSet\u003E",
           "Implements": [
@@ -27486,21 +27486,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 211
+      "LineNumber": 210
     },
     {
       "Code": "STXAPI005",
@@ -27535,21 +27535,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 211
+      "LineNumber": 210
     },
     {
       "Code": "STXAPI005",
@@ -27584,21 +27584,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 211
+      "LineNumber": 210
     },
     {
       "Code": "STXAPI005",
@@ -27633,21 +27633,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 211
+      "LineNumber": 210
     },
     {
       "Code": "STXAPI005",
@@ -27682,21 +27682,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 211
+      "LineNumber": 210
     },
     {
       "Code": "STXAPI005",
@@ -27745,21 +27745,21 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 142
+      "LineNumber": 141
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 175
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 211
+      "LineNumber": 210
     }
   ]
 }

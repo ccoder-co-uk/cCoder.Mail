@@ -9,12 +9,6 @@ namespace cCoder.Mail.Models.OData;
 
 public class ODataModel
 {
-    public ODataModel()
-    {
-        Context = string.Empty;
-        Description = string.Empty;
-    }
-
     public string Context { get; set; }
 
     public string Description { get; set; }

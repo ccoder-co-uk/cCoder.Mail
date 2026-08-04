@@ -9,18 +9,7 @@ namespace cCoder.Mail.Models;
 
 public abstract class RenderParams
 {
-    protected RenderParams(App app, User user)
-        : this(app: app, user: user, culture: "")
-    { }
-
-    protected RenderParams(App app, User user, string culture)
-    {
-        App = app;
-        User = user;
-        Culture = culture;
-    }
-
-    public App App { get; }
+    public App App { get; set; }
     public string Culture { get; set; }
-    public User User { get; }
+    public User User { get; set; }
 }

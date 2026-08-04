@@ -124,8 +124,7 @@ public partial class MailServerController(IMailServerManager service)
                     .GetExtendedMetadataForType(
                         context: "Mail",
                         type: typeof(MailServer)))
-                : Ok(value: new MetadataContainer(
-                    type: typeof(MailServer),
+                : Ok(value: typeof(MailServer).CreateMetadataContainer(
                     isEntity: true,
                     hasEndpoint: true));
         }

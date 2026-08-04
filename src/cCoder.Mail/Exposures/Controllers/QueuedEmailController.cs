@@ -124,8 +124,7 @@ public partial class QueuedEmailController(IQueuedEmailManager service)
                     .GetExtendedMetadataForType(
                         context: "Mail",
                         type: typeof(QueuedEmail)))
-                : Ok(value: new MetadataContainer(
-                    type: typeof(QueuedEmail),
+                : Ok(value: typeof(QueuedEmail).CreateMetadataContainer(
                     isEntity: true,
                     hasEndpoint: true));
         }

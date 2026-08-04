@@ -7,6 +7,5 @@ using cCoder.Data.Models.Security;
 
 namespace cCoder.Mail.Models;
 
-public class TemplateRenderParams(App app, User user, string culture)
-    : RenderParams(app: app, user: user, culture: culture)
+public class TemplateRenderParams : RenderParams
 { }

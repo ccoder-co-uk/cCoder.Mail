@@ -9,16 +9,6 @@ namespace cCoder.Mail.Models;
 
 public class MailConfiguration
 {
-    public MailConfiguration()
-    {
-        ConnectionString = string.Empty;
-
-        RootPath = "Api/Mail";
-        EventProviders = [];
-        Providers = [];
-
-    }
-
     public string ConnectionString { get; set; }
     public bool DebugInfo { get; set; }
     public bool LogSQL { get; set; }

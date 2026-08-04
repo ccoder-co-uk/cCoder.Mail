@@ -2,6 +2,8 @@
 
 `cCoder.Mail` contains the Mail domain for the cCoder platform. It provides mail-server configuration, queued email, sent email, mailbox receive support, event handling, and the background sender loop used by cCoder applications.
 
+[View the latest main-branch code coverage report](https://ccoder-co-uk.github.io/cCoder.Mail/)
+
 ## Local Configuration
 
 Configuration binds directly into `MailConfiguration`. Leave secrets empty in
