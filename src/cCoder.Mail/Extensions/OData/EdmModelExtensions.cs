@@ -17,7 +17,11 @@ namespace cCoder.Mail.Extensions.OData
             bool hasEndpoint = true
         )
         {
-            ExtendedMetadataContainer result = new(type: type, isEntity: true, hasEndpoint: hasEndpoint) { Category = context };
+            ExtendedMetadataContainer result = type.CreateExtendedMetadataContainer(
+                isEntity: true,
+                hasEndpoint: hasEndpoint);
+
+            result.Category = context;
             IEdmEntitySet set = model.EntityContainer.FindEntitySet(setName: type.Name);
 
             if (set is null)
@@ -56,7 +60,7 @@ namespace cCoder.Mail.Extensions.OData
             }
 
             Type cSharpType = Type.GetType(typeName: definition.FullTypeName(), throwOnError: false);
-            return cSharpType is null ? null : new MetadataContainer(type: cSharpType, isEntity: true, hasEndpoint: true);
+            return cSharpType?.CreateMetadataContainer(isEntity: true, hasEndpoint: true);
         }
 
         private static IEnumerable<OperationContainer> GetBaseCrudOperations(MetadataContainer type) =>

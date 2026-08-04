@@ -6,11 +6,64 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Collections;
+using cCoder.Mail.Models.OData;
 
 namespace cCoder.Mail.Extensions.OData;
 
 internal static class TypeExtensions
 {
+    internal static MetadataContainer CreateMetadataContainer(
+        this Type type,
+        bool isEntity = false,
+        bool hasEndpoint = false)
+    {
+        bool isValueType = type.IsValueType || type == typeof(string);
+
+        return new MetadataContainer
+        {
+            IsValueType = isValueType,
+            Type = type.GetMetadataTypeName(),
+            Name = type.Name,
+            DisplayName = type.Name,
+            Description = type.Name,
+            ServerType = type.AssemblyQualifiedName,
+            ServerTypeName = type.GetCSharpTypeName(),
+            Properties = isValueType
+                ? []
+                : type.GetProperties()
+                    .Select(selector: property => property.CreatePropertyContainer())
+                    .ToArray(),
+            IsEntity = isEntity,
+            IsJoinEntity = isEntity && type.IsJoinType(),
+            HasEndpoint = hasEndpoint,
+        };
+    }
+
+    internal static ExtendedMetadataContainer CreateExtendedMetadataContainer(
+        this Type type,
+        bool isEntity = false,
+        bool hasEndpoint = false)
+    {
+        MetadataContainer metadata = type.CreateMetadataContainer(
+            isEntity: isEntity,
+            hasEndpoint: hasEndpoint);
+
+        return new ExtendedMetadataContainer
+        {
+            IsValueType = metadata.IsValueType,
+            Type = metadata.Type,
+            Name = metadata.Name,
+            DisplayName = metadata.DisplayName,
+            Description = metadata.Description,
+            ServerType = metadata.ServerType,
+            ServerTypeName = metadata.ServerTypeName,
+            Properties = metadata.Properties,
+            IsEntity = metadata.IsEntity,
+            IsJoinEntity = metadata.IsJoinEntity,
+            HasEndpoint = metadata.HasEndpoint,
+        };
+    }
+
     private static readonly Dictionary<Type, string> TypeNames = new()
     {
         { typeof(short), "number" },

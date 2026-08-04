@@ -5,6 +5,7 @@
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models.OData;
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Extensions.OData;
 
 
 namespace cCoder.Mail.Services.Foundations;
@@ -33,8 +34,16 @@ internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
     });
 
     private static ExtendedMetadataContainer Entity<T>() =>
-        new(type: typeof(T), isEntity: true, hasEndpoint: true)
-        {
-            Category = "Mail",
-        };
+        CreateExtendedMetadataContainer<T>();
+
+    private static ExtendedMetadataContainer CreateExtendedMetadataContainer<T>()
+    {
+        ExtendedMetadataContainer metadata = typeof(T).CreateExtendedMetadataContainer(
+            isEntity: true,
+            hasEndpoint: true);
+
+        metadata.Category = "Mail";
+
+        return metadata;
+    }
 }

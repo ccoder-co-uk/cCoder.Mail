@@ -124,8 +124,7 @@ public partial class MailReceiverController(IMailReceiverManager service)
                     .GetExtendedMetadataForType(
                         context: "Mail",
                         type: typeof(MailReceiver)))
-                : Ok(value: new MetadataContainer(
-                    type: typeof(MailReceiver),
+                : Ok(value: typeof(MailReceiver).CreateMetadataContainer(
                     isEntity: true,
                     hasEndpoint: true));
         }
