@@ -37,6 +37,6 @@
       PrivateAssets="all"
     />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="cCoder.Data" Version="2026.8.4.2132" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.8.5.46" Condition="'$(UseLocalData)' != 'true'" />
   </ItemGroup>
 </Project>
