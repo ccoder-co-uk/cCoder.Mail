@@ -2378,7 +2378,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.EmailSendFailure\u003E)",
           "Name": "DeleteAllQueuedEmailSendFailuresAsync",
-          "LineNumber": 155,
+          "LineNumber": 156,
           "Inputs": [
             {
               "Name": "deletedEmailSendFailure",
@@ -2440,7 +2440,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailsAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailsAsync",
-          "LineNumber": 165,
+          "LineNumber": 166,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -2502,7 +2502,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(System.Int32)",
           "Name": "DeleteAllQueuedEmailsByAppIdAsync",
-          "LineNumber": 175,
+          "LineNumber": 176,
           "Inputs": [
             {
               "Name": "appId",
@@ -2715,7 +2715,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.GetAppId(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "GetAppId",
-          "LineNumber": 196,
+          "LineNumber": 197,
           "Inputs": [
             {
               "Name": "entity",
@@ -2872,6 +2872,13 @@
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "FirstAsync",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.FirstAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E,System.Threading.CancellationToken)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
+              "MethodName": "IgnoreQueryFilters",
+              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },

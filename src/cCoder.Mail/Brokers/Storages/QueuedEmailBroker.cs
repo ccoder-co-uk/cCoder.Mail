@@ -121,6 +121,7 @@ cancellationToken: cancellationToken);
             coreContextFactory.CreateCoreContext();
 
         QueuedEmail queuedEmail = await coreDataContext.QueuedMail
+            .IgnoreQueryFilters()
             .Include(navigationPropertyPath: email => email.FailedSends)
             .FirstAsync(
                 predicate: email => email.Id == entity.Id,
