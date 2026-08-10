@@ -679,6 +679,111 @@
       ]
     },
     {
+      "Name": "cCoder.Mail.Brokers.Loggings.LoggingBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail:cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+          "FullName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+          "Name": "ILoggingBroker",
+          "Namespace": "cCoder.Mail.Brokers.Loggings",
+          "AssemblyName": "cCoder.Mail",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.LoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+          "Name": "LogError",
+          "LineNumber": 14,
+          "Inputs": [
+            {
+              "Name": "exception",
+              "Type": "System.Exception"
+            },
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
+          "Implements": [
+            "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])"
+          ],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.Extensions.Logging.LoggerExtensions",
+              "MethodName": "LogError",
+              "MethodId": "Microsoft.Extensions.Logging.LoggerExtensions.LogError(Microsoft.Extensions.Logging.ILogger,System.Exception?,System.String?,System.Object?[])",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.LoggingBroker.LogInformation(System.String,System.Object[])",
+          "Name": "LogInformation",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
+          "Implements": [
+            "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])"
+          ],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.Extensions.Logging.LoggerExtensions",
+              "MethodName": "LogInformation",
+              "MethodId": "Microsoft.Extensions.Logging.LoggerExtensions.LogInformation(Microsoft.Extensions.Logging.ILogger,System.String?,System.Object?[])",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
       "Name": "cCoder.Mail.Brokers.MailClients.MailReceiverClientBroker",
       "StandardElementType": "Broker",
       "LineNumber": 11,
@@ -3915,7 +4020,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 10,
+      "LineNumber": 11,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -3934,7 +4039,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.Get()",
           "Name": "Get",
-          "LineNumber": 17,
+          "LineNumber": 19,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -3954,6 +4059,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.MailClients.IMailProviderCatalog",
               "MethodName": "GetReceivers",
               "MethodId": "cCoder.Mail.Exposures.MailClients.IMailProviderCatalog.GetReceivers()",
@@ -3982,7 +4094,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -3995,11 +4108,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.GetReceivers()",
           "Name": "GetReceivers",
-          "LineNumber": 49,
+          "LineNumber": 55,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Exposures.MailClients.IMailProviderCatalog",
               "MethodName": "GetReceivers",
@@ -4022,7 +4142,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4035,11 +4156,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.GetSenders()",
           "Name": "GetSenders",
-          "LineNumber": 34,
+          "LineNumber": 38,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Exposures.MailClients.IMailProviderCatalog",
               "MethodName": "GetSenders",
@@ -4062,7 +4190,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4077,7 +4206,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -4096,7 +4225,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Delete(System.Guid)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -4112,6 +4241,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
@@ -4145,7 +4281,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4154,7 +4291,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4167,7 +4305,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Get(System.Guid)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -4213,6 +4351,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
               "MethodName": "GetAllMailReceiver",
               "MethodId": "cCoder.Mail.Exposures.IMailReceiverManager.GetAllMailReceiver(System.Boolean)",
@@ -4242,7 +4387,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4251,7 +4397,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -4260,7 +4407,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4273,7 +4421,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -4284,6 +4432,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
@@ -4315,7 +4470,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4324,7 +4480,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4337,11 +4494,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -4371,7 +4535,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4384,7 +4549,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Post(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4400,6 +4565,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
@@ -4433,7 +4605,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4442,7 +4615,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4455,7 +4629,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -4489,6 +4663,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
@@ -4529,7 +4710,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4538,7 +4720,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -4547,7 +4730,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4560,7 +4744,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -4580,6 +4764,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
@@ -4613,7 +4804,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4622,7 +4814,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4631,7 +4824,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4646,7 +4840,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.MailSenderController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -4665,7 +4859,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Delete(System.Guid)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -4681,6 +4875,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
@@ -4714,7 +4915,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4723,7 +4925,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4736,7 +4939,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Get(System.Guid)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -4782,6 +4985,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
               "MethodName": "GetAllMailSender",
               "MethodId": "cCoder.Mail.Exposures.IMailSenderManager.GetAllMailSender(System.Boolean)",
@@ -4811,7 +5021,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4820,7 +5031,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -4829,7 +5041,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4842,7 +5055,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -4853,6 +5066,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
@@ -4884,7 +5104,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -4893,7 +5114,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4906,11 +5128,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -4940,7 +5169,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4953,7 +5183,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Post(cCoder.Data.Models.Mail.MailSender)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -4969,6 +5199,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
@@ -5002,7 +5239,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5011,7 +5249,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5024,7 +5263,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -5058,6 +5297,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
@@ -5098,7 +5344,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5107,7 +5354,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -5116,7 +5364,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5129,7 +5378,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,cCoder.Data.Models.Mail.MailSender)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -5149,6 +5398,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
@@ -5182,7 +5438,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5191,7 +5448,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5200,7 +5458,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5215,7 +5474,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.MailServerController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -5234,7 +5493,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -5250,6 +5509,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
@@ -5283,7 +5549,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5292,7 +5559,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5305,7 +5573,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -5351,6 +5619,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
               "MethodName": "GetAllMailServer",
               "MethodId": "cCoder.Mail.Exposures.IMailServerManager.GetAllMailServer(System.Boolean)",
@@ -5380,7 +5655,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5389,7 +5665,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -5398,7 +5675,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5411,7 +5689,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -5422,6 +5700,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
@@ -5453,7 +5738,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5462,7 +5748,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5475,11 +5762,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -5509,7 +5803,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5522,7 +5817,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Post(cCoder.Data.Models.Mail.MailServer)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -5538,6 +5833,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
@@ -5571,7 +5873,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5580,7 +5883,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5593,7 +5897,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -5627,6 +5931,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
@@ -5667,7 +5978,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5676,7 +5988,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -5685,7 +5998,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5698,7 +6012,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,cCoder.Data.Models.Mail.MailServer)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -5718,6 +6032,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
@@ -5751,7 +6072,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5760,7 +6082,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5769,7 +6092,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5784,7 +6108,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -5803,7 +6127,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -5819,6 +6143,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
@@ -5852,7 +6183,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5861,7 +6193,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5874,7 +6207,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -5920,6 +6253,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
               "MethodName": "GetAllQueuedEmail",
               "MethodId": "cCoder.Mail.Exposures.IQueuedEmailManager.GetAllQueuedEmail(System.Boolean)",
@@ -5949,7 +6289,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -5958,7 +6299,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -5967,7 +6309,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5980,7 +6323,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -5991,6 +6334,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
@@ -6022,7 +6372,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6031,7 +6382,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6044,11 +6396,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -6078,7 +6437,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6091,7 +6451,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -6107,6 +6467,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
@@ -6140,7 +6507,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6149,7 +6517,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6162,7 +6531,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -6196,6 +6565,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
@@ -6236,7 +6612,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6245,7 +6622,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -6254,7 +6632,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6267,7 +6646,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -6287,6 +6666,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
@@ -6320,7 +6706,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6329,7 +6716,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6338,7 +6726,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6353,7 +6742,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -6372,7 +6761,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -6388,6 +6777,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
@@ -6421,7 +6817,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6430,7 +6827,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6443,7 +6841,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -6489,6 +6887,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
               "MethodName": "GetAllReceivedEmail",
               "MethodId": "cCoder.Mail.Exposures.IReceivedEmailManager.GetAllReceivedEmail(System.Boolean)",
@@ -6518,7 +6923,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6527,7 +6933,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -6536,7 +6943,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6549,7 +6957,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -6560,6 +6968,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
@@ -6591,7 +7006,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6600,7 +7016,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6613,11 +7030,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -6647,7 +7071,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6660,7 +7085,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Post(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -6676,6 +7101,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
@@ -6709,7 +7141,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6718,7 +7151,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6731,7 +7165,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -6765,6 +7199,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
@@ -6805,7 +7246,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6814,7 +7256,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -6823,7 +7266,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6836,7 +7280,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -6856,6 +7300,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
@@ -6889,7 +7340,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6898,7 +7350,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6907,7 +7360,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6922,7 +7376,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -6941,7 +7395,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController.Get(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "Get",
-          "LineNumber": 53,
+          "LineNumber": 61,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -6959,6 +7413,13 @@
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceivingManager",
               "MethodName": "ReceiveTopAsync",
@@ -6989,7 +7450,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -6998,7 +7460,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7007,7 +7470,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 400,
@@ -7016,7 +7480,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7029,7 +7494,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController.Post(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "Post",
-          "LineNumber": 19,
+          "LineNumber": 21,
           "Inputs": [
             {
               "Name": "newMailboxReceiveRequest",
@@ -7043,6 +7508,13 @@
           "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Exposures.IMailReceivingManager",
               "MethodName": "ReceiveMailboxReceiveRequestAsync",
@@ -7074,7 +7546,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7083,7 +7556,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 400,
@@ -7092,7 +7566,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7107,7 +7582,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.SentEmailController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 20,
+      "LineNumber": 21,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -7126,7 +7601,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "key",
@@ -7142,6 +7617,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
@@ -7175,7 +7657,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7184,7 +7667,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7197,7 +7681,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 52,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "key",
@@ -7243,6 +7727,13 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
               "MethodName": "GetAllSentEmail",
               "MethodId": "cCoder.Mail.Exposures.ISentEmailManager.GetAllSentEmail(System.Boolean)",
@@ -7272,7 +7763,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7281,7 +7773,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -7290,7 +7783,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7303,7 +7797,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 89,
+          "LineNumber": 103,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -7314,6 +7808,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
@@ -7345,7 +7846,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7354,7 +7856,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7367,11 +7870,18 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 114,
+          "LineNumber": 134,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
               "MethodName": "Build",
@@ -7401,7 +7911,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7414,7 +7925,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Post(cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Post",
-          "LineNumber": 141,
+          "LineNumber": 163,
           "Inputs": [
             {
               "Name": "newSentEmail",
@@ -7430,6 +7941,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
@@ -7463,7 +7981,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7472,7 +7991,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7485,7 +8005,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 210,
+          "LineNumber": 244,
           "Inputs": [
             {
               "Name": "key",
@@ -7519,6 +8039,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
@@ -7559,7 +8086,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7568,7 +8096,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             },
             {
               "StatusCode": 404,
@@ -7577,7 +8106,8 @@
               "IsExceptionPath": false,
               "IsNullPath": true,
               "HasBody": false,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7590,7 +8120,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Put",
-          "LineNumber": 174,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "key",
@@ -7610,6 +8140,13 @@
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
             },
             {
               "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
@@ -7643,7 +8180,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7652,7 +8190,8 @@
               "IsExceptionPath": false,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": false
             },
             {
               "StatusCode": 400,
@@ -7661,7 +8200,8 @@
               "IsExceptionPath": true,
               "IsNullPath": false,
               "HasBody": true,
-              "ExposesExceptionDetails": false
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -10804,7 +11344,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailReceiverService.AddMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "AddMailReceiverAsync",
-          "LineNumber": 61,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -10862,7 +11402,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailReceiverService.DeleteAllByAppIdAsync(System.Int32)",
           "Name": "DeleteAllByAppIdAsync",
-          "LineNumber": 101,
+          "LineNumber": 100,
           "Inputs": [
             {
               "Name": "appId",
@@ -10909,7 +11449,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailReceiverService.DeleteAllMailReceiverAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E)",
           "Name": "DeleteAllMailReceiverAsync",
-          "LineNumber": 93,
+          "LineNumber": 92,
           "Inputs": [
             {
               "Name": "deletedMailReceiver",
@@ -10958,7 +11498,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailReceiverService.DeleteAsync(System.Guid)",
           "Name": "DeleteAsync",
-          "LineNumber": 79,
+          "LineNumber": 78,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -11196,7 +11736,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.MailReceiverService.UpdateMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "UpdateMailReceiverAsync",
-          "LineNumber": 70,
+          "LineNumber": 69,
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -16093,7 +16633,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceiverProcessingService.AddMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "AddMailReceiverAsync",
-          "LineNumber": 36,
+          "LineNumber": 35,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -16142,7 +16682,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceiverProcessingService.DeleteAllMailReceiverAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailReceiver\u003E)",
           "Name": "DeleteAllMailReceiverAsync",
-          "LineNumber": 68,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "deletedMailReceiver",
@@ -16190,7 +16730,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceiverProcessingService.DeleteAsync(System.Guid)",
           "Name": "DeleteAsync",
-          "LineNumber": 52,
+          "LineNumber": 51,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -16239,7 +16779,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceiverProcessingService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 60,
+          "LineNumber": 59,
           "Inputs": [
             {
               "Name": "appId",
@@ -16423,7 +16963,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceiverProcessingService.UpdateMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "UpdateMailReceiverAsync",
-          "LineNumber": 44,
+          "LineNumber": 43,
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -16474,7 +17014,7 @@
     {
       "Name": "cCoder.Mail.Services.Processings.MailReceivingProcessingService",
       "StandardElementType": "ProcessingService",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -16495,7 +17035,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailReceivingProcessingService.IsMigrationInProgress()",
           "Name": "IsMigrationInProgress",
-          "LineNumber": 18,
+          "LineNumber": 19,
           "Inputs": [],
           "ReturnType": "System.Boolean",
           "Implements": [
@@ -16548,7 +17088,15 @@
           "Implements": [
             "cCoder.Mail.Services.Processings.IMailReceivingProcessingService.LogError(System.Exception)"
           ],
-          "Calls": [],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
           "PossibleExceptionTypes": [
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
@@ -17045,7 +17593,7 @@
     {
       "Name": "cCoder.Mail.Services.Processings.MailSendingProcessingService",
       "StandardElementType": "ProcessingService",
-      "LineNumber": 11,
+      "LineNumber": 12,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -17066,7 +17614,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailSendingProcessingService.IsMigrationInProgress()",
           "Name": "IsMigrationInProgress",
-          "LineNumber": 17,
+          "LineNumber": 18,
           "Inputs": [],
           "ReturnType": "System.Boolean",
           "Implements": [
@@ -17119,7 +17667,15 @@
           "Implements": [
             "cCoder.Mail.Services.Processings.IMailSendingProcessingService.LogDispatch(System.Int32)"
           ],
-          "Calls": [],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
           "PossibleExceptionTypes": [
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
@@ -17158,7 +17714,15 @@
           "Implements": [
             "cCoder.Mail.Services.Processings.IMailSendingProcessingService.LogError(System.Exception)"
           ],
-          "Calls": [],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
           "PossibleExceptionTypes": [
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
@@ -17205,7 +17769,15 @@
           "Implements": [
             "cCoder.Mail.Services.Processings.IMailSendingProcessingService.LogSummary(System.Int32,System.Int32,System.Int32)"
           ],
-          "Calls": [],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
           "PossibleExceptionTypes": [
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
@@ -20221,6 +20793,80 @@
             }
           ],
           "ReturnType": "System.String",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 7,
+      "IsPublic": true,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+          "Name": "LogError",
+          "LineNumber": 10,
+          "Inputs": [
+            {
+              "Name": "exception",
+              "Type": "System.Exception"
+            },
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+          "Name": "LogInformation",
+          "LineNumber": 9,
+          "Inputs": [
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
           "Implements": [],
           "Calls": [],
           "PossibleExceptionTypes": [],
@@ -27171,7 +27817,15 @@
   "Links": [
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
       "ToType": "cCoder.Mail.Exposures.MailClients.MailProviderCatalog"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
@@ -27179,7 +27833,15 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.MailSenderController",
       "ToType": "cCoder.Mail.Services.Processings.MailSenderProcessingService"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailServerController",
@@ -27187,7 +27849,15 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
       "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
@@ -27195,7 +27865,15 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
       "ToType": "cCoder.Mail.Services.Foundations.MailReceivingService"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.Controllers.SentEmailController",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
     {
       "FromType": "cCoder.Mail.Exposures.Controllers.SentEmailController",
@@ -27387,6 +28065,10 @@
     },
     {
       "FromType": "cCoder.Mail.Services.Processings.MailReceivingProcessingService",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Processings.MailReceivingProcessingService",
       "ToType": "cCoder.Mail.Exposures.MailConfigurationExposure"
     },
     {
@@ -27396,6 +28078,10 @@
     {
       "FromType": "cCoder.Mail.Services.Processings.MailSenderProcessingService",
       "ToType": "cCoder.Mail.Services.Foundations.MailSenderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Services.Processings.MailSendingProcessingService",
+      "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
     {
       "FromType": "cCoder.Mail.Services.Processings.MailSendingProcessingService",
@@ -27444,329 +28130,329 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 17
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 34
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 49
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 114
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 210
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 114
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 210
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 114
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 210
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 114
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 210
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 24
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 52
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 114
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 141
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 210
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
       "LineNumber": 19
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
+      "LineNumber": 38
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
+      "LineNumber": 55
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 26
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 103
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 134
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 163
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 202
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
+      "LineNumber": 244
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 26
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 103
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 134
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 163
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 202
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
+      "LineNumber": 244
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 26
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 103
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 134
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 163
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 202
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
+      "LineNumber": 244
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 26
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 103
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 134
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 163
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 202
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 244
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 26
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 60
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 103
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 134
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 163
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 202
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
+      "LineNumber": 244
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 53
+      "LineNumber": 21
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
+      "LineNumber": 61
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 24
+      "LineNumber": 26
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 52
+      "LineNumber": 60
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 89
+      "LineNumber": 103
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 114
+      "LineNumber": 134
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 141
+      "LineNumber": 163
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 174
+      "LineNumber": 202
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 210
+      "LineNumber": 244
     }
   ]
 }

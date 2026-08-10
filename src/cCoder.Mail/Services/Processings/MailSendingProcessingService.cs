@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures;
 using cCoder.Mail.Services.Foundations;
 
@@ -11,13 +12,12 @@ namespace cCoder.Mail.Services.Processings;
 internal sealed partial class MailSendingProcessingService(
     IMailSendingService mailSendingService,
     IMailConfigurationExposure mailConfigurationExposure,
-    ILogger<MailSendingProcessingService> logger)
+    ILoggingBroker logger)
     : IMailSendingProcessingService
 {
     public bool IsMigrationInProgress() =>
         TryCatch(operation: () =>
         {
-            ValidateIsMigrationInProgress(inputs: []);
 
             return mailConfigurationExposure
                 .GetMailConfiguration()

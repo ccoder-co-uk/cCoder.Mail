@@ -53,7 +53,6 @@ internal partial class MailReceiverService(
     public MailReceiver[] GetEnabled() =>
         TryCatch<MailReceiver[]>(operation: () =>
         {
-            ValidateEnabledOnGet(inputs: []);
 
             return mailReceiverBroker.GetEnabledMailReceivers();
         });

@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures.MailClients;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,8 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/MailProviders")]
 public sealed class MailProvidersController(
-    IMailProviderCatalog providerCatalog)
+    IMailProviderCatalog providerCatalog,
+    ILoggingBroker loggingBroker)
     : ControllerBase
 {
     [HttpGet]
@@ -22,8 +24,10 @@ public sealed class MailProvidersController(
                 .Concat(second: providerCatalog.GetReceivers())
                 .ToArray());
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail provider operation failed.");
@@ -37,8 +41,10 @@ public sealed class MailProvidersController(
         {
             return Ok(value: providerCatalog.GetSenders());
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail provider operation failed.");
@@ -52,8 +58,10 @@ public sealed class MailProvidersController(
         {
             return Ok(value: providerCatalog.GetReceivers());
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail provider operation failed.");
