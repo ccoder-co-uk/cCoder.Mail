@@ -100,7 +100,7 @@ internal partial class AppAggregationService(
     {
         foreach (MailSender item in newMailSender)
         {
-            if (item.Id == Guid.Empty)
+            if (item.Id == Guid.Empty || !await service.ExistsAsync(mailSenderId: item.Id))
             {
                 _ = await service.AddMailSenderAsync(newMailSender: item);
             }
@@ -117,7 +117,7 @@ internal partial class AppAggregationService(
     {
         foreach (MailReceiver item in newMailReceiver)
         {
-            if (item.Id == Guid.Empty)
+            if (item.Id == Guid.Empty || !await service.ExistsAsync(mailReceiverId: item.Id))
             {
                 _ = await service.AddMailReceiverAsync(newMailReceiver: item);
             }
@@ -134,7 +134,7 @@ internal partial class AppAggregationService(
     {
         foreach (ReceivedEmail item in newReceivedEmail)
         {
-            if (item.Id == 0)
+            if (item.Id == 0 || !await service.ExistsAsync(receivedEmailId: item.Id))
             {
                 _ = await service.AddReceivedEmailAsync(newReceivedEmail: item);
             }

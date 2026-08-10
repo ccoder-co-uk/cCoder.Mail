@@ -8,6 +8,8 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal interface IMailReceiverOrchestrationService
 {
+    ValueTask<bool> ExistsAsync(Guid mailReceiverId);
+
     ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
 
     ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);

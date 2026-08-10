@@ -6,4 +6,7 @@ using cCoder.Mail.Exposures;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal interface IMailSenderOrchestrationService : IMailDispatchManager { }
+internal interface IMailSenderOrchestrationService : IMailDispatchManager
+{
+    ValueTask<bool> ExistsAsync(Guid mailSenderId);
+}

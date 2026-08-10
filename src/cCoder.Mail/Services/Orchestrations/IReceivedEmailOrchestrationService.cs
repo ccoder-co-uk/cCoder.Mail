@@ -9,6 +9,8 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal interface IReceivedEmailOrchestrationService
 {
+    ValueTask<bool> ExistsAsync(int receivedEmailId);
+
     ValueTask<ReceivedEmail> AddReceivedEmailAsync(
         ReceivedEmail newReceivedEmail);
 

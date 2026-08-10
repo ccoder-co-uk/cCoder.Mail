@@ -145,8 +145,12 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         {
             try
             {
+                bool exists = item.Id != 0
+                    && service.GetAllQueuedEmail(ignoreFilters: true)
+                        .Any(predicate: email => email.Id == item.Id);
+
                 QueuedEmail savedItem =
-                    item.Id == 0
+                    !exists
                         ? await service.AddQueuedEmailAsync(
                             newQueuedEmail: item,
                             checkPrivileges: true)
@@ -157,7 +161,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
                 {
                     Success = true,
                     Item = savedItem,
-                    Message = item.Id == 0 ? "Added Successfully" : "Updated Successfully"
+                    Message = !exists ? "Added Successfully" : "Updated Successfully"
                 });
             }
             catch (Exception ex)

@@ -6,6 +6,9 @@ namespace cCoder.Mail.Services.Orchestrations;
 
 internal sealed partial class MailReceiverOrchestrationService
 {
+    private static void ValidateMailReceiverOnExists(object[] inputs) =>
+        Validate(inputs: inputs);
+
     private static void ValidateMailReceiverOnAdd(object[] inputs) =>
         Validate(inputs: inputs);
 
