@@ -31,6 +31,8 @@ public sealed partial class ControllerFailureLoggingTests
         {
             await ExerciseSentEmailControllerAsync(exception: exception);
             await ExerciseReceivedEmailControllerAsync(exception: exception);
+            await ExerciseMailServerControllerAsync(exception: exception);
+            await ExerciseQueuedEmailControllerAsync(exception: exception);
         }
 
         // Then
@@ -114,6 +116,92 @@ public sealed partial class ControllerFailureLoggingTests
         controller.GetAll();
         await controller.Post(newReceivedEmail: new ReceivedEmail());
         await controller.Put(key: 1, updatedReceivedEmail: new ReceivedEmail());
+
+        loggingBrokerMock.Verify(
+            expression: broker => broker.LogError(
+                exception: exception,
+                message: "Controller request failed.",
+                args: It.IsAny<object[]>()),
+            times: Times.Exactly(callCount: 5));
+    }
+
+    private static async Task ExerciseMailServerControllerAsync(Exception exception)
+    {
+        Mock<IMailServerManager> serviceMock = new();
+        Mock<ILoggingBroker> loggingBrokerMock = new();
+
+        serviceMock
+            .Setup(expression: service => service.DeleteAsync(
+                iMailServerId: It.IsAny<int>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.GetAllMailServer(
+                ignoreFilters: It.IsAny<bool>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.AddMailServerAsync(
+                newMailServer: It.IsAny<MailServer>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.UpdateMailServerAsync(
+                updatedMailServer: It.IsAny<MailServer>()))
+            .Throws(exception: exception);
+
+        MailServerController controller = new(
+            service: serviceMock.Object,
+            loggingBroker: loggingBrokerMock.Object);
+
+        await controller.Delete(key: 1);
+        controller.Get(key: 1);
+        controller.GetAll();
+        await controller.Post(newMailServer: new MailServer());
+        await controller.Put(key: 1, updatedMailServer: new MailServer());
+
+        loggingBrokerMock.Verify(
+            expression: broker => broker.LogError(
+                exception: exception,
+                message: "Controller request failed.",
+                args: It.IsAny<object[]>()),
+            times: Times.Exactly(callCount: 5));
+    }
+
+    private static async Task ExerciseQueuedEmailControllerAsync(Exception exception)
+    {
+        Mock<IQueuedEmailManager> serviceMock = new();
+        Mock<ILoggingBroker> loggingBrokerMock = new();
+
+        serviceMock
+            .Setup(expression: service => service.DeleteAsync(
+                iQueuedEmailId: It.IsAny<int>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.GetAllQueuedEmail(
+                ignoreFilters: It.IsAny<bool>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.AddQueuedEmailAsync(
+                newQueuedEmail: It.IsAny<QueuedEmail>()))
+            .Throws(exception: exception);
+
+        serviceMock
+            .Setup(expression: service => service.UpdateQueuedEmailAsync(
+                updatedQueuedEmail: It.IsAny<QueuedEmail>()))
+            .Throws(exception: exception);
+
+        QueuedEmailController controller = new(
+            service: serviceMock.Object,
+            loggingBroker: loggingBrokerMock.Object);
+
+        await controller.Delete(key: 1);
+        controller.Get(key: 1);
+        controller.GetAll();
+        await controller.Post(newQueuedEmail: new QueuedEmail());
+        await controller.Put(key: 1, updatedQueuedEmail: new QueuedEmail());
 
         loggingBrokerMock.Verify(
             expression: broker => broker.LogError(
