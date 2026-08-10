@@ -28,7 +28,6 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
     public MailReceiver[] GetEnabled() =>
         TryCatch<MailReceiver[]>(operation: () =>
         {
-            ValidateEnabledOnGet(inputs: []);
 
             return service.GetEnabled();
         });

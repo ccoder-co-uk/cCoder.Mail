@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Mail.Brokers.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -17,7 +18,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class SentEmailController(ISentEmailManager service)
+public partial class SentEmailController(ISentEmailManager service,
+    ILoggingBroker loggingBroker)
     : ODataController
 {
     [HttpDelete]
@@ -29,18 +31,24 @@ public partial class SentEmailController(ISentEmailManager service)
 
             return NoContent();
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
@@ -65,18 +73,24 @@ public partial class SentEmailController(ISentEmailManager service)
 
             return Ok(value: SingleResult.Create(queryable: result));
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
@@ -92,18 +106,24 @@ public partial class SentEmailController(ISentEmailManager service)
         {
             return Ok(value: service.GetAllSentEmail());
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
@@ -128,8 +148,10 @@ public partial class SentEmailController(ISentEmailManager service)
                     isEntity: true,
                     hasEndpoint: true));
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail metadata operation failed.");
@@ -151,18 +173,24 @@ public partial class SentEmailController(ISentEmailManager service)
                 statusCode: StatusCodes.Status201Created,
                 value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
@@ -187,18 +215,24 @@ public partial class SentEmailController(ISentEmailManager service)
             return Ok(value: await service.UpdateSentEmailAsync(
                 updatedSentEmail: updatedSentEmail));
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
@@ -225,18 +259,24 @@ public partial class SentEmailController(ISentEmailManager service)
             return Ok(value: await service.UpdateSentEmailAsync(
                 updatedSentEmail: originalEntity));
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail request is invalid.");
         }
-        catch (System.Security.SecurityException)
+        catch (System.Security.SecurityException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
                 value: "The mail operation is forbidden.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");

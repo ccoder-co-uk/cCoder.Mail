@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;
@@ -12,7 +13,8 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/ReceivedEmail")]
 public sealed class ReceivedEmailOperationsController(
-    IMailReceivingManager service)
+    IMailReceivingManager service,
+    ILoggingBroker loggingBroker)
     : ControllerBase
 {
     [HttpPost("Receive")]
@@ -33,16 +35,22 @@ public sealed class ReceivedEmailOperationsController(
                     request: newMailboxReceiveRequest,
                     cancellationToken: cancellationToken));
         }
-        catch (ArgumentException)
+        catch (ArgumentException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail receive request is invalid.");
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail receive request is invalid.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail receive operation failed.");
@@ -68,16 +76,22 @@ public sealed class ReceivedEmailOperationsController(
                     count: count,
                     cancellationToken: cancellationToken));
         }
-        catch (ArgumentException)
+        catch (ArgumentException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail receive request is invalid.");
         }
-        catch (MailValidationException)
+        catch (MailValidationException exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return BadRequest(error: "The mail receive request is invalid.");
         }
-        catch (Exception)
+        catch (Exception exception)
         {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail receive operation failed.");

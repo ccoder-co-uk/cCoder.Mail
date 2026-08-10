@@ -6,13 +6,6 @@ namespace cCoder.Mail.Providers.Models;
 
 public sealed class MailboxReceiveRequest
 {
-    public MailboxReceiveRequest()
-    {
-        Port = 995;
-        EnableSSL = true;
-        MaximumMessages = 100;
-    }
-
     public string ProviderName { get; set; }
 
     public int? AppId { get; set; }
