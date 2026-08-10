@@ -15,6 +15,16 @@ internal sealed partial class MailReceiverOrchestrationService(
     IMailReceivingProcessingService mailReceivingProcessingService)
     : IMailReceiverOrchestrationService
 {
+    public ValueTask<bool> ExistsAsync(Guid mailReceiverId) =>
+        TryCatch<bool>(operation: () =>
+        {
+            ValidateMailReceiverOnExists(inputs: [mailReceiverId]);
+
+            return ValueTask.FromResult(result:
+                mailReceiverProcessingService.GetAllMailReceiver(ignoreFilters: true)
+                    .Any(predicate: receiver => receiver.Id == mailReceiverId));
+        }, isValueTask: true);
+
     public ValueTask<MailReceiver> AddMailReceiverAsync(
         MailReceiver newMailReceiver) =>
         TryCatch<MailReceiver>(operation: () =>

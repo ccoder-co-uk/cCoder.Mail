@@ -17,6 +17,16 @@ internal sealed partial class MailSenderOrchestrationService(
     IMailSenderProcessingService mailSenderProcessingService)
     : IMailSenderOrchestrationService
 {
+    public ValueTask<bool> ExistsAsync(Guid mailSenderId) =>
+        TryCatch<bool>(operation: () =>
+        {
+            ValidateMailSenderOnExists(inputs: [mailSenderId]);
+
+            return ValueTask.FromResult(result:
+                mailSenderProcessingService.GetAllMailSender(ignoreFilters: true)
+                    .Any(predicate: sender => sender.Id == mailSenderId));
+        }, isValueTask: true);
+
     public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>
         TryCatch<MailSender>(operation: () =>
         {

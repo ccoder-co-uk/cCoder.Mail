@@ -13,6 +13,16 @@ internal sealed partial class ReceivedEmailOrchestrationService(
     IMailReceivingProcessingService mailReceivingProcessingService)
     : IReceivedEmailOrchestrationService
 {
+    public ValueTask<bool> ExistsAsync(int receivedEmailId) =>
+        TryCatch<bool>(operation: () =>
+        {
+            ValidateReceivedEmailOnExists(inputs: [receivedEmailId]);
+
+            return ValueTask.FromResult(result:
+                receivedEmailProcessingService.GetAllReceivedEmail(ignoreFilters: true)
+                    .Any(predicate: email => email.Id == receivedEmailId));
+        }, isValueTask: true);
+
     public ValueTask<ReceivedEmail> AddReceivedEmailAsync(
         ReceivedEmail newReceivedEmail) =>
         TryCatch<ReceivedEmail>(operation: () =>

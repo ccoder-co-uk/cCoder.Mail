@@ -111,4 +111,39 @@ newSentEmail: It.Is<IEnumerable<SentEmail>>(match: items => items.All(predicate:
         queuedEmailOrchestrationServiceMock.VerifyAll();
         sentEmailOrchestrationServiceMock.VerifyAll();
     }
+
+    [Fact]
+    public async Task ShouldAddMailSenderWhenUpdateSuppliesUnknownId()
+    {
+        // Given
+        Guid senderId = Guid.NewGuid();
+        MailSender sender = new() { Id = senderId, Name = "Imported" };
+        App app = new() { Id = 9, MailSenders = [sender] };
+
+        mailServerOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateMailServerResult(
+                newMailServer: It.IsAny<IEnumerable<MailServer>>()))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<MailServer>>>(result: []));
+
+        queuedEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateQueuedEmailResult(
+                newQueuedEmail: It.IsAny<IEnumerable<QueuedEmail>>()))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<QueuedEmail>>>(result: []));
+
+        sentEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateSentEmailResult(
+                newSentEmail: It.IsAny<IEnumerable<SentEmail>>()))
+            .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>(result: []));
+
+        mailSenderOrchestrationServiceMock.Setup(expression: service => service.ExistsAsync(mailSenderId: senderId))
+            .Returns(value: ValueTask.FromResult(result: false));
+
+        mailSenderOrchestrationServiceMock.Setup(expression: service => service.AddMailSenderAsync(newMailSender: sender))
+            .Returns(value: ValueTask.FromResult(result: sender));
+
+        // When
+        await service.UpdateAppAsync(updatedApp: app);
+
+        // Then
+        Assert.Equal(expected: 9, actual: sender.AppId);
+        mailSenderOrchestrationServiceMock.Verify(expression: service => service.AddMailSenderAsync(newMailSender: sender), times: Times.Once);
+        mailSenderOrchestrationServiceMock.Verify(expression: service => service.UpdateMailSenderAsync(updatedMailSender: It.IsAny<MailSender>()), times: Times.Never);
+    }
 }

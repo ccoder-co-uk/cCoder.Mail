@@ -73,8 +73,12 @@ internal partial class MailServerProcessingService(IMailServerService service) :
         {
             try
             {
+                bool exists = item.Id != 0
+                    && service.GetAllMailServer(ignoreFilters: true)
+                        .Any(predicate: server => server.Id == item.Id);
+
                 MailServer savedItem =
-                    item.Id == 0
+                    !exists
                         ? await service.AddMailServerAsync(
                             newMailServer: item,
                             checkPrivileges: false)
@@ -84,7 +88,7 @@ internal partial class MailServerProcessingService(IMailServerService service) :
                 {
                     Success = true,
                     Item = savedItem,
-                    Message = item.Id == 0 ? "Added Successfully" : "Updated Successfully"
+                    Message = !exists ? "Added Successfully" : "Updated Successfully"
                 });
             }
             catch (Exception ex)

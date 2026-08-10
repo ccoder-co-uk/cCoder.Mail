@@ -71,8 +71,12 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
         {
             try
             {
+                bool exists = item.Id != 0
+                    && service.GetAllSentEmail(ignoreFilters: true)
+                        .Any(predicate: email => email.Id == item.Id);
+
                 SentEmail savedItem =
-                    item.Id == 0
+                    !exists
                         ? await service.AddSentEmailAsync(newSentEmail: item)
                         : await service.UpdateSentEmailAsync(updatedSentEmail: item);
 
@@ -80,7 +84,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
                 {
                     Success = true,
                     Item = savedItem,
-                    Message = item.Id == 0 ? "Added Successfully" : "Updated Successfully"
+                    Message = !exists ? "Added Successfully" : "Updated Successfully"
                 });
             }
             catch (Exception ex)
