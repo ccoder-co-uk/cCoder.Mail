@@ -80,34 +80,4 @@ internal sealed partial class MailSendingProcessingService
         }
     }
 
-    private static async Task TryCatch(
-        Func<Task> operation,
-        bool isTask,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            await operation();
-        }
-        catch (OperationCanceledException)
-            when (cancellationToken.IsCancellationRequested)
-        {
-        }
-        catch (MailValidationException innerException)
-        {
-            throw new MailValidationException(innerException: innerException);
-        }
-        catch (MailDependencyException innerException)
-        {
-            throw new MailDependencyException(innerException: innerException);
-        }
-        catch (ArgumentException innerException)
-        {
-            throw new MailValidationException(innerException: innerException);
-        }
-        catch (Exception innerException)
-        {
-            throw new MailServiceException(innerException: innerException);
-        }
-    }
 }
