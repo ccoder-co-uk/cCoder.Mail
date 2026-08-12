@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
@@ -64,3 +66,5 @@ times: Times.Once);
         authorizationBrokerMock.VerifyNoOtherCalls();
     }
 }
+
+#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
