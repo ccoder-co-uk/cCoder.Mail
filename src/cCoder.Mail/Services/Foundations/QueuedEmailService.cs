@@ -140,6 +140,15 @@ internal partial class QueuedEmailService(
             checkPrivileges: checkPrivileges);
     }, isValueTask: true);
 
+    public ValueTask RetryAsync(int queuedEmailId) =>
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [queuedEmailId, false]);
+
+            return queuedEmailBroker
+                .DeleteAllQueuedEmailSendFailuresAsync(emailId: queuedEmailId);
+        }, isValueTask: true);
+
     public ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>
         TryCatch(operation: async () =>
     {

@@ -34,6 +34,8 @@ internal interface IQueuedEmailProcessingService
 
     ValueTask DeleteAsync(int iQueuedEmailId);
 
+    ValueTask RetryAsync(int queuedEmailId);
+
     ValueTask DeleteByAppIdAsync(int appId);
 
     ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail);
