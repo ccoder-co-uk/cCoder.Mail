@@ -29,7 +29,8 @@ internal sealed partial class MailReceivingProcessingService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 
     private static TResult TryCatch<TResult>(Func<TResult> operation)
     {
@@ -52,7 +53,8 @@ internal sealed partial class MailReceivingProcessingService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 
     private static async Task<TResult> TryCatch<TResult>(
         Func<Task<TResult>> operation,
@@ -77,5 +79,6 @@ internal sealed partial class MailReceivingProcessingService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 }

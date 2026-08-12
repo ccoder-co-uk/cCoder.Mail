@@ -60,5 +60,6 @@ internal sealed partial class MailSendingService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 }

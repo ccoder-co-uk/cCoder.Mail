@@ -31,5 +31,6 @@ internal partial class SentEmailEventProcessingService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 }

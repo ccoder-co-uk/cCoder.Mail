@@ -36,7 +36,8 @@ internal sealed partial class MailSenderOrchestrationService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 
     private static async ValueTask TryCatch(
         Func<ValueTask> operation,
@@ -61,7 +62,8 @@ internal sealed partial class MailSenderOrchestrationService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 
     private static async ValueTask<TResult> TryCatch<TResult>(
         Func<ValueTask<TResult>> operation,
@@ -86,5 +88,6 @@ internal sealed partial class MailSenderOrchestrationService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 }
