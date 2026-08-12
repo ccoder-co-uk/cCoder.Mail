@@ -46,15 +46,32 @@ public sealed partial class MailProvidersControllerTests
         ((OkObjectResult)controller.GetReceivers()).Value.Should().BeSameAs(providers);
     }
 
-    [Theory]
-    [InlineData("Get")]
-    [InlineData("GetSenders")]
-    [InlineData("GetReceivers")]
-    public void MethodShouldMapAndLogException(string method)
+    [Fact]
+    public void GetShouldMapAndLogException()
     {
         var exception = new InvalidOperationException("failed");
         catalogMock.Setup(x => x.GetSenders()).Throws(exception); catalogMock.Setup(x => x.GetReceivers()).Throws(exception);
-        IActionResult result = method == "Get" ? controller.Get() : method == "GetSenders" ? controller.GetSenders() : controller.GetReceivers();
+        IActionResult result = controller.Get();
+        ((ObjectResult)result).StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+    }
+
+    [Fact]
+    public void GetSendersShouldMapAndLogException()
+    {
+        var exception = new InvalidOperationException("failed");
+        catalogMock.Setup(x => x.GetSenders()).Throws(exception);
+        IActionResult result = controller.GetSenders();
+        ((ObjectResult)result).StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+    }
+
+    [Fact]
+    public void GetReceiversShouldMapAndLogException()
+    {
+        var exception = new InvalidOperationException("failed");
+        catalogMock.Setup(x => x.GetReceivers()).Throws(exception);
+        IActionResult result = controller.GetReceivers();
         ((ObjectResult)result).StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
