@@ -22,6 +22,39 @@ public partial class QueuedEmailController(IQueuedEmailManager service,
     ILoggingBroker loggingBroker)
     : ODataController
 {
+    [HttpPost("Api/Mail/QueuedEmail({key})/Retry")]
+    public async Task<IActionResult> Post([FromRoute] int key)
+    {
+        try
+        {
+            await service.RetryAsync(queuedEmailId: key);
+
+            return NoContent();
+        }
+        catch (MailValidationException exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
+            return BadRequest(error: "The mail request is invalid.");
+        }
+        catch (System.Security.SecurityException exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
+            return StatusCode(
+                statusCode: StatusCodes.Status403Forbidden,
+                value: "The mail operation is forbidden.");
+        }
+        catch (Exception exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+
+            return StatusCode(
+                statusCode: StatusCodes.Status500InternalServerError,
+                value: "The mail operation failed.");
+        }
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromRoute] int key)
     {

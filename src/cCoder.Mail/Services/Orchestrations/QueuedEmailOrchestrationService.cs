@@ -66,6 +66,15 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
         await processingService.DeleteAsync(iQueuedEmailId: queuedEmailId);
     }, isValueTask: true);
 
+    public ValueTask RetryAsync(int queuedEmailId) =>
+        TryCatch(operation: () =>
+        {
+            ValidateDeleteAsync(inputs: [queuedEmailId]);
+
+            return processingService.RetryAsync(
+                queuedEmailId: queuedEmailId);
+        }, isValueTask: true);
+
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {

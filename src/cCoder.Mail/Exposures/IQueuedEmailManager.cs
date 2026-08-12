@@ -14,6 +14,7 @@ public interface IQueuedEmailManager
     ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail);
     ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
     ValueTask DeleteAsync(int iQueuedEmailId);
+    ValueTask RetryAsync(int queuedEmailId);
     ValueTask DeleteByAppIdAsync(int appId);
     ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail);
     ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail);

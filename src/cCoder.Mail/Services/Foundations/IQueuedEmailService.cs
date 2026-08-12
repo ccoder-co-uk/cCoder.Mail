@@ -24,6 +24,7 @@ internal interface IQueuedEmailService
         string fromAddress,
         CancellationToken cancellationToken = default);
     ValueTask DeleteAsync(int iQueuedEmailId, bool checkPrivileges = true);
+    ValueTask RetryAsync(int queuedEmailId);
     ValueTask DeleteAllForAppQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail);
     ValueTask DeleteAllByAppIdAsync(int appId);
 }

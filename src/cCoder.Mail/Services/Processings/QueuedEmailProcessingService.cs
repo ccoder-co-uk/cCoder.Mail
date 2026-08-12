@@ -126,6 +126,27 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         await service.DeleteAsync(iQueuedEmailId: queuedEmail.Id, checkPrivileges: false);
     }, isValueTask: true);
 
+    public ValueTask RetryAsync(int queuedEmailId) =>
+        TryCatch(operation: async () =>
+        {
+            ValidateDeleteAsync(inputs: [queuedEmailId]);
+
+            QueuedEmail queuedEmail = service.GetQueuedEmail(
+                iQueuedEmailId: queuedEmailId);
+
+            if (queuedEmail is null)
+            {
+                return;
+            }
+
+            Authorize(
+                user: authorizationBroker.GetCurrentUser(),
+                appId: queuedEmail.AppId,
+                privilege: $"{nameof(QueuedEmail)}_update");
+
+            await service.RetryAsync(queuedEmailId: queuedEmailId);
+        }, isValueTask: true);
+
     public ValueTask DeleteByAppIdAsync(int appId) =>
         TryCatch(operation: () =>
         {
