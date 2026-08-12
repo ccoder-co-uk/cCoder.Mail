@@ -2337,7 +2337,7 @@
     {
       "Name": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
       "StandardElementType": "Broker",
-      "LineNumber": 34,
+      "LineNumber": 35,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -2358,7 +2358,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.AddQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "AddQueuedEmailAsync",
-          "LineNumber": 62,
+          "LineNumber": 63,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -2413,7 +2413,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.AddQueuedEmailSendFailureAsync(System.Int32,System.String,System.Threading.CancellationToken)",
           "Name": "AddQueuedEmailSendFailureAsync",
-          "LineNumber": 95,
+          "LineNumber": 96,
           "Inputs": [
             {
               "Name": "emailId",
@@ -2483,7 +2483,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.EmailSendFailure\u003E)",
           "Name": "DeleteAllQueuedEmailSendFailuresAsync",
-          "LineNumber": 156,
+          "LineNumber": 157,
           "Inputs": [
             {
               "Name": "deletedEmailSendFailure",
@@ -2543,9 +2543,65 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Int32)",
+          "Name": "DeleteAllQueuedEmailSendFailuresAsync",
+          "LineNumber": 167,
+          "Inputs": [
+            {
+              "Name": "emailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [
+            "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Int32)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
+              "MethodName": "ExecuteDeleteAsync",
+              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
+              "MethodName": "IgnoreQueryFilters",
+              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Where",
+              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Data.ICoreContextFactory",
+              "MethodName": "CreateCoreContext",
+              "MethodId": "cCoder.Data.ICoreContextFactory.CreateCoreContext()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailsAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailsAsync",
-          "LineNumber": 166,
+          "LineNumber": 177,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -2607,7 +2663,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(System.Int32)",
           "Name": "DeleteAllQueuedEmailsByAppIdAsync",
-          "LineNumber": 176,
+          "LineNumber": 187,
           "Inputs": [
             {
               "Name": "appId",
@@ -2677,7 +2733,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.DeleteQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "DeleteQueuedEmailAsync",
-          "LineNumber": 81,
+          "LineNumber": 82,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -2753,7 +2809,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.GetAllQueuedEmails()",
           "Name": "GetAllQueuedEmails",
-          "LineNumber": 37,
+          "LineNumber": 38,
           "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E",
           "Implements": [
@@ -2783,7 +2839,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.GetAllQueuedEmailsIgnoringFilters()",
           "Name": "GetAllQueuedEmailsIgnoringFilters",
-          "LineNumber": 43,
+          "LineNumber": 44,
           "Inputs": [],
           "ReturnType": "System.Linq.IQueryable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E",
           "Implements": [
@@ -2820,7 +2876,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.GetAppId(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "GetAppId",
-          "LineNumber": 197,
+          "LineNumber": 208,
           "Inputs": [
             {
               "Name": "entity",
@@ -2847,7 +2903,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.GetDispatchBatch(System.Int32,System.Int32)",
           "Name": "GetDispatchBatch",
-          "LineNumber": 49,
+          "LineNumber": 50,
           "Inputs": [
             {
               "Name": "batchSize",
@@ -2921,7 +2977,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.MarkQueuedEmailAsSentAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Guid,System.String,System.Threading.CancellationToken)",
           "Name": "MarkQueuedEmailAsSentAsync",
-          "LineNumber": 114,
+          "LineNumber": 115,
           "Inputs": [
             {
               "Name": "entity",
@@ -3037,7 +3093,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker.UpdateQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "UpdateQueuedEmailAsync",
-          "LineNumber": 70,
+          "LineNumber": 71,
           "Inputs": [
             {
               "Name": "updatedQueuedEmail",
@@ -6127,7 +6183,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 26,
+          "LineNumber": 59,
           "Inputs": [
             {
               "Name": "key",
@@ -6207,7 +6263,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 60,
+          "LineNumber": 93,
           "Inputs": [
             {
               "Name": "key",
@@ -6323,7 +6379,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 103,
+          "LineNumber": 136,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -6396,7 +6452,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetMetadata()",
           "Name": "GetMetadata",
-          "LineNumber": 134,
+          "LineNumber": 167,
           "Inputs": [],
           "ReturnType": "IActionResult",
           "Implements": [],
@@ -6449,9 +6505,88 @@
           "HasTryCatch": true
         },
         {
+          "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(System.Int32)",
+          "Name": "Post",
+          "LineNumber": 26,
+          "Inputs": [
+            {
+              "Name": "key",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogError",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
+              "MethodName": "RetryAsync",
+              "MethodId": "cCoder.Mail.Exposures.IQueuedEmailManager.RetryAsync(System.Int32)",
+              "StandardElementType": "Exposure",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [
+            "POST"
+          ],
+          "HttpResponses": [
+            {
+              "StatusCode": 204,
+              "ResultMethod": "NoContent",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": false,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
+              "StatusCode": 400,
+              "ResultMethod": "BadRequest",
+              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            }
+          ],
+          "IsHttpRequestHandler": true,
+          "IsODataControllerAction": true,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": true
+        },
+        {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 196,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -6531,7 +6666,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "Put",
-          "LineNumber": 244,
+          "LineNumber": 277,
           "Inputs": [
             {
               "Name": "key",
@@ -6646,7 +6781,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 235,
           "Inputs": [
             {
               "Name": "key",
@@ -12957,7 +13092,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.QueuedEmailService.DeleteAllByAppIdAsync(System.Int32)",
           "Name": "DeleteAllByAppIdAsync",
-          "LineNumber": 182,
+          "LineNumber": 191,
           "Inputs": [
             {
               "Name": "appId",
@@ -13004,7 +13139,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.QueuedEmailService.DeleteAllForAppQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllForAppQueuedEmailAsync",
-          "LineNumber": 143,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -13366,6 +13501,53 @@
           ],
           "IncomingExceptionTypes": [
             "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Services.Foundations.QueuedEmailService.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 143,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [
+            "cCoder.Mail.Services.Foundations.IQueuedEmailService.RetryAsync(System.Int32)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker",
+              "MethodName": "DeleteAllQueuedEmailSendFailuresAsync",
+              "MethodId": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Int32)",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -14448,7 +14630,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.AddMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "AddMailReceiverAsync",
-          "LineNumber": 18,
+          "LineNumber": 28,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -14497,7 +14679,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 38,
+          "LineNumber": 48,
           "Inputs": [
             {
               "Name": "appId",
@@ -14542,9 +14724,70 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.ExistsAsync(System.Guid)",
+          "Name": "ExistsAsync",
+          "LineNumber": 18,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [
+            "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.ExistsAsync(System.Guid)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Any",
+              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Threading.Tasks.ValueTask",
+              "MethodName": "FromResult",
+              "MethodId": "System.Threading.Tasks.ValueTask.FromResult(TResult)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
+              "MethodName": "GetAllMailReceiver",
+              "MethodId": "cCoder.Mail.Exposures.IMailReceiverManager.GetAllMailReceiver(System.Boolean)",
+              "StandardElementType": "Exposure",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.RunAsync(System.Threading.CancellationToken)",
           "Name": "RunAsync",
-          "LineNumber": 79,
+          "LineNumber": 89,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -14586,7 +14829,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.RunContinuouslyAsync(System.Threading.CancellationToken)",
           "Name": "RunContinuouslyAsync",
-          "LineNumber": 47,
+          "LineNumber": 57,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -14660,7 +14903,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailReceiverOrchestrationService.UpdateMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "UpdateMailReceiverAsync",
-          "LineNumber": 28,
+          "LineNumber": 38,
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -14732,7 +14975,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.AddMailSenderAsync(cCoder.Data.Models.Mail.MailSender)",
           "Name": "AddMailSenderAsync",
-          "LineNumber": 20,
+          "LineNumber": 30,
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -14781,7 +15024,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 39,
+          "LineNumber": 49,
           "Inputs": [
             {
               "Name": "appId",
@@ -14826,9 +15069,70 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.ExistsAsync(System.Guid)",
+          "Name": "ExistsAsync",
+          "LineNumber": 20,
+          "Inputs": [
+            {
+              "Name": "mailSenderId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [
+            "cCoder.Mail.Services.Orchestrations.IMailSenderOrchestrationService.ExistsAsync(System.Guid)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Any",
+              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Threading.Tasks.ValueTask",
+              "MethodName": "FromResult",
+              "MethodId": "System.Threading.Tasks.ValueTask.FromResult(TResult)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
+              "MethodName": "GetAllMailSender",
+              "MethodId": "cCoder.Mail.Exposures.IMailSenderManager.GetAllMailSender(System.Boolean)",
+              "StandardElementType": "Exposure",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.RunAsync(System.Threading.CancellationToken)",
           "Name": "RunAsync",
-          "LineNumber": 80,
+          "LineNumber": 90,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -14868,7 +15172,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.RunContinuouslyAsync(System.Threading.CancellationToken)",
           "Name": "RunContinuouslyAsync",
-          "LineNumber": 48,
+          "LineNumber": 58,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -14940,7 +15244,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.MailSenderOrchestrationService.UpdateMailSenderAsync(cCoder.Data.Models.Mail.MailSender)",
           "Name": "UpdateMailSenderAsync",
-          "LineNumber": 29,
+          "LineNumber": 39,
           "Inputs": [
             {
               "Name": "updatedMailSender",
@@ -15408,7 +15712,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "AddOrUpdateQueuedEmailResult",
-          "LineNumber": 77,
+          "LineNumber": 86,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -15513,7 +15817,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.AddQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Boolean)",
           "Name": "AddQueuedEmailAsync",
-          "LineNumber": 93,
+          "LineNumber": 102,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -15573,7 +15877,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.DeleteAllQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailAsync",
-          "LineNumber": 85,
+          "LineNumber": 94,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -15692,7 +15996,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 69,
+          "LineNumber": 78,
           "Inputs": [
             {
               "Name": "appId",
@@ -15832,6 +16136,54 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 69,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [
+            "cCoder.Mail.Exposures.IQueuedEmailManager.RetryAsync(System.Int32)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService",
+              "MethodName": "RetryAsync",
+              "MethodId": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.RetryAsync(System.Int32)",
+              "StandardElementType": "ProcessingService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService.UpdateQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "UpdateQueuedEmailAsync",
           "LineNumber": 41,
@@ -15913,7 +16265,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.AddReceivedEmailAsync(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "AddReceivedEmailAsync",
-          "LineNumber": 16,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -15962,7 +16314,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 36,
+          "LineNumber": 46,
           "Inputs": [
             {
               "Name": "appId",
@@ -16007,9 +16359,70 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.ExistsAsync(System.Int32)",
+          "Name": "ExistsAsync",
+          "LineNumber": 16,
+          "Inputs": [
+            {
+              "Name": "receivedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [
+            "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.ExistsAsync(System.Int32)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Any",
+              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Threading.Tasks.ValueTask",
+              "MethodName": "FromResult",
+              "MethodId": "System.Threading.Tasks.ValueTask.FromResult(TResult)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
+              "MethodName": "GetAllReceivedEmail",
+              "MethodId": "cCoder.Mail.Exposures.IReceivedEmailManager.GetAllReceivedEmail(System.Boolean)",
+              "StandardElementType": "Exposure",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.ReceiveMailboxReceiveRequestAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "ReceiveMailboxReceiveRequestAsync",
-          "LineNumber": 45,
+          "LineNumber": 55,
           "Inputs": [
             {
               "Name": "request",
@@ -16061,7 +16474,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.ReceiveTopAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveTopAsync",
-          "LineNumber": 59,
+          "LineNumber": 69,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -16116,7 +16529,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.ReceivedEmailOrchestrationService.UpdateReceivedEmailAsync(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "UpdateReceivedEmailAsync",
-          "LineNumber": 26,
+          "LineNumber": 36,
           "Inputs": [
             {
               "Name": "updatedReceivedEmail",
@@ -18092,7 +18505,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.MailServerProcessingService.DeleteAllMailServerAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.MailServer\u003E)",
           "Name": "DeleteAllMailServerAsync",
-          "LineNumber": 104,
+          "LineNumber": 108,
           "Inputs": [
             {
               "Name": "deletedMailServer",
@@ -18568,7 +18981,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService.AddOrUpdateQueuedEmailResult(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "AddOrUpdateQueuedEmailResult",
-          "LineNumber": 137,
+          "LineNumber": 158,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -18595,9 +19008,23 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Any",
+              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Foundations.IQueuedEmailService",
               "MethodName": "AddQueuedEmailAsync",
               "MethodId": "cCoder.Mail.Services.Foundations.IQueuedEmailService.AddQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Boolean)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Foundations.IQueuedEmailService",
+              "MethodName": "GetAllQueuedEmail",
+              "MethodId": "cCoder.Mail.Services.Foundations.IQueuedEmailService.GetAllQueuedEmail(System.Boolean)",
               "StandardElementType": "FoundationService",
               "IsDependencyBoundary": false
             },
@@ -18736,7 +19163,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService.DeleteAllQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailAsync",
-          "LineNumber": 177,
+          "LineNumber": 202,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -18863,7 +19290,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 129,
+          "LineNumber": 150,
           "Inputs": [
             {
               "Name": "appId",
@@ -19151,6 +19578,69 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 129,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [
+            "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.RetryAsync(System.Int32)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Mail.Brokers.IAuthorizationBroker",
+              "MethodName": "GetCurrentUser",
+              "MethodId": "cCoder.Mail.Brokers.IAuthorizationBroker.GetCurrentUser()",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Foundations.IQueuedEmailService",
+              "MethodName": "GetQueuedEmail",
+              "MethodId": "cCoder.Mail.Services.Foundations.IQueuedEmailService.GetQueuedEmail(System.Int32)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Foundations.IQueuedEmailService",
+              "MethodName": "RetryAsync",
+              "MethodId": "cCoder.Mail.Services.Foundations.IQueuedEmailService.RetryAsync(System.Int32)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -19898,9 +20388,23 @@
               "IsDependencyBoundary": true
             },
             {
+              "TypeName": "System.Linq.Queryable",
+              "MethodName": "Any",
+              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Foundations.ISentEmailService",
               "MethodName": "AddSentEmailAsync",
               "MethodId": "cCoder.Mail.Services.Foundations.ISentEmailService.AddSentEmailAsync(cCoder.Data.Models.Mail.SentEmail)",
+              "StandardElementType": "FoundationService",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Foundations.ISentEmailService",
+              "MethodName": "GetAllSentEmail",
+              "MethodId": "cCoder.Mail.Services.Foundations.ISentEmailService.GetAllSentEmail(System.Boolean)",
               "StandardElementType": "FoundationService",
               "IsDependencyBoundary": false
             },
@@ -19986,7 +20490,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.SentEmailProcessingService.DeleteAllSentEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.SentEmail\u003E)",
           "Name": "DeleteAllSentEmailAsync",
-          "LineNumber": 100,
+          "LineNumber": 104,
           "Inputs": [
             {
               "Name": "deletedSentEmail",
@@ -21802,9 +22306,34 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.DeleteAllQueuedEmailSendFailuresAsync(System.Int32)",
+          "Name": "DeleteAllQueuedEmailSendFailuresAsync",
+          "LineNumber": 29,
+          "Inputs": [
+            {
+              "Name": "emailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.DeleteAllQueuedEmailsAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailsAsync",
-          "LineNumber": 29,
+          "LineNumber": 30,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -21829,7 +22358,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.DeleteAllQueuedEmailsByAppIdAsync(System.Int32)",
           "Name": "DeleteAllQueuedEmailsByAppIdAsync",
-          "LineNumber": 30,
+          "LineNumber": 31,
           "Inputs": [
             {
               "Name": "appId",
@@ -21919,7 +22448,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Storages.IQueuedEmailBroker.GetAppId(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "GetAppId",
-          "LineNumber": 31,
+          "LineNumber": 32,
           "Inputs": [
             {
               "Name": "entity",
@@ -23562,7 +24091,7 @@
         {
           "Id": "cCoder.Mail.Exposures.IQueuedEmailManager.AddOrUpdateQueuedEmailResult(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "AddOrUpdateQueuedEmailResult",
-          "LineNumber": 18,
+          "LineNumber": 19,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -23612,7 +24141,7 @@
         {
           "Id": "cCoder.Mail.Exposures.IQueuedEmailManager.AddQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Boolean)",
           "Name": "AddQueuedEmailAsync",
-          "LineNumber": 20,
+          "LineNumber": 21,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -23641,7 +24170,7 @@
         {
           "Id": "cCoder.Mail.Exposures.IQueuedEmailManager.DeleteAllQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailAsync",
-          "LineNumber": 19,
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -23691,7 +24220,7 @@
         {
           "Id": "cCoder.Mail.Exposures.IQueuedEmailManager.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 17,
+          "LineNumber": 18,
           "Inputs": [
             {
               "Name": "appId",
@@ -23749,6 +24278,31 @@
             }
           ],
           "ReturnType": "cCoder.Data.Models.Mail.QueuedEmail",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Exposures.IQueuedEmailManager.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 17,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
           "Implements": [],
           "Calls": [],
           "PossibleExceptionTypes": [],
@@ -25401,7 +25955,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.IQueuedEmailService.DeleteAllByAppIdAsync(System.Int32)",
           "Name": "DeleteAllByAppIdAsync",
-          "LineNumber": 28,
+          "LineNumber": 29,
           "Inputs": [
             {
               "Name": "appId",
@@ -25426,7 +25980,7 @@
         {
           "Id": "cCoder.Mail.Services.Foundations.IQueuedEmailService.DeleteAllForAppQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllForAppQueuedEmailAsync",
-          "LineNumber": 27,
+          "LineNumber": 28,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -25609,6 +26163,31 @@
             {
               "Name": "cancellationToken",
               "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Services.Foundations.IQueuedEmailService.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 27,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask",
@@ -26098,7 +26677,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.AddMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "AddMailReceiverAsync",
-          "LineNumber": 11,
+          "LineNumber": 13,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -26123,7 +26702,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 15,
+          "LineNumber": 17,
           "Inputs": [
             {
               "Name": "appId",
@@ -26146,9 +26725,34 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.ExistsAsync(System.Guid)",
+          "Name": "ExistsAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "mailReceiverId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.RunAsync(System.Threading.CancellationToken)",
           "Name": "RunAsync",
-          "LineNumber": 18,
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -26173,7 +26777,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.RunContinuouslyAsync(System.Threading.CancellationToken)",
           "Name": "RunContinuouslyAsync",
-          "LineNumber": 17,
+          "LineNumber": 19,
           "Inputs": [
             {
               "Name": "cancellationToken",
@@ -26198,7 +26802,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IMailReceiverOrchestrationService.UpdateMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "UpdateMailReceiverAsync",
-          "LineNumber": 13,
+          "LineNumber": 15,
           "Inputs": [
             {
               "Name": "updatedMailReceiver",
@@ -26242,7 +26846,33 @@
         }
       ],
       "Properties": [],
-      "Methods": []
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Services.Orchestrations.IMailSenderOrchestrationService.ExistsAsync(System.Guid)",
+          "Name": "ExistsAsync",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "mailSenderId",
+              "Type": "System.Guid"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
     },
     {
       "Name": "cCoder.Mail.Services.Orchestrations.IMailServerOrchestrationService",
@@ -26301,7 +26931,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.AddReceivedEmailAsync(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "AddReceivedEmailAsync",
-          "LineNumber": 12,
+          "LineNumber": 14,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -26326,7 +26956,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 18,
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "appId",
@@ -26349,9 +26979,34 @@
           "HasTryCatch": false
         },
         {
+          "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.ExistsAsync(System.Int32)",
+          "Name": "ExistsAsync",
+          "LineNumber": 12,
+          "Inputs": [
+            {
+              "Name": "receivedEmailId",
+              "Type": "System.Int32"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask\u003CSystem.Boolean\u003E",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
           "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.ReceiveMailboxReceiveRequestAsync(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "ReceiveMailboxReceiveRequestAsync",
-          "LineNumber": 20,
+          "LineNumber": 22,
           "Inputs": [
             {
               "Name": "request",
@@ -26380,7 +27035,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.ReceiveTopAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveTopAsync",
-          "LineNumber": 24,
+          "LineNumber": 26,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -26413,7 +27068,7 @@
         {
           "Id": "cCoder.Mail.Services.Orchestrations.IReceivedEmailOrchestrationService.UpdateReceivedEmailAsync(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "UpdateReceivedEmailAsync",
-          "LineNumber": 15,
+          "LineNumber": 17,
           "Inputs": [
             {
               "Name": "updatedReceivedEmail",
@@ -27165,7 +27820,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.AddOrUpdateQueuedEmailResult(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "AddOrUpdateQueuedEmailResult",
-          "LineNumber": 39,
+          "LineNumber": 41,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -27215,7 +27870,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.AddQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail,System.Boolean)",
           "Name": "AddQueuedEmailAsync",
-          "LineNumber": 43,
+          "LineNumber": 45,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -27244,7 +27899,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.DeleteAllQueuedEmailAsync(System.Collections.Generic.IEnumerable\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
           "Name": "DeleteAllQueuedEmailAsync",
-          "LineNumber": 41,
+          "LineNumber": 43,
           "Inputs": [
             {
               "Name": "deletedQueuedEmail",
@@ -27294,7 +27949,7 @@
         {
           "Id": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.DeleteByAppIdAsync(System.Int32)",
           "Name": "DeleteByAppIdAsync",
-          "LineNumber": 37,
+          "LineNumber": 39,
           "Inputs": [
             {
               "Name": "appId",
@@ -27448,6 +28103,31 @@
             {
               "Name": "cancellationToken",
               "Type": "System.Threading.CancellationToken"
+            }
+          ],
+          "ReturnType": "System.Threading.Tasks.ValueTask",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Services.Processings.IQueuedEmailProcessingService.RetryAsync(System.Int32)",
+          "Name": "RetryAsync",
+          "LineNumber": 37,
+          "Inputs": [
+            {
+              "Name": "queuedEmailId",
+              "Type": "System.Int32"
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask",
@@ -28305,42 +28985,49 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 60
+      "LineNumber": 59
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 103
+      "LineNumber": 93
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 134
+      "LineNumber": 136
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 163
+      "LineNumber": 167
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 202
+      "LineNumber": 196
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 244
+      "LineNumber": 235
+    },
+    {
+      "Code": "STXAPI005",
+      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Severity": "Warning",
+      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
+      "LineNumber": 277
     },
     {
       "Code": "STXAPI005",

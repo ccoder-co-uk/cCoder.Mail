@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
@@ -74,3 +76,5 @@ authorizationBroker: authorizationBrokerMock.Object
                 SentBy = item.SentBy == null ? null : new DataUser { Id = item.SentBy.Id, DisplayName = item.SentBy.DisplayName, Email = item.SentBy.Email },
             };
 }
+
+#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
