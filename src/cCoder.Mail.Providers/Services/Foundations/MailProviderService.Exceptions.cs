@@ -8,9 +8,7 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MailProviderService
 {
-    private static async ValueTask<TResult> TryCatch<TResult>(
-        Func<ValueTask<TResult>> operation,
-        bool isValueTask)
+    private static async ValueTask<TResult> TryCatch<TResult>(Func<ValueTask<TResult>> operation, bool isValueTask)
     {
         try
         {
@@ -18,23 +16,19 @@ internal sealed partial class MailProviderService
         }
         catch (MailValidationException innerException)
         {
-            throw new MailValidationException(
-                innerException: innerException);
+            throw new MailValidationException(innerException: innerException);
         }
         catch (MailDependencyException innerException)
         {
-            throw new MailDependencyException(
-                innerException: innerException);
+            throw new MailDependencyException(innerException: innerException);
         }
         catch (ArgumentException innerException)
         {
-            throw new MailValidationException(
-                innerException: innerException);
+            throw new MailValidationException(innerException: innerException);
         }
         catch (Exception innerException)
         {
-            throw new MailServiceException(
-                innerException: innerException);
+            throw new MailServiceException(innerException: innerException);
         }
     }
 }

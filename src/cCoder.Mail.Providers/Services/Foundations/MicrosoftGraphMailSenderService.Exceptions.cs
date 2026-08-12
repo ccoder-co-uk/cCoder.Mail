@@ -8,9 +8,7 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailSenderService
 {
-    private static async Task TryCatch(
-        Func<Task> operation,
-        bool isTask)
+    private static async Task TryCatch(Func<Task> operation, bool isTask)
     {
         try
         {
@@ -33,5 +31,4 @@ internal sealed partial class MicrosoftGraphMailSenderService
             throw new MailServiceException(innerException: innerException);
         }
     }
-
 }
