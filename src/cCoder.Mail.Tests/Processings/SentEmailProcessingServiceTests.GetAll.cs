@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -37,3 +39,5 @@ public partial class SentEmailProcessingServiceTests
     }
 
 }
+
+#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
