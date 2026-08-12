@@ -29,5 +29,6 @@ internal sealed partial class MailMetadataTypeService
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
-        }    }
+        }
+    }
 }
