@@ -4,7 +4,6 @@
 
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers;
-using cCoder.Data;
 using cCoder.Eventing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
@@ -27,18 +26,6 @@ public static partial class IServiceCollectionExtensions
 
         services.AddMailProviders(
             providers: configuration.Providers);
-
-        if (!string.IsNullOrWhiteSpace(
-            value: configuration.ConnectionString))
-        {
-            services.AddData(
-                configuration: new cCoder.Data.Models.DataConfiguration
-                {
-                    ConnectionString = configuration.ConnectionString,
-                    DebugInfo = configuration.DebugInfo,
-                    LogSQL = configuration.LogSQL,
-                });
-        }
 
         services.AddEventProviders(eventProviders: configuration.EventProviders);
     }

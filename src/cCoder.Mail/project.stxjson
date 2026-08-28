@@ -9514,7 +9514,7 @@
     {
       "Name": "cCoder.Mail.IServiceCollectionExtensions",
       "StandardElementType": "App",
-      "LineNumber": 18,
+      "LineNumber": 17,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
@@ -9920,23 +9920,11 @@
       "Interfaces": [],
       "Properties": [
         {
-          "Name": "ConnectionString",
-          "Type": "System.String"
-        },
-        {
-          "Name": "DebugInfo",
-          "Type": "System.Boolean"
-        },
-        {
           "Name": "EventProviders",
           "Type": "cCoder.Eventing.Models.EventProvider[]"
         },
         {
           "Name": "IsMigrating",
-          "Type": "System.Boolean"
-        },
-        {
-          "Name": "LogSQL",
           "Type": "System.Boolean"
         },
         {

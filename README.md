@@ -6,13 +6,15 @@
 
 ## Local Configuration
 
-Configuration binds directly into `MailConfiguration`. Leave secrets empty in
-appsettings and define `Mail__ConnectionString` plus any configured provider
-secrets as user-level or machine-level environment variables. Providers are
-keyed by name, so the Microsoft Graph secret is
-`Mail__Providers__MicrosoftGraph__ClientSecret`. Restart Visual Studio,
-select the Web and HostedServices startup projects, and press F5. No
-configuration conversion step is required.
+Each executable binds the complete configuration root to its own
+`AppConfiguration`. The Web composition root registers `CoreData`, `Mail`,
+`SecurityData`, `Security`, and `Eventing` side by side. The HostedServices
+composition root registers `CoreData`, `Mail`, and `Eventing`.
+
+Persistence belongs to the Data domains. `MailConfiguration` contains only
+Mail behavior and provider availability; `CoreData` owns the database
+connection, Data registration, and migrations. Likewise, `SecurityData` owns
+the Security database and `Security` contains authentication behavior.
 
 ## Functionality
 
@@ -83,15 +85,33 @@ Useful `Mail.HostedServices` endpoints:
 - `/` returns a plain-text hosted-services report.
 - `/Health` returns `Healthy`.
 
-The runnable apps bind the structured settings directly. Their required secrets
-are:
+Leave secrets empty in `appsettings.json` and define the base required values as
+user-level or machine-level environment variables:
 
-- `Mail__ConnectionString`
-- `Security__ConnectionString` (Web only)
+- `CoreData__ConnectionString`
+- `SecurityData__ConnectionString` (Web only)
 - `Security__DecryptionKey` (Web only)
+- `Eventing__ServiceBus__ConnectionString` when `Eventing__ProviderType` is
+  `ServiceBus`
+
+When Microsoft Graph is enabled, also define:
+
 - `Mail__Providers__MicrosoftGraph__TenantId`
 - `Mail__Providers__MicrosoftGraph__ClientId`
 - `Mail__Providers__MicrosoftGraph__ClientSecret`
+
+`CoreData__AdminConnectionString` and
+`SecurityData__AdminConnectionString` are optional migration-only overrides. If
+an admin connection is configured, startup migrations use it and normal runtime
+operations continue to use the regular connection. If it is omitted, migrations
+use the regular connection.
+
+Library consumers register persistence and behavior explicitly at their own
+composition root: call `AddData` before `AddMailWeb`, `AddMail`, or
+`AddMailHostedServices`; Web hosts also call `AddSecurityData` before
+`AddSecurityWeb`. An application that consumes `cCoder.Core` should use Core's
+composite API instead; Core deliberately composes its configured child domains
+recursively.
 
 ## Provider Configuration
 
@@ -121,12 +141,20 @@ password values. Platform-wide Graph application credentials remain in
 configuration. Every provider implements `IMailClient`; invoking an unsupported
 send or receive operation throws `UnsupportedMailClientOperationException`.
 
+For SMTP delivery, `Mail:Providers:Smtp` must be present in configuration, the
+application must have a valid `MailSender` row whose `ProviderName` is `Smtp`,
+and that row must reference the required server/credential data. A queued email
+is sent by the Mail hosted-services process, so configuring a sender row without
+running that process does not dispatch queued messages. Microsoft Graph follows
+the same database-row selection model, but its platform-wide tenant, client, and
+client-secret values come from `Mail:Providers:MicrosoftGraph`.
+
 ## Mail Delivery Integration
 
 The real send-and-receive integration test requires these variables on the runner:
 
-- `Mail__ConnectionString`
-- `Security__ConnectionString`
+- `CoreData__ConnectionString`
+- `SecurityData__ConnectionString`
 - `Security__DecryptionKey`
 - `Mail__Providers__MicrosoftGraph__TenantId`
 - `Mail__Providers__MicrosoftGraph__ClientId`
