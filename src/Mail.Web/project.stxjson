@@ -225,7 +225,7 @@
     {
       "Name": "Mail.Web.IServiceCollectionExtensions",
       "StandardElementType": "App",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
@@ -233,9 +233,9 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "Mail.Web.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,IConfiguration,System.Action\u003CMail.Web.Models.MailWebConfiguration\u003E)",
-          "Name": "AddMailWeb",
-          "LineNumber": 14,
+          "Id": "Mail.Web.IServiceCollectionExtensions.AddWeb(IServiceCollection,IConfiguration,System.Action\u003CMail.Web.Models.AppConfiguration\u003E)",
+          "Name": "AddWeb",
+          "LineNumber": 15,
           "Inputs": [
             {
               "Name": "services",
@@ -247,7 +247,7 @@
             },
             {
               "Name": "configure",
-              "Type": "System.Action\u003CMail.Web.Models.MailWebConfiguration\u003E"
+              "Type": "System.Action\u003CMail.Web.Models.AppConfiguration\u003E"
             }
           ],
           "ReturnType": "IServiceCollection",
@@ -283,17 +283,17 @@
       ]
     },
     {
-      "Name": "Mail.Web.Models.MailWebConfiguration",
+      "Name": "Mail.Web.Models.AppConfiguration",
       "StandardElementType": "Model",
-      "LineNumber": 12,
+      "LineNumber": 13,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
       "Interfaces": [],
       "Properties": [
         {
-          "Name": "Data",
-          "Type": "cCoder.Data.Models.DataConfiguration"
+          "Name": "CoreData",
+          "Type": "cCoder.Data.Models.CoreDataConfiguration"
         },
         {
           "Name": "Eventing",
@@ -306,6 +306,10 @@
         {
           "Name": "Security",
           "Type": "cCoder.Security.Models.SecurityConfiguration"
+        },
+        {
+          "Name": "SecurityData",
+          "Type": "cCoder.Security.Models.SecurityDataConfiguration"
         }
       ],
       "Methods": []

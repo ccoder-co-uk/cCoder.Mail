@@ -108,8 +108,8 @@ internal sealed class MailIntegrationTestConfiguration
             separator: ", ",
             value:
             [
-                "Mail__ConnectionString",
-                "Security__ConnectionString",
+                "CoreData__ConnectionString",
+                "SecurityData__ConnectionString",
                 "Security__DecryptionKey",
                 "Mail__MicrosoftGraph__TenantId",
                 "Mail__MicrosoftGraph__ClientId",

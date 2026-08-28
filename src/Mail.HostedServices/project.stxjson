@@ -17,8 +17,8 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "Mail.HostedServices.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,IConfiguration,System.Action\u003CMail.HostedServices.Models.MailHostedServicesConfiguration\u003E)",
-          "Name": "AddMailHostedServices",
+          "Id": "Mail.HostedServices.IServiceCollectionExtensions.AddHostedServices(IServiceCollection,IConfiguration,System.Action\u003CMail.HostedServices.Models.AppConfiguration\u003E)",
+          "Name": "AddHostedServices",
           "LineNumber": 13,
           "Inputs": [
             {
@@ -31,7 +31,7 @@
             },
             {
               "Name": "configure",
-              "Type": "System.Action\u003CMail.HostedServices.Models.MailHostedServicesConfiguration\u003E"
+              "Type": "System.Action\u003CMail.HostedServices.Models.AppConfiguration\u003E"
             }
           ],
           "ReturnType": "IServiceCollection",
@@ -67,17 +67,17 @@
       ]
     },
     {
-      "Name": "Mail.HostedServices.Models.MailHostedServicesConfiguration",
+      "Name": "Mail.HostedServices.Models.AppConfiguration",
       "StandardElementType": "Model",
-      "LineNumber": 11,
+      "LineNumber": 12,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
       "Interfaces": [],
       "Properties": [
         {
-          "Name": "Data",
-          "Type": "cCoder.Data.Models.DataConfiguration"
+          "Name": "CoreData",
+          "Type": "cCoder.Data.Models.CoreDataConfiguration"
         },
         {
           "Name": "Eventing",

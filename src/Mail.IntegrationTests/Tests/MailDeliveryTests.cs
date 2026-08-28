@@ -341,10 +341,6 @@ value: new MailboxReceiveRequest
             builder.UseEnvironment(environment: "Acceptance");
 
             builder.UseSetting(
-                key: "Mail:ConnectionString",
-                value: settings.CoreConnectionString);
-
-            builder.UseSetting(
                 key: "Mail:Providers:MicrosoftGraph:TenantId",
                 value: settings.TenantId);
 
@@ -357,11 +353,11 @@ value: new MailboxReceiveRequest
                 value: settings.ClientSecret);
 
             builder.UseSetting(
-                key: "Data:ConnectionString",
+                key: "CoreData:ConnectionString",
                 value: settings.CoreConnectionString);
 
             builder.UseSetting(
-                key: "Security:ConnectionString",
+                key: "SecurityData:ConnectionString",
                 value: settings.SecurityConnectionString);
 
             builder.UseSetting(

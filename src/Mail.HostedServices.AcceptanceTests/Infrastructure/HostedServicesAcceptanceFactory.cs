@@ -22,8 +22,7 @@ internal sealed class HostedServicesAcceptanceFactory(AcceptanceSettings setting
         {
             config.AddInMemoryCollection(
 initialData: [
-                new KeyValuePair<string, string>(key: "Mail:ConnectionString", value: settings.CoreConnectionString),
-                new KeyValuePair<string, string>(key: "Data:ConnectionString", value: settings.CoreConnectionString),
+                new KeyValuePair<string, string>(key: "CoreData:ConnectionString", value: settings.CoreConnectionString),
                 new KeyValuePair<string, string>(key: "Eventing:ProviderType", value: string.Empty),
                 new KeyValuePair<string, string>(key: "Mail:IsMigrating", value: "true"),
             ]);

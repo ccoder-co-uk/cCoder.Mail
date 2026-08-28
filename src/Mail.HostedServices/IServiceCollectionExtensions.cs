@@ -10,18 +10,18 @@ namespace Mail.HostedServices;
 
 public static class IServiceCollectionExtensions
 {
-    public static IServiceCollection AddMailHostedServices(
+    public static IServiceCollection AddHostedServices(
         this IServiceCollection services,
         IConfiguration configuration,
-        Action<MailHostedServicesConfiguration> configure = null)
+        Action<AppConfiguration> configure = null)
     {
-        MailHostedServicesConfiguration hostedConfiguration = new();
+        AppConfiguration hostedConfiguration = new();
         configuration.Bind(instance: hostedConfiguration);
         configure?.Invoke(obj: hostedConfiguration);
 
         services.AddEventingHostedServices(
             configuration: hostedConfiguration.Eventing);
-        services.AddData(configuration: hostedConfiguration.Data);
+        services.AddData(configuration: hostedConfiguration.CoreData);
         cCoder.Mail.IServiceCollectionExtensions
             .AddMailHostedServices(
                 services: services,
