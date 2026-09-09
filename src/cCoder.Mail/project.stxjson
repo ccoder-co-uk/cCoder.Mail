@@ -28484,6 +28484,74 @@
   ],
   "Links": [
     {
+      "FromType": "cCoder.Mail.Brokers.AuthInfoBroker",
+      "ToType": "cCoder.Data.ICoreAuthInfo"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.AuthorizationBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Events.EventHubBroker",
+      "ToType": "cCoder.Eventing.IEventHub"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Events.MailServerEventBroker",
+      "ToType": "cCoder.Eventing.IEventHub"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Events.QueuedEmailEventBroker",
+      "ToType": "cCoder.Eventing.IEventHub"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Events.SentEmailEventBroker",
+      "ToType": "cCoder.Eventing.IEventHub"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Loggings.LoggingBroker",
+      "ToType": "Microsoft.Extensions.Logging.ILogger\u003CcCoder.Mail.Brokers.Loggings.LoggingBroker\u003E"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.MailClients.MailReceiverClientBroker",
+      "ToType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.MailClients.MailSenderClientBroker",
+      "ToType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClientFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.OData.MailModelBroker",
+      "ToType": "Microsoft.OData.ModelBuilder.ODataConventionModelBuilder"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.OData.ODataModelBroker",
+      "ToType": "Microsoft.OData.ModelBuilder.ODataConventionModelBuilder"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.MailReceiverBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.MailSenderBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.MailServerBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.QueuedEmailBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.ReceivedEmailBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Brokers.Storages.SentEmailBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
       "FromType": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
       "ToType": "cCoder.Mail.Brokers.Loggings.LoggingBroker"
     },
@@ -28552,8 +28620,20 @@
       "ToType": "cCoder.Mail.Services.Foundations.Events.EventHandlerService"
     },
     {
+      "FromType": "cCoder.Mail.Exposures.HostedServices.MailReceiverHostedService",
+      "ToType": "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.HostedServices.MailSenderHostedService",
+      "ToType": "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"
+    },
+    {
       "FromType": "cCoder.Mail.Exposures.MailAppExposure",
       "ToType": "cCoder.Mail.Services.Aggregations.AppAggregationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Exposures.MailClients.MailProviderCatalog",
+      "ToType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E"
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailConfigurationExposure",
@@ -28562,6 +28642,14 @@
     {
       "FromType": "cCoder.Mail.Exposures.MailManagerExposure",
       "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
+    },
+    {
+      "FromType": "cCoder.Mail.Extensions.OData.BadRequestResult",
+      "ToType": "ModelStateDictionary"
+    },
+    {
+      "FromType": "cCoder.Mail.Extensions.OData.CompositePropertyInfo",
+      "ToType": "System.Type"
     },
     {
       "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",

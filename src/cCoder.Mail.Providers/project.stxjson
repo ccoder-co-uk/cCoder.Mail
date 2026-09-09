@@ -1295,7 +1295,7 @@
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-      "StandardElementType": "Dependency",
+      "StandardElementType": "Model",
       "LineNumber": 7,
       "IsPublic": true,
       "Kind": "Class",
@@ -1315,7 +1315,7 @@
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-      "StandardElementType": "Dependency",
+      "StandardElementType": "Model",
       "LineNumber": 7,
       "IsPublic": true,
       "Kind": "Class",
@@ -1335,7 +1335,7 @@
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-      "StandardElementType": "Dependency",
+      "StandardElementType": "Model",
       "LineNumber": 7,
       "IsPublic": true,
       "Kind": "Class",
@@ -1355,7 +1355,7 @@
     },
     {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException",
-      "StandardElementType": "Dependency",
+      "StandardElementType": "Model",
       "LineNumber": 7,
       "IsPublic": true,
       "Kind": "Class",
@@ -2716,8 +2716,16 @@
       "ToType": "cCoder.Mail.Providers.Dependencies.MailClients.SmtpMailClientDependency"
     },
     {
+      "FromType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker",
+      "ToType": "cCoder.Data.ICoreContextFactory"
+    },
+    {
       "FromType": "cCoder.Mail.Providers.Exposures.MailClients.ImapMailClient",
       "ToType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
+      "ToType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E"
     },
     {
       "FromType": "cCoder.Mail.Providers.Exposures.MailClients.MailClientFactory",
@@ -2738,6 +2746,22 @@
     {
       "FromType": "cCoder.Mail.Providers.Exposures.MailClients.SmtpMailClient",
       "ToType": "cCoder.Mail.Providers.Services.Foundations.SmtpMailSenderService"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+      "ToType": "System.Exception"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+      "ToType": "System.Exception"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
+      "ToType": "System.Exception"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Models.Exceptions.UnsupportedMailClientOperationException",
+      "ToType": "System.String"
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
