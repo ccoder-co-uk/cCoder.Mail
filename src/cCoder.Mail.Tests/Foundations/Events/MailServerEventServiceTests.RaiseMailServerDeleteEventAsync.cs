@@ -29,7 +29,7 @@ public partial class MailServerEventServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await service.RaiseMailServerDeleteEventAsync(entity: entity);
+        await service.RaiseMailServerDeleteEventAsync(mailServer: entity);
 
         // Then
 

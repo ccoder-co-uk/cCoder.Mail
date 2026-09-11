@@ -61,15 +61,6 @@ public sealed partial class SentEmailControllerTests
         controller.GetAll().Should().BeOfType<OkObjectResult>();
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void GetMetadataShouldReturnMetadata(bool extended)
-    {
-        controller.Request.QueryString = extended ? new QueryString("?extend=true") : QueryString.Empty;
-        controller.GetMetadata().Should().BeOfType<OkObjectResult>();
-    }
-
     [Fact]
     public async Task PostShouldReturnCreatedEmailAsync()
     {
@@ -99,35 +90,6 @@ public sealed partial class SentEmailControllerTests
         (await controller.Put(3, new SentEmail())).Should().BeOfType<BadRequestObjectResult>();
     }
 
-    [Fact]
-    public async Task PatchShouldReturnNotFoundWhenEmailDoesNotExistAsync()
-    {
-        serviceMock.Setup(x => x.GetSentEmail(1)).Returns((SentEmail)null);
-        (await controller.Put(1, new Delta<SentEmail>())).Should().BeOfType<NotFoundResult>();
-    }
-
-    [Fact]
-    public async Task PatchShouldUpdateEmailAsync()
-    {
-        var email = new SentEmail { Id = 1 }; serviceMock.Setup(x => x.GetSentEmail(1)).Returns(email);
-        serviceMock.Setup(x => x.UpdateSentEmailAsync(email)).ReturnsAsync(email);
-        (await controller.Put(1, new Delta<SentEmail>())).Should().BeOfType<OkObjectResult>();
-    }
-
-    [Theory]
-    [InlineData(typeof(MailValidationException), StatusCodes.Status400BadRequest)]
-    [InlineData(typeof(SecurityException), StatusCodes.Status403Forbidden)]
-    [InlineData(typeof(Exception), StatusCodes.Status500InternalServerError)]
-    public async Task PatchShouldMapAndLogExceptionAsync(Type exceptionType, int expectedStatus)
-    {
-        Exception exception = exceptionType == typeof(MailValidationException)
-            ? new MailValidationException(new Exception())
-            : (Exception)Activator.CreateInstance(exceptionType);
-        serviceMock.Setup(x => x.GetSentEmail(1)).Throws(exception);
-        ObjectResult result = (ObjectResult)await controller.Put(1, new Delta<SentEmail>());
-        result.StatusCode.Should().Be(expectedStatus);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
-    }
 }
 
 #pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005

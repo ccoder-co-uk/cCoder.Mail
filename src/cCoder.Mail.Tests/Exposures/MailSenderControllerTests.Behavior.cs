@@ -17,24 +17,6 @@ namespace cCoder.Mail.Tests.Exposures;
 public partial class MailSenderControllerTests
 {
     [Fact]
-    public void ShouldReturnMetadataWhenGetMetadataIsRequested()
-    {
-        IActionResult result = controller.GetMetadata();
-
-        result.Should().BeOfType<OkObjectResult>();
-    }
-
-    [Fact]
-    public void ShouldReturnExtendedMetadataWhenGetMetadataIsExtended()
-    {
-        controller.Request.QueryString = new QueryString(value: "?extend=true");
-
-        IActionResult result = controller.GetMetadata();
-
-        result.Should().BeOfType<OkObjectResult>();
-    }
-
-    [Fact]
     public void ShouldReturnMailSenderWhenGetFindsRequestedMailSender()
     {
         MailSender mailSender = new() { Id = Guid.Empty };
@@ -75,31 +57,6 @@ public partial class MailSenderControllerTests
         IActionResult result = await controller.Put(key: Guid.Empty, updatedMailSender: new MailSender());
 
         result.Should().BeAssignableTo<BadRequestObjectResult>();
-    }
-
-    [Fact]
-    public async Task ShouldReturnNotFoundWhenPatchCannotFindMailSenderAsync()
-    {
-        mailSenderManagerMock.Setup(expression: service => service.GetMailSender(iMailSenderId: Guid.Empty))
-            .Returns(value: null);
-
-        IActionResult result = await controller.Put(key: Guid.Empty, updatedMailSender: new Delta<MailSender>());
-
-        result.Should().BeOfType<NotFoundResult>();
-    }
-
-    [Fact]
-    public async Task ShouldUpdateMailSenderEventWhenPatchFindsCalendarAsync()
-    {
-        MailSender mailSender = new() { Id = Guid.Empty };
-        mailSenderManagerMock.Setup(expression: service => service.GetMailSender(iMailSenderId: Guid.Empty))
-            .Returns(value: mailSender);
-        mailSenderManagerMock.Setup(expression: service => service.UpdateMailSenderAsync(mailSender))
-            .ReturnsAsync(value: mailSender);
-
-        IActionResult result = await controller.Put(key: Guid.Empty, updatedMailSender: new Delta<MailSender>());
-
-        result.Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]

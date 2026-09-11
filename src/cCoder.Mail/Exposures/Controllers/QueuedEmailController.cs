@@ -104,7 +104,7 @@ public partial class QueuedEmailController(IQueuedEmailManager service,
                 return NotFound();
             }
 
-            return Ok(value: SingleResult.Create(queryable: result));
+            return Ok(value: queuedEmail);
         }
         catch (MailValidationException exception)
         {
@@ -160,34 +160,6 @@ public partial class QueuedEmailController(IQueuedEmailManager service,
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
-        }
-    }
-
-    [HttpGet]
-    public IActionResult GetMetadata()
-    {
-        try
-        {
-            bool isExtendedMetaRequest = Request.Query["extend"] == "true";
-
-            return isExtendedMetaRequest
-                ? Ok(value: new MailModelBroker()
-                    .Build()
-                    .EDMModel
-                    .GetExtendedMetadataForType(
-                        context: "Mail",
-                        type: typeof(QueuedEmail)))
-                : Ok(value: typeof(QueuedEmail).CreateMetadataContainer(
-                    isEntity: true,
-                    hasEndpoint: true));
-        }
-        catch (Exception exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status500InternalServerError,
-                value: "The mail metadata operation failed.");
         }
     }
 
@@ -272,47 +244,4 @@ public partial class QueuedEmailController(IQueuedEmailManager service,
         }
     }
 
-    [AcceptVerbs("PATCH", "MERGE")]
-    [ActionName("Patch")]
-    public async Task<IActionResult> Put(
-        [FromRoute] int key,
-        Delta<QueuedEmail> updatedQueuedEmail)
-    {
-        try
-        {
-            QueuedEmail originalEntity = service.GetQueuedEmail(iQueuedEmailId: key);
-
-            if (originalEntity is null)
-            {
-                return NotFound();
-            }
-
-            updatedQueuedEmail.Patch(original: originalEntity);
-
-            return Ok(value: await service.UpdateQueuedEmailAsync(
-                updatedQueuedEmail: originalEntity));
-        }
-        catch (MailValidationException exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return BadRequest(error: "The mail request is invalid.");
-        }
-        catch (System.Security.SecurityException exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status403Forbidden,
-                value: "The mail operation is forbidden.");
-        }
-        catch (Exception exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status500InternalServerError,
-                value: "The mail operation failed.");
-        }
-    }
 }

@@ -12,9 +12,9 @@ internal sealed class ImapMailReceiverBroker(
     : IImapMailReceiverBroker
 {
     public Task<string[]> ReceiveAsync(
-        MailboxReceiveRequest request,
+        MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveAsync(
-            request: request,
+            request: mailboxReceiveRequest,
             cancellationToken: cancellationToken);
 }

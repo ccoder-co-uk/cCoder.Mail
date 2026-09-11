@@ -11,13 +11,13 @@ namespace cCoder.Mail.Services.Foundations;
 internal sealed partial class MailReceivingService(IMailReceiverClientBroker mailReceiverClientBroker) : IMailReceivingService
 {
     public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
-        MailboxReceiveRequest request,
+        MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
-            ValidateReceiveMailboxReceiveRequestAsync(inputs: [request, cancellationToken]);
+            ValidateReceiveMailboxReceiveRequestAsync(inputs: [mailboxReceiveRequest, cancellationToken]);
 
-            return mailReceiverClientBroker.ReceiveAsync(request: request, cancellationToken: cancellationToken);
+            return mailReceiverClientBroker.ReceiveAsync(request: mailboxReceiveRequest, cancellationToken: cancellationToken);
         }, isTask: true);
 
     public Task<ReceivedEmail[]> ReceiveTopAsync(

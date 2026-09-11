@@ -36,15 +36,15 @@ internal sealed partial class MailReceivingProcessingService(
         });
 
     public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(
-        MailboxReceiveRequest request,
+        MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         TryCatch<ReceivedEmail[]>(operation: () =>
         {
             ValidateReceiveMailboxReceiveRequestAsync(
-                inputs: [request, cancellationToken]);
+                inputs: [mailboxReceiveRequest, cancellationToken]);
 
             return mailReceivingService.ReceiveMailboxReceiveRequestAsync(
-                request: request,
+                request: mailboxReceiveRequest,
                 cancellationToken: cancellationToken);
         }, isTask: true);
 

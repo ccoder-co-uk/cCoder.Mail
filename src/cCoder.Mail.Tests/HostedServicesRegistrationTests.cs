@@ -32,12 +32,12 @@ filter: descriptor => descriptor.ServiceType == typeof(IHostedService)
         Assert.Contains(
 collection: services,
 filter: descriptor => descriptor.ServiceType == typeof(IMailSenderHostedService)
-                && descriptor.ImplementationType == typeof(MailSenderHostedService));
+                && descriptor.ImplementationFactory is not null);
 
         Assert.Contains(
 collection: services,
 filter: descriptor => descriptor.ServiceType == typeof(IMailReceiverHostedService)
-                && descriptor.ImplementationType == typeof(MailReceiverHostedService));
+                && descriptor.ImplementationFactory is not null);
 
         Assert.Contains(
 collection: services,

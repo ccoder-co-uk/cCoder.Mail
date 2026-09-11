@@ -81,6 +81,6 @@ internal sealed class MailSenderBroker(ICoreContextFactory coreContextFactory) :
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(MailSender entity) =>
-        entity.AppId;
+    public int? GetAppId(MailSender mailSender) =>
+        mailSender.AppId;
 }

@@ -13,27 +13,27 @@ namespace cCoder.Mail.Services.Processings;
 
 internal partial class MailServerEventProcessingService(IMailServerEventService eventService) : IMailServerEventProcessingService
 {
-    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerAddEventAsync(MailServer mailServer) =>
         TryCatch(operation: () =>
         {
-            ValidateRaiseMailServerAddEventAsync(inputs: [entity]);
+            ValidateRaiseMailServerAddEventAsync(inputs: [mailServer]);
 
-            return eventService.RaiseMailServerAddEventAsync(entity: entity);
+            return eventService.RaiseMailServerAddEventAsync(entity: mailServer);
         }, isValueTask: true);
 
-    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerUpdateEventAsync(MailServer mailServer) =>
         TryCatch(operation: () =>
         {
-            ValidateRaiseMailServerUpdateEventAsync(inputs: [entity]);
+            ValidateRaiseMailServerUpdateEventAsync(inputs: [mailServer]);
 
-            return eventService.RaiseMailServerUpdateEventAsync(entity: entity);
+            return eventService.RaiseMailServerUpdateEventAsync(entity: mailServer);
         }, isValueTask: true);
 
-    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerDeleteEventAsync(MailServer mailServer) =>
         TryCatch(operation: () =>
         {
-            ValidateRaiseMailServerDeleteEventAsync(inputs: [entity]);
+            ValidateRaiseMailServerDeleteEventAsync(inputs: [mailServer]);
 
-            return eventService.RaiseMailServerDeleteEventAsync(entity: entity);
+            return eventService.RaiseMailServerDeleteEventAsync(entity: mailServer);
         }, isValueTask: true);
 }

@@ -92,6 +92,6 @@ internal sealed class MailReceiverBroker(ICoreContextFactory coreContextFactory)
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(MailReceiver entity) =>
-        entity.AppId;
+    public int? GetAppId(MailReceiver mailReceiver) =>
+        mailReceiver.AppId;
 }

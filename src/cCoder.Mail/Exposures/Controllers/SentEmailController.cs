@@ -71,7 +71,7 @@ public partial class SentEmailController(ISentEmailManager service,
                 return NotFound();
             }
 
-            return Ok(value: SingleResult.Create(queryable: result));
+            return Ok(value: sentEmail);
         }
         catch (MailValidationException exception)
         {
@@ -127,34 +127,6 @@ public partial class SentEmailController(ISentEmailManager service,
             return StatusCode(
                 statusCode: StatusCodes.Status500InternalServerError,
                 value: "The mail operation failed.");
-        }
-    }
-
-    [HttpGet]
-    public IActionResult GetMetadata()
-    {
-        try
-        {
-            bool isExtendedMetaRequest = Request.Query["extend"] == "true";
-
-            return isExtendedMetaRequest
-                ? Ok(value: new MailModelBroker()
-                    .Build()
-                    .EDMModel
-                    .GetExtendedMetadataForType(
-                        context: "Mail",
-                        type: typeof(SentEmail)))
-                : Ok(value: typeof(SentEmail).CreateMetadataContainer(
-                    isEntity: true,
-                    hasEndpoint: true));
-        }
-        catch (Exception exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status500InternalServerError,
-                value: "The mail metadata operation failed.");
         }
     }
 
@@ -239,47 +211,4 @@ public partial class SentEmailController(ISentEmailManager service,
         }
     }
 
-    [AcceptVerbs("PATCH", "MERGE")]
-    [ActionName("Patch")]
-    public async Task<IActionResult> Put(
-        [FromRoute] int key,
-        Delta<SentEmail> updatedSentEmail)
-    {
-        try
-        {
-            SentEmail originalEntity = service.GetSentEmail(iSentEmailId: key);
-
-            if (originalEntity is null)
-            {
-                return NotFound();
-            }
-
-            updatedSentEmail.Patch(original: originalEntity);
-
-            return Ok(value: await service.UpdateSentEmailAsync(
-                updatedSentEmail: originalEntity));
-        }
-        catch (MailValidationException exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return BadRequest(error: "The mail request is invalid.");
-        }
-        catch (System.Security.SecurityException exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status403Forbidden,
-                value: "The mail operation is forbidden.");
-        }
-        catch (Exception exception)
-        {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
-
-            return StatusCode(
-                statusCode: StatusCodes.Status500InternalServerError,
-                value: "The mail operation failed.");
-        }
-    }
 }

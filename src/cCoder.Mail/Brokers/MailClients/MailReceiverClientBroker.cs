@@ -12,10 +12,10 @@ internal sealed class MailReceiverClientBroker(IMailClientFactory mailClientFact
     : IMailReceiverClientBroker
 {
     public Task<ReceivedEmail[]> ReceiveAsync(
-        MailboxReceiveRequest request,
+        MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         ReceiveMailReceiverAsync(
-            request: request,
+            request: mailboxReceiveRequest,
             cancellationToken: cancellationToken);
 
     private async Task<ReceivedEmail[]> ReceiveMailReceiverAsync(

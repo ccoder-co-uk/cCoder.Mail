@@ -117,12 +117,52 @@ public static partial class IServiceCollectionExtensions
     private static void AddHostedServiceExposures(
         this IServiceCollection services)
     {
+        async Task RunMailSenderAsync(
+            IServiceProvider provider,
+            CancellationToken cancellationToken)
+        {
+            using IServiceScope scope = provider.CreateScope();
+
+            IMailSenderOrchestrationService orchestrationService =
+                scope.ServiceProvider.GetRequiredService<
+                    IMailSenderOrchestrationService>();
+
+            await orchestrationService.RunContinuouslyAsync(
+                cancellationToken: cancellationToken);
+        }
+
+        async Task RunMailReceiverAsync(
+            IServiceProvider provider,
+            CancellationToken cancellationToken)
+        {
+            using IServiceScope scope = provider.CreateScope();
+
+            IMailReceiverOrchestrationService orchestrationService =
+                scope.ServiceProvider.GetRequiredService<
+                    IMailReceiverOrchestrationService>();
+
+            await orchestrationService.RunContinuouslyAsync(
+                cancellationToken: cancellationToken);
+        }
+
         services.AddTransient<IMailSenderOrchestrationService, MailSenderOrchestrationService>();
-        services.AddSingleton<IMailSenderHostedService, MailSenderHostedService>();
+        services.AddSingleton<IMailSenderHostedService>(
+            implementationFactory: provider =>
+                new MailSenderHostedService(
+                    runAsync: cancellationToken =>
+                        RunMailSenderAsync(
+                            provider: provider,
+                            cancellationToken: cancellationToken)));
         services.AddHostedService(
             implementationFactory: provider =>
                 provider.GetRequiredService<IMailSenderHostedService>());
-        services.AddSingleton<IMailReceiverHostedService, MailReceiverHostedService>();
+        services.AddSingleton<IMailReceiverHostedService>(
+            implementationFactory: provider =>
+                new MailReceiverHostedService(
+                    runAsync: cancellationToken =>
+                        RunMailReceiverAsync(
+                            provider: provider,
+                            cancellationToken: cancellationToken)));
         services.AddHostedService(
             implementationFactory: provider =>
                 provider.GetRequiredService<IMailReceiverHostedService>());
