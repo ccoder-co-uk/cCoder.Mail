@@ -17,24 +17,6 @@ namespace cCoder.Mail.Tests.Exposures;
 public partial class MailReceiverControllerTests
 {
     [Fact]
-    public void ShouldReturnMetadataWhenGetMetadataIsRequested()
-    {
-        IActionResult result = controller.GetMetadata();
-
-        result.Should().BeOfType<OkObjectResult>();
-    }
-
-    [Fact]
-    public void ShouldReturnExtendedMetadataWhenGetMetadataIsExtended()
-    {
-        controller.Request.QueryString = new QueryString(value: "?extend=true");
-
-        IActionResult result = controller.GetMetadata();
-
-        result.Should().BeOfType<OkObjectResult>();
-    }
-
-    [Fact]
     public void ShouldReturnMailReceiverWhenGetFindsRequestedMailReceiver()
     {
         MailReceiver mailReceiver = new() { Id = Guid.Empty };
@@ -75,31 +57,6 @@ public partial class MailReceiverControllerTests
         IActionResult result = await controller.Put(key: Guid.Empty, updatedMailReceiver: new MailReceiver());
 
         result.Should().BeAssignableTo<BadRequestObjectResult>();
-    }
-
-    [Fact]
-    public async Task ShouldReturnNotFoundWhenPatchCannotFindMailReceiverAsync()
-    {
-        mailReceiverManagerMock.Setup(expression: service => service.GetMailReceiver(iMailReceiverId: Guid.Empty))
-            .Returns(value: null);
-
-        IActionResult result = await controller.Put(key: Guid.Empty, updatedMailReceiver: new Delta<MailReceiver>());
-
-        result.Should().BeOfType<NotFoundResult>();
-    }
-
-    [Fact]
-    public async Task ShouldUpdateMailReceiverEventWhenPatchFindsCalendarAsync()
-    {
-        MailReceiver mailReceiver = new() { Id = Guid.Empty };
-        mailReceiverManagerMock.Setup(expression: service => service.GetMailReceiver(iMailReceiverId: Guid.Empty))
-            .Returns(value: mailReceiver);
-        mailReceiverManagerMock.Setup(expression: service => service.UpdateMailReceiverAsync(mailReceiver))
-            .ReturnsAsync(value: mailReceiver);
-
-        IActionResult result = await controller.Put(key: Guid.Empty, updatedMailReceiver: new Delta<MailReceiver>());
-
-        result.Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]

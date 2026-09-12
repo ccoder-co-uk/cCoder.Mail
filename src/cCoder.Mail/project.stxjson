@@ -810,7 +810,7 @@
           "LineNumber": 14,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
@@ -1405,7 +1405,7 @@
           "LineNumber": 95,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailReceiver",
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
@@ -1856,7 +1856,7 @@
           "LineNumber": 84,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailSender",
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
@@ -2256,7 +2256,7 @@
           "LineNumber": 86,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -4372,13 +4372,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -4548,64 +4541,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 134,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Post(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 135,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4683,124 +4621,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E)",
-          "Name": "Put",
-          "LineNumber": 244,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Guid"
-            },
-            {
-              "Name": "updatedMailReceiver",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailReceiver\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
-              "MethodName": "GetMailReceiver",
-              "MethodId": "cCoder.Mail.Exposures.IMailReceiverManager.GetMailReceiver(System.Guid)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailReceiverManager",
-              "MethodName": "UpdateMailReceiverAsync",
-              "MethodId": "cCoder.Mail.Exposures.IMailReceiverManager.UpdateMailReceiverAsync(cCoder.Data.Models.Mail.MailReceiver)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -5006,13 +4829,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -5182,64 +4998,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 134,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Post(cCoder.Data.Models.Mail.MailSender)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 135,
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -5317,124 +5078,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E)",
-          "Name": "Put",
-          "LineNumber": 244,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Guid"
-            },
-            {
-              "Name": "updatedMailSender",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailSender\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
-              "MethodName": "GetMailSender",
-              "MethodId": "cCoder.Mail.Exposures.IMailSenderManager.GetMailSender(System.Guid)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailSenderManager",
-              "MethodName": "UpdateMailSenderAsync",
-              "MethodId": "cCoder.Mail.Exposures.IMailSenderManager.UpdateMailSenderAsync(cCoder.Data.Models.Mail.MailSender)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,cCoder.Data.Models.Mail.MailSender)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -5640,13 +5286,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -5816,64 +5455,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 134,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Post(cCoder.Data.Models.Mail.MailServer)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 135,
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -5951,124 +5535,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E)",
-          "Name": "Put",
-          "LineNumber": 244,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "updatedMailServer",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.MailServer\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
-              "MethodName": "GetMailServer",
-              "MethodId": "cCoder.Mail.Exposures.IMailServerManager.GetMailServer(System.Int32)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IMailServerManager",
-              "MethodName": "UpdateMailServerAsync",
-              "MethodId": "cCoder.Mail.Exposures.IMailServerManager.UpdateMailServerAsync(cCoder.Data.Models.Mail.MailServer)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,cCoder.Data.Models.Mail.MailServer)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -6274,13 +5743,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -6450,61 +5912,6 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 167,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(System.Int32)",
           "Name": "Post",
           "LineNumber": 26,
@@ -6586,7 +5993,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Post",
-          "LineNumber": 196,
+          "LineNumber": 168,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -6664,124 +6071,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E)",
-          "Name": "Put",
-          "LineNumber": 277,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "updatedQueuedEmail",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.QueuedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
-              "MethodName": "GetQueuedEmail",
-              "MethodId": "cCoder.Mail.Exposures.IQueuedEmailManager.GetQueuedEmail(System.Int32)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IQueuedEmailManager",
-              "MethodName": "UpdateQueuedEmailAsync",
-              "MethodId": "cCoder.Mail.Exposures.IQueuedEmailManager.UpdateQueuedEmailAsync(cCoder.Data.Models.Mail.QueuedEmail)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Put",
-          "LineNumber": 235,
+          "LineNumber": 207,
           "Inputs": [
             {
               "Name": "key",
@@ -6987,13 +6279,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -7163,64 +6448,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 134,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Post(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 135,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -7298,124 +6528,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E)",
-          "Name": "Put",
-          "LineNumber": 244,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "updatedReceivedEmail",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.ReceivedEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
-              "MethodName": "GetReceivedEmail",
-              "MethodId": "cCoder.Mail.Exposures.IReceivedEmailManager.GetReceivedEmail(System.Int32)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.IReceivedEmailManager",
-              "MethodName": "UpdateReceivedEmailAsync",
-              "MethodId": "cCoder.Mail.Exposures.IReceivedEmailManager.UpdateReceivedEmailAsync(cCoder.Data.Models.Mail.ReceivedEmail)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -7827,13 +6942,6 @@
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Results.SingleResult",
-              "MethodName": "Create",
-              "MethodId": "Microsoft.AspNetCore.OData.Results.SingleResult.Create(System.Linq.IQueryable\u003CT\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
               "MethodName": "BadRequest",
               "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
@@ -8003,64 +7111,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.GetMetadata()",
-          "Name": "GetMetadata",
-          "LineNumber": 134,
-          "Inputs": [],
-          "ReturnType": "IActionResult",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.OData.MailModelBroker",
-              "MethodName": "Build",
-              "MethodId": "cCoder.Mail.Brokers.OData.MailModelBroker.Build()",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-              "MethodName": "GetExtendedMetadataForType",
-              "MethodId": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "GET"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Post(cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Post",
-          "LineNumber": 163,
+          "LineNumber": 135,
           "Inputs": [
             {
               "Name": "newSentEmail",
@@ -8138,124 +7191,9 @@
           "HasTryCatch": true
         },
         {
-          "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E)",
-          "Name": "Put",
-          "LineNumber": 244,
-          "Inputs": [
-            {
-              "Name": "key",
-              "Type": "System.Int32"
-            },
-            {
-              "Name": "updatedSentEmail",
-              "Type": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CcCoder.Data.Models.Mail.SentEmail\u003E"
-            }
-          ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E",
-              "MethodName": "Patch",
-              "MethodId": "Microsoft.AspNetCore.OData.Deltas.Delta\u003CT\u003E.Patch(T)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
-              "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
-              "MethodName": "LogError",
-              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
-              "StandardElementType": "Broker",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
-              "MethodName": "GetSentEmail",
-              "MethodId": "cCoder.Mail.Exposures.ISentEmailManager.GetSentEmail(System.Int32)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            },
-            {
-              "TypeName": "cCoder.Mail.Exposures.ISentEmailManager",
-              "MethodName": "UpdateSentEmailAsync",
-              "MethodId": "cCoder.Mail.Exposures.ISentEmailManager.UpdateSentEmailAsync(cCoder.Data.Models.Mail.SentEmail)",
-              "StandardElementType": "Exposure",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [
-            "PUT"
-          ],
-          "HttpResponses": [
-            {
-              "StatusCode": 200,
-              "ResultMethod": "Ok",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            },
-            {
-              "StatusCode": 400,
-              "ResultMethod": "BadRequest",
-              "ExceptionType": "cCoder.Mail.Providers.Models.Exceptions.MailValidationException",
-              "IsExceptionPath": true,
-              "IsNullPath": false,
-              "HasBody": true,
-              "ExposesExceptionDetails": false,
-              "LogsException": true
-            },
-            {
-              "StatusCode": 404,
-              "ResultMethod": "NotFound",
-              "ExceptionType": "",
-              "IsExceptionPath": false,
-              "IsNullPath": true,
-              "HasBody": false,
-              "ExposesExceptionDetails": false,
-              "LogsException": false
-            }
-          ],
-          "IsHttpRequestHandler": true,
-          "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": true,
-          "HasTryCatch": true
-        },
-        {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Put",
-          "LineNumber": 202,
+          "LineNumber": 174,
           "Inputs": [
             {
               "Name": "key",
@@ -8418,7 +7356,7 @@
     {
       "Name": "cCoder.Mail.Exposures.HostedServices.MailReceiverHostedService",
       "StandardElementType": "Exposure",
-      "LineNumber": 11,
+      "LineNumber": 9,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -8449,7 +7387,7 @@
     {
       "Name": "cCoder.Mail.Exposures.HostedServices.MailSenderHostedService",
       "StandardElementType": "Exposure",
-      "LineNumber": 11,
+      "LineNumber": 9,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -8906,26 +7844,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Extensions.OData.BadRequestResult",
-      "StandardElementType": "Dependency",
-      "LineNumber": 11,
-      "IsPublic": true,
-      "Kind": "Class",
-      "BaseType": {
-        "Id": "cCoder.Mail:BadRequestObjectResult",
-        "FullName": "BadRequestObjectResult",
-        "Name": "BadRequestObjectResult",
-        "Namespace": "\u003Cglobal namespace\u003E",
-        "AssemblyName": "cCoder.Mail",
-        "Kind": "Class",
-        "IsInCurrentProject": true,
-        "StandardElementType": "Dependency"
-      },
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": []
-    },
-    {
       "Name": "cCoder.Mail.Extensions.OData.CompositePropertyInfo",
       "StandardElementType": "Dependency",
       "LineNumber": 10,
@@ -9348,140 +8266,9 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Extensions.OData.EdmModelExtensions",
-      "StandardElementType": "Exposure",
-      "LineNumber": 11,
-      "IsPublic": true,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Extensions.OData.EdmModelExtensions.GetExtendedMetadataForType(Microsoft.OData.Edm.IEdmModel,System.String,System.Type,System.Boolean)",
-          "Name": "GetExtendedMetadataForType",
-          "LineNumber": 13,
-          "Inputs": [
-            {
-              "Name": "model",
-              "Type": "Microsoft.OData.Edm.IEdmModel"
-            },
-            {
-              "Name": "context",
-              "Type": "System.String"
-            },
-            {
-              "Name": "type",
-              "Type": "System.Type"
-            },
-            {
-              "Name": "hasEndpoint",
-              "Type": "System.Boolean"
-            }
-          ],
-          "ReturnType": "cCoder.Mail.Models.OData.ExtendedMetadataContainer",
-          "Implements": [],
-          "Calls": [
-            {
-              "TypeName": "Microsoft.OData.Edm.ExtensionMethods",
-              "MethodName": "FullName",
-              "MethodId": "Microsoft.OData.Edm.ExtensionMethods.FullName(Microsoft.OData.Edm.IEdmTypeReference)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.OData.Edm.ExtensionMethods",
-              "MethodName": "GetReturn",
-              "MethodId": "Microsoft.OData.Edm.ExtensionMethods.GetReturn(Microsoft.OData.Edm.IEdmOperation)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.OData.Edm.ExtensionMethods",
-              "MethodName": "IsFunction",
-              "MethodId": "Microsoft.OData.Edm.ExtensionMethods.IsFunction(Microsoft.OData.Edm.IEdmOperation)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.OData.Edm.IEdmEntityContainer",
-              "MethodName": "FindEntitySet",
-              "MethodId": "Microsoft.OData.Edm.IEdmEntityContainer.FindEntitySet(System.String)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.OData.Edm.IEdmModel",
-              "MethodName": "FindDeclaredBoundOperations",
-              "MethodId": "Microsoft.OData.Edm.IEdmModel.FindDeclaredBoundOperations(Microsoft.OData.Edm.IEdmType)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "Select",
-              "MethodId": "System.Linq.Enumerable.Select(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, TResult\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "ToDictionary",
-              "MethodId": "System.Linq.Enumerable.ToDictionary(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, TKey\u003E,System.Func\u003CTSource, TElement\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "ToList",
-              "MethodId": "System.Linq.Enumerable.ToList(System.Collections.Generic.IEnumerable\u003CTSource\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "Union",
-              "MethodId": "System.Linq.Enumerable.Union(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Collections.Generic.IEnumerable\u003CTSource\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Enumerable.Where(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, System.Boolean\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Extensions.OData.EnumerableExtensions",
       "StandardElementType": "Exposure",
       "LineNumber": 7,
-      "IsPublic": false,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": []
-    },
-    {
-      "Name": "cCoder.Mail.Extensions.OData.ObjectExtensions",
-      "StandardElementType": "Exposure",
-      "LineNumber": 10,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -9634,7 +8421,14 @@
               "IsDependencyBoundary": false
             }
           ],
-          "PossibleExceptionTypes": [],
+          "PossibleExceptionTypes": [
+            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
+            "System.InvalidOperationException",
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
           "IncomingExceptionTypes": [],
           "ThrowsExceptionTypes": [],
           "HttpMethods": [],
@@ -9671,7 +8465,14 @@
               "IsDependencyBoundary": true
             }
           ],
-          "PossibleExceptionTypes": [],
+          "PossibleExceptionTypes": [
+            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
+            "System.InvalidOperationException",
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
           "IncomingExceptionTypes": [],
           "ThrowsExceptionTypes": [],
           "HttpMethods": [],
@@ -10732,7 +9533,7 @@
           "LineNumber": 22,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -10800,7 +9601,7 @@
           "LineNumber": 52,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -10868,7 +9669,7 @@
           "LineNumber": 37,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -11943,7 +10744,7 @@
           "LineNumber": 13,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
@@ -16413,7 +15214,7 @@
           "LineNumber": 55,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
@@ -17528,7 +16329,7 @@
           "LineNumber": 38,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
@@ -18283,7 +17084,7 @@
           "LineNumber": 16,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -18330,7 +17131,7 @@
           "LineNumber": 32,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -18377,7 +17178,7 @@
           "LineNumber": 24,
           "Inputs": [
             {
-              "Name": "entity",
+              "Name": "mailServer",
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
@@ -28621,11 +27422,11 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.HostedServices.MailReceiverHostedService",
-      "ToType": "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"
+      "ToType": "System.Func\u003CSystem.Threading.CancellationToken, System.Threading.Tasks.Task\u003E"
     },
     {
       "FromType": "cCoder.Mail.Exposures.HostedServices.MailSenderHostedService",
-      "ToType": "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"
+      "ToType": "System.Func\u003CSystem.Threading.CancellationToken, System.Threading.Tasks.Task\u003E"
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailAppExposure",
@@ -28642,10 +27443,6 @@
     {
       "FromType": "cCoder.Mail.Exposures.MailManagerExposure",
       "ToType": "cCoder.Mail.Services.Orchestrations.QueuedEmailOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Extensions.OData.BadRequestResult",
-      "ToType": "ModelStateDictionary"
     },
     {
       "FromType": "cCoder.Mail.Extensions.OData.CompositePropertyInfo",
@@ -28928,28 +27725,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 134
+      "LineNumber": 135
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 202
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 244
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
@@ -28977,28 +27760,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 134
+      "LineNumber": 135
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 202
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 244
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
@@ -29026,28 +27795,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 134
+      "LineNumber": 135
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 202
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 244
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
@@ -29082,28 +27837,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 167
+      "LineNumber": 168
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 196
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 235
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 277
+      "LineNumber": 207
     },
     {
       "Code": "STXAPI005",
@@ -29131,28 +27872,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 134
+      "LineNumber": 135
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 202
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 244
+      "LineNumber": 174
     },
     {
       "Code": "STXAPI005",
@@ -29194,28 +27921,14 @@
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 134
+      "LineNumber": 135
     },
     {
       "Code": "STXAPI005",
       "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 163
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 202
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 244
+      "LineNumber": 174
     }
   ]
 }

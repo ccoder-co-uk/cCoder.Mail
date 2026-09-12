@@ -19,46 +19,46 @@ internal partial class MailServerEventService(
     IAuthInfoBroker authInfoBroker
 ) : IMailServerEventService
 {
-    public ValueTask RaiseMailServerAddEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerAddEventAsync(MailServer mailServer) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateRaiseMailServerAddEventAsync(inputs: [entity]);
+        ValidateRaiseMailServerAddEventAsync(inputs: [mailServer]);
 
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
-            Data = ToExternalMailServer(entity: entity),
+            Data = ToExternalMailServer(entity: mailServer),
         };
 
         await mailServerEventBroker.RaiseMailServerAddEventAsync(message: message);
     }, isValueTask: true);
 
-    public ValueTask RaiseMailServerUpdateEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerUpdateEventAsync(MailServer mailServer) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateRaiseMailServerUpdateEventAsync(inputs: [entity]);
+        ValidateRaiseMailServerUpdateEventAsync(inputs: [mailServer]);
 
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
-            Data = ToExternalMailServer(entity: entity),
+            Data = ToExternalMailServer(entity: mailServer),
         };
 
         await mailServerEventBroker.RaiseMailServerUpdateEventAsync(message: message);
     }, isValueTask: true);
 
-    public ValueTask RaiseMailServerDeleteEventAsync(MailServer entity) =>
+    public ValueTask RaiseMailServerDeleteEventAsync(MailServer mailServer) =>
         TryCatch(operation: async () =>
     {
 
-        ValidateRaiseMailServerDeleteEventAsync(inputs: [entity]);
+        ValidateRaiseMailServerDeleteEventAsync(inputs: [mailServer]);
 
         EventMessage<DataMailServer> message = new()
         {
             AuthInfo = new EventAuthInfo { SSOUserId = authInfoBroker.GetSsoUserId() },
-            Data = ToExternalMailServer(entity: entity),
+            Data = ToExternalMailServer(entity: mailServer),
         };
 
         await mailServerEventBroker.RaiseMailServerDeleteEventAsync(message: message);

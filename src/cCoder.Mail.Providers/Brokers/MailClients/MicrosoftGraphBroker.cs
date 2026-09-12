@@ -13,20 +13,20 @@ internal sealed class MicrosoftGraphBroker(
     : IMicrosoftGraphBroker
 {
     public Task<HttpClientBrokerResponse> SendEmailAsync(
-        QueuedEmail email,
-        MailProviderConfiguration configuration,
+        QueuedEmail queuedEmail,
+        MailProviderConfiguration mailProviderConfiguration,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.SendEmailAsync(
-            email: email,
-            configuration: configuration,
+            email: queuedEmail,
+            configuration: mailProviderConfiguration,
             cancellationToken: cancellationToken);
 
     public Task<HttpClientBrokerResponse> ReceiveEmailAsync(
-        MailboxReceiveRequest request,
-        MailProviderConfiguration configuration,
+        MailboxReceiveRequest mailboxReceiveRequest,
+        MailProviderConfiguration mailProviderConfiguration,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveEmailAsync(
-            request: request,
-            configuration: configuration,
+            request: mailboxReceiveRequest,
+            configuration: mailProviderConfiguration,
             cancellationToken: cancellationToken);
 }

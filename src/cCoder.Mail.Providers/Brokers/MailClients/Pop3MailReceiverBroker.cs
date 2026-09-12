@@ -12,9 +12,9 @@ internal sealed class Pop3MailReceiverBroker(
     : IPop3MailReceiverBroker
 {
     public Task<string[][]> ReceiveAsync(
-        MailboxReceiveRequest request,
+        MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveAsync(
-            request: request,
+            request: mailboxReceiveRequest,
             cancellationToken: cancellationToken);
 }

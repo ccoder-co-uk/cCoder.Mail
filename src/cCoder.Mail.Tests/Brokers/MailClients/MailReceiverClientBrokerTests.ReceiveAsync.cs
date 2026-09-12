@@ -54,7 +54,7 @@ public partial class MailReceiverClientBrokerTests
         // When
         ReceivedEmail[] actualEmails =
             await mailReceiverClientBroker.ReceiveAsync(
-                request: request,
+                mailboxReceiveRequest: request,
                 cancellationToken: cancellationToken);
 
         // Then

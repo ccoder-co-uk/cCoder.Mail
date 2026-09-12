@@ -33,7 +33,7 @@
           "LineNumber": 14,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
@@ -93,11 +93,11 @@
           "LineNumber": 24,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {
-              "Name": "configuration",
+              "Name": "mailProviderConfiguration",
               "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
@@ -134,11 +134,11 @@
           "LineNumber": 15,
           "Inputs": [
             {
-              "Name": "email",
+              "Name": "queuedEmail",
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             },
             {
-              "Name": "configuration",
+              "Name": "mailProviderConfiguration",
               "Type": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
             },
             {
@@ -198,7 +198,7 @@
           "LineNumber": 14,
           "Inputs": [
             {
-              "Name": "request",
+              "Name": "mailboxReceiveRequest",
               "Type": "cCoder.Mail.Providers.Models.MailboxReceiveRequest"
             },
             {

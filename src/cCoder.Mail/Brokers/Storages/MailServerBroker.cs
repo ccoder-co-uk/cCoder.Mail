@@ -83,8 +83,8 @@ internal sealed class MailServerBroker(ICoreContextFactory coreContextFactory) :
             .ExecuteDeleteAsync();
     }
 
-    public int? GetAppId(MailServer entity)
+    public int? GetAppId(MailServer mailServer)
     {
-        return entity.AppId;
+        return mailServer.AppId;
     }
 }

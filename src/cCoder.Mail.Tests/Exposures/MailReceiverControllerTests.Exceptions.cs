@@ -28,16 +28,6 @@ public partial class MailReceiverControllerTests
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
     }
 
-    [Fact]
-    public void ShouldReturnServerErrorWhenGetMetadataFails()
-    {
-        controller.ControllerContext = new ControllerContext();
-
-        IActionResult result = controller.GetMetadata();
-
-        result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(500);
-    }
-
     [Theory]
     [MemberData(nameof(FailureExceptions))]
     public void ShouldReturnServerErrorWhenGetAllFails(Exception exception, int expectedStatusCode)
@@ -72,20 +62,6 @@ public partial class MailReceiverControllerTests
             .Throws(exception: exception);
 
         IActionResult result = await controller.Put(key: Guid.Empty, updatedMailReceiver: item);
-
-        result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
-    }
-
-    [Theory]
-    [MemberData(nameof(FailureExceptions))]
-    public async Task ShouldReturnServerErrorWhenPatchFailsAsync(Exception exception, int expectedStatusCode)
-    {
-        mailReceiverManagerMock.Setup(expression: service => service.GetMailReceiver(iMailReceiverId: Guid.Empty))
-            .Throws(exception: exception);
-
-        IActionResult result = await controller.Put(
-            key: Guid.Empty,
-            updatedMailReceiver: new Delta<MailReceiver>());
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
     }

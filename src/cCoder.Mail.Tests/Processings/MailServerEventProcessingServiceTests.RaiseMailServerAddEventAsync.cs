@@ -25,7 +25,7 @@ public partial class MailServerEventProcessingServiceTests
             .Returns(value: ValueTask.CompletedTask);
 
         // When
-        await service.RaiseMailServerAddEventAsync(entity: entity);
+        await service.RaiseMailServerAddEventAsync(mailServer: entity);
 
         // Then
         mailServerEventServiceMock.Verify(expression: x => x.RaiseMailServerAddEventAsync(entity: entity), times: Times.Once);
