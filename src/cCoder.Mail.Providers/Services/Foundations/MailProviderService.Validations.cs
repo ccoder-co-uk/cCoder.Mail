@@ -6,6 +6,10 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MailProviderService
 {
+    private static void ValidateMailClientOnGet(
+        object[] inputs) =>
+        _ = inputs;
+
     private static void ValidateMailReceiverProviderNameOnGet(
         object[] inputs) =>
         Validate(inputs: inputs);

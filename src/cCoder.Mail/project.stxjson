@@ -4080,13 +4080,13 @@
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
-        "Id": "cCoder.Mail:ControllerBase",
-        "FullName": "ControllerBase",
+        "Id": "Microsoft.AspNetCore.Mvc.Core:Microsoft.AspNetCore.Mvc.ControllerBase",
+        "FullName": "Microsoft.AspNetCore.Mvc.ControllerBase",
         "Name": "ControllerBase",
-        "Namespace": "\u003Cglobal namespace\u003E",
-        "AssemblyName": "cCoder.Mail",
+        "Namespace": "Microsoft.AspNetCore.Mvc",
+        "AssemblyName": "Microsoft.AspNetCore.Mvc.Core",
         "Kind": "Class",
-        "IsInCurrentProject": true,
+        "IsInCurrentProject": false,
         "StandardElementType": "Dependency"
       },
       "Interfaces": [],
@@ -4097,9 +4097,23 @@
           "Name": "Get",
           "LineNumber": 19,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "System.Linq.Enumerable",
               "MethodName": "Concat",
@@ -4152,6 +4166,16 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4166,9 +4190,23 @@
           "Name": "GetReceivers",
           "LineNumber": 55,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
@@ -4200,6 +4238,16 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4214,9 +4262,23 @@
           "Name": "GetSenders",
           "LineNumber": 38,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
@@ -4248,6 +4310,16 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4288,13 +4360,27 @@
               "Type": "System.Guid"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4349,6 +4435,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4368,20 +4474,34 @@
               "Type": "System.Guid"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4450,6 +4570,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -4458,6 +4588,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4472,13 +4612,27 @@
           "Name": "GetAll",
           "LineNumber": 103,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4531,6 +4685,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4550,13 +4724,27 @@
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4593,6 +4781,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -4611,11 +4809,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -4634,13 +4852,34 @@
               "Type": "cCoder.Data.Models.Mail.MailReceiver"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4705,11 +4944,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -4745,13 +5004,27 @@
               "Type": "System.Guid"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4806,6 +5079,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4825,20 +5118,34 @@
               "Type": "System.Guid"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4907,6 +5214,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -4915,6 +5232,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -4929,13 +5256,27 @@
           "Name": "GetAll",
           "LineNumber": 103,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -4988,6 +5329,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5007,13 +5368,27 @@
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5050,6 +5425,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -5068,11 +5453,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -5091,13 +5496,34 @@
               "Type": "cCoder.Data.Models.Mail.MailSender"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5162,11 +5588,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -5202,13 +5648,27 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5263,6 +5723,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5282,20 +5762,34 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5364,6 +5858,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -5372,6 +5876,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5386,13 +5900,27 @@
           "Name": "GetAll",
           "LineNumber": 103,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5445,6 +5973,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5464,13 +6012,27 @@
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5507,6 +6069,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -5525,11 +6097,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -5548,13 +6140,34 @@
               "Type": "cCoder.Data.Models.Mail.MailServer"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5619,11 +6232,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -5659,13 +6292,27 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5720,6 +6367,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5739,20 +6406,34 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5821,6 +6502,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -5829,6 +6520,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5843,13 +6544,27 @@
           "Name": "GetAll",
           "LineNumber": 136,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5902,6 +6617,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -5921,13 +6656,27 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -5981,6 +6730,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6000,13 +6769,27 @@
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6043,6 +6826,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -6061,11 +6854,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -6084,13 +6897,34 @@
               "Type": "cCoder.Data.Models.Mail.QueuedEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6155,11 +6989,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -6195,13 +7049,27 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6256,6 +7124,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6275,20 +7163,34 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6357,6 +7259,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -6365,6 +7277,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6379,13 +7301,27 @@
           "Name": "GetAll",
           "LineNumber": 103,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6438,6 +7374,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6457,13 +7413,27 @@
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6500,6 +7470,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -6518,11 +7498,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -6541,13 +7541,34 @@
               "Type": "cCoder.Data.Models.Mail.ReceivedEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6612,11 +7633,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -6630,13 +7671,13 @@
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
-        "Id": "cCoder.Mail:ControllerBase",
-        "FullName": "ControllerBase",
+        "Id": "Microsoft.AspNetCore.Mvc.Core:Microsoft.AspNetCore.Mvc.ControllerBase",
+        "FullName": "Microsoft.AspNetCore.Mvc.ControllerBase",
         "Name": "ControllerBase",
-        "Namespace": "\u003Cglobal namespace\u003E",
-        "AssemblyName": "cCoder.Mail",
+        "Namespace": "Microsoft.AspNetCore.Mvc",
+        "AssemblyName": "Microsoft.AspNetCore.Mvc.Core",
         "Kind": "Class",
-        "IsInCurrentProject": true,
+        "IsInCurrentProject": false,
         "StandardElementType": "Dependency"
       },
       "Interfaces": [],
@@ -6660,9 +7701,30 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
@@ -6732,6 +7794,16 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6755,9 +7827,30 @@
               "Type": "System.Threading.CancellationToken"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
             {
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
@@ -6790,6 +7883,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -6818,11 +7921,21 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -6858,13 +7971,27 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "NoContent",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -6919,6 +8046,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -6938,20 +8085,34 @@
               "Type": "System.Int32"
             }
           ],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "NotFound",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.NotFound(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -7020,6 +8181,16 @@
               "LogsException": true
             },
             {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
               "StatusCode": 404,
               "ResultMethod": "NotFound",
               "ExceptionType": "",
@@ -7028,6 +8199,16 @@
               "HasBody": false,
               "ExposesExceptionDetails": false,
               "LogsException": false
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7042,13 +8223,27 @@
           "Name": "GetAll",
           "LineNumber": 103,
           "Inputs": [],
-          "ReturnType": "IActionResult",
+          "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -7101,6 +8296,26 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
@@ -7120,13 +8335,27 @@
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -7163,6 +8392,16 @@
           ],
           "HttpResponses": [
             {
+              "StatusCode": 201,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "",
+              "IsExceptionPath": false,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": false
+            },
+            {
               "StatusCode": 400,
               "ResultMethod": "BadRequest",
               "ExceptionType": "",
@@ -7181,11 +8420,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -7204,13 +8463,34 @@
               "Type": "cCoder.Data.Models.Mail.SentEmail"
             }
           ],
-          "ReturnType": "System.Threading.Tasks.Task\u003CIActionResult\u003E",
+          "ReturnType": "System.Threading.Tasks.Task\u003CMicrosoft.AspNetCore.Mvc.IActionResult\u003E",
           "Implements": [],
           "Calls": [
             {
-              "TypeName": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController",
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
               "MethodName": "BadRequest",
-              "MethodId": "Microsoft.AspNetCore.OData.Routing.Controllers.ODataController.BadRequest(System.String)",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "BadRequest",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "Ok",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.AspNetCore.Mvc.ControllerBase",
+              "MethodName": "StatusCode",
+              "MethodId": "Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32,System.Object?)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -7275,11 +8555,31 @@
               "HasBody": true,
               "ExposesExceptionDetails": false,
               "LogsException": true
+            },
+            {
+              "StatusCode": 403,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Security.SecurityException",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
+            },
+            {
+              "StatusCode": 500,
+              "ResultMethod": "StatusCode",
+              "ExceptionType": "System.Exception",
+              "IsExceptionPath": true,
+              "IsNullPath": false,
+              "HasBody": true,
+              "ExposesExceptionDetails": false,
+              "LogsException": true
             }
           ],
           "IsHttpRequestHandler": true,
           "IsODataControllerAction": true,
-          "HasFromBodyParameter": false,
+          "HasFromBodyParameter": true,
           "HasKeyParameter": false,
           "HandlesNullWithNotFound": false,
           "HasTryCatch": true
@@ -7360,13 +8660,13 @@
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
-        "Id": "cCoder.Mail:BackgroundService",
-        "FullName": "BackgroundService",
+        "Id": "Microsoft.Extensions.Hosting.Abstractions:Microsoft.Extensions.Hosting.BackgroundService",
+        "FullName": "Microsoft.Extensions.Hosting.BackgroundService",
         "Name": "BackgroundService",
-        "Namespace": "\u003Cglobal namespace\u003E",
-        "AssemblyName": "cCoder.Mail",
+        "Namespace": "Microsoft.Extensions.Hosting",
+        "AssemblyName": "Microsoft.Extensions.Hosting.Abstractions",
         "Kind": "Class",
-        "IsInCurrentProject": true,
+        "IsInCurrentProject": false,
         "StandardElementType": "Dependency"
       },
       "Interfaces": [
@@ -7391,13 +8691,13 @@
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
-        "Id": "cCoder.Mail:BackgroundService",
-        "FullName": "BackgroundService",
+        "Id": "Microsoft.Extensions.Hosting.Abstractions:Microsoft.Extensions.Hosting.BackgroundService",
+        "FullName": "Microsoft.Extensions.Hosting.BackgroundService",
         "Name": "BackgroundService",
-        "Namespace": "\u003Cglobal namespace\u003E",
-        "AssemblyName": "cCoder.Mail",
+        "Namespace": "Microsoft.Extensions.Hosting",
+        "AssemblyName": "Microsoft.Extensions.Hosting.Abstractions",
         "Kind": "Class",
-        "IsInCurrentProject": true,
+        "IsInCurrentProject": false,
         "StandardElementType": "Dependency"
       },
       "Interfaces": [
@@ -8309,13 +9609,13 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
           "Name": "AddMail",
           "LineNumber": 39,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "newMailConfiguration",
@@ -8335,7 +9635,7 @@
             {
               "TypeName": "cCoder.Mail.IServiceCollectionExtensions",
               "MethodName": "AddMail",
-              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMail(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
+              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMail(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
               "StandardElementType": "App",
               "IsDependencyBoundary": false
             }
@@ -8353,13 +9653,13 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
           "Name": "AddMail",
           "LineNumber": 48,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "configuration",
@@ -8390,13 +9690,13 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
           "Name": "AddMailHostedServices",
           "LineNumber": 93,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "newMailConfiguration",
@@ -8416,19 +9716,12 @@
             {
               "TypeName": "cCoder.Mail.IServiceCollectionExtensions",
               "MethodName": "AddMailHostedServices",
-              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
+              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
               "StandardElementType": "App",
               "IsDependencyBoundary": false
             }
           ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.InvalidOperationException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
+          "PossibleExceptionTypes": [],
           "IncomingExceptionTypes": [],
           "ThrowsExceptionTypes": [],
           "HttpMethods": [],
@@ -8441,13 +9734,13 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
           "Name": "AddMailHostedServices",
           "LineNumber": 102,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "configuration",
@@ -8465,14 +9758,7 @@
               "IsDependencyBoundary": true
             }
           ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.InvalidOperationException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
+          "PossibleExceptionTypes": [],
           "IncomingExceptionTypes": [],
           "ThrowsExceptionTypes": [],
           "HttpMethods": [],
@@ -8485,13 +9771,13 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
           "Name": "AddMailWeb",
           "LineNumber": 62,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "newMailConfiguration",
@@ -8515,7 +9801,7 @@
             {
               "TypeName": "cCoder.Mail.IServiceCollectionExtensions",
               "MethodName": "AddMailWeb",
-              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,cCoder.Mail.Models.MailConfiguration,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
+              "MethodId": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
               "StandardElementType": "App",
               "IsDependencyBoundary": false
             }
@@ -8533,13 +9819,13 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,cCoder.Mail.Models.MailConfiguration,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
+          "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(Microsoft.Extensions.DependencyInjection.IServiceCollection,cCoder.Mail.Models.MailConfiguration,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
           "Name": "AddMailWeb",
           "LineNumber": 72,
           "Inputs": [
             {
               "Name": "services",
-              "Type": "IServiceCollection"
+              "Type": "Microsoft.Extensions.DependencyInjection.IServiceCollection"
             },
             {
               "Name": "configuration",
@@ -19578,16 +20864,16 @@
       "Properties": [],
       "Methods": [
         {
-          "Id": "cCoder.Mail.WebApplicationExtensions.StartMailHostedServices(WebApplication)",
+          "Id": "cCoder.Mail.WebApplicationExtensions.StartMailHostedServices(Microsoft.AspNetCore.Builder.WebApplication)",
           "Name": "StartMailHostedServices",
           "LineNumber": 21,
           "Inputs": [
             {
               "Name": "app",
-              "Type": "WebApplication"
+              "Type": "Microsoft.AspNetCore.Builder.WebApplication"
             }
           ],
-          "ReturnType": "WebApplication",
+          "ReturnType": "Microsoft.AspNetCore.Builder.WebApplication",
           "Implements": [],
           "Calls": [],
           "PossibleExceptionTypes": [
@@ -19617,25 +20903,37 @@
           "HasTryCatch": false
         },
         {
-          "Id": "cCoder.Mail.WebApplicationExtensions.StartMailWeb(WebApplication,ILogger)",
+          "Id": "cCoder.Mail.WebApplicationExtensions.StartMailWeb(Microsoft.AspNetCore.Builder.WebApplication,Microsoft.Extensions.Logging.ILogger)",
           "Name": "StartMailWeb",
           "LineNumber": 18,
           "Inputs": [
             {
               "Name": "app",
-              "Type": "WebApplication"
+              "Type": "Microsoft.AspNetCore.Builder.WebApplication"
             },
             {
               "Name": "log",
-              "Type": "ILogger"
+              "Type": "Microsoft.Extensions.Logging.ILogger"
             }
           ],
-          "ReturnType": "WebApplication",
+          "ReturnType": "Microsoft.AspNetCore.Builder.WebApplication",
           "Implements": [],
           "Calls": [],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
+          "PossibleExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
           "HttpMethods": [],
           "HttpResponses": [],
           "IsHttpRequestHandler": false,
@@ -21855,13 +23153,13 @@
       "BaseType": null,
       "Interfaces": [
         {
-          "Id": "cCoder.Mail:IHostedService",
-          "FullName": "IHostedService",
+          "Id": "Microsoft.Extensions.Hosting.Abstractions:Microsoft.Extensions.Hosting.IHostedService",
+          "FullName": "Microsoft.Extensions.Hosting.IHostedService",
           "Name": "IHostedService",
-          "Namespace": "\u003Cglobal namespace\u003E",
-          "AssemblyName": "cCoder.Mail",
-          "Kind": "Class",
-          "IsInCurrentProject": true,
+          "Namespace": "Microsoft.Extensions.Hosting",
+          "AssemblyName": "Microsoft.Extensions.Hosting.Abstractions",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
           "StandardElementType": "Dependency"
         }
       ],
@@ -21877,13 +23175,13 @@
       "BaseType": null,
       "Interfaces": [
         {
-          "Id": "cCoder.Mail:IHostedService",
-          "FullName": "IHostedService",
+          "Id": "Microsoft.Extensions.Hosting.Abstractions:Microsoft.Extensions.Hosting.IHostedService",
+          "FullName": "Microsoft.Extensions.Hosting.IHostedService",
           "Name": "IHostedService",
-          "Namespace": "\u003Cglobal namespace\u003E",
-          "AssemblyName": "cCoder.Mail",
-          "Kind": "Class",
-          "IsInCurrentProject": true,
+          "Namespace": "Microsoft.Extensions.Hosting",
+          "AssemblyName": "Microsoft.Extensions.Hosting.Abstractions",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
           "StandardElementType": "Dependency"
         }
       ],
@@ -27434,7 +28732,7 @@
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailClients.MailProviderCatalog",
-      "ToType": "System.Collections.Generic.IEnumerable\u003CcCoder.Mail.Providers.Exposures.MailClients.IMailClient\u003E"
+      "ToType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient"
     },
     {
       "FromType": "cCoder.Mail.Exposures.MailConfigurationExposure",
@@ -27679,256 +28977,46 @@
   ],
   "AnalysisItems": [
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STX0004",
+      "Description": "An architectural element must not depend on another element at the same layer.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 19
+      "Type": "cCoder.Mail.Exposures.MailClients.MailProviderCatalog",
+      "LineNumber": 11
     },
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STX0004",
+      "Description": "An architectural element must not depend on another element at the same layer.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 38
+      "Type": "cCoder.Mail.Extensions.OData.TypeExtensions",
+      "LineNumber": 13
     },
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STXF002",
+      "Description": "A foundation service may only depend on brokers, exposures, or nothing.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
-      "LineNumber": 55
+      "Type": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
+      "LineNumber": 12
     },
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STXP001",
+      "Description": "A processing service may use only one foundation service and must not bypass its layer boundary.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 26
+      "Type": "cCoder.Mail.Services.Processings.MailReceivingProcessingService",
+      "LineNumber": 13
     },
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STXP001",
+      "Description": "A processing service may use only one foundation service and must not bypass its layer boundary.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 60
+      "Type": "cCoder.Mail.Services.Processings.MailSendingProcessingService",
+      "LineNumber": 12
     },
     {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
+      "Code": "STXP001",
+      "Description": "A processing service may use only one foundation service and must not bypass its layer boundary.",
       "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 103
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 135
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailReceiverController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 60
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 103
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 135
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailSenderController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 60
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 103
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 135
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.MailServerController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 59
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 93
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 136
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 168
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.QueuedEmailController",
-      "LineNumber": 207
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 60
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 103
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 135
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController",
-      "LineNumber": 174
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 21
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
-      "LineNumber": 61
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 26
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 60
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 103
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 135
-    },
-    {
-      "Code": "STXAPI005",
-      "Description": "Every public HTTP handler must map success and caught failure paths to 2xx, 4xx, or 5xx responses.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
-      "LineNumber": 174
+      "Type": "cCoder.Mail.Services.Processings.QueuedEmailProcessingService",
+      "LineNumber": 15
     }
   ]
 }
