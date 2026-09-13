@@ -4,8 +4,7 @@
 
 using cCoder.Data.Models.CMS;
 using cCoder.Mail.Brokers.Events;
-using cCoder.Mail.Services.Orchestrations;
-using cCoder.Mail.Services.Aggregations;
+using cCoder.Mail.Exposures.Events;
 
 namespace cCoder.Mail.Services.Foundations.Events;
 
@@ -21,17 +20,17 @@ internal partial class EventHandlerService(IEventHubBroker eventHubBroker) : IEv
     });
 
     private void ListenToAppAddEvents() =>
-        eventHubBroker.ListenToEvent<App, IAppAggregationService>(
+        eventHubBroker.ListenToEvent<App, IAppEventHandler>(
 eventName: "app_add",
 handler: (service, app) => service.AddAppAsync(newApp: app));
 
     private void ListenToAppUpdateEvents() =>
-        eventHubBroker.ListenToEvent<App, IAppAggregationService>(
+        eventHubBroker.ListenToEvent<App, IAppEventHandler>(
 eventName: "app_update",
 handler: (service, app) => service.UpdateAppAsync(updatedApp: app));
 
     private void ListenToAppDeleteEvents() =>
-        eventHubBroker.ListenToEvent<App, IAppAggregationService>(
+        eventHubBroker.ListenToEvent<App, IAppEventHandler>(
 eventName: "app_delete",
-handler: (service, app) => service.DeleteAsync(appId: app.Id));
+handler: (service, app) => service.DeleteAppAsync(deletedApp: app));
 }

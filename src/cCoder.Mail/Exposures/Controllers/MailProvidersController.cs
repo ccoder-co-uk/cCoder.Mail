@@ -4,6 +4,7 @@
 
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures.MailClients;
+using cCoder.Mail.Providers.Models.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cCoder.Mail.Exposures.Controllers;
@@ -24,6 +25,11 @@ public sealed class MailProvidersController(
                 .Concat(second: providerCatalog.GetReceivers())
                 .ToArray());
         }
+        catch (MailValidationException exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            return BadRequest(error: "Invalid mail provider request.");
+        }
         catch (Exception exception)
         {
             loggingBroker.LogError(exception: exception, message: "Controller request failed.");
@@ -41,6 +47,11 @@ public sealed class MailProvidersController(
         {
             return Ok(value: providerCatalog.GetSenders());
         }
+        catch (MailValidationException exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            return BadRequest(error: "Invalid mail provider request.");
+        }
         catch (Exception exception)
         {
             loggingBroker.LogError(exception: exception, message: "Controller request failed.");
@@ -57,6 +68,11 @@ public sealed class MailProvidersController(
         try
         {
             return Ok(value: providerCatalog.GetReceivers());
+        }
+        catch (MailValidationException exception)
+        {
+            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)
         {

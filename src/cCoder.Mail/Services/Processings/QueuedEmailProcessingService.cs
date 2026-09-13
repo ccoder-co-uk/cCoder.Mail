@@ -3,7 +3,6 @@
 // ---------------------------------------------------------------
 
 using System.Security;
-using cCoder.Mail.Brokers;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -12,7 +11,7 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
+internal partial class QueuedEmailProcessingService(IQueuedEmailService service) : IQueuedEmailProcessingService
 {
     public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
@@ -119,7 +118,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         }
 
         Authorize(
-            user: authorizationBroker.GetCurrentUser(),
+            user: service.GetCurrentUser(),
             appId: queuedEmail.AppId,
             privilege: "queuedemail_delete");
 
@@ -140,7 +139,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             }
 
             Authorize(
-                user: authorizationBroker.GetCurrentUser(),
+                user: service.GetCurrentUser(),
                 appId: queuedEmail.AppId,
                 privilege: $"{nameof(QueuedEmail)}_update");
 

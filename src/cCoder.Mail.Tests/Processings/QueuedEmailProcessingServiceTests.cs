@@ -13,7 +13,6 @@ using cCoder.Mail.Services.Processings;
 using FizzWare.NBuilder;
 using Moq;
 using DataUser = cCoder.Data.Models.Security.User;
-using IAuthorizationBroker = cCoder.Mail.Brokers.IAuthorizationBroker;
 
 
 namespace cCoder.Core.Services.Tests.Mail.Processings;
@@ -22,14 +21,12 @@ public partial class QueuedEmailProcessingServiceTests
 {
     private DataUser currentUser = TestUsers.WithoutPrivileges();
     private readonly Mock<IQueuedEmailService> queuedEmailServiceMock = new();
-    private readonly Mock<IAuthorizationBroker> authorizationBrokerMock = new();
     private readonly QueuedEmailProcessingService queuedEmailProcessingService;
 
     public QueuedEmailProcessingServiceTests()
     {
         queuedEmailProcessingService = new QueuedEmailProcessingService(
-service: queuedEmailServiceMock.Object,
-authorizationBroker: authorizationBrokerMock.Object
+service: queuedEmailServiceMock.Object
         );
     }
 

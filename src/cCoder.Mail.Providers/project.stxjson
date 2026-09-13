@@ -138,6 +138,197 @@
       ]
     },
     {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 11,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [
+        {
+          "Id": "cCoder.Mail.Providers:cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker",
+          "FullName": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker",
+          "Name": "IMailMessageParsingBroker",
+          "Namespace": "cCoder.Mail.Providers.Brokers.MailClients",
+          "AssemblyName": "cCoder.Mail.Providers",
+          "Kind": "Interface",
+          "IsInCurrentProject": true,
+          "StandardElementType": "Broker"
+        }
+      ],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker.DecodeQuotedPrintable(System.String)",
+          "Name": "DecodeQuotedPrintable",
+          "LineNumber": 42,
+          "Inputs": [
+            {
+              "Name": "content",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.DecodeQuotedPrintable(System.String)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Char",
+              "MethodName": "ToString",
+              "MethodId": "System.Char.ToString()",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Convert",
+              "MethodName": "ToByte",
+              "MethodId": "System.Convert.ToByte(System.String?,System.Int32)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Text.RegularExpressions.Regex",
+              "MethodName": "Replace",
+              "MethodId": "System.Text.RegularExpressions.Regex.Replace(System.String,System.Text.RegularExpressions.MatchEvaluator)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker.DeserializeMicrosoftGraphMessages(System.String)",
+          "Name": "DeserializeMicrosoftGraphMessages",
+          "LineNumber": 57,
+          "Inputs": [
+            {
+              "Name": "content",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Models.MicrosoftGraphMessageEnvelope",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.DeserializeMicrosoftGraphMessages(System.String)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Text.Json.JsonSerializer",
+              "MethodName": "Deserialize",
+              "MethodId": "System.Text.Json.JsonSerializer.Deserialize(System.String,System.Text.Json.JsonSerializerOptions?)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker.SelectEncodedMailWords(System.String)",
+          "Name": "SelectEncodedMailWords",
+          "LineNumber": 30,
+          "Inputs": [
+            {
+              "Name": "value",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Models.EncodedMailWord[]",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.SelectEncodedMailWords(System.String)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Linq.Enumerable",
+              "MethodName": "Select",
+              "MethodId": "System.Linq.Enumerable.Select(System.Collections.Generic.IEnumerable\u003CTSource\u003E,System.Func\u003CTSource, TResult\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Linq.Enumerable",
+              "MethodName": "ToArray",
+              "MethodId": "System.Linq.Enumerable.ToArray(System.Collections.Generic.IEnumerable\u003CTSource\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "System.Text.RegularExpressions.Regex",
+              "MethodName": "Matches",
+              "MethodId": "System.Text.RegularExpressions.Regex.Matches(System.String)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker.SelectMultipartBoundary(System.String)",
+          "Name": "SelectMultipartBoundary",
+          "LineNumber": 51,
+          "Inputs": [
+            {
+              "Name": "contentType",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String",
+          "Implements": [
+            "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.SelectMultipartBoundary(System.String)"
+          ],
+          "Calls": [
+            {
+              "TypeName": "System.Text.RegularExpressions.Regex",
+              "MethodName": "Match",
+              "MethodId": "System.Text.RegularExpressions.Regex.Match(System.String)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
       "Name": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker",
       "StandardElementType": "Broker",
       "LineNumber": 11,
@@ -1358,6 +1549,30 @@
       ]
     },
     {
+      "Name": "cCoder.Mail.Providers.Models.EncodedMailWord",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "Encoding",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Text",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Value",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
       "StandardElementType": "Model",
       "LineNumber": 7,
@@ -1557,9 +1772,117 @@
       "Methods": []
     },
     {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphBody",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "Content",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ContentType",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphEmailAddress",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "Address",
+          "Type": "System.String"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphMessage",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "Body",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphBody"
+        },
+        {
+          "Name": "CcRecipients",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphRecipient[]"
+        },
+        {
+          "Name": "From",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphRecipient"
+        },
+        {
+          "Name": "InternetMessageId",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ReceivedDateTime",
+          "Type": "System.String"
+        },
+        {
+          "Name": "Subject",
+          "Type": "System.String"
+        },
+        {
+          "Name": "ToRecipients",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphRecipient[]"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphMessageEnvelope",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "Value",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphMessage[]"
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Models.MicrosoftGraphRecipient",
+      "StandardElementType": "Model",
+      "LineNumber": 7,
+      "IsPublic": false,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [
+        {
+          "Name": "EmailAddress",
+          "Type": "cCoder.Mail.Providers.Models.MicrosoftGraphEmailAddress"
+        }
+      ],
+      "Methods": []
+    },
+    {
       "Name": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
       "StandardElementType": "FoundationService",
-      "LineNumber": 14,
+      "LineNumber": 13,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -1580,7 +1903,7 @@
         {
           "Id": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveMailReceiverAsync",
-          "LineNumber": 23,
+          "LineNumber": 19,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -1819,7 +2142,7 @@
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
       "StandardElementType": "FoundationService",
-      "LineNumber": 13,
+      "LineNumber": 12,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -1991,7 +2314,7 @@
     {
       "Name": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
       "StandardElementType": "FoundationService",
-      "LineNumber": 14,
+      "LineNumber": 13,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
@@ -2012,7 +2335,7 @@
         {
           "Id": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService.ReceiveMailReceiverAsync(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "ReceiveMailReceiverAsync",
-          "LineNumber": 31,
+          "LineNumber": 19,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -2231,6 +2554,118 @@
             }
           ],
           "ReturnType": "cCoder.Mail.Providers.Exposures.MailClients.IMailClient",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
+      "Name": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker",
+      "StandardElementType": "Broker",
+      "LineNumber": 9,
+      "IsPublic": false,
+      "Kind": "Interface",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.DecodeQuotedPrintable(System.String)",
+          "Name": "DecodeQuotedPrintable",
+          "LineNumber": 13,
+          "Inputs": [
+            {
+              "Name": "content",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.DeserializeMicrosoftGraphMessages(System.String)",
+          "Name": "DeserializeMicrosoftGraphMessages",
+          "LineNumber": 17,
+          "Inputs": [
+            {
+              "Name": "content",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Models.MicrosoftGraphMessageEnvelope",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.SelectEncodedMailWords(System.String)",
+          "Name": "SelectEncodedMailWords",
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "value",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "cCoder.Mail.Providers.Models.EncodedMailWord[]",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Providers.Brokers.MailClients.IMailMessageParsingBroker.SelectMultipartBoundary(System.String)",
+          "Name": "SelectMultipartBoundary",
+          "LineNumber": 15,
+          "Inputs": [
+            {
+              "Name": "contentType",
+              "Type": "System.String"
+            }
+          ],
+          "ReturnType": "System.String",
           "Implements": [],
           "Calls": [],
           "PossibleExceptionTypes": [],
@@ -3012,6 +3447,10 @@
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
       "ToType": "cCoder.Mail.Providers.Brokers.Storages.MailReceiverStorageBroker"
     },
     {
@@ -3024,6 +3463,10 @@
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
       "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MicrosoftGraphBroker"
     },
     {
@@ -3041,6 +3484,10 @@
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailSenderService",
       "ToType": "cCoder.Mail.Providers.Models.MailProviderConfiguration"
+    },
+    {
+      "FromType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
+      "ToType": "cCoder.Mail.Providers.Brokers.MailClients.MailMessageParsingBroker"
     },
     {
       "FromType": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
@@ -3055,132 +3502,5 @@
       "ToType": "cCoder.Mail.Providers.Brokers.MailClients.SmtpMailSenderBroker"
     }
   ],
-  "AnalysisItems": [
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.RegularExpressions.Regex\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 19
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API call \u0027System.Text.RegularExpressions.Regex.Replace(System.String,System.Text.RegularExpressions.MatchEvaluator)\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.ImapMailReceiverService",
-      "LineNumber": 153
-    },
-    {
-      "Code": "STX0012",
-      "Description": "Business-operation validation methods must evaluate their rules through a validation collector.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MailProviderService",
-      "LineNumber": 12
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API call \u0027System.Text.Json.JsonDocument.Parse(System.String,System.Text.Json.JsonDocumentOptions)\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonDocument\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 77
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 89
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 102
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 107
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 111
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 116
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 131
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.Json.JsonElement\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.MicrosoftGraphMailReceiverService",
-      "LineNumber": 147
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.RegularExpressions.Regex\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 19
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.RegularExpressions.Regex\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 23
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API type \u0027System.Text.RegularExpressions.Regex\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 27
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API call \u0027System.Text.RegularExpressions.Regex.Match(System.String)\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 167
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API call \u0027System.Text.RegularExpressions.Regex.Replace(System.String,System.Text.RegularExpressions.MatchEvaluator)\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 247
-    },
-    {
-      "Code": "STXD005",
-      "Description": "External API call \u0027System.Text.RegularExpressions.Regex.Replace(System.String,System.Text.RegularExpressions.MatchEvaluator)\u0027 must be isolated behind a broker or dependency.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Providers.Services.Foundations.Pop3MailReceiverService",
-      "LineNumber": 260
-    }
-  ]
+  "AnalysisItems": []
 }

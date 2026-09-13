@@ -20,7 +20,8 @@ public partial class ImapMailReceiverServiceTests
     public ImapMailReceiverServiceTests() =>
         service = new ImapMailReceiverService(
             imapMailReceiverBroker: receiverBrokerMock.Object,
-            mailReceiverStorageBroker: storageBrokerMock.Object);
+            mailReceiverStorageBroker: storageBrokerMock.Object,
+            mailMessageParsingBroker: new MailMessageParsingBroker());
 }
 
 #pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005

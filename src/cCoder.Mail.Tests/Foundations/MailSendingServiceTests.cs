@@ -3,6 +3,8 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Exposures;
 using cCoder.Mail.Services.Foundations;
 using Moq;
 
@@ -16,6 +18,9 @@ public partial class MailSendingServiceTests
     public MailSendingServiceTests()
     {
         mailSenderClientBrokerMock = new Mock<IMailSenderClientBroker>(behavior: MockBehavior.Strict);
-        mailSendingService = new MailSendingService(mailSenderClientBroker: mailSenderClientBrokerMock.Object);
+        mailSendingService = new MailSendingService(
+            mailSenderClientBroker: mailSenderClientBrokerMock.Object,
+            mailConfigurationExposure: Mock.Of<IMailConfigurationExposure>(),
+            logger: Mock.Of<ILoggingBroker>());
     }
 }
