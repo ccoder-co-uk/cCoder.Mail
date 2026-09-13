@@ -26,7 +26,7 @@ public sealed partial class MailReceivingProcessingServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public void IsMigrationInProgressShouldMapException(Exception exception, Type expectedType)
     {
-        configurationMock.Setup(x => x.GetMailConfiguration()).Throws(exception);
+        receivingServiceMock.Setup(x => x.IsMigrationInProgress()).Throws(exception);
         Action action = () => service.IsMigrationInProgress();
         action.Should().Throw<Exception>().Which.Should().BeOfType(expectedType);
     }
@@ -35,7 +35,7 @@ public sealed partial class MailReceivingProcessingServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public void LogErrorShouldMapException(Exception exception, Type expectedType)
     {
-        loggerMock.Setup(x => x.LogError(It.IsAny<Exception>(), It.IsAny<string>(), It.IsAny<object[]>())).Throws(exception);
+        receivingServiceMock.Setup(x => x.LogError(It.IsAny<Exception>())).Throws(exception);
         Action action = () => service.LogError(new Exception("logged"));
         action.Should().Throw<Exception>().Which.Should().BeOfType(expectedType);
     }

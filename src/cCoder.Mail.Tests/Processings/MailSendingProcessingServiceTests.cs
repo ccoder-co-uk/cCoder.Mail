@@ -23,14 +23,14 @@ public sealed partial class MailSendingProcessingServiceTests
     private readonly MailSendingProcessingService service;
 
     public MailSendingProcessingServiceTests() =>
-        service = new(sendingServiceMock.Object, configurationMock.Object, loggerMock.Object);
+        service = new(sendingServiceMock.Object);
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
     public void IsMigrationInProgressShouldReturnConfigurationValue(bool migrating)
     {
-        configurationMock.Setup(x => x.GetMailConfiguration()).Returns(new MailConfiguration { IsMigrating = migrating });
+        sendingServiceMock.Setup(x => x.IsMigrationInProgress()).Returns(migrating);
         service.IsMigrationInProgress().Should().Be(migrating);
     }
 
@@ -38,16 +38,14 @@ public sealed partial class MailSendingProcessingServiceTests
     public void LogDispatchShouldLogCount()
     {
         service.LogDispatch(3);
-        loggerMock.Verify(x => x.LogInformation("Picked up a batch of {Count} emails.", 3), Times.Once);
+        sendingServiceMock.Verify(x => x.LogDispatch(3), Times.Once);
     }
 
     [Fact]
     public void LogSummaryShouldLogCounts()
     {
         service.LogSummary(4, 3, 1);
-        loggerMock.Verify(x => x.LogInformation(
-            "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
-            It.Is<object[]>(values => values.SequenceEqual(new object[] { 4, 3, 1 }))), Times.Once);
+        sendingServiceMock.Verify(x => x.LogSummary(4, 3, 1), Times.Once);
     }
 
     [Fact]
@@ -55,7 +53,7 @@ public sealed partial class MailSendingProcessingServiceTests
     {
         var exception = new InvalidOperationException("failed");
         service.LogError(exception);
-        loggerMock.Verify(x => x.LogError(exception, "failed"), Times.Once);
+        sendingServiceMock.Verify(x => x.LogError(exception), Times.Once);
     }
 
     [Fact]

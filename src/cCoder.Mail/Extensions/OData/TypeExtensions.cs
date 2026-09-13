@@ -31,13 +31,39 @@ internal static class TypeExtensions
             Properties = isValueType
                 ? []
                 : type.GetProperties()
-                    .Select(selector: property => property.CreatePropertyContainer())
+                    .Select(selector: CreatePropertyContainer)
                     .ToArray(),
             IsEntity = isEntity,
             IsJoinEntity = isEntity && type.IsJoinType(),
             HasEndpoint = hasEndpoint,
         };
     }
+
+    private static PropertyContainer CreatePropertyContainer(
+        PropertyInfo property) =>
+        new()
+        {
+            Name = property.Name,
+            Type = property.PropertyType.GetMetadataTypeName(),
+            ServerType = property.PropertyType.ToString(),
+            ServerTypeName = property.PropertyType.GetCSharpTypeName(),
+            IsValueType = property.PropertyType.IsValueType
+                || property.PropertyType == typeof(string),
+            DisplayName = property.Name,
+            ShortDisplayName = property.Name,
+            Description = property.Name,
+            IsReadOnly = !property.CanWrite,
+            Template = property.GetCustomAttribute<KeyAttribute>() is not null
+                || property.Name == "Id"
+                    ? "key"
+                    : property.Name,
+            IsRequired = (!(property.PropertyType.IsGenericType
+                    && property.PropertyType.GetGenericTypeDefinition()
+                        == typeof(Nullable<>))
+                    && property.PropertyType.IsValueType)
+                || property.GetCustomAttribute<RequiredAttribute>()
+                    is not null
+        };
 
     internal static ExtendedMetadataContainer CreateExtendedMetadataContainer(
         this Type type,

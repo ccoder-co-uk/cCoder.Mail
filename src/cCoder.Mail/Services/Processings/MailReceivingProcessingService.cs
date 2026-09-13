@@ -4,25 +4,19 @@
 
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
-using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures;
 using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
 internal sealed partial class MailReceivingProcessingService(
-    IMailReceivingService mailReceivingService,
-    IMailConfigurationExposure mailConfigurationExposure,
-    ILoggingBroker logger)
+    IMailReceivingService mailReceivingService)
     : IMailReceivingProcessingService
 {
     public bool IsMigrationInProgress() =>
         TryCatch(operation: () =>
         {
 
-            return mailConfigurationExposure
-                .GetMailConfiguration()
-                .IsMigrating;
+            return mailReceivingService.IsMigrationInProgress();
         });
 
     public void LogError(Exception exception) =>
@@ -30,9 +24,7 @@ internal sealed partial class MailReceivingProcessingService(
         {
             ValidateLogError(inputs: [exception]);
 
-            logger.LogError(
-                exception: exception,
-                message: exception.Message);
+            mailReceivingService.LogError(exception: exception);
         });
 
     public Task<ReceivedEmail[]> ReceiveMailboxReceiveRequestAsync(

@@ -14,6 +14,7 @@ using cCoder.Mail.Exposures;
 using cCoder.Mail.Exposures.HostedServices;
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
+using cCoder.Mail.Exposures.Events;
 using cCoder.Mail.Services.Foundations.Events;
 using cCoder.Mail.Services.Orchestrations;
 using cCoder.Mail.Services.Aggregations;
@@ -184,6 +185,10 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
         services.AddTransient<IMailProviderCatalog, MailProviderCatalog>();
+        services.AddTransient<IAppEventHandler, AppEventHandler>();
+        services.AddTransient<
+            IMailProviderCatalogService,
+            MailProviderCatalogService>();
         services.AddTransient<IMailSenderClientBroker, MailSenderClientBroker>();
         services.AddTransient<IMailReceiverClientBroker, MailReceiverClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();

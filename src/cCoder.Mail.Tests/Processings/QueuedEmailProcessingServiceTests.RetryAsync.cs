@@ -27,8 +27,8 @@ public partial class QueuedEmailProcessingServiceTests
             .Setup(expression: service => service.GetQueuedEmail(iQueuedEmailId: email.Id))
             .Returns(value: email);
 
-        authorizationBrokerMock
-            .Setup(expression: broker => broker.GetCurrentUser())
+        queuedEmailServiceMock
+            .Setup(expression: service => service.GetCurrentUser())
             .Returns(value: currentUser);
 
         queuedEmailServiceMock
@@ -40,7 +40,6 @@ public partial class QueuedEmailProcessingServiceTests
 
         // Then
         queuedEmailServiceMock.VerifyAll();
-        authorizationBrokerMock.VerifyAll();
     }
 }
 

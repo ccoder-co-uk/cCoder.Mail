@@ -36,7 +36,6 @@ public partial class QueuedEmailProcessingServiceTests
 
         queuedEmailServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -58,7 +57,6 @@ public partial class QueuedEmailProcessingServiceTests
 
         queuedEmailServiceMock.Verify(expression: x => x.AddQueuedEmailAsync(newQueuedEmail: email, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 }
 

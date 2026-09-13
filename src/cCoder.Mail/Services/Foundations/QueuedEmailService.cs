@@ -4,6 +4,7 @@
 
 using System.Security;
 using cCoder.Data.Models.Mail;
+using cCoder.Data.Models.Security;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Brokers.Storages;
 
@@ -14,6 +15,10 @@ internal partial class QueuedEmailService(
     IAuthorizationBroker authorizationBroker
 ) : IQueuedEmailService
 {
+    public User GetCurrentUser() =>
+        TryCatch(operation: () =>
+            authorizationBroker.GetCurrentUser());
+
     public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
     {

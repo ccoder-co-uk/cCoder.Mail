@@ -2,13 +2,13 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures;
+using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal interface IMailReceivingService : IMailReceivingManager
+internal interface IMailProviderCatalogService
 {
-    bool IsMigrationInProgress();
+    MailProviderSummary[] GetSenders();
 
-    void LogError(Exception exception);
+    MailProviderSummary[] GetReceivers();
 }

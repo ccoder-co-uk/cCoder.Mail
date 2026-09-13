@@ -12,7 +12,7 @@ using Xunit;
 
 namespace cCoder.Mail.Tests.Brokers.MailClients;
 
-public sealed class MailClientRegistryBrokerTests
+public sealed partial class MailClientRegistryBrokerTests
 {
     [Fact]
     public void SelectMailClientShouldResolveAliasIgnoringCase()

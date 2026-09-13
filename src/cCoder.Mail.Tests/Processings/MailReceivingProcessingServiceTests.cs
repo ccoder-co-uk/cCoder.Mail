@@ -24,14 +24,14 @@ public sealed partial class MailReceivingProcessingServiceTests
     private readonly MailReceivingProcessingService service;
 
     public MailReceivingProcessingServiceTests() =>
-        service = new(receivingServiceMock.Object, configurationMock.Object, loggerMock.Object);
+        service = new(receivingServiceMock.Object);
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
     public void IsMigrationInProgressShouldReturnConfigurationValue(bool migrating)
     {
-        configurationMock.Setup(x => x.GetMailConfiguration()).Returns(new MailConfiguration { IsMigrating = migrating });
+        receivingServiceMock.Setup(x => x.IsMigrationInProgress()).Returns(migrating);
         service.IsMigrationInProgress().Should().Be(migrating);
     }
 
@@ -40,7 +40,7 @@ public sealed partial class MailReceivingProcessingServiceTests
     {
         var exception = new InvalidOperationException("failed");
         service.LogError(exception);
-        loggerMock.Verify(x => x.LogError(exception, "failed"), Times.Once);
+        receivingServiceMock.Verify(x => x.LogError(exception), Times.Once);
     }
 
     [Fact]
