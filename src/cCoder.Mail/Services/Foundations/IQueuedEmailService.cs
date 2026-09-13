@@ -12,6 +12,8 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal interface IQueuedEmailService
 {
+    User GetCurrentUser();
+
     QueuedEmail GetQueuedEmail(int iQueuedEmailId);
     IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);

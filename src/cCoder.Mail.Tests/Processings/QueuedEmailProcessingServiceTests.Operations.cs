@@ -55,7 +55,7 @@ public partial class QueuedEmailProcessingServiceTests
 
         await queuedEmailProcessingService.RetryAsync(17);
 
-        authorizationBrokerMock.Verify(service => service.GetCurrentUser(), Times.Never);
+        queuedEmailServiceMock.Verify(service => service.GetCurrentUser(), Times.Never);
     }
 
     [Fact]

@@ -23,7 +23,8 @@ public partial class MicrosoftGraphMailReceiverServiceTests
         service = new MicrosoftGraphMailReceiverService(
             configuration,
             storageBrokerMock.Object,
-            graphBrokerMock.Object);
+            graphBrokerMock.Object,
+            new MailMessageParsingBroker());
 }
 
 #pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005

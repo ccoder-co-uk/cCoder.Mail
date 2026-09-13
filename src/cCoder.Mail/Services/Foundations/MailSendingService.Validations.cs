@@ -6,6 +6,15 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailSendingService
 {
+    private static void ValidateLogDispatch(object[] inputs) =>
+        Validate(inputs: inputs);
+
+    private static void ValidateLogSummary(object[] inputs) =>
+        Validate(inputs: inputs);
+
+    private static void ValidateLogError(object[] inputs) =>
+        Validate(inputs: inputs);
+
     private static void ValidateSendQueuedEmailAsync(object[] inputs) =>
         Validate(inputs: inputs);
 

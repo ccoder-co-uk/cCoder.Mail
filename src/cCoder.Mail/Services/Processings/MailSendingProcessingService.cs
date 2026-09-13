@@ -3,25 +3,19 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures;
 using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
 internal sealed partial class MailSendingProcessingService(
-    IMailSendingService mailSendingService,
-    IMailConfigurationExposure mailConfigurationExposure,
-    ILoggingBroker logger)
+    IMailSendingService mailSendingService)
     : IMailSendingProcessingService
 {
     public bool IsMigrationInProgress() =>
         TryCatch(operation: () =>
         {
 
-            return mailConfigurationExposure
-                .GetMailConfiguration()
-                .IsMigrating;
+            return mailSendingService.IsMigrationInProgress();
         });
 
     public void LogDispatch(int count) =>
@@ -29,9 +23,7 @@ internal sealed partial class MailSendingProcessingService(
         {
             ValidateLogDispatch(inputs: [count]);
 
-            logger.LogInformation(
-                message: "Picked up a batch of {Count} emails.",
-                args: count);
+            mailSendingService.LogDispatch(count: count);
         });
 
     public void LogSummary(int count, int success, int failures) =>
@@ -39,9 +31,10 @@ internal sealed partial class MailSendingProcessingService(
         {
             ValidateLogSummary(inputs: [count, success, failures]);
 
-            logger.LogInformation(
-                message: "{Count} SMTP requests made of which {Success} succeeded and {Failures} failed.",
-                args: [count, success, failures]);
+            mailSendingService.LogSummary(
+                count: count,
+                success: success,
+                failures: failures);
         });
 
     public void LogError(Exception exception) =>
@@ -49,9 +42,7 @@ internal sealed partial class MailSendingProcessingService(
         {
             ValidateLogError(inputs: [exception]);
 
-            logger.LogError(
-                exception: exception,
-                message: exception.Message);
+            mailSendingService.LogError(exception: exception);
         });
 
     public Task SendQueuedEmailAsync(

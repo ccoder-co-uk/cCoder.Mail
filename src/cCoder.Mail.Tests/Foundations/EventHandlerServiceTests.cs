@@ -6,8 +6,8 @@
 
 using cCoder.Data.Models.CMS;
 using cCoder.Mail.Brokers.Events;
+using cCoder.Mail.Exposures.Events;
 using cCoder.Mail.Providers.Models.Exceptions;
-using cCoder.Mail.Services.Aggregations;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -29,9 +29,9 @@ public sealed partial class EventHandlerServiceTests
     {
         Mock<IEventHubBroker> brokerMock = new(); var service = new EventHandlerService(brokerMock.Object);
         service.ListenToAllEvents();
-        brokerMock.Verify(x => x.ListenToEvent<App, IAppAggregationService>("app_add", It.IsAny<Func<IAppAggregationService, App, ValueTask>>()), Times.Once);
-        brokerMock.Verify(x => x.ListenToEvent<App, IAppAggregationService>("app_update", It.IsAny<Func<IAppAggregationService, App, ValueTask>>()), Times.Once);
-        brokerMock.Verify(x => x.ListenToEvent<App, IAppAggregationService>("app_delete", It.IsAny<Func<IAppAggregationService, App, ValueTask>>()), Times.Once);
+        brokerMock.Verify(x => x.ListenToEvent<App, IAppEventHandler>("app_add", It.IsAny<Func<IAppEventHandler, App, ValueTask>>()), Times.Once);
+        brokerMock.Verify(x => x.ListenToEvent<App, IAppEventHandler>("app_update", It.IsAny<Func<IAppEventHandler, App, ValueTask>>()), Times.Once);
+        brokerMock.Verify(x => x.ListenToEvent<App, IAppEventHandler>("app_delete", It.IsAny<Func<IAppEventHandler, App, ValueTask>>()), Times.Once);
     }
 
     [Theory]
@@ -39,7 +39,7 @@ public sealed partial class EventHandlerServiceTests
     public void ListenToAllEventsShouldMapException(Exception exception, Type expectedType)
     {
         Mock<IEventHubBroker> brokerMock = new();
-        brokerMock.Setup(x => x.ListenToEvent<App, IAppAggregationService>(It.IsAny<string>(), It.IsAny<Func<IAppAggregationService, App, ValueTask>>())).Throws(exception);
+        brokerMock.Setup(x => x.ListenToEvent<App, IAppEventHandler>(It.IsAny<string>(), It.IsAny<Func<IAppEventHandler, App, ValueTask>>())).Throws(exception);
         var service = new EventHandlerService(brokerMock.Object);
         Action action = () => service.ListenToAllEvents();
         action.Should().Throw<Exception>().Which.Should().BeOfType(expectedType);

@@ -6,6 +6,7 @@
 
 using cCoder.Mail.Providers.Exposures.MailClients;
 using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Services.Foundations;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -19,7 +20,8 @@ public sealed partial class MailProviderCatalogTests
     {
         Mock<IMailClient> senderMock = CreateClient(["SMTP", "Alias"], [MailClientOperation.Send]);
         Mock<IMailClient> receiverMock = CreateClient(["POP3"], [MailClientOperation.Receive]);
-        var catalog = new MailProviderCatalog([senderMock.Object, receiverMock.Object]);
+        var catalog = new MailProviderCatalog(
+            new MailProviderCatalogService([senderMock.Object, receiverMock.Object]));
 
         Models.MailProviderSummary[] providers = catalog.GetSenders();
 
@@ -32,7 +34,8 @@ public sealed partial class MailProviderCatalogTests
     {
         Mock<IMailClient> receiverMock = CreateClient(["IMAP", "Alias"], [MailClientOperation.Receive]);
         Mock<IMailClient> senderMock = CreateClient(["SMTP"], [MailClientOperation.Send]);
-        var catalog = new MailProviderCatalog([receiverMock.Object, senderMock.Object]);
+        var catalog = new MailProviderCatalog(
+            new MailProviderCatalogService([receiverMock.Object, senderMock.Object]));
 
         Models.MailProviderSummary[] providers = catalog.GetReceivers();
 
@@ -46,7 +49,8 @@ public sealed partial class MailProviderCatalogTests
         Mock<IMailClient> clientMock = CreateClient(
             ["Graph"],
             [MailClientOperation.Send, MailClientOperation.Receive]);
-        var catalog = new MailProviderCatalog([clientMock.Object]);
+        var catalog = new MailProviderCatalog(
+            new MailProviderCatalogService([clientMock.Object]));
 
         catalog.GetSenders().Should().ContainSingle();
         catalog.GetReceivers().Should().ContainSingle();

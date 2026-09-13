@@ -33,10 +33,10 @@
     <PackageReference Remove="cCoder.CodeAnalysis" />
     <PackageReference
       Include="cCoder.CodeAnalysis"
-      Version="2026.9.11.1440"
+      Version="2026.9.13.1655"
       PrivateAssets="all"
     />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="cCoder.Data" Version="2026.8.28.1700" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.9.13.1526" Condition="'$(UseLocalData)' != 'true'" />
   </ItemGroup>
 </Project>

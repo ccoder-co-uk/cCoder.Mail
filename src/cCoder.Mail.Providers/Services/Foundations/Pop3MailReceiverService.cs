@@ -7,27 +7,15 @@ using cCoder.Mail.Providers.Brokers.MailClients;
 using cCoder.Mail.Providers.Brokers.Storages;
 using cCoder.Mail.Providers.Models;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class Pop3MailReceiverService(
     IPop3MailReceiverBroker pop3MailReceiverBroker,
-    IMailReceiverStorageBroker mailReceiverStorageBroker)
+    IMailReceiverStorageBroker mailReceiverStorageBroker,
+    IMailMessageParsingBroker mailMessageParsingBroker)
     : IPop3MailReceiverService
 {
-    private static readonly Regex boundaryRegex = new(
-        pattern: "boundary=\"?(?<boundary>[^\";]+)\"?",
-        options: RegexOptions.IgnoreCase);
-
-    private static readonly Regex quotedPrintableRegex = new(
-        pattern: "=([0-9A-F]{2})",
-        options: RegexOptions.IgnoreCase);
-
-    private static readonly Regex encodedWordRegex = new(
-        pattern: @"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=",
-        options: RegexOptions.IgnoreCase);
-
     public Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,
         int maximumMessages,
@@ -95,7 +83,7 @@ internal sealed partial class Pop3MailReceiverService(
             cancellationToken: cancellationToken);
     }
 
-    private static ReceivedEmail ParseMessage(string[] lines)
+    private ReceivedEmail ParseMessage(string[] lines)
     {
         int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
         string[] headerLines = separatorIndex >= 0 ? lines[..separatorIndex] : lines;
@@ -145,7 +133,7 @@ internal sealed partial class Pop3MailReceiverService(
         return headers;
     }
 
-    private static ParsedBody ParseBody(
+    private ParsedBody ParseBody(
         string[] bodyLines,
         string contentType,
         string transferEncoding)
@@ -162,11 +150,11 @@ Content: content,
 IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringComparison.OrdinalIgnoreCase) == true);
     }
 
-    private static ParsedBody ParseMultipartBody(string[] bodyLines, string contentType)
+    private ParsedBody ParseMultipartBody(string[] bodyLines, string contentType)
     {
-        string boundary = boundaryRegex
-            .Match(input: contentType ?? string.Empty)
-            .Groups["boundary"].Value;
+        string boundary = mailMessageParsingBroker
+            .SelectMultipartBoundary(
+                contentType: contentType ?? string.Empty);
 
         if (string.IsNullOrWhiteSpace(value: boundary))
         {
@@ -220,7 +208,7 @@ transferEncoding: partTransferEncoding);
         return fallback;
     }
 
-    private static string DecodeBody(string content, string transferEncoding) =>
+    private string DecodeBody(string content, string transferEncoding) =>
         transferEncoding?.Equals(value: "base64", comparisonType: StringComparison.OrdinalIgnoreCase) == true
             ? DecodeBase64(content: content)
             : transferEncoding?.Equals(value: "quoted-printable", comparisonType: StringComparison.OrdinalIgnoreCase) == true
@@ -239,34 +227,32 @@ transferEncoding: partTransferEncoding);
         }
     }
 
-    private static string DecodeQuotedPrintable(string content)
-    {
-        string unfolded = content.Replace(oldValue: "=\r\n", newValue: string.Empty)
-            .Replace(oldValue: "=\n", newValue: string.Empty);
+    private string DecodeQuotedPrintable(string content) =>
+        mailMessageParsingBroker.DecodeQuotedPrintable(
+            content: content.Replace(oldValue: "=\r\n", newValue: string.Empty)
+                .Replace(oldValue: "=\n", newValue: string.Empty));
 
-        return quotedPrintableRegex
-            .Replace(
-input: unfolded,
-evaluator: match => ((char)Convert.ToByte(value: match.Groups[1].Value, fromBase: 16)).ToString());
-    }
-
-    private static string DecodeHeader(string value)
+    private string DecodeHeader(string value)
     {
-        if (string.IsNullOrWhiteSpace(value: value))
+        string decoded = value;
+
+        foreach (EncodedMailWord word in mailMessageParsingBroker
+            .SelectEncodedMailWords(value: value ?? string.Empty))
         {
-            return value;
+            string replacement = string.Equals(
+                a: word.Encoding,
+                b: "B",
+                comparisonType: StringComparison.OrdinalIgnoreCase)
+                    ? DecodeBase64(content: word.Text)
+                    : DecodeQuotedPrintable(
+                        content: word.Text.Replace(oldChar: '_', newChar: ' '));
+
+            decoded = decoded.Replace(
+                oldValue: word.Value,
+                newValue: replacement);
         }
 
-        return encodedWordRegex
-            .Replace(input: value, evaluator: match =>
-        {
-            string encoding = match.Groups["encoding"].Value;
-            string encodedText = match.Groups["text"].Value;
-
-            return string.Equals(a: encoding, b: "B", comparisonType: StringComparison.OrdinalIgnoreCase)
-                ? DecodeBase64(content: encodedText)
-                : DecodeQuotedPrintable(content: encodedText.Replace(oldChar: '_', newChar: ' '));
-        });
+        return decoded;
     }
 
     private static DateTimeOffset ParseDate(string value) =>

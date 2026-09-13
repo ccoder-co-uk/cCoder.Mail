@@ -6,6 +6,9 @@ namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailReceivingService
 {
+    private static void ValidateLogError(object[] inputs) =>
+        Validate(inputs: inputs);
+
     private static void ValidateReceiveMailboxReceiveRequestAsync(object[] inputs) =>
         Validate(inputs: inputs);
 

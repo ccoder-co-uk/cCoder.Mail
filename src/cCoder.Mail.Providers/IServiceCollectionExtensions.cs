@@ -101,6 +101,12 @@ public static class IServiceCollectionExtensions
         services.AddTransient<
             IMailReceiverStorageBroker,
             MailReceiverStorageBroker>();
+        services.AddTransient<
+            IMailClientRegistryBroker,
+            MailClientRegistryBroker>();
+        services.AddTransient<
+            IMailMessageParsingBroker,
+            MailMessageParsingBroker>();
     }
 
     private static void AddFoundations(

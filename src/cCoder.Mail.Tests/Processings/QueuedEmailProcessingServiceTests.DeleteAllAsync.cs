@@ -35,7 +35,6 @@ public partial class QueuedEmailProcessingServiceTests
         // Then
         queuedEmailServiceMock.Verify(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -63,7 +62,6 @@ expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true),
 times: Times.Once);
 
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 }
 

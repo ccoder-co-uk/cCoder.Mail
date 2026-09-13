@@ -3,7 +3,6 @@
 // ---------------------------------------------------------------
 
 using System.Text;
-using System.Text.RegularExpressions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Providers.Brokers.MailClients;
 using cCoder.Mail.Providers.Brokers.Storages;
@@ -13,13 +12,10 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class ImapMailReceiverService(
     IImapMailReceiverBroker imapMailReceiverBroker,
-    IMailReceiverStorageBroker mailReceiverStorageBroker)
+    IMailReceiverStorageBroker mailReceiverStorageBroker,
+    IMailMessageParsingBroker mailMessageParsingBroker)
     : IImapMailReceiverService
 {
-    private static readonly Regex encodedWordRegex = new(
-        pattern: @"=\?(?<charset>[^?]+)\?(?<encoding>[BQ])\?(?<text>[^?]+)\?=",
-        options: RegexOptions.IgnoreCase);
-
     public Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,
         int maximumMessages,
@@ -85,7 +81,7 @@ internal sealed partial class ImapMailReceiverService(
         ];
     }
 
-    private static ReceivedEmail ParseMessage(string rawMessage)
+    private ReceivedEmail ParseMessage(string rawMessage)
     {
         string[] lines = rawMessage.Split(separator: '\n')
             .Select(selector: line => line.TrimEnd(trimChar: '\r'))
@@ -147,19 +143,28 @@ internal sealed partial class ImapMailReceiverService(
     private static string Header(Dictionary<string, string> headers, string name) =>
         headers.TryGetValue(key: name, value: out string value) ? value : null;
 
-    private static string DecodeHeader(string value) =>
-        string.IsNullOrWhiteSpace(value: value)
-            ? value
-            : encodedWordRegex
-        .Replace(input: value, evaluator: match =>
-            {
-                string encoding = match.Groups["encoding"].Value;
-                string encodedText = match.Groups["text"].Value;
+    private string DecodeHeader(string value)
+    {
+        string decoded = value;
 
-                return string.Equals(a: encoding, b: "B", comparisonType: StringComparison.OrdinalIgnoreCase)
-                    ? Encoding.UTF8.GetString(bytes: Convert.FromBase64String(s: encodedText))
-                    : encodedText.Replace(oldChar: '_', newChar: ' ');
-            });
+        foreach (EncodedMailWord word in mailMessageParsingBroker
+            .SelectEncodedMailWords(value: value ?? string.Empty))
+        {
+            string replacement = string.Equals(
+                a: word.Encoding,
+                b: "B",
+                comparisonType: StringComparison.OrdinalIgnoreCase)
+                    ? Encoding.UTF8.GetString(
+                        bytes: Convert.FromBase64String(s: word.Text))
+                    : word.Text.Replace(oldChar: '_', newChar: ' ');
+
+            decoded = decoded.Replace(
+                oldValue: word.Value,
+                newValue: replacement);
+        }
+
+        return decoded;
+    }
 
     private static DateTimeOffset ParseDate(string value) =>
         DateTimeOffset.TryParse(input: value, result: out DateTimeOffset parsed)

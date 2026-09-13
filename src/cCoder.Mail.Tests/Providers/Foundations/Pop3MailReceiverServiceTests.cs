@@ -20,7 +20,8 @@ public partial class Pop3MailReceiverServiceTests
     public Pop3MailReceiverServiceTests() =>
         service = new Pop3MailReceiverService(
             pop3MailReceiverBroker: receiverBrokerMock.Object,
-            mailReceiverStorageBroker: storageBrokerMock.Object);
+            mailReceiverStorageBroker: storageBrokerMock.Object,
+            mailMessageParsingBroker: new MailMessageParsingBroker());
 }
 
 #pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
