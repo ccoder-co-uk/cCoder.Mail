@@ -20,8 +20,9 @@ public sealed partial class MailClientFactoryTests
     [Fact]
     public void CreateMailClientShouldResolveAliasIgnoringCase()
     {
-        clientMock.Setup(x => x.GetProviderNames()).Returns(["Graph", "MicrosoftGraph"]);
-        var factory = new MailClientFactory([clientMock.Object], providerServiceMock.Object);
+        providerServiceMock.Setup(x => x.GetMailClient("microsoftgraph"))
+            .Returns(clientMock.Object);
+        var factory = new MailClientFactory(providerServiceMock.Object);
 
         factory.CreateMailClient("microsoftgraph").Should().BeSameAs(clientMock.Object);
     }
@@ -31,8 +32,10 @@ public sealed partial class MailClientFactoryTests
     [InlineData("missing")]
     public void CreateMailClientShouldRejectUnknownProvider(string providerName)
     {
-        clientMock.Setup(x => x.GetProviderNames()).Returns(["Graph"]);
-        var factory = new MailClientFactory([clientMock.Object], providerServiceMock.Object);
+        providerServiceMock.Setup(x => x.GetMailClient(providerName))
+            .Throws(new InvalidOperationException(
+                $"No mail provider named '{providerName}' is registered."));
+        var factory = new MailClientFactory(providerServiceMock.Object);
 
         Action action = () => factory.CreateMailClient(providerName);
 
@@ -45,9 +48,9 @@ public sealed partial class MailClientFactoryTests
     {
         Guid receiverId = Guid.NewGuid();
         clientMock.Setup(x => x.GetProviderNames()).Returns(["IMAP"]);
-        providerServiceMock.Setup(x => x.GetMailReceiverProviderNameAsync(receiverId, CancellationToken.None))
-            .ReturnsAsync("IMAP");
-        var factory = new MailClientFactory([clientMock.Object], providerServiceMock.Object);
+        providerServiceMock.Setup(x => x.GetMailClientAsync(receiverId, CancellationToken.None))
+            .ReturnsAsync(clientMock.Object);
+        var factory = new MailClientFactory(providerServiceMock.Object);
 
         IMailClient result = await factory.CreateMailClientAsync(receiverId);
 
