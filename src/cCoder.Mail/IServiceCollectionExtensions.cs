@@ -11,7 +11,6 @@ using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Exposures;
-using cCoder.Mail.Exposures.EventHandlers;
 using cCoder.Mail.Exposures.HostedServices;
 using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Services.Foundations;
@@ -56,7 +55,6 @@ public static partial class IServiceCollectionExtensions
         services.AddFoundations();
         services.AddProcessings();
         services.AddOrchestrations();
-        services.AddExposures();
     }
 
     public static void AddMailWeb(
@@ -81,7 +79,6 @@ public static partial class IServiceCollectionExtensions
         services.AddFoundations();
         services.AddProcessings();
         services.AddOrchestrations();
-        services.AddExposures();
         services.AddConfiguredApi(
             newMailConfiguration: configuration,
             documentName: "Mail",
@@ -110,7 +107,6 @@ public static partial class IServiceCollectionExtensions
         services.AddFoundations();
         services.AddProcessings();
         services.AddOrchestrations();
-        services.AddExposures();
         services.AddHostedServiceExposures();
     }
 
@@ -182,7 +178,6 @@ public static partial class IServiceCollectionExtensions
     private static void AddBrokers(this IServiceCollection services)
     {
         services.AddTransient<Brokers.Loggings.ILoggingBroker, Brokers.Loggings.LoggingBroker>();
-        services.AddTransient<IEventHubBroker, EventHubBroker>();
         services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
         services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
@@ -206,9 +201,6 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IMailAppExposure, MailAppExposure>();
         services.AddTransient<IMailManagerExposure, MailManagerExposure>();
         services.AddTransient<IMailMetadataTypeService, MailMetadataTypeService>();
-        services.AddTransient<
-            Services.Foundations.Events.IEventHandlerService,
-            Services.Foundations.Events.EventHandlerService>();
         services.AddTransient<IMailServerService, MailServerService>();
         services.AddTransient<IMailSenderService, MailSenderService>();
         services.AddTransient<IMailReceiverService, MailReceiverService>();
@@ -239,11 +231,6 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<IQueuedEmailOrchestrationService, QueuedEmailOrchestrationService>();
         services.AddTransient<ISentEmailOrchestrationService, SentEmailOrchestrationService>();
         services.AddTransient<IReceivedEmailOrchestrationService, ReceivedEmailOrchestrationService>();
-    }
-
-    private static void AddExposures(this IServiceCollection services)
-    {
-        services.AddTransient<IMailEventHandlers, MailEventHandlers>();
     }
 
     private static void AddProcessings(this IServiceCollection services)

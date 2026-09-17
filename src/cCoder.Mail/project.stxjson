@@ -105,68 +105,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Brokers.Events.EventHubBroker",
-      "StandardElementType": "Broker",
-      "LineNumber": 9,
-      "IsPublic": false,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [
-        {
-          "Id": "cCoder.Mail:cCoder.Mail.Brokers.Events.IEventHubBroker",
-          "FullName": "cCoder.Mail.Brokers.Events.IEventHubBroker",
-          "Name": "IEventHubBroker",
-          "Namespace": "cCoder.Mail.Brokers.Events",
-          "AssemblyName": "cCoder.Mail",
-          "Kind": "Interface",
-          "IsInCurrentProject": true,
-          "StandardElementType": "Broker"
-        }
-      ],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Brokers.Events.EventHubBroker.ListenToEvent(System.String,System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E)",
-          "Name": "ListenToEvent",
-          "LineNumber": 11,
-          "Inputs": [
-            {
-              "Name": "eventName",
-              "Type": "System.String"
-            },
-            {
-              "Name": "handler",
-              "Type": "System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E"
-            }
-          ],
-          "ReturnType": "System.Void",
-          "Implements": [
-            "cCoder.Mail.Brokers.Events.IEventHubBroker.ListenToEvent(System.String,System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E)"
-          ],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Eventing.IEventHub",
-              "MethodName": "ListenToEvent",
-              "MethodId": "cCoder.Eventing.IEventHub.ListenToEvent(System.String,System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            }
-          ],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Brokers.Events.MailServerEventBroker",
       "StandardElementType": "Broker",
       "LineNumber": 12,
@@ -7287,73 +7225,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Exposures.EventHandlers.MailEventHandlers",
-      "StandardElementType": "Exposure",
-      "LineNumber": 9,
-      "IsPublic": false,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [
-        {
-          "Id": "cCoder.Mail:cCoder.Mail.Exposures.EventHandlers.IMailEventHandlers",
-          "FullName": "cCoder.Mail.Exposures.EventHandlers.IMailEventHandlers",
-          "Name": "IMailEventHandlers",
-          "Namespace": "cCoder.Mail.Exposures.EventHandlers",
-          "AssemblyName": "cCoder.Mail",
-          "Kind": "Interface",
-          "IsInCurrentProject": true,
-          "StandardElementType": "Exposure"
-        }
-      ],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Exposures.EventHandlers.MailEventHandlers.ListenToAllEvents()",
-          "Name": "ListenToAllEvents",
-          "LineNumber": 11,
-          "Inputs": [],
-          "ReturnType": "System.Void",
-          "Implements": [
-            "cCoder.Mail.Exposures.EventHandlers.IMailEventHandlers.ListenToAllEvents()"
-          ],
-          "Calls": [
-            {
-              "TypeName": "cCoder.Mail.Services.Foundations.Events.IEventHandlerService",
-              "MethodName": "ListenToAllEvents",
-              "MethodId": "cCoder.Mail.Services.Foundations.Events.IEventHandlerService.ListenToAllEvents()",
-              "StandardElementType": "FoundationService",
-              "IsDependencyBoundary": false
-            }
-          ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Exposures.HostedServices.MailReceiverHostedService",
       "StandardElementType": "Exposure",
       "LineNumber": 9,
@@ -8299,6 +8170,86 @@
       "Methods": []
     },
     {
+      "Name": "cCoder.Mail.IEventHubExtensions",
+      "StandardElementType": "Exposure",
+      "LineNumber": 11,
+      "IsPublic": true,
+      "Kind": "Class",
+      "BaseType": null,
+      "Interfaces": [],
+      "Properties": [],
+      "Methods": [
+        {
+          "Id": "cCoder.Mail.IEventHubExtensions.ListenToMailEvents(cCoder.Eventing.IEventHub)",
+          "Name": "ListenToMailEvents",
+          "LineNumber": 13,
+          "Inputs": [
+            {
+              "Name": "eventHub",
+              "Type": "cCoder.Eventing.IEventHub"
+            }
+          ],
+          "ReturnType": "cCoder.Eventing.IEventHub",
+          "Implements": [],
+          "Calls": [
+            {
+              "TypeName": "cCoder.Eventing.IEventHub",
+              "MethodName": "ListenToEvent",
+              "MethodId": "cCoder.Eventing.IEventHub.ListenToEvent(System.String,System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Aggregations.IAppAggregationService",
+              "MethodName": "AddAppAsync",
+              "MethodId": "cCoder.Mail.Services.Aggregations.IAppAggregationService.AddAppAsync(cCoder.Data.Models.CMS.App)",
+              "StandardElementType": "AggregationService",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Aggregations.IAppAggregationService",
+              "MethodName": "DeleteAsync",
+              "MethodId": "cCoder.Mail.Services.Aggregations.IAppAggregationService.DeleteAsync(System.Int32)",
+              "StandardElementType": "AggregationService",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Services.Aggregations.IAppAggregationService",
+              "MethodName": "UpdateAppAsync",
+              "MethodId": "cCoder.Mail.Services.Aggregations.IAppAggregationService.UpdateAppAsync(cCoder.Data.Models.CMS.App)",
+              "StandardElementType": "AggregationService",
+              "IsDependencyBoundary": false
+            }
+          ],
+          "PossibleExceptionTypes": [
+            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
+            "System.Security.SecurityException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "IncomingExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "ThrowsExceptionTypes": [
+            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
+            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
+          ],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        }
+      ]
+    },
+    {
       "Name": "cCoder.Mail.IServiceCollectionExtensions",
       "StandardElementType": "App",
       "LineNumber": 17,
@@ -8311,7 +8262,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
           "Name": "AddMail",
-          "LineNumber": 39,
+          "LineNumber": 38,
           "Inputs": [
             {
               "Name": "services",
@@ -8355,7 +8306,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMail(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
           "Name": "AddMail",
-          "LineNumber": 48,
+          "LineNumber": 47,
           "Inputs": [
             {
               "Name": "services",
@@ -8392,7 +8343,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E)",
           "Name": "AddMailHostedServices",
-          "LineNumber": 93,
+          "LineNumber": 90,
           "Inputs": [
             {
               "Name": "services",
@@ -8443,7 +8394,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailHostedServices(IServiceCollection,cCoder.Mail.Models.MailConfiguration)",
           "Name": "AddMailHostedServices",
-          "LineNumber": 102,
+          "LineNumber": 99,
           "Inputs": [
             {
               "Name": "services",
@@ -8487,7 +8438,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,System.Action\u003CcCoder.Mail.Models.MailConfiguration\u003E,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
           "Name": "AddMailWeb",
-          "LineNumber": 62,
+          "LineNumber": 60,
           "Inputs": [
             {
               "Name": "services",
@@ -8535,7 +8486,7 @@
         {
           "Id": "cCoder.Mail.IServiceCollectionExtensions.AddMailWeb(IServiceCollection,cCoder.Mail.Models.MailConfiguration,Microsoft.OData.ModelBuilder.ODataConventionModelBuilder)",
           "Name": "AddMailWeb",
-          "LineNumber": 72,
+          "LineNumber": 70,
           "Inputs": [
             {
               "Name": "services",
@@ -9419,65 +9370,6 @@
               "IsDependencyBoundary": false
             }
           ],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "StandardElementType": "FoundationService",
-      "LineNumber": 12,
-      "IsPublic": false,
-      "Kind": "Class",
-      "BaseType": null,
-      "Interfaces": [
-        {
-          "Id": "cCoder.Mail:cCoder.Mail.Services.Foundations.Events.IEventHandlerService",
-          "FullName": "cCoder.Mail.Services.Foundations.Events.IEventHandlerService",
-          "Name": "IEventHandlerService",
-          "Namespace": "cCoder.Mail.Services.Foundations.Events",
-          "AssemblyName": "cCoder.Mail",
-          "Kind": "Interface",
-          "IsInCurrentProject": true,
-          "StandardElementType": "FoundationService"
-        }
-      ],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Services.Foundations.Events.EventHandlerService.ListenToAllEvents()",
-          "Name": "ListenToAllEvents",
-          "LineNumber": 14,
-          "Inputs": [],
-          "ReturnType": "System.Void",
-          "Implements": [
-            "cCoder.Mail.Services.Foundations.Events.IEventHandlerService.ListenToAllEvents()"
-          ],
-          "Calls": [],
           "PossibleExceptionTypes": [
             "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
             "System.Security.SecurityException",
@@ -19570,7 +19462,7 @@
     {
       "Name": "cCoder.Mail.WebApplicationExtensions",
       "StandardElementType": "App",
-      "LineNumber": 14,
+      "LineNumber": 13,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": null,
@@ -19580,7 +19472,7 @@
         {
           "Id": "cCoder.Mail.WebApplicationExtensions.StartMailHostedServices(WebApplication)",
           "Name": "StartMailHostedServices",
-          "LineNumber": 21,
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "app",
@@ -19590,23 +19482,9 @@
           "ReturnType": "WebApplication",
           "Implements": [],
           "Calls": [],
-          "PossibleExceptionTypes": [
-            "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException",
-            "System.Security.SecurityException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "IncomingExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
-          "ThrowsExceptionTypes": [
-            "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
-            "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
-          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
           "HttpMethods": [],
           "HttpResponses": [],
           "IsHttpRequestHandler": false,
@@ -19619,7 +19497,7 @@
         {
           "Id": "cCoder.Mail.WebApplicationExtensions.StartMailWeb(WebApplication,ILogger)",
           "Name": "StartMailWeb",
-          "LineNumber": 18,
+          "LineNumber": 17,
           "Inputs": [
             {
               "Name": "app",
@@ -19649,47 +19527,6 @@
     }
   ],
   "Interfaces": [
-    {
-      "Name": "cCoder.Mail.Brokers.Events.IEventHubBroker",
-      "StandardElementType": "Broker",
-      "LineNumber": 7,
-      "IsPublic": true,
-      "Kind": "Interface",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Brokers.Events.IEventHubBroker.ListenToEvent(System.String,System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E)",
-          "Name": "ListenToEvent",
-          "LineNumber": 9,
-          "Inputs": [
-            {
-              "Name": "eventName",
-              "Type": "System.String"
-            },
-            {
-              "Name": "handler",
-              "Type": "System.Func\u003CTService, T, System.Threading.Tasks.ValueTask\u003E"
-            }
-          ],
-          "ReturnType": "System.Void",
-          "Implements": [],
-          "Calls": [],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
     {
       "Name": "cCoder.Mail.Brokers.Events.IMailServerEventBroker",
       "StandardElementType": "Broker",
@@ -21815,38 +21652,6 @@
       ]
     },
     {
-      "Name": "cCoder.Mail.Exposures.EventHandlers.IMailEventHandlers",
-      "StandardElementType": "Exposure",
-      "LineNumber": 7,
-      "IsPublic": true,
-      "Kind": "Interface",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Exposures.EventHandlers.IMailEventHandlers.ListenToAllEvents()",
-          "Name": "ListenToAllEvents",
-          "LineNumber": 9,
-          "Inputs": [],
-          "ReturnType": "System.Void",
-          "Implements": [],
-          "Calls": [],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
       "Name": "cCoder.Mail.Exposures.HostedServices.IMailReceiverHostedService",
       "StandardElementType": "Exposure",
       "LineNumber": 7,
@@ -23713,38 +23518,6 @@
             }
           ],
           "ReturnType": "System.Threading.Tasks.ValueTask",
-          "Implements": [],
-          "Calls": [],
-          "PossibleExceptionTypes": [],
-          "IncomingExceptionTypes": [],
-          "ThrowsExceptionTypes": [],
-          "HttpMethods": [],
-          "HttpResponses": [],
-          "IsHttpRequestHandler": false,
-          "IsODataControllerAction": false,
-          "HasFromBodyParameter": false,
-          "HasKeyParameter": false,
-          "HandlesNullWithNotFound": false,
-          "HasTryCatch": false
-        }
-      ]
-    },
-    {
-      "Name": "cCoder.Mail.Services.Foundations.Events.IEventHandlerService",
-      "StandardElementType": "FoundationService",
-      "LineNumber": 7,
-      "IsPublic": false,
-      "Kind": "Interface",
-      "BaseType": null,
-      "Interfaces": [],
-      "Properties": [],
-      "Methods": [
-        {
-          "Id": "cCoder.Mail.Services.Foundations.Events.IEventHandlerService.ListenToAllEvents()",
-          "Name": "ListenToAllEvents",
-          "LineNumber": 9,
-          "Inputs": [],
-          "ReturnType": "System.Void",
           "Implements": [],
           "Calls": [],
           "PossibleExceptionTypes": [],
@@ -27293,10 +27066,6 @@
       "ToType": "cCoder.Data.ICoreContextFactory"
     },
     {
-      "FromType": "cCoder.Mail.Brokers.Events.EventHubBroker",
-      "ToType": "cCoder.Eventing.IEventHub"
-    },
-    {
       "FromType": "cCoder.Mail.Brokers.Events.MailServerEventBroker",
       "ToType": "cCoder.Eventing.IEventHub"
     },
@@ -27417,10 +27186,6 @@
       "ToType": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService"
     },
     {
-      "FromType": "cCoder.Mail.Exposures.EventHandlers.MailEventHandlers",
-      "ToType": "cCoder.Mail.Services.Foundations.Events.EventHandlerService"
-    },
-    {
       "FromType": "cCoder.Mail.Exposures.HostedServices.MailReceiverHostedService",
       "ToType": "System.Func\u003CSystem.Threading.CancellationToken, System.Threading.Tasks.Task\u003E"
     },
@@ -27471,10 +27236,6 @@
     {
       "FromType": "cCoder.Mail.Services.Aggregations.AppAggregationService",
       "ToType": "cCoder.Mail.Services.Orchestrations.SentEmailOrchestrationService"
-    },
-    {
-      "FromType": "cCoder.Mail.Services.Foundations.Events.EventHandlerService",
-      "ToType": "cCoder.Mail.Brokers.Events.EventHubBroker"
     },
     {
       "FromType": "cCoder.Mail.Services.Foundations.Events.MailServerEventService",

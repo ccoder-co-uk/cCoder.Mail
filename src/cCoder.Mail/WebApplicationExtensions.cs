@@ -5,7 +5,6 @@
 using System;
 using System.Text.Json;
 using cCoder.Data.Exposures;
-using cCoder.Mail.Exposures.EventHandlers;
 using cCoder.Mail.Services.Foundations;
 
 
@@ -19,26 +18,12 @@ public static partial class WebApplicationExtensions
         app.UseMailExposure(log: log);
 
     public static WebApplication StartMailHostedServices(this WebApplication app) =>
-        app.UseMailExposure()
-        .UseMailEventHandlers();
+        app.UseMailExposure();
 
     private static WebApplication UseMailExposure(this WebApplication app, ILogger log = null)
     {
         log?.LogInformation(message: "Initialising Mail");
         PopulateMetadataTypeCache(app: app);
-        return app;
-    }
-
-    private static WebApplication UseMailEventHandlers(this WebApplication app)
-    {
-        using IServiceScope scope = app.Services.CreateScope();
-        IServiceProvider services = scope.ServiceProvider;
-
-        foreach (IMailEventHandlers handlers in services.GetServices<IMailEventHandlers>())
-        {
-            handlers.ListenToAllEvents();
-        }
-
         return app;
     }
 
