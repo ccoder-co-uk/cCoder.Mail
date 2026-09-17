@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Eventing;
+using cCoder.Mail;
+
 namespace Mail.HostedServices;
 
 public class Program
@@ -13,6 +16,10 @@ public class Program
             configuration: builder.Configuration);
 
         WebApplication app = builder.Build();
+        app.Services
+            .GetRequiredService<IEventHub>()
+            .ListenToMailEvents();
+
         app.UseMailHostedServicesApplication()
             .Run();
     }
