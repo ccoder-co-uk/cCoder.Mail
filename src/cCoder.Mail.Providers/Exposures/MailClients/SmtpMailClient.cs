@@ -20,10 +20,10 @@ internal sealed class SmtpMailClient(
         [MailClientOperation.Send];
 
     public Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         smtpMailSenderService.SendQueuedEmailAsync(
-            email: email,
+            queuedEmail: queuedEmail,
             cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveAsync(

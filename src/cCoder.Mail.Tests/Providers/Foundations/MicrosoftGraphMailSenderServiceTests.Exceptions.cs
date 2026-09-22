@@ -30,7 +30,11 @@ public partial class MicrosoftGraphMailSenderServiceTests
         var email = CreateEmail();
         graphBrokerMock.Setup(expression: broker => broker.SendEmailAsync(
                 email,
-                configuration,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
             .Throws(exception: dependencyException);
 

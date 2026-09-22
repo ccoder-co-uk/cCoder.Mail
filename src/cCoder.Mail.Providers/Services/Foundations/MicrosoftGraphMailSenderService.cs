@@ -14,20 +14,24 @@ internal sealed partial class MicrosoftGraphMailSenderService(
     : IMicrosoftGraphMailSenderService
 {
     public Task SendQueuedEmailAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         TryCatch(
             operation: async () =>
             {
                 ValidateSendQueuedEmailAsync(
-                    inputs: [email, cancellationToken]);
+                    inputs: [queuedEmail, cancellationToken]);
 
-                ValidateMailSender(email: email);
+                ValidateMailSender(email: queuedEmail);
 
-                HttpClientBrokerResponse response =
+                (bool IsSuccessStatusCode, string Content) response =
                     await microsoftGraphBroker.SendEmailAsync(
-                        email: email,
-                        configuration: configuration,
+                        email: queuedEmail,
+                        tenantId: configuration.TenantId,
+                        clientId: configuration.ClientId,
+                        clientSecret: configuration.ClientSecret,
+                        graphBaseUrl: configuration.GraphBaseUrl,
+                        loginBaseUrl: configuration.LoginBaseUrl,
                         cancellationToken: cancellationToken);
 
                 if (!response.IsSuccessStatusCode)

@@ -38,18 +38,18 @@ public partial class SmtpMailSenderServiceTests
             .Setup(
                 expression: broker =>
                     broker.SendAsync(
-                        email: email,
+                        queuedEmail: email,
                         cancellationToken: cancellationToken))
             .Returns(value: Task.CompletedTask);
 
         // When
-        await smtpMailSenderService.SendQueuedEmailAsync(email: email, cancellationToken: cancellationToken);
+        await smtpMailSenderService.SendQueuedEmailAsync(queuedEmail: email, cancellationToken: cancellationToken);
 
         // Then
         smtpMailSenderBrokerMock.Verify(
             expression: broker =>
                 broker.SendAsync(
-                    email: email,
+                    queuedEmail: email,
                     cancellationToken: cancellationToken),
             times: Times.Once);
 

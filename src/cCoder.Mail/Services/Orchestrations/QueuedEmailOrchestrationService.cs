@@ -10,7 +10,9 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingService processingService, IQueuedEmailEventProcessingService eventService) : IQueuedEmailOrchestrationService
+internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingService processingService, IQueuedEmailEventProcessingService eventService)
+    : IQueuedEmailOrchestrationService,
+      global::cCoder.Mail.Exposures.IQueuedEmailManager
 {
     public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>

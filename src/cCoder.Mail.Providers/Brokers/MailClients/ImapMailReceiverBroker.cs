@@ -15,6 +15,12 @@ internal sealed class ImapMailReceiverBroker(
         MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveAsync(
-            request: mailboxReceiveRequest,
+            host: mailboxReceiveRequest.Host,
+            port: mailboxReceiveRequest.Port,
+            enableSsl: mailboxReceiveRequest.EnableSSL,
+            user: mailboxReceiveRequest.User,
+            password: mailboxReceiveRequest.Password,
+            from: mailboxReceiveRequest.From,
+            maximumMessages: mailboxReceiveRequest.MaximumMessages,
             cancellationToken: cancellationToken);
 }

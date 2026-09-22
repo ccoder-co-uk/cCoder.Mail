@@ -15,5 +15,5 @@ internal sealed class MailSenderClientBroker(IMailClientFactory mailClientFactor
             .CreateMailClient(
                 providerName:
                     email?.MailSender?.ProviderName)
-        .SendAsync(email: email, cancellationToken: cancellationToken);
+        .SendAsync(queuedEmail: email, cancellationToken: cancellationToken);
 }

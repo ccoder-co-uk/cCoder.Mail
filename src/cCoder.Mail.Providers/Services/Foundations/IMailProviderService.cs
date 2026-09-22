@@ -6,7 +6,7 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal interface IMailProviderService
 {
-    ValueTask<string> GetMailReceiverProviderNameAsync(
-        Guid mailReceiverId,
-        CancellationToken cancellationToken = default);
+    Exposures.MailClients.IMailClient GetMailClient(
+        string providerName);
+
 }

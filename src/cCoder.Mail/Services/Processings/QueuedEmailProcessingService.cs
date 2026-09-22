@@ -3,7 +3,6 @@
 // ---------------------------------------------------------------
 
 using System.Security;
-using cCoder.Mail.Brokers;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -12,7 +11,7 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal partial class QueuedEmailProcessingService(IQueuedEmailService service, IAuthorizationBroker authorizationBroker) : IQueuedEmailProcessingService
+internal partial class QueuedEmailProcessingService(IQueuedEmailService service) : IQueuedEmailProcessingService
 {
     public QueuedEmail GetQueuedEmail(int queuedEmailId) =>
         TryCatch<QueuedEmail>(operation: () =>
@@ -33,7 +32,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
         TryCatch<QueuedEmail[]>(operation: () =>
         {
-            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
+            ValidateDispatchBatchOnGet(inputs: [batchSize, maxFailures]);
 
             return service.GetDispatchBatch(
                 batchSize: batchSize,
@@ -119,7 +118,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
         }
 
         Authorize(
-            user: authorizationBroker.GetCurrentUser(),
+            user: service.GetCurrentUser(),
             appId: queuedEmail.AppId,
             privilege: "queuedemail_delete");
 
@@ -129,7 +128,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
     public ValueTask RetryAsync(int queuedEmailId) =>
         TryCatch(operation: async () =>
         {
-            ValidateDeleteAsync(inputs: [queuedEmailId]);
+            ValidateQueuedEmailOnRetry(inputs: [queuedEmailId]);
 
             QueuedEmail queuedEmail = service.GetQueuedEmail(
                 iQueuedEmailId: queuedEmailId);
@@ -140,7 +139,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service,
             }
 
             Authorize(
-                user: authorizationBroker.GetCurrentUser(),
+                user: service.GetCurrentUser(),
                 appId: queuedEmail.AppId,
                 privilege: $"{nameof(QueuedEmail)}_update");
 

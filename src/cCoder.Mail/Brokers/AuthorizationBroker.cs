@@ -4,6 +4,7 @@
 
 using cCoder.Data;
 using cCoder.Data.Models.Security;
+using cCoder.CodeAnalysis.Exposures;
 
 
 namespace cCoder.Mail.Brokers;
@@ -13,7 +14,9 @@ public interface IAuthorizationBroker
     User GetCurrentUser();
 }
 
-internal class AuthorizationBroker(ICoreContextFactory coreContextFactory) : IAuthorizationBroker
+internal class AuthorizationBroker(ICoreContextFactory coreContextFactory)
+    : IAuthorizationBroker,
+      IUtilityBroker
 {
     public User GetCurrentUser()
     {

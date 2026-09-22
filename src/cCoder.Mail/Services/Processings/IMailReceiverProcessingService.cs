@@ -2,8 +2,18 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Exposures;
+using cCoder.Data.Models.Mail;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal interface IMailReceiverProcessingService : IMailReceiverManager { }
+public interface IMailReceiverProcessingService
+{
+    MailReceiver GetMailReceiver(Guid iMailReceiverId);
+    IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false);
+    MailReceiver[] GetEnabled();
+    ValueTask<MailReceiver> AddMailReceiverAsync(MailReceiver newMailReceiver);
+    ValueTask<MailReceiver> UpdateMailReceiverAsync(MailReceiver updatedMailReceiver);
+    ValueTask<int> DeleteAsync(Guid iMailReceiverId);
+    ValueTask DeleteByAppIdAsync(int appId);
+    ValueTask DeleteAllMailReceiverAsync(IEnumerable<MailReceiver> deletedMailReceiver);
+}

@@ -10,7 +10,7 @@ using cCoder.Mail.Providers.Services.Foundations;
 namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 internal sealed class ImapMailClient(
-    IImapMailReceiverService imapMailReceiverService)
+    Services.Orchestrations.IImapMailReceiverOrchestrationService imapMailReceiverOrchestrationService)
     : IMailClient
 {
     public string[] GetProviderNames() =>
@@ -20,7 +20,7 @@ internal sealed class ImapMailClient(
         [MailClientOperation.Receive];
 
     public Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         throw new UnsupportedMailClientOperationException(
             providerName: MailProviderNames.Imap,
@@ -30,7 +30,7 @@ internal sealed class ImapMailClient(
         Guid mailReceiverId,
         int maximumMessages,
         CancellationToken cancellationToken = default) =>
-        imapMailReceiverService.ReceiveMailReceiverAsync(
+        imapMailReceiverOrchestrationService.ReceiveMailReceiverAsync(
             mailReceiverId: mailReceiverId,
             maximumMessages: maximumMessages,
             cancellationToken: cancellationToken);

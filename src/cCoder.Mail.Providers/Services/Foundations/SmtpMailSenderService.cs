@@ -10,15 +10,15 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 internal sealed partial class SmtpMailSenderService(ISmtpMailSenderBroker smtpMailSenderBroker)
     : ISmtpMailSenderService
 {
-    public Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default) =>
+    public Task SendQueuedEmailAsync(QueuedEmail queuedEmail, CancellationToken cancellationToken = default) =>
         TryCatch(
             operation: () =>
             {
                 ValidateSendQueuedEmailAsync(
-                    inputs: [email, cancellationToken]);
+                    inputs: [queuedEmail, cancellationToken]);
 
                 return smtpMailSenderBroker.SendAsync(
-                    email: email,
+                    queuedEmail: queuedEmail,
                     cancellationToken: cancellationToken);
             },
             isTask: true);

@@ -7,7 +7,9 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal partial class MailReceiverProcessingService(IMailReceiverService service) : IMailReceiverProcessingService
+internal partial class MailReceiverProcessingService(IMailReceiverService service)
+    : IMailReceiverProcessingService,
+      global::cCoder.Mail.Exposures.IMailReceiverManager
 {
     public MailReceiver GetMailReceiver(Guid mailReceiverId) =>
         TryCatch<MailReceiver>(operation: () =>

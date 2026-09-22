@@ -12,17 +12,23 @@ namespace cCoder.Mail.Providers.Dependencies.MailClients;
 internal sealed class ImapMailClientDependency : TcpClient
 {
     internal async Task<string[]> ReceiveAsync(
-        MailboxReceiveRequest request,
+        string host,
+        int port,
+        bool enableSsl,
+        string user,
+        string password,
+        DateTimeOffset? from,
+        int maximumMessages,
         CancellationToken cancellationToken = default)
     {
         await ConnectAsync(
-            host: request.Host,
-            port: request.Port,
+            host: host,
+            port: port,
             cancellationToken: cancellationToken);
 
         await using Stream stream = await CreateStreamAsync(
-            host: request.Host,
-            enableSsl: request.EnableSSL,
+            host: host,
+            enableSsl: enableSsl,
             cancellationToken: cancellationToken);
 
         using StreamReader reader = new(
@@ -47,7 +53,7 @@ internal sealed class ImapMailClientDependency : TcpClient
             writer: writer,
             tag: "a1",
             command:
-                $"LOGIN \"{Escape(value: request.User)}\" \"{Escape(value: request.Password)}\"",
+                $"LOGIN \"{Escape(value: user)}\" \"{Escape(value: password)}\"",
             cancellationToken: cancellationToken);
 
         await SendCommandAsync(
@@ -61,18 +67,18 @@ internal sealed class ImapMailClientDependency : TcpClient
             reader: reader,
             writer: writer,
             tag: "a3",
-            command: BuildSearchCommand(request: request),
+            command: BuildSearchCommand(from: from),
             cancellationToken: cancellationToken);
 
-        int maximumMessages = request.MaximumMessages <= 0
+        int boundedMaximumMessages = maximumMessages <= 0
             ? 100
-            : request.MaximumMessages;
+            : maximumMessages;
 
         int[] messageIds = ParseSearchIds(response: searchResponse)
             .Reverse()
             .Take(
                 count: Math.Clamp(
-                    value: maximumMessages,
+                    value: boundedMaximumMessages,
                     min: 1,
                     max: 100))
             .ToArray();
@@ -168,11 +174,10 @@ internal sealed class ImapMailClientDependency : TcpClient
             message: "The mail server closed the IMAP connection.");
     }
 
-    private static string BuildSearchCommand(
-        MailboxReceiveRequest request) =>
-        request.From is null
+    private static string BuildSearchCommand(DateTimeOffset? from) =>
+        from is null
             ? "SEARCH ALL"
-            : $"SEARCH SINCE {request.From.Value.UtcDateTime:dd-MMM-yyyy}";
+            : $"SEARCH SINCE {from.Value.UtcDateTime:dd-MMM-yyyy}";
 
     private static int[] ParseSearchIds(string response)
     {
@@ -212,4 +217,7 @@ internal sealed class ImapMailClientDependency : TcpClient
                 oldValue: "\"",
                 newValue: "\\\"",
                 comparisonType: StringComparison.Ordinal);
+
+    protected override void Dispose(bool disposing) =>
+        base.Dispose(disposing: disposing);
 }

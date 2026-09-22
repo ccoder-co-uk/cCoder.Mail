@@ -12,9 +12,9 @@ internal sealed class SmtpMailSenderBroker(
     : ISmtpMailSenderBroker
 {
     public Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.SendAsync(
-            email: email,
+            email: queuedEmail,
             cancellationToken: cancellationToken);
 }

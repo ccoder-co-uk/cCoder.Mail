@@ -23,7 +23,7 @@ internal partial class QueuedEmailProcessingService
     private static void ValidateAllQueuedEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateGetDispatchBatch(object[] inputs) =>
+    private static void ValidateDispatchBatchOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateQueuedEmailOnAdd(object[] inputs) =>
@@ -39,6 +39,9 @@ internal partial class QueuedEmailProcessingService
         Validate(inputs: inputs);
 
     private static void ValidateDeleteAsync(object[] inputs) =>
+        Validate(inputs: inputs);
+
+    private static void ValidateQueuedEmailOnRetry(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateByAppIdOnDelete(object[] inputs) =>

@@ -7,7 +7,7 @@
 using System.Security;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures;
+using cCoder.Mail.Services.Processings;
 using cCoder.Mail.Exposures.Controllers;
 using cCoder.Mail.Providers.Models.Exceptions;
 using FluentAssertions;
@@ -21,7 +21,7 @@ namespace cCoder.Mail.Tests.Exposures;
 
 public sealed partial class ReceivedEmailControllerTests
 {
-    private readonly Mock<IReceivedEmailManager> serviceMock = new();
+    private readonly Mock<IReceivedEmailProcessingService> serviceMock = new();
     private readonly Mock<ILoggingBroker> loggerMock = new();
     private readonly ReceivedEmailController controller;
 

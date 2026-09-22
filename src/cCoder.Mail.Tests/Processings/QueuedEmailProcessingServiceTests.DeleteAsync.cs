@@ -23,7 +23,7 @@ public partial class QueuedEmailProcessingServiceTests
     public async Task ShouldDeleteEmailWhenUserHasDeletePrivilegeForDeleteAsync()
     {
         // Given
-        authorizationBrokerMock
+        queuedEmailServiceMock
             .Setup(expression: x => x.GetCurrentUser())
             .Returns(valueFunction: () => currentUser);
 
@@ -43,8 +43,8 @@ public partial class QueuedEmailProcessingServiceTests
         // Then
         queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.Verify(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: false), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
     }
 
     [Fact]
@@ -67,14 +67,13 @@ public partial class QueuedEmailProcessingServiceTests
 
         queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
     public async Task ShouldThrowSecurityExceptionWhenUserLacksDeletePrivilegeForDeleteAsync()
     {
         // Given
-        authorizationBrokerMock
+        queuedEmailServiceMock
             .Setup(expression: x => x.GetCurrentUser())
             .Returns(valueFunction: () => currentUser);
 
@@ -94,8 +93,8 @@ public partial class QueuedEmailProcessingServiceTests
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
         queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
-        authorizationBrokerMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
     }
 }
 

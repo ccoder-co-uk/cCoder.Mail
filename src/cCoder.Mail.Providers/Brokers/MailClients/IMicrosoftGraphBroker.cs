@@ -3,19 +3,29 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Brokers.MailClients;
 
-public interface IMicrosoftGraphBroker
+internal interface IMicrosoftGraphBroker
 {
-    Task<HttpClientBrokerResponse> SendEmailAsync(
+    Task<(bool IsSuccessStatusCode, string Content)> SendEmailAsync(
         QueuedEmail email,
-        MailProviderConfiguration configuration,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default);
 
-    Task<HttpClientBrokerResponse> ReceiveEmailAsync(
-        MailboxReceiveRequest request,
-        MailProviderConfiguration configuration,
+    Task<(bool IsSuccessStatusCode, string Content)> ReceiveEmailAsync(
+        string user,
+        DateTimeOffset? from,
+        DateTimeOffset? to,
+        int maximumMessages,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default);
 }

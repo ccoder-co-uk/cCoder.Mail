@@ -10,7 +10,7 @@ namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 internal sealed class MicrosoftGraphMailClient(
     IMicrosoftGraphMailSenderService senderService,
-    IMicrosoftGraphMailReceiverService receiverService)
+    Services.Orchestrations.IMicrosoftGraphMailReceiverOrchestrationService receiverService)
     : IMailClient
 {
     public string[] GetProviderNames() =>
@@ -28,10 +28,10 @@ internal sealed class MicrosoftGraphMailClient(
         ];
 
     public Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         senderService.SendQueuedEmailAsync(
-            email: email,
+            queuedEmail: queuedEmail,
             cancellationToken: cancellationToken);
 
     public Task<ReceivedEmail[]> ReceiveAsync(

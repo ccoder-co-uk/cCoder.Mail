@@ -6,7 +6,7 @@
 
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures.Controllers;
-using cCoder.Mail.Exposures;
+using cCoder.Mail.Services.Processings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -16,7 +16,7 @@ namespace cCoder.Mail.Tests.Exposures;
 
 public partial class MailSenderControllerTests
 {
-    private readonly Mock<IMailSenderManager> mailSenderManagerMock = new();
+    private readonly Mock<IMailSenderProcessingService> mailSenderManagerMock = new();
     private readonly Mock<ILoggingBroker> loggingBrokerMock = new();
     private readonly MailSenderController controller;
 

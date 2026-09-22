@@ -5,7 +5,7 @@
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
-using cCoder.Mail.Services.Foundations;
+using cCoder.Mail.Services.Orchestrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cCoder.Mail.Exposures.Controllers;
@@ -13,7 +13,7 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/ReceivedEmail")]
 public sealed class ReceivedEmailOperationsController(
-    IMailReceivingManager service,
+    IReceivedEmailOrchestrationService service,
     ILoggingBroker loggingBroker)
     : ControllerBase
 {

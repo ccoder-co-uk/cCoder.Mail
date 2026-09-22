@@ -2,38 +2,25 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Brokers.Storages;
+using cCoder.Mail.Providers.Brokers.MailClients;
+using cCoder.Mail.Providers.Exposures.MailClients;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MailProviderService(
-    IMailReceiverStorageBroker mailReceiverStorageBroker)
+    IMailClientRegistryBroker mailClientRegistryBroker)
     : IMailProviderService
 {
-    public ValueTask<string> GetMailReceiverProviderNameAsync(
-        Guid mailReceiverId,
-        CancellationToken cancellationToken = default) =>
+    public IMailClient GetMailClient(
+        string providerName) =>
         TryCatch(
-            operation: async () =>
+            operation: () =>
             {
-                ValidateMailReceiverProviderNameOnGet(
-                    inputs:
-                        [
-                            mailReceiverId,
-                            cancellationToken
-                        ]);
+                ValidateMailClientOnGet(
+                    inputs: [providerName]);
 
-                MailReceiver mailReceiver =
-                    await mailReceiverStorageBroker
-                        .SelectMailReceiverByIdAsync(
-                            mailReceiverId: mailReceiverId,
-                            cancellationToken: cancellationToken)
-                    ?? throw new InvalidOperationException(
-                        message:
-                            $"Mail receiver '{mailReceiverId}' was not found.");
+                return mailClientRegistryBroker.SelectMailClient(
+                    providerName: providerName);
+            });
 
-                return mailReceiver.ProviderName;
-            },
-            isValueTask: true);
 }

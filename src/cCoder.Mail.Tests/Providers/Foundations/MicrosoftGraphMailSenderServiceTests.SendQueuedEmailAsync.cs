@@ -20,15 +20,23 @@ public partial class MicrosoftGraphMailSenderServiceTests
         QueuedEmail email = CreateEmail();
         graphBrokerMock.Setup(expression: broker => broker.SendEmailAsync(
                 email,
-                configuration,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
-            .ReturnsAsync(value: new HttpClientBrokerResponse(true, string.Empty));
+            .ReturnsAsync(value: (true, string.Empty));
 
         await service.SendQueuedEmailAsync(email);
 
         graphBrokerMock.Verify(expression: broker => broker.SendEmailAsync(
             email,
-            configuration,
+            configuration.TenantId,
+            configuration.ClientId,
+            configuration.ClientSecret,
+            configuration.GraphBaseUrl,
+            configuration.LoginBaseUrl,
             CancellationToken.None), Times.Once);
     }
 
@@ -38,9 +46,13 @@ public partial class MicrosoftGraphMailSenderServiceTests
         QueuedEmail email = CreateEmail();
         graphBrokerMock.Setup(expression: broker => broker.SendEmailAsync(
                 email,
-                configuration,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
-            .ReturnsAsync(value: new HttpClientBrokerResponse(false, "failure"));
+            .ReturnsAsync(value: (false, "failure"));
 
         Func<Task> action = async () => await service.SendQueuedEmailAsync(email);
 

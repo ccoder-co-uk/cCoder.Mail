@@ -8,6 +8,7 @@ using cCoder.Mail.Providers.Dependencies.MailClients;
 using cCoder.Mail.Providers.Exposures.MailClients;
 using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Providers.Services.Foundations;
+using cCoder.Mail.Providers.Services.Orchestrations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace cCoder.Mail.Providers;
@@ -101,6 +102,12 @@ public static class IServiceCollectionExtensions
         services.AddTransient<
             IMailReceiverStorageBroker,
             MailReceiverStorageBroker>();
+        services.AddTransient<
+            IMailClientRegistryBroker,
+            MailClientRegistryBroker>();
+        services.AddTransient<
+            IMailMessageParsingBroker,
+            MailMessageParsingBroker>();
     }
 
     private static void AddFoundations(
@@ -117,15 +124,21 @@ public static class IServiceCollectionExtensions
         if (providers.ContainsKey(key: MailProviderNames.Pop3))
         {
             services.AddTransient<
-                IPop3MailReceiverService,
-                Pop3MailReceiverService>();
+                IPop3MailboxService,
+                Pop3MailboxService>();
+            services.AddTransient<
+                IPop3MailReceiverOrchestrationService,
+                Pop3MailReceiverOrchestrationService>();
         }
 
         if (providers.ContainsKey(key: MailProviderNames.Imap))
         {
             services.AddTransient<
-                IImapMailReceiverService,
-                ImapMailReceiverService>();
+                IImapMailboxService,
+                ImapMailboxService>();
+            services.AddTransient<
+                IImapMailReceiverOrchestrationService,
+                ImapMailReceiverOrchestrationService>();
         }
 
         if (providers.ContainsKey(key: MailProviderNames.MicrosoftGraph))
@@ -134,13 +147,28 @@ public static class IServiceCollectionExtensions
                 IMicrosoftGraphMailSenderService,
                 MicrosoftGraphMailSenderService>();
             services.AddTransient<
-                IMicrosoftGraphMailReceiverService,
-                MicrosoftGraphMailReceiverService>();
+                IMicrosoftGraphMailboxService,
+                MicrosoftGraphMailboxService>();
+            services.AddTransient<
+                IMicrosoftGraphMailReceiverOrchestrationService,
+                MicrosoftGraphMailReceiverOrchestrationService>();
         }
 
         services.AddTransient<
             IMailProviderService,
             MailProviderService>();
+        services.AddTransient<
+            IMailMessageParsingService,
+            MailMessageParsingService>();
+        services.AddTransient<
+            IMicrosoftGraphMessageService,
+            MicrosoftGraphMessageService>();
+        services.AddTransient<
+            IMailReceiverProviderService,
+            MailReceiverProviderService>();
+        services.AddTransient<
+            IMailProviderOrchestrationService,
+            MailProviderOrchestrationService>();
     }
 
     private static void AddExposures(

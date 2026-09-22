@@ -4,7 +4,6 @@
 
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Providers.Dependencies.MailClients;
-using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Brokers.MailClients;
 
@@ -12,21 +11,43 @@ internal sealed class MicrosoftGraphBroker(
     MicrosoftGraphMailClientDependency mailClientDependency)
     : IMicrosoftGraphBroker
 {
-    public Task<HttpClientBrokerResponse> SendEmailAsync(
+    public Task<(bool IsSuccessStatusCode, string Content)> SendEmailAsync(
         QueuedEmail queuedEmail,
-        MailProviderConfiguration mailProviderConfiguration,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.SendEmailAsync(
-            email: queuedEmail,
-            configuration: mailProviderConfiguration,
-            cancellationToken: cancellationToken);
+                email: queuedEmail,
+                tenantId: tenantId,
+                clientId: clientId,
+                clientSecret: clientSecret,
+                graphBaseUrl: graphBaseUrl,
+                loginBaseUrl: loginBaseUrl,
+                cancellationToken: cancellationToken);
 
-    public Task<HttpClientBrokerResponse> ReceiveEmailAsync(
-        MailboxReceiveRequest mailboxReceiveRequest,
-        MailProviderConfiguration mailProviderConfiguration,
+    public Task<(bool IsSuccessStatusCode, string Content)> ReceiveEmailAsync(
+        string user,
+        DateTimeOffset? from,
+        DateTimeOffset? to,
+        int maximumMessages,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveEmailAsync(
-            request: mailboxReceiveRequest,
-            configuration: mailProviderConfiguration,
-            cancellationToken: cancellationToken);
+                user: user,
+                from: from,
+                to: to,
+                maximumMessages: maximumMessages,
+                tenantId: tenantId,
+                clientId: clientId,
+                clientSecret: clientSecret,
+                graphBaseUrl: graphBaseUrl,
+                loginBaseUrl: loginBaseUrl,
+                cancellationToken: cancellationToken);
 }

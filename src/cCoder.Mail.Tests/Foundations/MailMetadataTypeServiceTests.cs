@@ -5,6 +5,7 @@
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Data.Models.Mail;
+using cCoder.Mail.Brokers.Attributes;
 using FluentAssertions;
 using Xunit;
 
@@ -15,7 +16,8 @@ public sealed partial class MailMetadataTypeServiceTests
     [Fact]
     public void GetKnownMetadataShouldDescribeMailEntities()
     {
-        var service = new MailMetadataTypeService();
+        var service = new MailMetadataTypeService(
+            attributeBroker: new AttributeBroker());
 
         var metadata = service.GetKnownMetadata().Single();
 

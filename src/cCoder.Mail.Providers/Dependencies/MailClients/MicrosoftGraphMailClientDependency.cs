@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Dependencies.MailClients;
 
@@ -18,20 +17,27 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     private const string DefaultLoginBaseUrl =
         "https://login.microsoftonline.com";
 
-    internal async Task<HttpClientBrokerResponse> SendEmailAsync(
+    internal async Task<(bool IsSuccessStatusCode, string Content)> SendEmailAsync(
         QueuedEmail email,
-        MailProviderConfiguration configuration,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default)
     {
         string accessToken = await GetAccessTokenAsync(
-            configuration: configuration,
+            tenantId: tenantId,
+            clientId: clientId,
+            clientSecret: clientSecret,
+            loginBaseUrl: loginBaseUrl,
             cancellationToken: cancellationToken);
 
         using HttpRequestMessage request = new(
             method: HttpMethod.Post,
             requestUri: BuildSendUrl(
                 email: email,
-                configuration: configuration));
+                graphBaseUrl: graphBaseUrl));
 
         request.Headers.Authorization = new AuthenticationHeaderValue(
             scheme: "Bearer",
@@ -45,20 +51,33 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
             cancellationToken: cancellationToken);
     }
 
-    internal async Task<HttpClientBrokerResponse> ReceiveEmailAsync(
-        MailboxReceiveRequest request,
-        MailProviderConfiguration configuration,
+    internal async Task<(bool IsSuccessStatusCode, string Content)> ReceiveEmailAsync(
+        string user,
+        DateTimeOffset? from,
+        DateTimeOffset? to,
+        int maximumMessages,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string graphBaseUrl,
+        string loginBaseUrl,
         CancellationToken cancellationToken = default)
     {
         string accessToken = await GetAccessTokenAsync(
-            configuration: configuration,
+            tenantId: tenantId,
+            clientId: clientId,
+            clientSecret: clientSecret,
+            loginBaseUrl: loginBaseUrl,
             cancellationToken: cancellationToken);
 
         using HttpRequestMessage message = new(
             method: HttpMethod.Get,
             requestUri: BuildMessagesUrl(
-                request: request,
-                configuration: configuration));
+                user: user,
+                from: from,
+                to: to,
+                maximumMessages: maximumMessages,
+                graphBaseUrl: graphBaseUrl));
 
         message.Headers.Authorization = new AuthenticationHeaderValue(
             scheme: "Bearer",
@@ -70,13 +89,17 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     }
 
     private async Task<string> GetAccessTokenAsync(
-        MailProviderConfiguration configuration,
+        string tenantId,
+        string clientId,
+        string clientSecret,
+        string loginBaseUrl,
         CancellationToken cancellationToken)
     {
         using HttpRequestMessage request = new(
             method: HttpMethod.Post,
             requestUri: BuildTokenUrl(
-                configuration: configuration))
+                tenantId: tenantId,
+                loginBaseUrl: loginBaseUrl))
         {
             Content = new FormUrlEncodedContent(
                 nameValueCollection:
@@ -84,13 +107,13 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
                     new KeyValuePair<string, string>(
                         key: "client_id",
                         value: ReadRequiredConfiguredValue(
-                            configuredValue: configuration.ClientId,
+                            configuredValue: clientId,
                             configurationName:
                                 "Microsoft Graph client id")),
                     new KeyValuePair<string, string>(
                         key: "client_secret",
                         value: ReadRequiredConfiguredValue(
-                            configuredValue: configuration.ClientSecret,
+                            configuredValue: clientSecret,
                             configurationName:
                                 "Microsoft Graph client secret")),
                     new KeyValuePair<string, string>(
@@ -103,7 +126,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
                 ]),
         };
 
-        HttpClientBrokerResponse response = await SendRequestAsync(
+        (bool IsSuccessStatusCode, string Content) response = await SendRequestAsync(
             request: request,
             cancellationToken: cancellationToken);
 
@@ -125,7 +148,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
                     "Microsoft Graph token response did not include an access token.");
     }
 
-    private async Task<HttpClientBrokerResponse> SendRequestAsync(
+    private async Task<(bool IsSuccessStatusCode, string Content)> SendRequestAsync(
         HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
@@ -137,23 +160,23 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
             .ReadAsStringAsync(
                 cancellationToken: cancellationToken);
 
-        return new HttpClientBrokerResponse(
+        return (
             IsSuccessStatusCode: response.IsSuccessStatusCode,
             Content: content);
     }
 
     private static string BuildSendUrl(
         QueuedEmail email,
-        MailProviderConfiguration configuration)
+        string graphBaseUrl)
     {
         MailSender sender = email.MailSender
             ?? throw new InvalidOperationException(
                 message:
                     "No mail sender configuration could be found to send the email.");
 
-        string graphBaseUrl =
+        graphBaseUrl =
             ReadConfiguredValue(
-                configuredValue: configuration.GraphBaseUrl)
+                configuredValue: graphBaseUrl)
             ?? DefaultGraphBaseUrl;
 
         return
@@ -161,15 +184,16 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     }
 
     private static string BuildTokenUrl(
-        MailProviderConfiguration configuration)
+        string tenantId,
+        string loginBaseUrl)
     {
-        string tenantId = ReadRequiredConfiguredValue(
-            configuredValue: configuration.TenantId,
+        tenantId = ReadRequiredConfiguredValue(
+            configuredValue: tenantId,
             configurationName: "Microsoft Graph tenant id");
 
-        string loginBaseUrl =
+        loginBaseUrl =
             ReadConfiguredValue(
-                configuredValue: configuration.LoginBaseUrl)
+                configuredValue: loginBaseUrl)
             ?? DefaultLoginBaseUrl;
 
         return
@@ -177,22 +201,25 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
     }
 
     private static string BuildMessagesUrl(
-        MailboxReceiveRequest request,
-        MailProviderConfiguration configuration)
+        string user,
+        DateTimeOffset? from,
+        DateTimeOffset? to,
+        int maximumMessages,
+        string graphBaseUrl)
     {
-        string graphBaseUrl =
+        graphBaseUrl =
             ReadConfiguredValue(
-                configuredValue: configuration.GraphBaseUrl)
+                configuredValue: graphBaseUrl)
             ?? DefaultGraphBaseUrl;
 
         List<string> query =
         [
             "$select=internetMessageId,subject,body,receivedDateTime,from,toRecipients,ccRecipients",
-            $"$top={Math.Clamp(value: request.MaximumMessages <= 0 ? 100 : request.MaximumMessages, min: 1, max: 100)}",
+            $"$top={Math.Clamp(value: maximumMessages <= 0 ? 100 : maximumMessages, min: 1, max: 100)}",
             "$orderby=receivedDateTime desc",
         ];
 
-        string filter = BuildFilter(request: request);
+        string filter = BuildFilter(from: from, to: to);
 
         if (!string.IsNullOrWhiteSpace(value: filter))
         {
@@ -202,27 +229,28 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
         }
 
         return
-            $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: request.User)}/mailFolders/inbox/messages"
+            $"{graphBaseUrl.TrimEnd(trimChar: '/')}/users/{Uri.EscapeDataString(stringToEscape: user)}/mailFolders/inbox/messages"
             + $"?{string.Join(separator: "&", values: query)}";
     }
 
     private static string BuildFilter(
-        MailboxReceiveRequest request)
+        DateTimeOffset? from,
+        DateTimeOffset? to)
     {
         List<string> filters = [];
 
-        if (request.From is not null)
+        if (from is not null)
         {
             filters.Add(
                 item:
-                    $"receivedDateTime ge {request.From.Value.UtcDateTime:O}");
+                    $"receivedDateTime ge {from.Value.UtcDateTime:O}");
         }
 
-        if (request.To is not null)
+        if (to is not null)
         {
             filters.Add(
                 item:
-                    $"receivedDateTime le {request.To.Value.UtcDateTime:O}");
+                    $"receivedDateTime le {to.Value.UtcDateTime:O}");
         }
 
         return string.Join(
@@ -288,4 +316,7 @@ internal sealed class MicrosoftGraphMailClientDependency : HttpClient
         string.IsNullOrWhiteSpace(value: configuredValue)
             ? null
             : configuredValue;
+
+    protected override void Dispose(bool disposing) =>
+        base.Dispose(disposing: disposing);
 }

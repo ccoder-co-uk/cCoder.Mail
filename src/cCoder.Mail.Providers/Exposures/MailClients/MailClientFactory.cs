@@ -5,40 +5,18 @@
 namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 internal sealed class MailClientFactory(
-    IEnumerable<IMailClient> mailClients,
-    Services.Foundations.IMailProviderService mailProviderService)
+    Services.Orchestrations.IMailProviderOrchestrationService mailProviderOrchestrationService)
     : IMailClientFactory
 {
-    private readonly IReadOnlyDictionary<string, IMailClient> mailClients =
-        mailClients
-            .SelectMany(
-                collectionSelector: mailClient =>
-                    mailClient.GetProviderNames(),
-                resultSelector: (mailClient, providerName) =>
-                    new KeyValuePair<string, IMailClient>(
-                        key: providerName,
-                        value: mailClient))
-            .ToDictionary(
-                keySelector: mailClient => mailClient.Key,
-                elementSelector: mailClient => mailClient.Value,
-                comparer: StringComparer.OrdinalIgnoreCase);
-
     public IMailClient CreateMailClient(
         string providerName) =>
-        mailClients.GetValueOrDefault(
-            key: providerName
-                ?? string.Empty)
-        ?? throw new InvalidOperationException(
-            message:
-                $"No mail provider named '{providerName}' is registered.");
+        mailProviderOrchestrationService.GetMailClient(
+            providerName: providerName);
 
-    public async ValueTask<IMailClient> CreateMailClientAsync(
+    public ValueTask<IMailClient> CreateMailClientAsync(
         Guid mailReceiverId,
         CancellationToken cancellationToken = default) =>
-        CreateMailClient(
-            providerName:
-                await mailProviderService
-                    .GetMailReceiverProviderNameAsync(
-                        mailReceiverId: mailReceiverId,
-                        cancellationToken: cancellationToken));
+        mailProviderOrchestrationService.GetMailClientAsync(
+            mailReceiverId: mailReceiverId,
+            cancellationToken: cancellationToken);
 }

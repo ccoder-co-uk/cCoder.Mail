@@ -25,7 +25,7 @@ public partial class MailSenderClientBrokerTests
             .Returns(value: mailClientMock.Object);
 
         mailClientMock
-            .Setup(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Setup(expression: provider => provider.SendAsync(queuedEmail: email, cancellationToken: cancellationToken))
             .Returns(value: Task.CompletedTask);
 
         // When
@@ -39,7 +39,7 @@ public partial class MailSenderClientBrokerTests
                     providerName: null),
             times: Times.Once);
 
-        mailClientMock.Verify(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
+        mailClientMock.Verify(expression: provider => provider.SendAsync(queuedEmail: email, cancellationToken: cancellationToken), times: Times.Once);
         mailClientFactoryMock.VerifyNoOtherCalls();
         mailClientMock.VerifyNoOtherCalls();
     }
@@ -69,7 +69,7 @@ public partial class MailSenderClientBrokerTests
             .Returns(value: mailClientMock.Object);
 
         mailClientMock
-            .Setup(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken))
+            .Setup(expression: provider => provider.SendAsync(queuedEmail: email, cancellationToken: cancellationToken))
             .Returns(value: Task.CompletedTask);
 
         // When
@@ -84,7 +84,7 @@ public partial class MailSenderClientBrokerTests
                         "MicrosoftGraph"),
             times: Times.Once);
 
-        mailClientMock.Verify(expression: provider => provider.SendAsync(email: email, cancellationToken: cancellationToken), times: Times.Once);
+        mailClientMock.Verify(expression: provider => provider.SendAsync(queuedEmail: email, cancellationToken: cancellationToken), times: Times.Once);
         mailClientFactoryMock.VerifyNoOtherCalls();
         mailClientMock.VerifyNoOtherCalls();
     }

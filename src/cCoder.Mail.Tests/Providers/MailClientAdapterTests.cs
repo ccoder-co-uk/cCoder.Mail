@@ -9,6 +9,7 @@ using cCoder.Mail.Providers.Exposures.MailClients;
 using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Providers.Services.Foundations;
+using cCoder.Mail.Providers.Services.Orchestrations;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -20,7 +21,7 @@ public sealed partial class MicrosoftGraphMailClientTests
     [Fact]
     public async Task OperationsShouldDelegateToGraphServicesAsync()
     {
-        Mock<IMicrosoftGraphMailSenderService> senderMock = new(); Mock<IMicrosoftGraphMailReceiverService> receiverMock = new();
+        Mock<IMicrosoftGraphMailSenderService> senderMock = new(); Mock<IMicrosoftGraphMailReceiverOrchestrationService> receiverMock = new();
         var email = new QueuedEmail(); Guid id = Guid.NewGuid(); ReceivedEmail[] received = [new()];
         senderMock.Setup(x => x.SendQueuedEmailAsync(email, CancellationToken.None)).Returns(Task.CompletedTask);
         receiverMock.Setup(x => x.ReceiveMailReceiverAsync(id, 2, CancellationToken.None)).ReturnsAsync(received);
@@ -35,7 +36,7 @@ public sealed partial class ImapMailClientTests
     [Fact]
     public async Task OperationsShouldExposeReceiveOnlyAndDelegateAsync()
     {
-        Mock<IImapMailReceiverService> receiverMock = new(); Guid id = Guid.NewGuid(); ReceivedEmail[] emails = [new()];
+        Mock<IImapMailReceiverOrchestrationService> receiverMock = new(); Guid id = Guid.NewGuid(); ReceivedEmail[] emails = [new()];
         receiverMock.Setup(x => x.ReceiveMailReceiverAsync(id, 2, CancellationToken.None)).ReturnsAsync(emails);
         var client = new ImapMailClient(receiverMock.Object);
         client.GetProviderNames().Should().Equal(MailProviderNames.Imap); client.GetSupportedOperations().Should().Equal(MailClientOperation.Receive);
@@ -49,7 +50,7 @@ public sealed partial class PopMailClientTests
     [Fact]
     public async Task OperationsShouldExposeReceiveOnlyAndDelegateAsync()
     {
-        Mock<IPop3MailReceiverService> receiverMock = new(); Guid id = Guid.NewGuid(); ReceivedEmail[] emails = [new()];
+        Mock<IPop3MailReceiverOrchestrationService> receiverMock = new(); Guid id = Guid.NewGuid(); ReceivedEmail[] emails = [new()];
         receiverMock.Setup(x => x.ReceiveMailReceiverAsync(id, 2, CancellationToken.None)).ReturnsAsync(emails);
         var client = new PopMailClient(receiverMock.Object);
         client.GetProviderNames().Should().Equal(MailProviderNames.Pop3); client.GetSupportedOperations().Should().Equal(MailClientOperation.Receive);
