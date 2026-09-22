@@ -11,9 +11,9 @@ using cCoder.Mail.Providers.Exposures.MailClients;
 using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Security.Data.EF;
-using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
 using cCoder.Security.Models;
+using cCoder.Security.Models.Configurations;
 using Mail.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -55,9 +55,11 @@ initialData: [
             services.RemoveAll<IMailClient>();
             services.RemoveAll<IMailClientFactory>();
 
-            services.AddSingleton<ISecurityDbContextFactory>(
-implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SsoConnectionString)
-            );
+            services.AddSecurityData(
+                configuration: new SecurityDataConfiguration
+                {
+                    ConnectionString = settings.SsoConnectionString,
+                });
 
             services.AddData(
                 configuration: new DataConfiguration

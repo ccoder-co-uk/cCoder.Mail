@@ -24,10 +24,17 @@ public partial class MicrosoftGraphMailReceiverServiceTests
             """;
 
         graphBrokerMock.Setup(expression: broker => broker.ReceiveEmailAsync(
-                It.IsAny<MailboxReceiveRequest>(),
-                configuration,
+                "user@example.test",
+                null,
+                null,
+                10,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
-            .ReturnsAsync(value: new HttpClientBrokerResponse(true, content));
+            .ReturnsAsync(value: (true, content));
 
         ReceivedEmail[] result = await service.ReceiveMailReceiverAsync(receiverId, 10);
 
@@ -45,10 +52,17 @@ public partial class MicrosoftGraphMailReceiverServiceTests
         Guid receiverId = Guid.NewGuid();
         SetupReceiver(receiverId);
         graphBrokerMock.Setup(expression: broker => broker.ReceiveEmailAsync(
-                It.IsAny<MailboxReceiveRequest>(),
-                configuration,
+                "user@example.test",
+                null,
+                null,
+                10,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
-            .ReturnsAsync(value: new HttpClientBrokerResponse(true, "{}"));
+            .ReturnsAsync(value: (true, "{}"));
 
         ReceivedEmail[] result = await service.ReceiveMailReceiverAsync(receiverId, 10);
 
@@ -61,10 +75,17 @@ public partial class MicrosoftGraphMailReceiverServiceTests
         Guid receiverId = Guid.NewGuid();
         SetupReceiver(receiverId);
         graphBrokerMock.Setup(expression: broker => broker.ReceiveEmailAsync(
-                It.IsAny<MailboxReceiveRequest>(),
-                configuration,
+                "user@example.test",
+                null,
+                null,
+                10,
+                configuration.TenantId,
+                configuration.ClientId,
+                configuration.ClientSecret,
+                configuration.GraphBaseUrl,
+                configuration.LoginBaseUrl,
                 CancellationToken.None))
-            .ReturnsAsync(value: new HttpClientBrokerResponse(false, "failure"));
+            .ReturnsAsync(value: (false, "failure"));
 
         Func<Task> action = async () => await service.ReceiveMailReceiverAsync(receiverId, 10);
 

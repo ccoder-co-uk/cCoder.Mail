@@ -2,15 +2,15 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Models;
-
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-internal interface IPop3MailReceiverService
+internal interface IMailReceiverProviderService
 {
-    Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
+    ValueTask<cCoder.Data.Models.Mail.MailReceiver> RetrieveMailReceiverAsync(
         Guid mailReceiverId,
-        int maximumMessages,
+        CancellationToken cancellationToken = default);
+
+    ValueTask<string> RetrieveMailReceiverProviderNameAsync(
+        Guid mailReceiverId,
         CancellationToken cancellationToken = default);
 }

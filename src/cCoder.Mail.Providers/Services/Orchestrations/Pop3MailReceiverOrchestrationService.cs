@@ -3,18 +3,17 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Brokers.MailClients;
-using cCoder.Mail.Providers.Brokers.Storages;
 using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Providers.Services.Foundations;
 using System.Text;
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal sealed partial class Pop3MailReceiverService(
-    IPop3MailReceiverBroker pop3MailReceiverBroker,
-    IMailReceiverStorageBroker mailReceiverStorageBroker,
-    IMailMessageParsingBroker mailMessageParsingBroker)
-    : IPop3MailReceiverService
+internal sealed partial class Pop3MailReceiverOrchestrationService(
+    IPop3MailboxService pop3MailboxService,
+    IMailReceiverProviderService mailReceiverProviderService,
+    IMailMessageParsingService mailMessageParsingService)
+    : IPop3MailReceiverOrchestrationService
 {
     public Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,
@@ -31,8 +30,8 @@ internal sealed partial class Pop3MailReceiverService(
                     ]);
 
             MailReceiver mailReceiver =
-                await mailReceiverStorageBroker
-                    .SelectMailReceiverByIdAsync(
+                await mailReceiverProviderService
+                    .RetrieveMailReceiverAsync(
                         mailReceiverId: mailReceiverId,
                         cancellationToken: cancellationToken)
                 ?? throw new InvalidOperationException(
@@ -49,11 +48,17 @@ internal sealed partial class Pop3MailReceiverService(
                     request: request,
                     cancellationToken: cancellationToken);
 
-            return [
-                .. rawMessages
-                .Select(selector: ParseMessage)
-                .OrderByDescending(keySelector: message => message.ReceivedOn)
-            ];
+            List<ReceivedEmail> messages = [];
+
+            foreach (string[] rawMessage in rawMessages)
+            {
+                messages.Add(item: ParseMessage(lines: rawMessage));
+            }
+
+            messages.Sort(comparison: (left, right) =>
+                right.ReceivedOn.CompareTo(other: left.ReceivedOn));
+
+            return messages.ToArray();
         }, isTask: true);
 
     private static MailboxReceiveRequest CreateMailboxReceiveRequest(
@@ -78,14 +83,14 @@ internal sealed partial class Pop3MailReceiverService(
     {
         ValidateReceiveRequest(request: request);
 
-        return pop3MailReceiverBroker.ReceiveAsync(
-            request: request,
+        return pop3MailboxService.RetrieveMailboxReceiveRequestMessagesAsync(
+            mailboxReceiveRequest: request,
             cancellationToken: cancellationToken);
     }
 
     private ReceivedEmail ParseMessage(string[] lines)
     {
-        int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
+        int separatorIndex = FindSeparatorIndex(lines: lines);
         string[] headerLines = separatorIndex >= 0 ? lines[..separatorIndex] : lines;
         string[] bodyLines = separatorIndex >= 0 ? lines[(separatorIndex + 1)..] : [];
         Dictionary<string, string> headers = ParseHeaders(lines: headerLines);
@@ -152,8 +157,8 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
 
     private ParsedBody ParseMultipartBody(string[] bodyLines, string contentType)
     {
-        string boundary = mailMessageParsingBroker
-            .SelectMultipartBoundary(
+        string boundary = mailMessageParsingService
+            .RetrieveMultipartBoundary(
                 contentType: contentType ?? string.Empty);
 
         if (string.IsNullOrWhiteSpace(value: boundary))
@@ -175,11 +180,14 @@ IsBodyHtml: contentType?.StartsWith(value: "text/html", comparisonType: StringCo
                 continue;
             }
 
-            string[] lines = normalized.Split(separator: '\n')
-                .Select(selector: line => line.TrimEnd(trimChar: '\r'))
-                .ToArray();
+            string[] lines = normalized.Split(separator: '\n');
 
-            int separatorIndex = Array.FindIndex(array: lines, match: string.IsNullOrWhiteSpace);
+            for (int index = 0; index < lines.Length; index++)
+            {
+                lines[index] = lines[index].TrimEnd(trimChar: '\r');
+            }
+
+            int separatorIndex = FindSeparatorIndex(lines: lines);
 
             if (separatorIndex < 0)
             {
@@ -215,20 +223,12 @@ transferEncoding: partTransferEncoding);
                 ? DecodeQuotedPrintable(content: content)
                 : content;
 
-    private static string DecodeBase64(string content)
-    {
-        try
-        {
-            return Encoding.UTF8.GetString(bytes: Convert.FromBase64String(s: RemoveWhitespace(value: content)));
-        }
-        catch (FormatException)
-        {
-            return content;
-        }
-    }
+    private string DecodeBase64(string content) =>
+        mailMessageParsingService.DecodeBase64(
+            content: RemoveWhitespace(value: content));
 
     private string DecodeQuotedPrintable(string content) =>
-        mailMessageParsingBroker.DecodeQuotedPrintable(
+        mailMessageParsingService.DecodeQuotedPrintable(
             content: content.Replace(oldValue: "=\r\n", newValue: string.Empty)
                 .Replace(oldValue: "=\n", newValue: string.Empty));
 
@@ -236,8 +236,8 @@ transferEncoding: partTransferEncoding);
     {
         string decoded = value;
 
-        foreach (EncodedMailWord word in mailMessageParsingBroker
-            .SelectEncodedMailWords(value: value ?? string.Empty))
+        foreach (EncodedMailWord word in mailMessageParsingService
+            .RetrieveEncodedMailWords(value: value ?? string.Empty))
         {
             string replacement = string.Equals(
                 a: word.Encoding,
@@ -263,8 +263,33 @@ transferEncoding: partTransferEncoding);
     private static string Header(Dictionary<string, string> headers, string name) =>
         headers.TryGetValue(key: name, value: out string value) ? value : null;
 
-    private static string RemoveWhitespace(string value) =>
-        string.Concat(values: (value ?? string.Empty).Where(predicate: character => !char.IsWhiteSpace(c: character)));
+    private static string RemoveWhitespace(string value)
+    {
+        StringBuilder result = new();
+
+        foreach (char character in value ?? string.Empty)
+        {
+            if (!char.IsWhiteSpace(c: character))
+            {
+                result.Append(value: character);
+            }
+        }
+
+        return result.ToString();
+    }
+
+    private static int FindSeparatorIndex(string[] lines)
+    {
+        for (int index = 0; index < lines.Length; index++)
+        {
+            if (string.IsNullOrWhiteSpace(value: lines[index]))
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
 
     private static void ValidateReceiveRequest(MailboxReceiveRequest request)
     {
@@ -293,7 +318,5 @@ transferEncoding: partTransferEncoding);
             throw new InvalidOperationException(message: "Mailbox password is required.");
         }
     }
-
-    private readonly record struct ParsedBody(string Content, bool IsBodyHtml);
 
 }

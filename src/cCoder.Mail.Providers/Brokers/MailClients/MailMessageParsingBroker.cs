@@ -4,6 +4,7 @@
 
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Text;
 using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Brokers.MailClients;
@@ -47,6 +48,10 @@ internal sealed class MailMessageParsingBroker : IMailMessageParsingBroker
                     value: match.Groups[1].Value,
                     fromBase: 16))
                 .ToString());
+
+    public string DecodeBase64(string content) =>
+        Encoding.UTF8.GetString(
+            bytes: Convert.FromBase64String(s: content));
 
     public string SelectMultipartBoundary(string contentType) =>
         boundaryRegex

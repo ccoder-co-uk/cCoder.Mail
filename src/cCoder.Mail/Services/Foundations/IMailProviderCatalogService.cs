@@ -6,7 +6,7 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal interface IMailProviderCatalogService
+public interface IMailProviderCatalogService
 {
     MailProviderSummary[] GetSenders();
 

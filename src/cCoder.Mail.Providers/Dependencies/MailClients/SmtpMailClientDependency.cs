@@ -71,4 +71,7 @@ internal sealed class SmtpMailClientDependency : SmtpClient
             ? new MailAddress(address: sender.User)
             : null;
     }
+
+    protected override void Dispose(bool disposing) =>
+        base.Dispose(disposing: disposing);
 }

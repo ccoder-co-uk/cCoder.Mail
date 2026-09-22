@@ -8,6 +8,8 @@ using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models;
 using cCoder.Mail.Brokers.Events;
 using cCoder.Mail.Brokers.MailClients;
+using cCoder.Mail.Brokers.Configurations;
+using cCoder.Mail.Brokers.Attributes;
 using cCoder.Mail.Brokers.Storages;
 using cCoder.Mail.Brokers;
 using cCoder.Mail.Exposures;
@@ -180,7 +182,7 @@ public static partial class IServiceCollectionExtensions
     {
         services.AddTransient<Brokers.Loggings.ILoggingBroker, Brokers.Loggings.LoggingBroker>();
         services.AddTransient<IAuthInfoBroker, AuthInfoBroker>();
-        services.AddSingleton<IMailConfigurationExposure, MailConfigurationExposure>();
+        services.AddSingleton<IMailConfigurationBroker, MailConfigurationBroker>();
         services.AddTransient<IMailServerEventBroker, MailServerEventBroker>();
         services.AddTransient<IQueuedEmailEventBroker, QueuedEmailEventBroker>();
         services.AddTransient<ISentEmailEventBroker, SentEmailEventBroker>();
@@ -189,9 +191,11 @@ public static partial class IServiceCollectionExtensions
         services.AddTransient<
             IMailProviderCatalogService,
             MailProviderCatalogService>();
+        services.AddTransient<IMailProviderCatalogBroker, MailProviderCatalogBroker>();
         services.AddTransient<IMailSenderClientBroker, MailSenderClientBroker>();
         services.AddTransient<IMailReceiverClientBroker, MailReceiverClientBroker>();
         services.AddTransient<IMailServerBroker, MailServerBroker>();
+        services.AddTransient<IAttributeBroker, AttributeBroker>();
         services.AddTransient<IMailSenderBroker, MailSenderBroker>();
         services.AddTransient<IMailReceiverBroker, MailReceiverBroker>();
         services.AddTransient<IQueuedEmailBroker, QueuedEmailBroker>();

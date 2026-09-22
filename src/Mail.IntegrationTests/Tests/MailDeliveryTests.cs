@@ -14,7 +14,6 @@ using cCoder.Mail.Exposures;
 using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Testing;
 using cCoder.Security.Data.EF;
-using cCoder.Security.Data.EF.Dependencies;
 using cCoder.Security.Data.EF.Interfaces;
 using FluentAssertions;
 using Mail.Web;
@@ -376,8 +375,10 @@ value: new MailboxReceiveRequest
                 services.RemoveAll<cCoder.Data.Models.DataConfiguration>();
                 services.RemoveAll<ISecurityDbContextFactory>();
 
-                services.AddSingleton<ISecurityDbContextFactory>(
-implementationFactory: _ => new MSSQLSecurityDbContextFactory(connectionString: settings.SecurityConnectionString));
+                services.AddSecurityData(
+                    configure: configuration =>
+                        configuration.ConnectionString =
+                            settings.SecurityConnectionString);
 
                 services.AddData(
                     configuration: new cCoder.Data.Models.DataConfiguration

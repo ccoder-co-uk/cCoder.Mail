@@ -10,7 +10,9 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal partial class SentEmailOrchestrationService(ISentEmailProcessingService processingService, ISentEmailEventProcessingService eventService) : ISentEmailOrchestrationService
+internal partial class SentEmailOrchestrationService(ISentEmailProcessingService processingService, ISentEmailEventProcessingService eventService)
+    : ISentEmailOrchestrationService,
+      global::cCoder.Mail.Exposures.ISentEmailManager
 {
     public SentEmail GetSentEmail(int sentEmailId) =>
         TryCatch<SentEmail>(operation: () =>

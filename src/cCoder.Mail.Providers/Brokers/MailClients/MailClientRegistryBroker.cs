@@ -3,15 +3,17 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Providers.Exposures.MailClients;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace cCoder.Mail.Providers.Brokers.MailClients;
 
 internal sealed class MailClientRegistryBroker(
-    IEnumerable<IMailClient> mailClients)
+    IServiceProvider serviceProvider)
     : IMailClientRegistryBroker
 {
     private readonly IReadOnlyDictionary<string, IMailClient> mailClients =
-        mailClients
+        serviceProvider
+            .GetServices<IMailClient>()
             .SelectMany(
                 collectionSelector: mailClient =>
                     mailClient.GetProviderNames(),

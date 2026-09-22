@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class ReceivedEmailController(IReceivedEmailManager service,
+public partial class ReceivedEmailController(IReceivedEmailProcessingService service,
     ILoggingBroker loggingBroker)
     : ODataController
 {

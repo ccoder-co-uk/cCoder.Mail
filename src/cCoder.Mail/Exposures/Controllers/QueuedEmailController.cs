@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace cCoder.Mail.Exposures.Controllers;
 
-public partial class QueuedEmailController(IQueuedEmailManager service,
+public partial class QueuedEmailController(IQueuedEmailOrchestrationService service,
     ILoggingBroker loggingBroker)
     : ODataController
 {

@@ -14,7 +14,7 @@ public interface IMailClient
     MailClientOperation[] GetSupportedOperations();
 
     Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default);
 
     Task<ReceivedEmail[]> ReceiveAsync(

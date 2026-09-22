@@ -5,12 +5,14 @@
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models.OData;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Extensions.OData;
+using cCoder.Mail.Brokers.Attributes;
 
 
 namespace cCoder.Mail.Services.Foundations;
 
-internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
+internal sealed partial class MailMetadataTypeService(
+    IAttributeBroker attributeBroker)
+    : IMailMetadataTypeService
 {
     public IEnumerable<MetadataContainerSet> GetKnownMetadata() =>
         TryCatch<IEnumerable<MetadataContainerSet>>(operation: () =>
@@ -31,12 +33,13 @@ internal sealed partial class MailMetadataTypeService : IMailMetadataTypeService
     ];
     });
 
-    private static ExtendedMetadataContainer Entity<T>() =>
+    private ExtendedMetadataContainer Entity<T>() =>
         CreateExtendedMetadataContainer<T>();
 
-    private static ExtendedMetadataContainer CreateExtendedMetadataContainer<T>()
+    private ExtendedMetadataContainer CreateExtendedMetadataContainer<T>()
     {
-        ExtendedMetadataContainer metadata = typeof(T).CreateExtendedMetadataContainer(
+        ExtendedMetadataContainer metadata = CreateExtendedMetadataContainer(
+            type: typeof(T),
             isEntity: true,
             hasEndpoint: true);
 

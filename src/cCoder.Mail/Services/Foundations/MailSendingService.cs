@@ -5,19 +5,19 @@
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures;
+using cCoder.Mail.Brokers.Configurations;
 
 namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailSendingService(
     IMailSenderClientBroker mailSenderClientBroker,
-    IMailConfigurationExposure mailConfigurationExposure,
+    IMailConfigurationBroker mailConfigurationBroker,
     ILoggingBroker logger)
     : IMailSendingService
 {
     public bool IsMigrationInProgress() =>
         TryCatch(operation: () =>
-            mailConfigurationExposure
+            mailConfigurationBroker
                 .GetMailConfiguration()
                 .IsMigrating);
 

@@ -4,9 +4,10 @@
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-internal sealed partial class ImapMailReceiverService
+internal sealed partial class MicrosoftGraphMessageService
 {
-    private static void ValidateReceiveMailReceiverAsync(object[] inputs) =>
+    private static void ValidateMicrosoftGraphMessagesOnDeserialize(
+        object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void Validate(params object[] inputs)

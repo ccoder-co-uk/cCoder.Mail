@@ -5,9 +5,6 @@
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures;
-using cCoder.Mail.Models;
 using cCoder.Mail.Services.Foundations;
 using FluentAssertions;
 using Moq;
@@ -18,12 +15,10 @@ namespace cCoder.Mail.Services.Processings;
 public sealed partial class MailSendingProcessingServiceTests
 {
     private readonly Mock<IMailSendingService> sendingServiceMock = new();
-    private readonly Mock<IMailConfigurationExposure> configurationMock = new();
-    private readonly Mock<ILoggingBroker> loggerMock = new();
     private readonly MailSendingProcessingService service;
 
     public MailSendingProcessingServiceTests() =>
-        service = new(sendingServiceMock.Object);
+        service = new(mailSendingService: sendingServiceMock.Object);
 
     [Theory]
     [InlineData(true)]

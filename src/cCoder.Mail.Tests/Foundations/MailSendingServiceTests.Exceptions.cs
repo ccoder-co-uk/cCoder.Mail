@@ -27,8 +27,8 @@ public partial class MailSendingServiceTests
         Exception exception,
         Type expectedType)
     {
-        mailConfigurationExposureMock
-            .Setup(expression: exposure => exposure.GetMailConfiguration())
+        mailConfigurationBrokerMock
+            .Setup(expression: broker => broker.GetMailConfiguration())
             .Throws(exception: exception);
 
         Action action = () => mailSendingService.IsMigrationInProgress();

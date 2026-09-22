@@ -2,19 +2,17 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using System.Text;
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Brokers.MailClients;
-using cCoder.Mail.Providers.Brokers.Storages;
 using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Providers.Services.Foundations;
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal sealed partial class ImapMailReceiverService(
-    IImapMailReceiverBroker imapMailReceiverBroker,
-    IMailReceiverStorageBroker mailReceiverStorageBroker,
-    IMailMessageParsingBroker mailMessageParsingBroker)
-    : IImapMailReceiverService
+internal sealed partial class ImapMailReceiverOrchestrationService(
+    IImapMailboxService imapMailboxService,
+    IMailReceiverProviderService mailReceiverProviderService,
+    IMailMessageParsingService mailMessageParsingService)
+    : IImapMailReceiverOrchestrationService
 {
     public Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,
@@ -31,8 +29,8 @@ internal sealed partial class ImapMailReceiverService(
                     ]);
 
             MailReceiver mailReceiver =
-                await mailReceiverStorageBroker
-                    .SelectMailReceiverByIdAsync(
+                await mailReceiverProviderService
+                    .RetrieveMailReceiverAsync(
                         mailReceiverId: mailReceiverId,
                         cancellationToken: cancellationToken)
                 ?? throw new InvalidOperationException(
@@ -68,8 +66,8 @@ internal sealed partial class ImapMailReceiverService(
     {
         ValidateReceiveRequest(request: request);
 
-        string[] rawMessages = await imapMailReceiverBroker.ReceiveAsync(
-            request: request,
+        string[] rawMessages = await imapMailboxService.RetrieveMailboxReceiveRequestMessagesAsync(
+            mailboxReceiveRequest: request,
             cancellationToken: cancellationToken);
 
         return
@@ -147,15 +145,15 @@ internal sealed partial class ImapMailReceiverService(
     {
         string decoded = value;
 
-        foreach (EncodedMailWord word in mailMessageParsingBroker
-            .SelectEncodedMailWords(value: value ?? string.Empty))
+        foreach (EncodedMailWord word in mailMessageParsingService
+            .RetrieveEncodedMailWords(value: value ?? string.Empty))
         {
             string replacement = string.Equals(
                 a: word.Encoding,
                 b: "B",
                 comparisonType: StringComparison.OrdinalIgnoreCase)
-                    ? Encoding.UTF8.GetString(
-                        bytes: Convert.FromBase64String(s: word.Text))
+                    ? mailMessageParsingService.DecodeBase64(
+                        content: word.Text)
                     : word.Text.Replace(oldChar: '_', newChar: ' ');
 
             decoded = decoded.Replace(

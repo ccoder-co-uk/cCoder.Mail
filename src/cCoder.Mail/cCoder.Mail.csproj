@@ -39,8 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cCoder.Mail.Providers\cCoder.Mail.Providers.csproj" />
-    <PackageReference Include="cCoder.Data" Version="2026.9.13.1526" Condition="'$(UseLocalData)' != 'true'" />
-    <PackageReference Include="cCoder.Eventing" Version="2026.9.13.1448" Condition="'$(UseLocalEventing)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.9.22.1438" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Eventing" Version="2026.9.22.1323" Condition="'$(UseLocalEventing)' != 'true'" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.11" />

@@ -10,7 +10,7 @@ using cCoder.Mail.Providers.Services.Foundations;
 namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 internal sealed class PopMailClient(
-    IPop3MailReceiverService pop3MailReceiverService)
+    Services.Orchestrations.IPop3MailReceiverOrchestrationService pop3MailReceiverOrchestrationService)
     : IMailClient
 {
     public string[] GetProviderNames() =>
@@ -20,7 +20,7 @@ internal sealed class PopMailClient(
         [MailClientOperation.Receive];
 
     public Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default) =>
         throw new UnsupportedMailClientOperationException(
             providerName: MailProviderNames.Pop3,
@@ -30,7 +30,7 @@ internal sealed class PopMailClient(
         Guid mailReceiverId,
         int maximumMessages,
         CancellationToken cancellationToken = default) =>
-        pop3MailReceiverService.ReceiveMailReceiverAsync(
+        pop3MailReceiverOrchestrationService.ReceiveMailReceiverAsync(
             mailReceiverId: mailReceiverId,
             maximumMessages: maximumMessages,
             cancellationToken: cancellationToken);

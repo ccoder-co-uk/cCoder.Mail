@@ -7,7 +7,7 @@ using cCoder.Mail.Models;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal interface IReceivedEmailOrchestrationService
+public interface IReceivedEmailOrchestrationService
 {
     ValueTask<bool> ExistsAsync(int receivedEmailId);
 

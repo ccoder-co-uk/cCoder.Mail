@@ -5,18 +5,18 @@
 namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 internal sealed class MailClientFactory(
-    Services.Foundations.IMailProviderService mailProviderService)
+    Services.Orchestrations.IMailProviderOrchestrationService mailProviderOrchestrationService)
     : IMailClientFactory
 {
     public IMailClient CreateMailClient(
         string providerName) =>
-        mailProviderService.GetMailClient(
+        mailProviderOrchestrationService.GetMailClient(
             providerName: providerName);
 
     public ValueTask<IMailClient> CreateMailClientAsync(
         Guid mailReceiverId,
         CancellationToken cancellationToken = default) =>
-        mailProviderService.GetMailClientAsync(
+        mailProviderOrchestrationService.GetMailClientAsync(
             mailReceiverId: mailReceiverId,
             cancellationToken: cancellationToken);
 }

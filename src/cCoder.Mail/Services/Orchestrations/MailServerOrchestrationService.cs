@@ -11,7 +11,9 @@ using cCoder.Mail.Services.Processings;
 
 namespace cCoder.Mail.Services.Orchestrations;
 
-internal partial class MailServerOrchestrationService(IMailServerProcessingService processingService, IMailServerEventProcessingService eventService) : IMailServerOrchestrationService
+internal partial class MailServerOrchestrationService(IMailServerProcessingService processingService, IMailServerEventProcessingService eventService)
+    : IMailServerOrchestrationService,
+      IMailServerManager
 {
     public MailServer GetMailServer(int mailServerId) =>
         TryCatch<MailServer>(operation: () =>
@@ -75,8 +77,8 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    ValueTask<IEnumerable<Result<MailServer>>>
-        IMailServerManager.AddOrUpdateMailServerResult(
+    public ValueTask<IEnumerable<Result<MailServer>>>
+        AddOrUpdateMailServerResult(
             IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {

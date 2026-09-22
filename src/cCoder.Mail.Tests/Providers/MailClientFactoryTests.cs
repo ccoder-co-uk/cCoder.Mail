@@ -5,7 +5,7 @@
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Mail.Providers.Exposures.MailClients;
-using cCoder.Mail.Providers.Services.Foundations;
+using cCoder.Mail.Providers.Services.Orchestrations;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -15,7 +15,7 @@ namespace cCoder.Mail.Tests.Providers;
 public sealed partial class MailClientFactoryTests
 {
     private readonly Mock<IMailClient> clientMock = new();
-    private readonly Mock<IMailProviderService> providerServiceMock = new();
+    private readonly Mock<IMailProviderOrchestrationService> providerServiceMock = new();
 
     [Fact]
     public void CreateMailClientShouldResolveAliasIgnoringCase()

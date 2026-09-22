@@ -6,13 +6,13 @@ using cCoder.Mail.Providers.Models.Exceptions;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-internal sealed partial class MicrosoftGraphMailReceiverService
+internal sealed partial class MicrosoftGraphMessageService
 {
-    private static async Task<TResult> TryCatch<TResult>(Func<Task<TResult>> operation, bool isTask)
+    private static TResult TryCatch<TResult>(Func<TResult> operation)
     {
         try
         {
-            return await operation();
+            return operation();
         }
         catch (MailValidationException innerException)
         {

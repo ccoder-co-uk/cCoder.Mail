@@ -7,7 +7,9 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal partial class ReceivedEmailProcessingService(IReceivedEmailService service) : IReceivedEmailProcessingService
+internal partial class ReceivedEmailProcessingService(IReceivedEmailService service)
+    : IReceivedEmailProcessingService,
+      global::cCoder.Mail.Exposures.IReceivedEmailManager
 {
     public ReceivedEmail GetReceivedEmail(int receivedEmailId) =>
         TryCatch<ReceivedEmail>(operation: () =>

@@ -4,9 +4,9 @@
 
 using cCoder.Mail.Providers.Models.Exceptions;
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal sealed partial class ImapMailReceiverService
+internal sealed partial class Pop3MailReceiverOrchestrationService
 {
     private static async Task<TResult> TryCatch<TResult>(Func<Task<TResult>> operation, bool isTask)
     {

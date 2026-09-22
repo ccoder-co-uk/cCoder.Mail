@@ -12,6 +12,8 @@ internal interface IMailMessageParsingBroker
 
     string DecodeQuotedPrintable(string content);
 
+    string DecodeBase64(string content);
+
     string SelectMultipartBoundary(string contentType);
 
     MicrosoftGraphMessageEnvelope DeserializeMicrosoftGraphMessages(

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="cCoder.Data" Version="2026.9.13.1526" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.9.22.1438" Condition="'$(UseLocalData)' != 'true'" />
   </ItemGroup>
 
   <ItemGroup>

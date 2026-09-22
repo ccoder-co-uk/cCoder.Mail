@@ -8,12 +8,12 @@ using System.Reflection;
 using System.Collections;
 using cCoder.Mail.Models.OData;
 
-namespace cCoder.Mail.Extensions.OData;
+namespace cCoder.Mail.Services.Foundations;
 
-internal static class TypeExtensions
+internal sealed partial class MailMetadataTypeService
 {
-    internal static MetadataContainer CreateMetadataContainer(
-        this Type type,
+    private MetadataContainer CreateMetadataContainer(
+        Type type,
         bool isEntity = false,
         bool hasEndpoint = false)
     {
@@ -22,38 +22,39 @@ internal static class TypeExtensions
         return new MetadataContainer
         {
             IsValueType = isValueType,
-            Type = type.GetMetadataTypeName(),
+            Type = GetMetadataTypeName(type: type),
             Name = type.Name,
             DisplayName = type.Name,
             Description = type.Name,
             ServerType = type.AssemblyQualifiedName,
-            ServerTypeName = type.GetCSharpTypeName(),
+            ServerTypeName = GetCSharpTypeName(type: type),
             Properties = isValueType
                 ? []
                 : type.GetProperties()
                     .Select(selector: CreatePropertyContainer)
                     .ToArray(),
             IsEntity = isEntity,
-            IsJoinEntity = isEntity && type.IsJoinType(),
+            IsJoinEntity = isEntity && IsJoinType(type: type),
             HasEndpoint = hasEndpoint,
         };
     }
 
-    private static PropertyContainer CreatePropertyContainer(
+    private PropertyContainer CreatePropertyContainer(
         PropertyInfo property) =>
         new()
         {
             Name = property.Name,
-            Type = property.PropertyType.GetMetadataTypeName(),
+            Type = GetMetadataTypeName(type: property.PropertyType),
             ServerType = property.PropertyType.ToString(),
-            ServerTypeName = property.PropertyType.GetCSharpTypeName(),
+            ServerTypeName = GetCSharpTypeName(type: property.PropertyType),
             IsValueType = property.PropertyType.IsValueType
                 || property.PropertyType == typeof(string),
             DisplayName = property.Name,
             ShortDisplayName = property.Name,
             Description = property.Name,
             IsReadOnly = !property.CanWrite,
-            Template = property.GetCustomAttribute<KeyAttribute>() is not null
+            Template = attributeBroker.GetCustomAttribute<KeyAttribute>(
+                memberInfo: property) is not null
                 || property.Name == "Id"
                     ? "key"
                     : property.Name,
@@ -61,16 +62,18 @@ internal static class TypeExtensions
                     && property.PropertyType.GetGenericTypeDefinition()
                         == typeof(Nullable<>))
                     && property.PropertyType.IsValueType)
-                || property.GetCustomAttribute<RequiredAttribute>()
+                || attributeBroker.GetCustomAttribute<RequiredAttribute>(
+                    memberInfo: property)
                     is not null
         };
 
-    internal static ExtendedMetadataContainer CreateExtendedMetadataContainer(
-        this Type type,
+    private ExtendedMetadataContainer CreateExtendedMetadataContainer(
+        Type type,
         bool isEntity = false,
         bool hasEndpoint = false)
     {
-        MetadataContainer metadata = type.CreateMetadataContainer(
+        MetadataContainer metadata = CreateMetadataContainer(
+            type: type,
             isEntity: isEntity,
             hasEndpoint: hasEndpoint);
 
@@ -125,7 +128,7 @@ internal static class TypeExtensions
         { typeof(float?), "number" }
     };
 
-    internal static string GetMetadataTypeName(this Type type)
+    private static string GetMetadataTypeName(Type type)
     {
         if (type == typeof(string))
         {
@@ -144,52 +147,30 @@ internal static class TypeExtensions
                 : "object";
     }
 
-    internal static string GetCSharpTypeName(this Type type)
+    private static string GetCSharpTypeName(Type type)
     {
         if (!type.IsGenericType)
         {
             return type.Name;
         }
 
-        IEnumerable<string> genericNames = type.GenericTypeArguments.Select(selector: argument => argument.GetCSharpTypeName());
+        IEnumerable<string> genericNames = type.GenericTypeArguments.Select(
+            selector: GetCSharpTypeName);
+
         return $"{type.Name.Split(separator: '`')[0]}<{string.Join(separator: ",", values: genericNames)}>".Replace(oldValue: "System.Object", newValue: "dynamic");
     }
 
-    internal static bool IsJoinType(this Type type)
+    private bool IsJoinType(Type type)
     {
-        TableAttribute table = type.GetCustomAttribute<TableAttribute>();
+        TableAttribute table = attributeBroker.GetCustomAttribute<TableAttribute>(
+            memberInfo: type);
 
         return table != null
             && type.GetProperties().Length == 4
             && type.GetProperties()
                 .Where(predicate: property => property.PropertyType.IsValueType || property.PropertyType == typeof(string))
-                .All(predicate: property => property.GetCustomAttribute<ForeignKeyAttribute>() != null);
-    }
-
-    internal static PropertyInfo GetIdProperty(this Type type)
-    {
-        if (!type.IsJoinType())
-        {
-            PropertyInfo idProperty =
-                type.GetProperty(name: "ID")
-                ?? type.GetProperty(name: "Id")
-                ?? type.GetProperty(name: type.Name + "Id")
-                ?? type.GetProperty(name: type.Name + "ID")
-                ?? type.GetProperties()
-                .FirstOrDefault(predicate: property =>
-                    property.GetCustomAttributes(attributeType: typeof(KeyAttribute), inherit: false)
-                .Any());
-
-            if (idProperty != null)
-            {
-                return idProperty;
-            }
-        }
-        else
-        {
-            return new CompositePropertyInfo(type: type);
-        }
-
-        return null;
+                .All(predicate: property =>
+                    attributeBroker.GetCustomAttribute<ForeignKeyAttribute>(
+                        memberInfo: property) != null);
     }
 }

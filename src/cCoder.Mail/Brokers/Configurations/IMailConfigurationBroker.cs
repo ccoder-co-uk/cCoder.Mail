@@ -2,11 +2,11 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Models.OData;
+using cCoder.Mail.Models;
 
-namespace cCoder.Mail.Brokers.OData;
+namespace cCoder.Mail.Brokers.Configurations;
 
-internal interface IODataModelBroker
+internal interface IMailConfigurationBroker
 {
-    ODataModel Build();
+    MailConfiguration GetMailConfiguration();
 }

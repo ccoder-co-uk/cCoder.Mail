@@ -7,7 +7,9 @@ using cCoder.Mail.Services.Foundations;
 
 namespace cCoder.Mail.Services.Processings;
 
-internal partial class MailSenderProcessingService(IMailSenderService service) : IMailSenderProcessingService
+internal partial class MailSenderProcessingService(IMailSenderService service)
+    : IMailSenderProcessingService,
+      global::cCoder.Mail.Exposures.IMailSenderManager
 {
     public MailSender GetMailSender(Guid mailSenderId) =>
         TryCatch<MailSender>(operation: () =>

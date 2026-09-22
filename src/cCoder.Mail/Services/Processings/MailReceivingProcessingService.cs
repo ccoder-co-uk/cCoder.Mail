@@ -15,7 +15,6 @@ internal sealed partial class MailReceivingProcessingService(
     public bool IsMigrationInProgress() =>
         TryCatch(operation: () =>
         {
-
             return mailReceivingService.IsMigrationInProgress();
         });
 

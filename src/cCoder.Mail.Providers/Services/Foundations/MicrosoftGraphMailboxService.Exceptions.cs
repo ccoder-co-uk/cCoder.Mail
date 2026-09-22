@@ -6,9 +6,10 @@ using cCoder.Mail.Providers.Models.Exceptions;
 
 namespace cCoder.Mail.Providers.Services.Foundations;
 
-internal sealed partial class Pop3MailReceiverService
+internal sealed partial class MicrosoftGraphMailboxService
 {
-    private static async Task<TResult> TryCatch<TResult>(Func<Task<TResult>> operation, bool isTask)
+    private static async Task<TResult> TryCatch<TResult>(
+        Func<Task<TResult>> operation)
     {
         try
         {

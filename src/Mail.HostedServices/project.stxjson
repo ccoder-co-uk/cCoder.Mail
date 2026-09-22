@@ -168,6 +168,20 @@
               "MethodId": "Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions",
+              "MethodName": "GetRequiredService",
+              "MethodId": "Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(System.IServiceProvider)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            },
+            {
+              "TypeName": "cCoder.Mail.IEventHubExtensions",
+              "MethodName": "ListenToMailEvents",
+              "MethodId": "cCoder.Mail.IEventHubExtensions.ListenToMailEvents(cCoder.Eventing.IEventHub)",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
             }
           ],
           "PossibleExceptionTypes": [],

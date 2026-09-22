@@ -2,9 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal sealed partial class MicrosoftGraphMailReceiverService
+internal sealed partial class ImapMailReceiverOrchestrationService
 {
     private static void ValidateReceiveMailReceiverAsync(object[] inputs) =>
         Validate(inputs: inputs);

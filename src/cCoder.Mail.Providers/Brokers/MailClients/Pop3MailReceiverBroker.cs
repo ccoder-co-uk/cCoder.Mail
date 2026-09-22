@@ -15,6 +15,11 @@ internal sealed class Pop3MailReceiverBroker(
         MailboxReceiveRequest mailboxReceiveRequest,
         CancellationToken cancellationToken = default) =>
         mailClientDependency.ReceiveAsync(
-            request: mailboxReceiveRequest,
+            host: mailboxReceiveRequest.Host,
+            port: mailboxReceiveRequest.Port,
+            enableSsl: mailboxReceiveRequest.EnableSSL,
+            user: mailboxReceiveRequest.User,
+            password: mailboxReceiveRequest.Password,
+            maximumMessages: mailboxReceiveRequest.MaximumMessages,
             cancellationToken: cancellationToken);
 }

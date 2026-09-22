@@ -3,18 +3,17 @@
 // ---------------------------------------------------------------
 
 using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Brokers.MailClients;
-using cCoder.Mail.Providers.Brokers.Storages;
 using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Providers.Services.Foundations;
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal sealed partial class MicrosoftGraphMailReceiverService(
+internal sealed partial class MicrosoftGraphMailReceiverOrchestrationService(
     MailProviderConfiguration configuration,
-    IMailReceiverStorageBroker mailReceiverStorageBroker,
-    IMicrosoftGraphBroker microsoftGraphBroker,
-    IMailMessageParsingBroker mailMessageParsingBroker)
-    : IMicrosoftGraphMailReceiverService
+    IMailReceiverProviderService mailReceiverProviderService,
+    IMicrosoftGraphMailboxService microsoftGraphMailboxService,
+    IMicrosoftGraphMessageService microsoftGraphMessageService)
+    : IMicrosoftGraphMailReceiverOrchestrationService
 {
     public Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
         Guid mailReceiverId,
@@ -31,8 +30,8 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
                     ]);
 
             MailReceiver mailReceiver =
-                await mailReceiverStorageBroker
-                    .SelectMailReceiverByIdAsync(
+                await mailReceiverProviderService
+                    .RetrieveMailReceiverAsync(
                         mailReceiverId: mailReceiverId,
                         cancellationToken: cancellationToken)
                 ?? throw new InvalidOperationException(
@@ -57,10 +56,13 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
     {
         ValidateReceiveRequest(request: request);
 
-        HttpClientBrokerResponse response =
-            await microsoftGraphBroker.ReceiveEmailAsync(
-                request: request,
-                configuration: configuration,
+        MicrosoftGraphMailboxRequest response =
+            await microsoftGraphMailboxService.RetrieveMicrosoftGraphMailboxRequestAsync(
+                microsoftGraphMailboxRequest: new MicrosoftGraphMailboxRequest
+                {
+                    MailboxReceiveRequest = request,
+                    MailProviderConfiguration = configuration,
+                },
                 cancellationToken: cancellationToken);
 
         if (!response.IsSuccessStatusCode)
@@ -70,7 +72,7 @@ internal sealed partial class MicrosoftGraphMailReceiverService(
         }
 
         MicrosoftGraphMessageEnvelope envelope =
-            mailMessageParsingBroker.DeserializeMicrosoftGraphMessages(
+            microsoftGraphMessageService.DeserializeMicrosoftGraphMessages(
                 content: response.Content);
 
         return (envelope?.Value ?? [])

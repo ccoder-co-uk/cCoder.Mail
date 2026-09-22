@@ -30,13 +30,7 @@
     <ProjectReference Include="$(LocalDataProject)" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Remove="cCoder.CodeAnalysis" />
-    <PackageReference
-      Include="cCoder.CodeAnalysis"
-      Version="2026.9.13.1655"
-      PrivateAssets="all"
-    />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="cCoder.Data" Version="2026.9.13.1526" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.9.22.1438" Condition="'$(UseLocalData)' != 'true'" />
   </ItemGroup>
 </Project>

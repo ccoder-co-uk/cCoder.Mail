@@ -3,8 +3,8 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Exposures.MailClients;
 using cCoder.Mail.Providers.Models.Exceptions;
+using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cCoder.Mail.Exposures.Controllers;
@@ -12,7 +12,7 @@ namespace cCoder.Mail.Exposures.Controllers;
 [ApiController]
 [Route("Api/Mail/MailProviders")]
 public sealed class MailProvidersController(
-    IMailProviderCatalog providerCatalog,
+    IMailProviderCatalogService providerCatalog,
     ILoggingBroker loggingBroker)
     : ControllerBase
 {

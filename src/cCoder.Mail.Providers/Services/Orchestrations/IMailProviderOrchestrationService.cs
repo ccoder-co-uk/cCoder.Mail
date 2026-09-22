@@ -2,15 +2,15 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Data.Models.Mail;
-using cCoder.Mail.Providers.Models;
+using cCoder.Mail.Providers.Exposures.MailClients;
 
-namespace cCoder.Mail.Providers.Services.Foundations;
+namespace cCoder.Mail.Providers.Services.Orchestrations;
 
-internal interface IMicrosoftGraphMailReceiverService
+internal interface IMailProviderOrchestrationService
 {
-    Task<ReceivedEmail[]> ReceiveMailReceiverAsync(
+    IMailClient GetMailClient(string providerName);
+
+    ValueTask<IMailClient> GetMailClientAsync(
         Guid mailReceiverId,
-        int maximumMessages,
         CancellationToken cancellationToken = default);
 }

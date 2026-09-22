@@ -3,20 +3,22 @@
 // ---------------------------------------------------------------
 
 using cCoder.Mail.Models;
+using cCoder.Mail.Brokers.MailClients;
 using cCoder.Mail.Providers.Exposures.MailClients;
 using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Services.Foundations;
 
 internal sealed partial class MailProviderCatalogService(
-    IEnumerable<IMailClient> mailClients)
+    IMailProviderCatalogBroker mailProviderCatalogBroker)
     : IMailProviderCatalogService
 {
     public MailProviderSummary[] GetSenders() =>
         TryCatch(
             operation: () =>
                 CreateMailProviderSummaryArray(
-                    providers: mailClients
+                    providers: mailProviderCatalogBroker
+                        .SelectAllMailClients()
                         .Where(
                             predicate: mailClient =>
                                 mailClient.GetSupportedOperations()
@@ -30,7 +32,8 @@ internal sealed partial class MailProviderCatalogService(
         TryCatch(
             operation: () =>
                 CreateMailProviderSummaryArray(
-                    providers: mailClients
+                    providers: mailProviderCatalogBroker
+                        .SelectAllMailClients()
                         .Where(
                             predicate: mailClient =>
                                 mailClient.GetSupportedOperations()

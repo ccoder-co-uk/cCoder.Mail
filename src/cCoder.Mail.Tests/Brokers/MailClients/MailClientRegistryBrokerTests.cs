@@ -7,6 +7,7 @@
 using cCoder.Mail.Providers.Brokers.MailClients;
 using cCoder.Mail.Providers.Exposures.MailClients;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
@@ -19,7 +20,7 @@ public sealed partial class MailClientRegistryBrokerTests
     {
         var clientMock = new Mock<IMailClient>();
         clientMock.Setup(x => x.GetProviderNames()).Returns(["Graph", "MicrosoftGraph"]);
-        var broker = new MailClientRegistryBroker([clientMock.Object]);
+        MailClientRegistryBroker broker = CreateBroker(clientMock.Object);
 
         IMailClient result = broker.SelectMailClient("microsoftgraph");
 
@@ -33,12 +34,21 @@ public sealed partial class MailClientRegistryBrokerTests
     {
         var clientMock = new Mock<IMailClient>();
         clientMock.Setup(x => x.GetProviderNames()).Returns(["Graph"]);
-        var broker = new MailClientRegistryBroker([clientMock.Object]);
+        MailClientRegistryBroker broker = CreateBroker(clientMock.Object);
 
         Action action = () => broker.SelectMailClient(providerName);
 
         action.Should().Throw<InvalidOperationException>()
             .WithMessage($"No mail provider named '{providerName}' is registered.");
+    }
+
+    private static MailClientRegistryBroker CreateBroker(IMailClient mailClient)
+    {
+        ServiceCollection services = new();
+        services.AddSingleton(mailClient);
+
+        return new MailClientRegistryBroker(
+            serviceProvider: services.BuildServiceProvider());
     }
 }
 

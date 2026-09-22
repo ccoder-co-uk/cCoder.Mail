@@ -8,5 +8,5 @@ namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal interface IMicrosoftGraphMailSenderService
 {
-    Task SendQueuedEmailAsync(QueuedEmail email, CancellationToken cancellationToken = default);
+    Task SendQueuedEmailAsync(QueuedEmail queuedEmail, CancellationToken cancellationToken = default);
 }

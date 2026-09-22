@@ -6,7 +6,7 @@ using cCoder.Mail.Providers.Models;
 
 namespace cCoder.Mail.Providers.Brokers.MailClients;
 
-public interface IImapMailReceiverBroker
+internal interface IImapMailReceiverBroker
 {
     Task<string[]> ReceiveAsync(
         MailboxReceiveRequest request,

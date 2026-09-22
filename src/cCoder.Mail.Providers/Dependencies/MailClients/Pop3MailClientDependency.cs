@@ -12,17 +12,22 @@ namespace cCoder.Mail.Providers.Dependencies.MailClients;
 internal sealed class Pop3MailClientDependency : TcpClient
 {
     internal async Task<string[][]> ReceiveAsync(
-        MailboxReceiveRequest request,
+        string host,
+        int port,
+        bool enableSsl,
+        string user,
+        string password,
+        int maximumMessages,
         CancellationToken cancellationToken = default)
     {
         await ConnectAsync(
-            host: request.Host,
-            port: request.Port,
+            host: host,
+            port: port,
             cancellationToken: cancellationToken);
 
         await using Stream stream = await CreateStreamAsync(
-            host: request.Host,
-            enableSsl: request.EnableSSL,
+            host: host,
+            enableSsl: enableSsl,
             cancellationToken: cancellationToken);
 
         using StreamReader reader = new(
@@ -46,13 +51,13 @@ internal sealed class Pop3MailClientDependency : TcpClient
         await SendCommandAsync(
             reader: reader,
             writer: writer,
-            command: $"USER {request.User}",
+            command: $"USER {user}",
             cancellationToken: cancellationToken);
 
         await SendCommandAsync(
             reader: reader,
             writer: writer,
-            command: $"PASS {request.Password}",
+            command: $"PASS {password}",
             cancellationToken: cancellationToken);
 
         string stat = await SendCommandAsync(
@@ -62,16 +67,16 @@ internal sealed class Pop3MailClientDependency : TcpClient
             cancellationToken: cancellationToken);
 
         int count = ParseMessageCount(stat: stat);
-        int maximumMessages = request.MaximumMessages <= 0
+        int boundedMaximumMessages = maximumMessages <= 0
             ? count
             : Math.Min(
-                val1: request.MaximumMessages,
+                val1: maximumMessages,
                 val2: count);
 
         List<string[]> messages = [];
 
         for (int index = count;
-            index > 0 && messages.Count < maximumMessages;
+            index > 0 && messages.Count < boundedMaximumMessages;
             index--)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -193,5 +198,9 @@ internal sealed class Pop3MailClientDependency : TcpClient
                 result: out int count)
             ? count
             : 0;
+
     }
+
+    protected override void Dispose(bool disposing) =>
+        base.Dispose(disposing: disposing);
 }

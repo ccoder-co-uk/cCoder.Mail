@@ -32,7 +32,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
         TryCatch<QueuedEmail[]>(operation: () =>
         {
-            ValidateGetDispatchBatch(inputs: [batchSize, maxFailures]);
+            ValidateDispatchBatchOnGet(inputs: [batchSize, maxFailures]);
 
             return service.GetDispatchBatch(
                 batchSize: batchSize,
@@ -128,7 +128,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
     public ValueTask RetryAsync(int queuedEmailId) =>
         TryCatch(operation: async () =>
         {
-            ValidateDeleteAsync(inputs: [queuedEmailId]);
+            ValidateQueuedEmailOnRetry(inputs: [queuedEmailId]);
 
             QueuedEmail queuedEmail = service.GetQueuedEmail(
                 iQueuedEmailId: queuedEmailId);

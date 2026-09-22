@@ -4,8 +4,8 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009
 
-using cCoder.Mail.Models;
 using FluentAssertions;
+using cCoder.Mail.Models;
 using Moq;
 using Xunit;
 
@@ -16,17 +16,14 @@ public partial class MailSendingServiceTests
     [Fact]
     public void ShouldReturnMigrationState()
     {
-        // Given
-        mailConfigurationExposureMock
-            .Setup(expression: exposure => exposure.GetMailConfiguration())
+        mailConfigurationBrokerMock
+            .Setup(expression: broker => broker.GetMailConfiguration())
             .Returns(value: new MailConfiguration { IsMigrating = true });
 
-        // When
         bool result = mailSendingService.IsMigrationInProgress();
 
-        // Then
         result.Should().BeTrue();
-        mailConfigurationExposureMock.VerifyAll();
+        mailConfigurationBrokerMock.VerifyAll();
     }
 
     [Fact]

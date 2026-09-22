@@ -6,7 +6,7 @@
 
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures.Controllers;
-using cCoder.Mail.Exposures.MailClients;
+using cCoder.Mail.Services.Foundations;
 using cCoder.Mail.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ namespace cCoder.Mail.Tests.Exposures;
 
 public sealed partial class MailProvidersControllerTests
 {
-    private readonly Mock<IMailProviderCatalog> catalogMock = new();
+    private readonly Mock<IMailProviderCatalogService> catalogMock = new();
     private readonly Mock<ILoggingBroker> loggerMock = new();
     private readonly MailProvidersController controller;
 

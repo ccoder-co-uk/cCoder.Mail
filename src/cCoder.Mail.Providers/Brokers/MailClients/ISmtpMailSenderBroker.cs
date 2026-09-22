@@ -9,6 +9,6 @@ namespace cCoder.Mail.Providers.Brokers.MailClients;
 public interface ISmtpMailSenderBroker
 {
     Task SendAsync(
-        QueuedEmail email,
+        QueuedEmail queuedEmail,
         CancellationToken cancellationToken = default);
 }
