@@ -894,11 +894,11 @@
       "BaseType": null,
       "Interfaces": [
         {
-          "Id": "cCoder.CodeAnalysis:cCoder.CodeAnalysis.Exposures.ICompositionExposure",
+          "Id": "cCoder.CodeAnalysis.Contracts:cCoder.CodeAnalysis.Exposures.ICompositionExposure",
           "FullName": "cCoder.CodeAnalysis.Exposures.ICompositionExposure",
           "Name": "ICompositionExposure",
           "Namespace": "cCoder.CodeAnalysis.Exposures",
-          "AssemblyName": "cCoder.CodeAnalysis",
+          "AssemblyName": "cCoder.CodeAnalysis.Contracts",
           "Kind": "Interface",
           "IsInCurrentProject": false,
           "StandardElementType": "Dependency"
