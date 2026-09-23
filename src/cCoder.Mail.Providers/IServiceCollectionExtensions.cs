@@ -103,9 +103,6 @@ public static class IServiceCollectionExtensions
             IMailReceiverStorageBroker,
             MailReceiverStorageBroker>();
         services.AddTransient<
-            IMailClientRegistryBroker,
-            MailClientRegistryBroker>();
-        services.AddTransient<
             IMailMessageParsingBroker,
             MailMessageParsingBroker>();
     }
@@ -155,9 +152,6 @@ public static class IServiceCollectionExtensions
         }
 
         services.AddTransient<
-            IMailProviderService,
-            MailProviderService>();
-        services.AddTransient<
             IMailMessageParsingService,
             MailMessageParsingService>();
         services.AddTransient<
@@ -166,9 +160,6 @@ public static class IServiceCollectionExtensions
         services.AddTransient<
             IMailReceiverProviderService,
             MailReceiverProviderService>();
-        services.AddTransient<
-            IMailProviderOrchestrationService,
-            MailProviderOrchestrationService>();
     }
 
     private static void AddExposures(
