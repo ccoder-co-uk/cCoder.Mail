@@ -5,7 +5,7 @@
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Mail.Providers.Exposures.MailClients;
-using cCoder.Mail.Providers.Services.Orchestrations;
+using cCoder.Mail.Providers.Services.Foundations;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -15,14 +15,14 @@ namespace cCoder.Mail.Tests.Providers;
 public sealed partial class MailClientFactoryTests
 {
     private readonly Mock<IMailClient> clientMock = new();
-    private readonly Mock<IMailProviderOrchestrationService> providerServiceMock = new();
+    private readonly Mock<IMailReceiverProviderService> receiverProviderServiceMock = new();
 
     [Fact]
     public void CreateMailClientShouldResolveAliasIgnoringCase()
     {
-        providerServiceMock.Setup(x => x.GetMailClient("microsoftgraph"))
-            .Returns(clientMock.Object);
-        var factory = new MailClientFactory(providerServiceMock.Object);
+        clientMock.Setup(x => x.GetProviderNames())
+            .Returns(["MicrosoftGraph"]);
+        MailClientFactory factory = CreateFactory();
 
         factory.CreateMailClient("microsoftgraph").Should().BeSameAs(clientMock.Object);
     }
@@ -32,10 +32,8 @@ public sealed partial class MailClientFactoryTests
     [InlineData("missing")]
     public void CreateMailClientShouldRejectUnknownProvider(string providerName)
     {
-        providerServiceMock.Setup(x => x.GetMailClient(providerName))
-            .Throws(new InvalidOperationException(
-                $"No mail provider named '{providerName}' is registered."));
-        var factory = new MailClientFactory(providerServiceMock.Object);
+        clientMock.Setup(x => x.GetProviderNames()).Returns(["SMTP"]);
+        MailClientFactory factory = CreateFactory();
 
         Action action = () => factory.CreateMailClient(providerName);
 
@@ -48,14 +46,23 @@ public sealed partial class MailClientFactoryTests
     {
         Guid receiverId = Guid.NewGuid();
         clientMock.Setup(x => x.GetProviderNames()).Returns(["IMAP"]);
-        providerServiceMock.Setup(x => x.GetMailClientAsync(receiverId, CancellationToken.None))
-            .ReturnsAsync(clientMock.Object);
-        var factory = new MailClientFactory(providerServiceMock.Object);
+        receiverProviderServiceMock
+            .Setup(x => x.RetrieveMailReceiverProviderNameAsync(
+                receiverId,
+                CancellationToken.None))
+            .ReturnsAsync("IMAP");
+        MailClientFactory factory = CreateFactory();
 
         IMailClient result = await factory.CreateMailClientAsync(receiverId);
 
         result.Should().BeSameAs(clientMock.Object);
     }
+
+    private MailClientFactory CreateFactory() =>
+        new(
+            mailClients: [clientMock.Object],
+            mailReceiverProviderService: receiverProviderServiceMock.Object);
+
 }
 
 #pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005

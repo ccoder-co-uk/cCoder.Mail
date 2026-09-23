@@ -31,6 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="cCoder.Data" Version="2026.9.22.1438" Condition="'$(UseLocalData)' != 'true'" />
+    <PackageReference Include="cCoder.Data" Version="2026.9.22.2048" Condition="'$(UseLocalData)' != 'true'" />
   </ItemGroup>
 </Project>
