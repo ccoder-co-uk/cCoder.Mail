@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.CodeAnalysis.Exposures;
 using cCoder.Data.Models.CMS;
 using cCoder.Mail.Services.Aggregations;
 
@@ -9,7 +10,7 @@ namespace cCoder.Mail.Exposures.Events;
 
 internal sealed class AppEventHandler(
     IAppAggregationService appAggregationService)
-    : IAppEventHandler
+    : IAppEventHandler, ICompositionExposure
 {
     public ValueTask AddAppAsync(App newApp) =>
         appAggregationService.AddAppAsync(newApp: newApp);

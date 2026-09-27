@@ -8736,11 +8736,21 @@
     {
       "Name": "cCoder.Mail.Exposures.Events.AppEventHandler",
       "StandardElementType": "Exposure",
-      "LineNumber": 10,
+      "LineNumber": 11,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
       "Interfaces": [
+        {
+          "Id": "cCoder.CodeAnalysis.Contracts:cCoder.CodeAnalysis.Exposures.ICompositionExposure",
+          "FullName": "cCoder.CodeAnalysis.Exposures.ICompositionExposure",
+          "Name": "ICompositionExposure",
+          "Namespace": "cCoder.CodeAnalysis.Exposures",
+          "AssemblyName": "cCoder.CodeAnalysis.Contracts",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
+          "StandardElementType": "Dependency"
+        },
         {
           "Id": "cCoder.Mail:cCoder.Mail.Exposures.Events.IAppEventHandler",
           "FullName": "cCoder.Mail.Exposures.Events.IAppEventHandler",
@@ -8757,7 +8767,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Events.AppEventHandler.AddAppAsync(cCoder.Data.Models.CMS.App)",
           "Name": "AddAppAsync",
-          "LineNumber": 14,
+          "LineNumber": 15,
           "Inputs": [
             {
               "Name": "newApp",
@@ -8806,7 +8816,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Events.AppEventHandler.DeleteAppAsync(cCoder.Data.Models.CMS.App)",
           "Name": "DeleteAppAsync",
-          "LineNumber": 20,
+          "LineNumber": 21,
           "Inputs": [
             {
               "Name": "deletedApp",
@@ -8853,7 +8863,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Events.AppEventHandler.UpdateAppAsync(cCoder.Data.Models.CMS.App)",
           "Name": "UpdateAppAsync",
-          "LineNumber": 17,
+          "LineNumber": 18,
           "Inputs": [
             {
               "Name": "updatedApp",
@@ -8966,11 +8976,21 @@
     {
       "Name": "cCoder.Mail.Exposures.MailAppExposure",
       "StandardElementType": "Exposure",
-      "LineNumber": 13,
+      "LineNumber": 14,
       "IsPublic": false,
       "Kind": "Class",
       "BaseType": null,
       "Interfaces": [
+        {
+          "Id": "cCoder.CodeAnalysis.Contracts:cCoder.CodeAnalysis.Exposures.ICompositionExposure",
+          "FullName": "cCoder.CodeAnalysis.Exposures.ICompositionExposure",
+          "Name": "ICompositionExposure",
+          "Namespace": "cCoder.CodeAnalysis.Exposures",
+          "AssemblyName": "cCoder.CodeAnalysis.Contracts",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
+          "StandardElementType": "Dependency"
+        },
         {
           "Id": "cCoder.Mail:cCoder.Mail.Exposures.IMailAppExposure",
           "FullName": "cCoder.Mail.Exposures.IMailAppExposure",
@@ -8987,7 +9007,7 @@
         {
           "Id": "cCoder.Mail.Exposures.MailAppExposure.AddAsync(cCoder.Data.Models.CMS.App)",
           "Name": "AddAsync",
-          "LineNumber": 15,
+          "LineNumber": 17,
           "Inputs": [
             {
               "Name": "newApp",
@@ -9036,7 +9056,7 @@
         {
           "Id": "cCoder.Mail.Exposures.MailAppExposure.DeleteAsync(System.Int32)",
           "Name": "DeleteAsync",
-          "LineNumber": 21,
+          "LineNumber": 23,
           "Inputs": [
             {
               "Name": "appId",
@@ -9083,7 +9103,7 @@
         {
           "Id": "cCoder.Mail.Exposures.MailAppExposure.UpdateAsync(cCoder.Data.Models.CMS.App)",
           "Name": "UpdateAsync",
-          "LineNumber": 18,
+          "LineNumber": 20,
           "Inputs": [
             {
               "Name": "updatedApp",

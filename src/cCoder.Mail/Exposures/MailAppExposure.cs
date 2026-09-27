@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.CodeAnalysis.Exposures;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;
 using cCoder.Data.Models.Mail;
@@ -10,7 +11,8 @@ using cCoder.Mail.Services.Aggregations;
 
 namespace cCoder.Mail.Exposures;
 
-internal class MailAppExposure(IAppAggregationService appAggregationService) : IMailAppExposure
+internal class MailAppExposure(IAppAggregationService appAggregationService)
+    : IMailAppExposure, ICompositionExposure
 {
     public ValueTask AddAsync(App newApp) =>
         appAggregationService.AddAppAsync(newApp: newApp);
