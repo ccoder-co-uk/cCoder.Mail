@@ -4,6 +4,12 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
 using FluentAssertions;

@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Collections.Generic;
 using HostedServices.AcceptanceTests.Models;
 using Mail.HostedServices;
 using Microsoft.AspNetCore.Hosting;

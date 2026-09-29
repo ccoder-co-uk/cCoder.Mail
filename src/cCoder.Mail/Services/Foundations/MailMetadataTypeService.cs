@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using cCoder.Mail.Brokers.OData;
 using cCoder.Mail.Models.OData;
 using cCoder.Data.Models.Mail;

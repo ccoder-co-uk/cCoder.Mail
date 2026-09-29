@@ -2,9 +2,11 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Collections.Generic;
 using cCoder.Data;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers;
+using cCoder.Mail.Providers.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
