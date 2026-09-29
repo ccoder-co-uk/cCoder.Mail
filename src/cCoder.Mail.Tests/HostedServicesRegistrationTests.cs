@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Linq;
 using cCoder.Mail.Exposures.HostedServices;
 using cCoder.Mail.Services.Orchestrations;
 using Microsoft.Extensions.DependencyInjection;

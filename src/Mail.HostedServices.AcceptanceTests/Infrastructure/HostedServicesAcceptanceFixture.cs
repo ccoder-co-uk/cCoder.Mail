@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using HostedServices.AcceptanceTests.Models;
 using cCoder.Mail.Testing;
 using Microsoft.AspNetCore.Mvc.Testing;

@@ -2,6 +2,12 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using cCoder.Data;
 using cCoder.Data.Models;
 using cCoder.Data.Models.Mail;
@@ -27,7 +33,9 @@ using Web.AcceptanceTests.Models;
 
 namespace Web.AcceptanceTests.Infrastructure;
 
-internal sealed class WebAcceptanceFactory(AcceptanceSettings settings)
+internal sealed class WebAcceptanceFactory(
+    AcceptanceSettings settings,
+    bool includeFailingMailClient = false)
     : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -71,6 +79,11 @@ initialData: [
             services.AddTransient<IMailClient, AcceptanceSmtpMailClient>();
             services.AddTransient<IMailClient, AcceptanceGraphMailClient>();
             services.AddTransient<IMailClientFactory, AcceptanceMailClientFactory>();
+
+            if (includeFailingMailClient)
+            {
+                services.AddTransient<IMailClient, FailingAcceptanceMailClient>();
+            }
         });
     }
 
@@ -166,5 +179,28 @@ result: [
                 mailReceiverId: mailReceiverId,
                 maximumMessages: maximumMessages,
                 cancellationToken: cancellationToken);
+    }
+
+    private sealed class FailingAcceptanceMailClient : IMailClient
+    {
+        public string[] GetProviderNames() =>
+            ["Failing"];
+
+        public MailClientOperation[] GetSupportedOperations() =>
+            throw new InvalidOperationException(
+                message: "Acceptance provider failure.");
+
+        public Task SendAsync(
+            QueuedEmail email,
+            CancellationToken cancellationToken = default) =>
+            throw new InvalidOperationException(
+                message: "Acceptance provider failure.");
+
+        public Task<ReceivedEmail[]> ReceiveAsync(
+            Guid mailReceiverId,
+            int maximumMessages,
+            CancellationToken cancellationToken = default) =>
+            throw new InvalidOperationException(
+                message: "Acceptance provider failure.");
     }
 }

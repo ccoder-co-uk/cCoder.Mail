@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Collections.Generic;
 using cCoder.Mail.Providers.Brokers.MailClients;
 using cCoder.Mail.Providers.Brokers.Storages;
 using cCoder.Mail.Providers.Dependencies.MailClients;

@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Text;
 namespace cCoder.Mail.Providers.Models;
 
 internal sealed class EncodedMailWord

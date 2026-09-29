@@ -2,8 +2,12 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Models;
+using cCoder.Mail.Providers.Models;
 using FluentAssertions;
 using Moq;
 using Xunit;

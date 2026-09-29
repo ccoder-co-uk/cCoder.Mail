@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="cCoder.Security.Data" Version="2026.9.27.1325" />
+    <PackageReference Include="cCoder.Security.Data" Version="2026.9.29.1813" />
     <PackageReference Include="FluentAssertions" Version="8.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
@@ -23,10 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mail.Web\Mail.Web.csproj" />
-    <Compile Include="..\Shared\Testing\AcceptanceTestConfiguration.cs"
-             Link="Testing\AcceptanceTestConfiguration.cs" />
-    <Compile Include="..\Shared\Testing\MailIntegrationTestConfiguration.cs"
-             Link="Testing\MailIntegrationTestConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

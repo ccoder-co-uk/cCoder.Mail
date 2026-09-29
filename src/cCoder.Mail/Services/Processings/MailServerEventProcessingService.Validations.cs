@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
 namespace cCoder.Mail.Services.Processings;
 
 internal partial class MailServerEventProcessingService

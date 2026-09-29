@@ -4,6 +4,7 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
+using System.Threading.Tasks;
 using Moq;
 using Xunit;
 

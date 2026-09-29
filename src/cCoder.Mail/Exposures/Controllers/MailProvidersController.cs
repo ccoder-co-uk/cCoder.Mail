@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;

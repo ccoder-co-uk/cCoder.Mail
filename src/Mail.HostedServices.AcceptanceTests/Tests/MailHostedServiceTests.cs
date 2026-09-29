@@ -4,6 +4,9 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXSTRUCT002, STXTEST005
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using cCoder.Mail.Exposures.HostedServices;
 using Xunit;
 

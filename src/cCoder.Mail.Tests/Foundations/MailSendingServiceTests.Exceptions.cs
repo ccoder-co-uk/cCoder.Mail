@@ -4,6 +4,7 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
+using System;
 using cCoder.Mail.Providers.Models.Exceptions;
 using FluentAssertions;
 using Moq;

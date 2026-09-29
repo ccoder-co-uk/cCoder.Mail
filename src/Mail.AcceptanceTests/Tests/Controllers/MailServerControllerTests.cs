@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
+using System.Linq;
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using System.Security;
@@ -19,13 +22,13 @@ using Xunit;
 
 namespace cCoder.Mail.Tests.Exposures;
 
-public sealed partial class QueuedEmailControllerTests
+public sealed partial class MailServerControllerTests
 {
-    private readonly Mock<IQueuedEmailOrchestrationService> serviceMock = new();
+    private readonly Mock<IMailServerOrchestrationService> serviceMock = new();
     private readonly Mock<ILoggingBroker> loggerMock = new();
-    private readonly QueuedEmailController controller;
+    private readonly MailServerController controller;
 
-    public QueuedEmailControllerTests()
+    public MailServerControllerTests()
     {
         controller = new(serviceMock.Object, loggerMock.Object)
         {
@@ -43,28 +46,28 @@ public sealed partial class QueuedEmailControllerTests
     [Fact]
     public void GetShouldReturnEmail()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(new[] { new QueuedEmail { Id = 1 } }.AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(new[] { new MailServer { Id = 1 } }.AsQueryable());
         controller.Get(1).Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]
     public void GetShouldReturnNotFoundWhenEmailDoesNotExist()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.Get(1).Should().BeOfType<NotFoundResult>();
     }
 
     [Fact]
     public void GetAllShouldReturnEmails()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.GetAll().Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]
     public async Task PostShouldReturnCreatedEmailAsync()
     {
-        var email = new QueuedEmail(); serviceMock.Setup(x => x.AddQueuedEmailAsync(email)).ReturnsAsync(email);
+        var email = new MailServer(); serviceMock.Setup(x => x.AddMailServerAsync(email)).ReturnsAsync(email);
         ObjectResult result = (ObjectResult)await controller.Post(email);
         result.StatusCode.Should().Be(StatusCodes.Status201Created); result.Value.Should().BeSameAs(email);
     }
@@ -73,13 +76,13 @@ public sealed partial class QueuedEmailControllerTests
     public async Task PostShouldReturnBadRequestForInvalidModelAsync()
     {
         controller.ModelState.AddModelError("Subject", "Required");
-        (await controller.Post(new QueuedEmail())).Should().BeOfType<BadRequestObjectResult>();
+        (await controller.Post(new MailServer())).Should().BeOfType<BadRequestObjectResult>();
     }
 
     [Fact]
     public async Task PutShouldUpdateEmailAsync()
     {
-        var email = new QueuedEmail(); serviceMock.Setup(x => x.UpdateQueuedEmailAsync(email)).ReturnsAsync(email);
+        var email = new MailServer(); serviceMock.Setup(x => x.UpdateMailServerAsync(email)).ReturnsAsync(email);
         (await controller.Put(3, email)).Should().BeOfType<OkObjectResult>(); email.Id.Should().Be(3);
     }
 
@@ -87,7 +90,7 @@ public sealed partial class QueuedEmailControllerTests
     public async Task PutShouldReturnBadRequestForInvalidModelAsync()
     {
         controller.ModelState.AddModelError("Subject", "Required");
-        (await controller.Put(3, new QueuedEmail())).Should().BeOfType<BadRequestObjectResult>();
+        (await controller.Put(3, new MailServer())).Should().BeOfType<BadRequestObjectResult>();
     }
 
 }

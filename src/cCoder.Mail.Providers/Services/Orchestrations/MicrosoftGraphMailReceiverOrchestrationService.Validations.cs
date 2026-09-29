@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
 namespace cCoder.Mail.Providers.Services.Orchestrations;
 
 internal sealed partial class MicrosoftGraphMailReceiverOrchestrationService

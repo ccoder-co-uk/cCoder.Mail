@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Threading.Tasks;
+using System;
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using System.Security;
@@ -15,7 +17,7 @@ using Xunit;
 
 namespace cCoder.Mail.Tests.Exposures;
 
-public sealed partial class QueuedEmailControllerTests
+public sealed partial class MailServerControllerTests
 {
     public static TheoryData<Exception, int> ControllerExceptionMappings => new()
     {
@@ -37,7 +39,7 @@ public sealed partial class QueuedEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public void GetShouldMapAndLogException(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Throws(exception);
+        serviceMock.Setup(x => x.GetAllMailServer(false)).Throws(exception);
         ((ObjectResult)controller.Get(1)).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
@@ -46,7 +48,7 @@ public sealed partial class QueuedEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public void GetAllShouldMapAndLogException(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Throws(exception);
+        serviceMock.Setup(x => x.GetAllMailServer(false)).Throws(exception);
         ((ObjectResult)controller.GetAll()).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
@@ -55,8 +57,8 @@ public sealed partial class QueuedEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public async Task PostShouldMapAndLogExceptionAsync(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.AddQueuedEmailAsync(It.IsAny<QueuedEmail>())).Throws(exception);
-        ((ObjectResult)await controller.Post(new QueuedEmail())).StatusCode.Should().Be(statusCode);
+        serviceMock.Setup(x => x.AddMailServerAsync(It.IsAny<MailServer>())).Throws(exception);
+        ((ObjectResult)await controller.Post(new MailServer())).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
 
@@ -64,8 +66,8 @@ public sealed partial class QueuedEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public async Task PutShouldMapAndLogExceptionAsync(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.UpdateQueuedEmailAsync(It.IsAny<QueuedEmail>())).Throws(exception);
-        ((ObjectResult)await controller.Put(1, new QueuedEmail())).StatusCode.Should().Be(statusCode);
+        serviceMock.Setup(x => x.UpdateMailServerAsync(It.IsAny<MailServer>())).Throws(exception);
+        ((ObjectResult)await controller.Put(1, new MailServer())).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
 }

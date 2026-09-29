@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
 using cCoder.Data;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models;

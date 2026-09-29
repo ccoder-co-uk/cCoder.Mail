@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Mail.Brokers.Loggings;
@@ -14,11 +15,11 @@ using Xunit;
 
 namespace cCoder.Mail.Tests.Exposures;
 
-public partial class MailReceiverControllerTests
+public partial class MailSenderControllerTests
 {
-    private readonly Mock<IMailReceiverProcessingService> mailReceiverManagerMock = new();
+    private readonly Mock<IMailSenderProcessingService> mailSenderManagerMock = new();
     private readonly Mock<ILoggingBroker> loggingBrokerMock = new();
-    private readonly MailReceiverController controller;
+    private readonly MailSenderController controller;
 
     public static TheoryData<Exception, int> FailureExceptions => new()
     {
@@ -27,10 +28,10 @@ public partial class MailReceiverControllerTests
         { new Exception(), 500 }
     };
 
-    public MailReceiverControllerTests()
+    public MailSenderControllerTests()
     {
-        controller = new MailReceiverController(
-            service: mailReceiverManagerMock.Object,
+        controller = new MailSenderController(
+            service: mailSenderManagerMock.Object,
             loggingBroker: loggingBrokerMock.Object)
         {
             ControllerContext = new ControllerContext

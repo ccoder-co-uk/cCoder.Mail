@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Text;

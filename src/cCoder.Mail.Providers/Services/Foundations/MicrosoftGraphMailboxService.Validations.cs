@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
 namespace cCoder.Mail.Providers.Services.Foundations;
 
 internal sealed partial class MicrosoftGraphMailboxService

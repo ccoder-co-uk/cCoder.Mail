@@ -2,6 +2,7 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
 using cCoder.Mail.Providers.Models.Exceptions;
 
 namespace cCoder.Mail.Services.Foundations;

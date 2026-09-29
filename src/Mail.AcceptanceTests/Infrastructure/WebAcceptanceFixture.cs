@@ -2,6 +2,10 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using cCoder.Mail.Testing;
 using Web.AcceptanceTests.Models;
@@ -12,7 +16,9 @@ namespace Web.AcceptanceTests.Infrastructure;
 
 public sealed class WebAcceptanceFixture : IAsyncLifetime
 {
+    private readonly List<WebAcceptanceFactory> supplementalFactories = [];
     private AcceptanceDatabaseManager databaseManager;
+    private AcceptanceSettings settings;
 
     internal WebAcceptanceFactory Factory { get; private set; } = null!;
 
@@ -23,7 +29,7 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
         AcceptanceTestConfiguration configuration =
             AcceptanceTestConfiguration.Load();
 
-        AcceptanceSettings settings = new()
+        settings = new AcceptanceSettings
         {
             CoreConnectionString = configuration.CoreConnectionString,
             SsoConnectionString =
@@ -47,6 +53,11 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
     {
         Client?.Dispose();
 
+        foreach (WebAcceptanceFactory factory in supplementalFactories)
+        {
+            await factory.DisposeAsync();
+        }
+
         if (databaseManager is not null)
         {
             await databaseManager.DropDatabasesAsync();
@@ -60,5 +71,20 @@ public sealed class WebAcceptanceFixture : IAsyncLifetime
 
     private Task SeedAsync() =>
         new AcceptanceApplicationSeeder(services: Factory.Services).SeedAsync();
+
+    internal HttpClient CreateFailingProviderClient()
+    {
+        WebAcceptanceFactory factory = new(
+            settings: settings,
+            includeFailingMailClient: true);
+
+        supplementalFactories.Add(item: factory);
+
+        return factory.CreateClient(options: new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false,
+            BaseAddress = new Uri(uriString: "https://localhost"),
+        });
+    }
 
 }

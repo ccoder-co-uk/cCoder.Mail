@@ -2,6 +2,10 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System.Linq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 using cCoder.Data.Models.Mail;

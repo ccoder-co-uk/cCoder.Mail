@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using cCoder.Mail.Providers.Models.Exceptions;
 
 namespace cCoder.Mail.Services.Orchestrations;

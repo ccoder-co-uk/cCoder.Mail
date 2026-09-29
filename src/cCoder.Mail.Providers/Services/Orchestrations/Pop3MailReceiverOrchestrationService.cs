@@ -2,6 +2,11 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Providers.Models;
 using cCoder.Mail.Providers.Services.Foundations;

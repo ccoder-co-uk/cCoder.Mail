@@ -2,8 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
-using cCoder.Mail.Brokers.MailClients;
-using cCoder.Mail.Services.Foundations;
+using cCoder.Mail.Providers.Brokers.MailClients;
+using cCoder.Mail.Providers.Services.Foundations;
 using Moq;
 
 namespace cCoder.Core.Services.Tests.Mail.Foundations;

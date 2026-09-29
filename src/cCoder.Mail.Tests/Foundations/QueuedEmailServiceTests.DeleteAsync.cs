@@ -4,6 +4,12 @@
 
 #pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
 
+using System.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Security;
 using cCoder.Mail.Models;
 using cCoder.Data.Models.CMS;

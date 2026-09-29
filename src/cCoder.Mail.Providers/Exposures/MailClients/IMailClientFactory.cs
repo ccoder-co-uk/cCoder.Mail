@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 namespace cCoder.Mail.Providers.Exposures.MailClients;
 
 public interface IMailClientFactory

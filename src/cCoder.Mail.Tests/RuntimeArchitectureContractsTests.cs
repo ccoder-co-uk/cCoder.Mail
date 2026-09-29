@@ -2,6 +2,10 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Providers.Exposures.MailClients;
 using FluentAssertions;

@@ -2,6 +2,8 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using cCoder.Mail.Providers.Models;
+using System;
 namespace cCoder.Mail.Services.Processings;
 
 internal sealed partial class MailReceivingProcessingService

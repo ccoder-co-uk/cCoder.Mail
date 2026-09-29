@@ -2,6 +2,9 @@
 // Copyright (c) Paul.Ward@ccoder.co.uk
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 namespace cCoder.Mail.Extensions.OData;
 
 internal static class EnumerableExtensions
