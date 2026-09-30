@@ -97,15 +97,15 @@ receivedEmailOrchestrationService: receivedEmailOrchestrationServiceMock.Object)
             SentMail = [new SentEmail { Id = 3, Subject = "Sent" }]
         };
 
-        mailServerOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateMailServerResult(
+        mailServerOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateMailServerResults(
 newMailServer: It.Is<IEnumerable<MailServer>>(match: items => items.All(predicate: server => server.AppId == 9))))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<MailServer>>>(result: []));
 
-        queuedEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateQueuedEmailResult(
+        queuedEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateQueuedEmailResults(
 newQueuedEmail: It.Is<IEnumerable<QueuedEmail>>(match: items => items.All(predicate: email => email.AppId == 9))))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<QueuedEmail>>>(result: []));
 
-        sentEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateSentEmailResult(
+        sentEmailOrchestrationServiceMock.Setup(expression: x => x.AddOrUpdateSentEmailResults(
 newSentEmail: It.Is<IEnumerable<SentEmail>>(match: items => items.All(predicate: email => email.AppId == 9))))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>(result: []));
 
@@ -126,15 +126,15 @@ newSentEmail: It.Is<IEnumerable<SentEmail>>(match: items => items.All(predicate:
         MailSender sender = new() { Id = senderId, Name = "Imported" };
         App app = new() { Id = 9, MailSenders = [sender] };
 
-        mailServerOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateMailServerResult(
+        mailServerOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateMailServerResults(
                 newMailServer: It.IsAny<IEnumerable<MailServer>>()))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<MailServer>>>(result: []));
 
-        queuedEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateQueuedEmailResult(
+        queuedEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateQueuedEmailResults(
                 newQueuedEmail: It.IsAny<IEnumerable<QueuedEmail>>()))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<QueuedEmail>>>(result: []));
 
-        sentEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateSentEmailResult(
+        sentEmailOrchestrationServiceMock.Setup(expression: service => service.AddOrUpdateSentEmailResults(
                 newSentEmail: It.IsAny<IEnumerable<SentEmail>>()))
             .Returns(value: ValueTask.FromResult<IEnumerable<cCoder.Mail.Models.Result<SentEmail>>>(result: []));
 

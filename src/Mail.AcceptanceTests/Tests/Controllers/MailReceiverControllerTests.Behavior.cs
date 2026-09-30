@@ -23,7 +23,7 @@ public partial class MailReceiverControllerTests
     public void ShouldReturnMailReceiverWhenGetFindsRequestedMailReceiver()
     {
         MailReceiver mailReceiver = new() { Id = Guid.Empty };
-        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceiver(false))
+        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceivers(false))
             .Returns(value: new[] { mailReceiver }.AsQueryable());
 
         IActionResult result = controller.Get(key: mailReceiver.Id);
@@ -34,7 +34,7 @@ public partial class MailReceiverControllerTests
     [Fact]
     public void ShouldReturnNotFoundWhenGetCannotFindRequestedMailReceiver()
     {
-        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceiver(false))
+        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceivers(false))
             .Returns(value: Array.Empty<MailReceiver>().AsQueryable());
 
         IActionResult result = controller.Get(key: Guid.Empty);

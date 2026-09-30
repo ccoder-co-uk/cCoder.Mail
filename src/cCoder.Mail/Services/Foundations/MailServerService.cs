@@ -48,10 +48,10 @@ internal partial class MailServerService(
         return null;
     });
 
-    public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
+    public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
         {
-            ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
+            ValidateAllMailServersOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? mailServerBroker.GetAllMailServersIgnoringFilters()

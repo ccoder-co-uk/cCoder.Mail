@@ -25,12 +25,12 @@ internal partial class ReceivedEmailProcessingService(IReceivedEmailService serv
             return service.GetReceivedEmail(iReceivedEmailId: receivedEmailId);
         });
 
-    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
+    public IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
         {
-            ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
+            ValidateAllReceivedEmailsOnGet(inputs: [ignoreFilters]);
 
-            return service.GetAllReceivedEmail(ignoreFilters: ignoreFilters);
+            return service.GetAllReceivedEmails(ignoreFilters: ignoreFilters);
         });
 
     public ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail) =>

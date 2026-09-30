@@ -39,7 +39,7 @@ public sealed partial class SentEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public void GetShouldMapAndLogException(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.GetAllSentEmail(false)).Throws(exception);
+        serviceMock.Setup(x => x.GetAllSentEmails(false)).Throws(exception);
         ((ObjectResult)controller.Get(1)).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }
@@ -48,7 +48,7 @@ public sealed partial class SentEmailControllerTests
     [MemberData(nameof(ControllerExceptionMappings))]
     public void GetAllShouldMapAndLogException(Exception exception, int statusCode)
     {
-        serviceMock.Setup(x => x.GetAllSentEmail(false)).Throws(exception);
+        serviceMock.Setup(x => x.GetAllSentEmails(false)).Throws(exception);
         ((ObjectResult)controller.GetAll()).StatusCode.Should().Be(statusCode);
         loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
     }

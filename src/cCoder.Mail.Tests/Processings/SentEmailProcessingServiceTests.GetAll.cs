@@ -24,18 +24,18 @@ public partial class SentEmailProcessingServiceTests
         // Given
         IQueryable<SentEmail> entities = new[] { CreateRandomSentEmail() }.AsQueryable();
 
-        sentEmailServiceMock.Setup(expression: x => x.GetAllSentEmail())
+        sentEmailServiceMock.Setup(expression: x => x.GetAllSentEmails())
             .Returns(value: entities);
 
         // When
-        IQueryable<SentEmail> result = sentEmailProcessingService.GetAllSentEmail();
+        IQueryable<SentEmail> result = sentEmailProcessingService.GetAllSentEmails();
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entities);
 
-        sentEmailServiceMock.Verify(expression: x => x.GetAllSentEmail(), times: Times.Once);
+        sentEmailServiceMock.Verify(expression: x => x.GetAllSentEmails(), times: Times.Once);
         sentEmailServiceMock.VerifyNoOtherCalls();
     }
 

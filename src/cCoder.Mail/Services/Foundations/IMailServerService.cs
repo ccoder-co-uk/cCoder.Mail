@@ -17,7 +17,7 @@ namespace cCoder.Mail.Services.Foundations;
 internal interface IMailServerService
 {
     MailServer GetMailServer(int iMailServerId);
-    IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false);
+    IQueryable<MailServer> GetAllMailServers(bool ignoreFilters = false);
     ValueTask<MailServer> AddMailServerAsync(
         MailServer newMailServer,
         bool checkPrivileges = true);

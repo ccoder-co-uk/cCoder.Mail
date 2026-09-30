@@ -24,12 +24,12 @@ internal partial class MailSenderProcessingService(IMailSenderService service)
             return service.GetMailSender(iMailSenderId: mailSenderId);
         });
 
-    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
+    public IQueryable<MailSender> GetAllMailSenders(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
-            ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
+            ValidateAllMailSendersOnGet(inputs: [ignoreFilters]);
 
-            return service.GetAllMailSender(ignoreFilters: ignoreFilters);
+            return service.GetAllMailSenders(ignoreFilters: ignoreFilters);
         });
 
     public ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender) =>

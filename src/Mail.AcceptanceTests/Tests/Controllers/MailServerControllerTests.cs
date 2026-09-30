@@ -46,21 +46,21 @@ public sealed partial class MailServerControllerTests
     [Fact]
     public void GetShouldReturnEmail()
     {
-        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(new[] { new MailServer { Id = 1 } }.AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(new[] { new MailServer { Id = 1 } }.AsQueryable());
         controller.Get(1).Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]
     public void GetShouldReturnNotFoundWhenEmailDoesNotExist()
     {
-        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(Array.Empty<MailServer>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.Get(1).Should().BeOfType<NotFoundResult>();
     }
 
     [Fact]
     public void GetAllShouldReturnEmails()
     {
-        serviceMock.Setup(x => x.GetAllMailServer(false)).Returns(Array.Empty<MailServer>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.GetAll().Should().BeOfType<OkObjectResult>();
     }
 

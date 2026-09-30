@@ -65,7 +65,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
     {
         try
         {
-            IQueryable<ReceivedEmail> result = service.GetAllReceivedEmail()
+            IQueryable<ReceivedEmail> result = service.GetAllReceivedEmails()
                 .Where(predicate: receivedEmail => receivedEmail.Id == key);
 
             ReceivedEmail receivedEmail = result.FirstOrDefault();
@@ -108,7 +108,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
     {
         try
         {
-            return Ok(value: service.GetAllReceivedEmail());
+            return Ok(value: service.GetAllReceivedEmails());
         }
         catch (MailValidationException exception)
         {

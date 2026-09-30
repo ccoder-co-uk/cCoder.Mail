@@ -34,7 +34,7 @@ public partial class QueuedEmailProcessingServiceTests
         DataUser actor = TestUsers.WithPrivilege(privilege: "queuedemail_delete", appId: email.AppId);
         currentUser = actor;
 
-        queuedEmailServiceMock.Setup(expression: x => x.GetAllQueuedEmail(ignoreFilters: true))
+        queuedEmailServiceMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
             .Returns(value: new[] { email }.AsQueryable());
 
         queuedEmailServiceMock.Setup(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: false))
@@ -44,7 +44,7 @@ public partial class QueuedEmailProcessingServiceTests
         await queuedEmailProcessingService.DeleteAsync(queuedEmailId: email.Id);
 
         // Then
-        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.Verify(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: false), times: Times.Once);
         queuedEmailServiceMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
@@ -55,7 +55,7 @@ public partial class QueuedEmailProcessingServiceTests
     {
         // Given
         queuedEmailServiceMock
-            .Setup(expression: x => x.GetAllQueuedEmail(ignoreFilters: true))
+            .Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
             .Returns(value: Array.Empty<QueuedEmail>()
             .AsQueryable());
 
@@ -68,7 +68,7 @@ public partial class QueuedEmailProcessingServiceTests
             .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
-        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
     }
 
@@ -83,7 +83,7 @@ public partial class QueuedEmailProcessingServiceTests
         QueuedEmail email = CreateRandomQueuedEmail();
         currentUser = TestUsers.WithoutPrivileges();
 
-        queuedEmailServiceMock.Setup(expression: x => x.GetAllQueuedEmail(ignoreFilters: true))
+        queuedEmailServiceMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
             .Returns(value: new[] { email }.AsQueryable());
 
         // When
@@ -95,7 +95,7 @@ public partial class QueuedEmailProcessingServiceTests
             .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
             .WithMessage(expectedWildcardPattern: "The mail service failed.");
 
-        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
+        queuedEmailServiceMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
         queuedEmailServiceMock.Verify(expression: x => x.GetCurrentUser(), times: Times.Once);
         queuedEmailServiceMock.VerifyNoOtherCalls();
     }

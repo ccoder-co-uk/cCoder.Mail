@@ -25,7 +25,7 @@ public partial class QueuedEmailOrchestrationServiceTests
         int id = 1;
         QueuedEmail entity = CreateRandomQueuedEmail();
 
-        queuedEmailProcessingServiceMock.Setup(expression: x => x.GetAllQueuedEmail(ignoreFilters: true))
+        queuedEmailProcessingServiceMock.Setup(expression: x => x.GetAllQueuedEmails(ignoreFilters: true))
             .Returns(value: new[] { entity }.AsQueryable());
 
         queuedEmailProcessingServiceMock.Setup(expression: x => x.DeleteAsync(iQueuedEmailId: id))
@@ -39,7 +39,7 @@ public partial class QueuedEmailOrchestrationServiceTests
         await orchestrationService.DeleteAsync(queuedEmailId: id);
 
         // Then
-        queuedEmailProcessingServiceMock.Verify(expression: x => x.GetAllQueuedEmail(ignoreFilters: true), times: Times.Once);
+        queuedEmailProcessingServiceMock.Verify(expression: x => x.GetAllQueuedEmails(ignoreFilters: true), times: Times.Once);
         queuedEmailProcessingServiceMock.Verify(expression: x => x.DeleteAsync(iQueuedEmailId: id), times: Times.Once);
         queuedEmailEventProcessingServiceMock.Verify(expression: x => x.RaiseQueuedEmailDeleteEventAsync(entity: entity), times: Times.Once);
     }

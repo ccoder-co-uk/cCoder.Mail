@@ -21,7 +21,7 @@ internal partial class ReceivedEmailService
     private static void ValidateReceivedEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllReceivedEmailOnGet(object[] inputs) =>
+    private static void ValidateAllReceivedEmailsOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateReceivedEmailOnAdd(object[] inputs) =>

@@ -21,7 +21,7 @@ internal partial class QueuedEmailService
     private static void ValidateQueuedEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllQueuedEmailOnGet(object[] inputs) =>
+    private static void ValidateAllQueuedEmailsOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateDispatchBatchOnGet(object[] inputs) =>

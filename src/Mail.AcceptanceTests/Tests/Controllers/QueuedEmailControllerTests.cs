@@ -46,21 +46,21 @@ public sealed partial class QueuedEmailControllerTests
     [Fact]
     public void GetShouldReturnEmail()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(new[] { new QueuedEmail { Id = 1 } }.AsQueryable());
+        serviceMock.Setup(x => x.GetAllQueuedEmails(false)).Returns(new[] { new QueuedEmail { Id = 1 } }.AsQueryable());
         controller.Get(1).Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]
     public void GetShouldReturnNotFoundWhenEmailDoesNotExist()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllQueuedEmails(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
         controller.Get(1).Should().BeOfType<NotFoundResult>();
     }
 
     [Fact]
     public void GetAllShouldReturnEmails()
     {
-        serviceMock.Setup(x => x.GetAllQueuedEmail(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
+        serviceMock.Setup(x => x.GetAllQueuedEmails(false)).Returns(Array.Empty<QueuedEmail>().AsQueryable());
         controller.GetAll().Should().BeOfType<OkObjectResult>();
     }
 

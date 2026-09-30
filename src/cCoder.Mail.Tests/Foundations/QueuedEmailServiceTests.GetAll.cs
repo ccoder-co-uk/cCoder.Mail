@@ -29,7 +29,7 @@ public partial class QueuedEmailServiceTests
             .Returns(value: queuedEmails);
 
         // When
-        IQueryable<QueuedEmail> result = queuedEmailService.GetAllQueuedEmail();
+        IQueryable<QueuedEmail> result = queuedEmailService.GetAllQueuedEmails();
 
         // Then
 

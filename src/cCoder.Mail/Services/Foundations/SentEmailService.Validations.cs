@@ -21,7 +21,7 @@ internal partial class SentEmailService
     private static void ValidateSentEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllSentEmailOnGet(object[] inputs) =>
+    private static void ValidateAllSentEmailsOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateSentEmailOnAdd(object[] inputs) =>

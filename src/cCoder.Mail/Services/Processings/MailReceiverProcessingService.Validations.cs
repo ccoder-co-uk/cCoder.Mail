@@ -10,7 +10,7 @@ internal partial class MailReceiverProcessingService
     private static void ValidateMailReceiverOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllMailReceiverOnGet(object[] inputs) =>
+    private static void ValidateAllMailReceiversOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateEnabledOnGet(object[] inputs) =>

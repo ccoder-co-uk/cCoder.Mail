@@ -52,10 +52,10 @@ internal partial class QueuedEmailService(
         return null;
     });
 
-    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
+    public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
         {
-            ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
+            ValidateAllQueuedEmailsOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? queuedEmailBroker.GetAllQueuedEmailsIgnoringFilters()

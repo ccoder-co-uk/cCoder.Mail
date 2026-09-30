@@ -29,7 +29,7 @@ public partial class MailServerServiceTests
             .Returns(value: mailServers);
 
         // When
-        IQueryable<MailServer> result = mailServerService.GetAllMailServer();
+        IQueryable<MailServer> result = mailServerService.GetAllMailServers();
 
         // Then
 

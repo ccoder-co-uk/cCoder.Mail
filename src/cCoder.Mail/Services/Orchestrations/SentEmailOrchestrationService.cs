@@ -26,12 +26,12 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
         return processingService.GetSentEmail(iSentEmailId: sentEmailId);
     });
 
-    public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
+    public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
     {
-        ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
+        ValidateAllSentEmailsOnGet(inputs: [ignoreFilters]);
 
-        return processingService.GetAllSentEmail(ignoreFilters: ignoreFilters);
+        return processingService.GetAllSentEmails(ignoreFilters: ignoreFilters);
     });
 
     public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
@@ -60,7 +60,7 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
 
         ValidateDeleteAsync(inputs: [sentEmailId]);
 
-        SentEmail entity = processingService.GetAllSentEmail(ignoreFilters: true)
+        SentEmail entity = processingService.GetAllSentEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == sentEmailId);
 
         if (entity is null)
@@ -80,12 +80,12 @@ internal partial class SentEmailOrchestrationService(ISentEmailProcessingService
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail) =>
+    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResults(IEnumerable<SentEmail> newSentEmail) =>
         TryCatch<IEnumerable<Result<SentEmail>>>(operation: () =>
     {
-        ValidateOrUpdateSentEmailResultOnAdd(inputs: [newSentEmail]);
+        ValidateOrUpdateSentEmailResultsOnAdd(inputs: [newSentEmail]);
 
-        return processingService.AddOrUpdateSentEmailResult(newSentEmail: newSentEmail);
+        return processingService.AddOrUpdateSentEmailResults(newSentEmail: newSentEmail);
     }, isValueTask: true);
 
     public ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail) =>

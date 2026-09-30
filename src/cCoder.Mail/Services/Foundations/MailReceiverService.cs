@@ -45,10 +45,10 @@ internal partial class MailReceiverService(
         return unrestrictedMailReceiver;
     });
 
-    public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
+    public IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
-            ValidateAllMailReceiverOnGet(inputs: [ignoreFilters]);
+            ValidateAllMailReceiversOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? mailReceiverBroker.GetAllMailReceiversIgnoringFilters()

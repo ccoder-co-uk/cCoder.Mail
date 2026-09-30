@@ -19,7 +19,7 @@ internal interface IQueuedEmailProcessingService
 {
     QueuedEmail GetQueuedEmail(int iQueuedEmailId);
 
-    IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);
+    IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters = false);
 
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
 
@@ -44,7 +44,7 @@ internal interface IQueuedEmailProcessingService
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail);
+    ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResults(IEnumerable<QueuedEmail> newQueuedEmail);
 
     ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail);
 

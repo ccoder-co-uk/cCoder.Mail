@@ -65,7 +65,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
     {
         try
         {
-            IQueryable<MailSender> result = service.GetAllMailSender()
+            IQueryable<MailSender> result = service.GetAllMailSenders()
                 .Where(predicate: mailSender => mailSender.Id == key);
 
             MailSender mailSender = result.FirstOrDefault();
@@ -108,7 +108,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
     {
         try
         {
-            return Ok(value: service.GetAllMailSender());
+            return Ok(value: service.GetAllMailSenders());
         }
         catch (MailValidationException exception)
         {

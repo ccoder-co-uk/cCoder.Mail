@@ -65,7 +65,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
     {
         try
         {
-            IQueryable<MailServer> result = service.GetAllMailServer()
+            IQueryable<MailServer> result = service.GetAllMailServers()
                 .Where(predicate: mailServer => mailServer.Id == key);
 
             MailServer mailServer = result.FirstOrDefault();
@@ -108,7 +108,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
     {
         try
         {
-            return Ok(value: service.GetAllMailServer());
+            return Ok(value: service.GetAllMailServers());
         }
         catch (MailValidationException exception)
         {

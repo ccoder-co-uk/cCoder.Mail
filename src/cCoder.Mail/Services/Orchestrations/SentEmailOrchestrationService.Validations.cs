@@ -10,7 +10,7 @@ internal partial class SentEmailOrchestrationService
     private static void ValidateSentEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllSentEmailOnGet(object[] inputs) =>
+    private static void ValidateAllSentEmailsOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateSentEmailOnAdd(object[] inputs) =>
@@ -25,7 +25,7 @@ internal partial class SentEmailOrchestrationService
     private static void ValidateByAppIdOnDelete(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateOrUpdateSentEmailResultOnAdd(object[] inputs) =>
+    private static void ValidateOrUpdateSentEmailResultsOnAdd(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateAllSentEmailOnDelete(object[] inputs) =>

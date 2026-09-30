@@ -23,7 +23,7 @@ public sealed partial class MailReceiverProcessingServiceTests
     public MailReceiverProcessingServiceTests() => service = new(serviceMock.Object);
 
     [Fact] public void GetMailReceiverShouldDelegate() { Guid id = Guid.NewGuid(); var item = new MailReceiver { Id = id }; serviceMock.Setup(x => x.GetMailReceiver(id)).Returns(item); service.GetMailReceiver(id).Should().BeSameAs(item); }
-    [Fact] public void GetAllMailReceiverShouldDelegate() { IQueryable<MailReceiver> items = Array.Empty<MailReceiver>().AsQueryable(); serviceMock.Setup(x => x.GetAllMailReceiver(true)).Returns(items); service.GetAllMailReceiver(true).Should().BeSameAs(items); }
+    [Fact] public void GetAllMailReceiverShouldDelegate() { IQueryable<MailReceiver> items = Array.Empty<MailReceiver>().AsQueryable(); serviceMock.Setup(x => x.GetAllMailReceivers(true)).Returns(items); service.GetAllMailReceivers(true).Should().BeSameAs(items); }
     [Fact] public void GetEnabledShouldDelegate() { MailReceiver[] items = [new() { Id = Guid.NewGuid() }]; serviceMock.Setup(x => x.GetEnabled()).Returns(items); service.GetEnabled().Should().BeSameAs(items); }
     [Fact] public async Task AddMailReceiverAsyncShouldDelegateAsync() { var item = new MailReceiver { Id = Guid.NewGuid() }; serviceMock.Setup(x => x.AddMailReceiverAsync(item)).ReturnsAsync(item); (await service.AddMailReceiverAsync(item)).Should().BeSameAs(item); }
     [Fact] public async Task UpdateMailReceiverAsyncShouldDelegateAsync() { var item = new MailReceiver { Id = Guid.NewGuid() }; serviceMock.Setup(x => x.UpdateMailReceiverAsync(item)).ReturnsAsync(item); (await service.UpdateMailReceiverAsync(item)).Should().BeSameAs(item); }

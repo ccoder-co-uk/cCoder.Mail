@@ -22,7 +22,7 @@ public partial class MailSenderOrchestrationServiceTests
     {
         Guid senderId = Guid.NewGuid();
         mailSenderProcessingServiceMock.Setup(expression: service =>
-                service.GetAllMailSender(true))
+                service.GetAllMailSenders(true))
             .Returns(value: new[] { new MailSender { Id = senderId } }.AsQueryable());
 
         bool exists = await mailSenderOrchestrationService.ExistsAsync(senderId);

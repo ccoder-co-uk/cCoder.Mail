@@ -30,7 +30,7 @@ public sealed partial class ReceivedEmailOrchestrationServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public async Task ExistsAsyncShouldMapExceptionAsync(Exception exception, Type expectedType)
     {
-        receivedMock.Setup(x => x.GetAllReceivedEmail(true)).Throws(exception);
+        receivedMock.Setup(x => x.GetAllReceivedEmails(true)).Throws(exception);
         Func<Task> action = async () => await service.ExistsAsync(1);
         (await action.Should().ThrowAsync<Exception>()).Which.Should().BeOfType(expectedType);
     }

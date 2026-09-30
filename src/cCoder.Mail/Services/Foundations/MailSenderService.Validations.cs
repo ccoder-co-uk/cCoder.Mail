@@ -21,7 +21,7 @@ internal partial class MailSenderService
     private static void ValidateMailSenderOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllMailSenderOnGet(object[] inputs) =>
+    private static void ValidateAllMailSendersOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateMailSenderOnAdd(object[] inputs) =>

@@ -17,7 +17,7 @@ internal interface ISentEmailProcessingService
 {
     SentEmail GetSentEmail(int iSentEmailId);
 
-    IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
+    IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters = false);
 
     ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
 
@@ -27,7 +27,7 @@ internal interface ISentEmailProcessingService
 
     ValueTask DeleteByAppIdAsync(int appId);
 
-    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail);
+    ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResults(IEnumerable<SentEmail> newSentEmail);
 
     ValueTask DeleteAllSentEmailAsync(IEnumerable<SentEmail> deletedSentEmail);
 }

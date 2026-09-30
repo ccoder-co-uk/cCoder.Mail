@@ -14,7 +14,7 @@ namespace cCoder.Mail.Services.Foundations;
 internal interface IMailSenderService
 {
     MailSender GetMailSender(Guid iMailSenderId);
-    IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false);
+    IQueryable<MailSender> GetAllMailSenders(bool ignoreFilters = false);
     ValueTask<MailSender> AddMailSenderAsync(MailSender newMailSender);
     ValueTask<MailSender> UpdateMailSenderAsync(MailSender updatedMailSender);
     ValueTask<int> DeleteAsync(Guid iMailSenderId);

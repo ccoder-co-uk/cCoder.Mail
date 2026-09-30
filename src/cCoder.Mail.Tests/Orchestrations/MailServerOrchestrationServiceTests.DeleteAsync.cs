@@ -25,7 +25,7 @@ public partial class MailServerOrchestrationServiceTests
         int id = 1;
         MailServer entity = CreateRandomMailServer();
 
-        mailServerProcessingServiceMock.Setup(expression: x => x.GetAllMailServer(ignoreFilters: true))
+        mailServerProcessingServiceMock.Setup(expression: x => x.GetAllMailServers(ignoreFilters: true))
             .Returns(value: new[] { entity }.AsQueryable());
 
         mailServerProcessingServiceMock.Setup(expression: x => x.DeleteAsync(iMailServerId: id))
@@ -39,7 +39,7 @@ public partial class MailServerOrchestrationServiceTests
         await orchestrationService.DeleteAsync(mailServerId: id);
 
         // Then
-        mailServerProcessingServiceMock.Verify(expression: x => x.GetAllMailServer(ignoreFilters: true), times: Times.Once);
+        mailServerProcessingServiceMock.Verify(expression: x => x.GetAllMailServers(ignoreFilters: true), times: Times.Once);
         mailServerProcessingServiceMock.Verify(expression: x => x.DeleteAsync(iMailServerId: id), times: Times.Once);
         mailServerEventProcessingServiceMock.Verify(expression: x => x.RaiseMailServerDeleteEventAsync(entity: entity), times: Times.Once);
     }

@@ -10,7 +10,7 @@ internal partial class QueuedEmailOrchestrationService
     private static void ValidateQueuedEmailOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllQueuedEmailOnGet(object[] inputs) =>
+    private static void ValidateAllQueuedEmailsOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateQueuedEmailOnAdd(object[] inputs) =>
@@ -25,7 +25,7 @@ internal partial class QueuedEmailOrchestrationService
     private static void ValidateByAppIdOnDelete(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateOrUpdateQueuedEmailResultOnAdd(object[] inputs) =>
+    private static void ValidateOrUpdateQueuedEmailResultsOnAdd(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateAllQueuedEmailOnDelete(object[] inputs) =>

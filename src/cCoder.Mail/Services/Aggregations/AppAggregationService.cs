@@ -30,11 +30,11 @@ internal partial class AppAggregationService(
         ValidateAppOnAdd(inputs: [newApp]);
 
         StampMail(app: newApp);
-        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: newApp.MailServers ?? []);
+        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResults(newMailServer: newApp.MailServers ?? []);
         await AddOrUpdateAsync(newMailSender: newApp.MailSenders ?? [], service: mailSenderOrchestrationService);
         await AddOrUpdateAsync(newMailReceiver: newApp.MailReceivers ?? [], service: mailReceiverOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newApp.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: newApp.SentMail ?? []);
+        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResults(newQueuedEmail: newApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResults(newSentEmail: newApp.SentMail ?? []);
         await AddOrUpdateAsync(newReceivedEmail: newApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 
@@ -44,11 +44,11 @@ internal partial class AppAggregationService(
         ValidateAppOnUpdate(inputs: [updatedApp]);
 
         StampMail(app: updatedApp);
-        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResult(newMailServer: updatedApp.MailServers ?? []);
+        _ = await mailServerOrchestrationService.AddOrUpdateMailServerResults(newMailServer: updatedApp.MailServers ?? []);
         await AddOrUpdateAsync(newMailSender: updatedApp.MailSenders ?? [], service: mailSenderOrchestrationService);
         await AddOrUpdateAsync(newMailReceiver: updatedApp.MailReceivers ?? [], service: mailReceiverOrchestrationService);
-        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResult(newQueuedEmail: updatedApp.MailQueue ?? []);
-        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResult(newSentEmail: updatedApp.SentMail ?? []);
+        _ = await queuedEmailOrchestrationService.AddOrUpdateQueuedEmailResults(newQueuedEmail: updatedApp.MailQueue ?? []);
+        _ = await sentEmailOrchestrationService.AddOrUpdateSentEmailResults(newSentEmail: updatedApp.SentMail ?? []);
         await AddOrUpdateAsync(newReceivedEmail: updatedApp.ReceivedMail ?? [], service: receivedEmailOrchestrationService);
     }, isValueTask: true);
 

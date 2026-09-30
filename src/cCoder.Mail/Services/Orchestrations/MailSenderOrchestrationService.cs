@@ -27,7 +27,7 @@ internal sealed partial class MailSenderOrchestrationService(
             ValidateMailSenderOnExists(inputs: [mailSenderId]);
 
             return ValueTask.FromResult(result:
-                mailSenderProcessingService.GetAllMailSender(ignoreFilters: true)
+                mailSenderProcessingService.GetAllMailSenders(ignoreFilters: true)
                     .Any(predicate: sender => sender.Id == mailSenderId));
         }, isValueTask: true);
 

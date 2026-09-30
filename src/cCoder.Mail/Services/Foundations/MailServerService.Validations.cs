@@ -21,7 +21,7 @@ internal partial class MailServerService
     private static void ValidateMailServerOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllMailServerOnGet(object[] inputs) =>
+    private static void ValidateAllMailServersOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateMailServerOnAdd(object[] inputs) =>

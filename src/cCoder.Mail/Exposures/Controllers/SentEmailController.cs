@@ -65,7 +65,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
     {
         try
         {
-            IQueryable<SentEmail> result = service.GetAllSentEmail()
+            IQueryable<SentEmail> result = service.GetAllSentEmails()
                 .Where(predicate: sentEmail => sentEmail.Id == key);
 
             SentEmail sentEmail = result.FirstOrDefault();
@@ -108,7 +108,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
     {
         try
         {
-            return Ok(value: service.GetAllSentEmail());
+            return Ok(value: service.GetAllSentEmails());
         }
         catch (MailValidationException exception)
         {

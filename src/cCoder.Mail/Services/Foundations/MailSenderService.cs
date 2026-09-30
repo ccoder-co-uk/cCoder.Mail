@@ -45,10 +45,10 @@ internal partial class MailSenderService(
         return unrestrictedMailSender;
     });
 
-    public IQueryable<MailSender> GetAllMailSender(bool ignoreFilters = false) =>
+    public IQueryable<MailSender> GetAllMailSenders(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailSender>>(operation: () =>
         {
-            ValidateAllMailSenderOnGet(inputs: [ignoreFilters]);
+            ValidateAllMailSendersOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? mailSenderBroker.GetAllMailSendersIgnoringFilters()

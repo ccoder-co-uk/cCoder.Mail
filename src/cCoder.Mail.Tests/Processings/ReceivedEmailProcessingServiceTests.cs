@@ -33,8 +33,8 @@ public sealed partial class ReceivedEmailProcessingServiceTests
     [Fact]
     public void GetAllReceivedEmailShouldDelegate()
     {
-        IQueryable<ReceivedEmail> emails = Array.Empty<ReceivedEmail>().AsQueryable(); foundationMock.Setup(x => x.GetAllReceivedEmail(true)).Returns(emails);
-        service.GetAllReceivedEmail(true).Should().BeSameAs(emails);
+        IQueryable<ReceivedEmail> emails = Array.Empty<ReceivedEmail>().AsQueryable(); foundationMock.Setup(x => x.GetAllReceivedEmails(true)).Returns(emails);
+        service.GetAllReceivedEmails(true).Should().BeSameAs(emails);
     }
 
     [Fact]

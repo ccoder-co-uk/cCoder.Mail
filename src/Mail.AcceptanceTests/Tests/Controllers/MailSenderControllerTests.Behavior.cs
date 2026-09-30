@@ -23,7 +23,7 @@ public partial class MailSenderControllerTests
     public void ShouldReturnMailSenderWhenGetFindsRequestedMailSender()
     {
         MailSender mailSender = new() { Id = Guid.Empty };
-        mailSenderManagerMock.Setup(expression: service => service.GetAllMailSender(false))
+        mailSenderManagerMock.Setup(expression: service => service.GetAllMailSenders(false))
             .Returns(value: new[] { mailSender }.AsQueryable());
 
         IActionResult result = controller.Get(key: mailSender.Id);
@@ -34,7 +34,7 @@ public partial class MailSenderControllerTests
     [Fact]
     public void ShouldReturnNotFoundWhenGetCannotFindRequestedMailSender()
     {
-        mailSenderManagerMock.Setup(expression: service => service.GetAllMailSender(false))
+        mailSenderManagerMock.Setup(expression: service => service.GetAllMailSenders(false))
             .Returns(value: Array.Empty<MailSender>().AsQueryable());
 
         IActionResult result = controller.Get(key: Guid.Empty);

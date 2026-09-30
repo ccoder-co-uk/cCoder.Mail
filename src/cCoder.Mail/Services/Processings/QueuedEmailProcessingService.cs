@@ -28,12 +28,12 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
         return service.GetQueuedEmail(iQueuedEmailId: queuedEmailId);
     });
 
-    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
+    public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
-        ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
+        ValidateAllQueuedEmailsOnGet(inputs: [ignoreFilters]);
 
-        return service.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
+        return service.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
     });
 
     public QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures) =>
@@ -116,7 +116,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
 
         ValidateDeleteAsync(inputs: [queuedEmailId]);
 
-        QueuedEmail queuedEmail = service.GetAllQueuedEmail(ignoreFilters: true)
+        QueuedEmail queuedEmail = service.GetAllQueuedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: (QueuedEmail r) => r.Id == queuedEmailId);
 
         if (queuedEmail == null)
@@ -161,10 +161,10 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResults(IEnumerable<QueuedEmail> newQueuedEmail) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: async () =>
     {
-        ValidateOrUpdateQueuedEmailResultOnAdd(inputs: [newQueuedEmail]);
+        ValidateOrUpdateQueuedEmailResultsOnAdd(inputs: [newQueuedEmail]);
 
         List<Result<QueuedEmail>> results = new List<Result<QueuedEmail>>();
 
@@ -173,7 +173,7 @@ internal partial class QueuedEmailProcessingService(IQueuedEmailService service)
             try
             {
                 bool exists = item.Id != 0
-                    && service.GetAllQueuedEmail(ignoreFilters: true)
+                    && service.GetAllQueuedEmails(ignoreFilters: true)
                         .Any(predicate: email => email.Id == item.Id);
 
                 QueuedEmail savedItem =
