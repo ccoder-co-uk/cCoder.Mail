@@ -22,7 +22,7 @@ public partial class MailReceiverControllerTests
     [MemberData(nameof(FailureExceptions))]
     public void ShouldReturnServerErrorWhenGetFails(Exception exception, int expectedStatusCode)
     {
-        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceiver(false))
+        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceivers(false))
             .Throws(exception: exception);
 
         IActionResult result = controller.Get(key: Guid.Empty);
@@ -34,7 +34,7 @@ public partial class MailReceiverControllerTests
     [MemberData(nameof(FailureExceptions))]
     public void ShouldReturnServerErrorWhenGetAllFails(Exception exception, int expectedStatusCode)
     {
-        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceiver(false))
+        mailReceiverManagerMock.Setup(expression: service => service.GetAllMailReceivers(false))
             .Throws(exception: exception);
 
         IActionResult result = controller.GetAll();

@@ -26,7 +26,7 @@ internal sealed partial class MailReceiverOrchestrationService(
             ValidateMailReceiverOnExists(inputs: [mailReceiverId]);
 
             return ValueTask.FromResult(result:
-                mailReceiverProcessingService.GetAllMailReceiver(ignoreFilters: true)
+                mailReceiverProcessingService.GetAllMailReceivers(ignoreFilters: true)
                     .Any(predicate: receiver => receiver.Id == mailReceiverId));
         }, isValueTask: true);
 

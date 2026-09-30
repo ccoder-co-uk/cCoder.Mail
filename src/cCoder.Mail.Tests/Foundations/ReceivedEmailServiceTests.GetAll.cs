@@ -29,7 +29,7 @@ public partial class ReceivedEmailServiceTests
             .Returns(value: receivedEmails);
 
         // When
-        IQueryable<ReceivedEmail> result = receivedEmailService.GetAllReceivedEmail();
+        IQueryable<ReceivedEmail> result = receivedEmailService.GetAllReceivedEmails();
 
         // Then
 

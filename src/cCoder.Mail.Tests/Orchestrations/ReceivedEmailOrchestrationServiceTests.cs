@@ -30,7 +30,7 @@ public sealed partial class ReceivedEmailOrchestrationServiceTests
     [InlineData(false)]
     public async Task ExistsAsyncShouldReturnWhetherEmailExistsAsync(bool exists)
     {
-        receivedMock.Setup(x => x.GetAllReceivedEmail(true)).Returns((exists ? new[] { new ReceivedEmail { Id = 1 } } : []).AsQueryable());
+        receivedMock.Setup(x => x.GetAllReceivedEmails(true)).Returns((exists ? new[] { new ReceivedEmail { Id = 1 } } : []).AsQueryable());
         (await service.ExistsAsync(1)).Should().Be(exists);
     }
 

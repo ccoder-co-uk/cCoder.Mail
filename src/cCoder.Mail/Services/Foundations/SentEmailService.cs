@@ -48,10 +48,10 @@ internal partial class SentEmailService(
         return null;
     });
 
-    public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
+    public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
         {
-            ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
+            ValidateAllSentEmailsOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? sentEmailBroker.GetAllSentEmailsIgnoringFilters()

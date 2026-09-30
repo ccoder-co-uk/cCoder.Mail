@@ -24,12 +24,12 @@ internal partial class MailReceiverProcessingService(IMailReceiverService servic
             return service.GetMailReceiver(iMailReceiverId: mailReceiverId);
         });
 
-    public IQueryable<MailReceiver> GetAllMailReceiver(bool ignoreFilters = false) =>
+    public IQueryable<MailReceiver> GetAllMailReceivers(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailReceiver>>(operation: () =>
         {
-            ValidateAllMailReceiverOnGet(inputs: [ignoreFilters]);
+            ValidateAllMailReceiversOnGet(inputs: [ignoreFilters]);
 
-            return service.GetAllMailReceiver(ignoreFilters: ignoreFilters);
+            return service.GetAllMailReceivers(ignoreFilters: ignoreFilters);
         });
 
     public MailReceiver[] GetEnabled() =>

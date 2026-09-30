@@ -65,7 +65,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
     {
         try
         {
-            IQueryable<MailReceiver> result = service.GetAllMailReceiver()
+            IQueryable<MailReceiver> result = service.GetAllMailReceivers()
                 .Where(predicate: mailReceiver => mailReceiver.Id == key);
 
             MailReceiver mailReceiver = result.FirstOrDefault();
@@ -108,7 +108,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
     {
         try
         {
-            return Ok(value: service.GetAllMailReceiver());
+            return Ok(value: service.GetAllMailReceivers());
         }
         catch (MailValidationException exception)
         {

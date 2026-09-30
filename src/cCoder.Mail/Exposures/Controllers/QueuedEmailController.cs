@@ -98,7 +98,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
     {
         try
         {
-            IQueryable<QueuedEmail> result = service.GetAllQueuedEmail()
+            IQueryable<QueuedEmail> result = service.GetAllQueuedEmails()
                 .Where(predicate: queuedEmail => queuedEmail.Id == key);
 
             QueuedEmail queuedEmail = result.FirstOrDefault();
@@ -141,7 +141,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
     {
         try
         {
-            return Ok(value: service.GetAllQueuedEmail());
+            return Ok(value: service.GetAllQueuedEmails());
         }
         catch (MailValidationException exception)
         {

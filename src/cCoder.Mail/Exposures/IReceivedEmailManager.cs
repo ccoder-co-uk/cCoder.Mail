@@ -15,7 +15,7 @@ namespace cCoder.Mail.Exposures;
 public interface IReceivedEmailManager
 {
     ReceivedEmail GetReceivedEmail(int iReceivedEmailId);
-    IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false);
+    IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters = false);
     ValueTask<ReceivedEmail> AddReceivedEmailAsync(ReceivedEmail newReceivedEmail);
     ValueTask<ReceivedEmail> UpdateReceivedEmailAsync(ReceivedEmail updatedReceivedEmail);
     ValueTask<int> DeleteAsync(int iReceivedEmailId);

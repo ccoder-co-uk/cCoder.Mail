@@ -24,7 +24,7 @@ internal sealed partial class ReceivedEmailOrchestrationService(
             ValidateReceivedEmailOnExists(inputs: [receivedEmailId]);
 
             return ValueTask.FromResult(result:
-                receivedEmailProcessingService.GetAllReceivedEmail(ignoreFilters: true)
+                receivedEmailProcessingService.GetAllReceivedEmails(ignoreFilters: true)
                     .Any(predicate: email => email.Id == receivedEmailId));
         }, isValueTask: true);
 

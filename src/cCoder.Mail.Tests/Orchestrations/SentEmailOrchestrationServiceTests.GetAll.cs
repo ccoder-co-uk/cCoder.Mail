@@ -24,18 +24,18 @@ public partial class SentEmailOrchestrationServiceTests
         // Given
         IQueryable<SentEmail> entities = new[] { CreateRandomSentEmail() }.AsQueryable();
 
-        sentEmailProcessingServiceMock.Setup(expression: x => x.GetAllSentEmail(ignoreFilters: true))
+        sentEmailProcessingServiceMock.Setup(expression: x => x.GetAllSentEmails(ignoreFilters: true))
             .Returns(value: entities);
 
         // When
-        IQueryable<SentEmail> result = orchestrationService.GetAllSentEmail(ignoreFilters: true);
+        IQueryable<SentEmail> result = orchestrationService.GetAllSentEmails(ignoreFilters: true);
 
         // Then
 
         result.Should()
             .BeSameAs(expected: entities);
 
-        sentEmailProcessingServiceMock.Verify(expression: x => x.GetAllSentEmail(ignoreFilters: true), times: Times.Once);
+        sentEmailProcessingServiceMock.Verify(expression: x => x.GetAllSentEmails(ignoreFilters: true), times: Times.Once);
         sentEmailProcessingServiceMock.VerifyNoOtherCalls();
         sentEmailEventProcessingServiceMock.VerifyNoOtherCalls();
     }

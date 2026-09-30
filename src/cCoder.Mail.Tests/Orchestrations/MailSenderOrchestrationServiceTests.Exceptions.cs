@@ -28,7 +28,7 @@ public partial class MailSenderOrchestrationServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public async Task ExistsAsyncShouldMapExceptionAsync(Exception exception, Type expectedType)
     {
-        mailSenderProcessingServiceMock.Setup(x => x.GetAllMailSender(true)).Throws(exception);
+        mailSenderProcessingServiceMock.Setup(x => x.GetAllMailSenders(true)).Throws(exception);
         Func<Task> action = async () => await mailSenderOrchestrationService.ExistsAsync(Guid.NewGuid());
         (await action.Should().ThrowAsync<Exception>()).Which.Should().BeOfType(expectedType);
     }

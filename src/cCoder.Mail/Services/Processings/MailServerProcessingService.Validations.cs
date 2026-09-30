@@ -10,7 +10,7 @@ internal partial class MailServerProcessingService
     private static void ValidateMailServerOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateAllMailServerOnGet(object[] inputs) =>
+    private static void ValidateAllMailServersOnGet(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateMailServerOnAdd(object[] inputs) =>
@@ -25,7 +25,7 @@ internal partial class MailServerProcessingService
     private static void ValidateByAppIdOnDelete(object[] inputs) =>
         Validate(inputs: inputs);
 
-    private static void ValidateOrUpdateMailServerResultOnAdd(object[] inputs) =>
+    private static void ValidateOrUpdateMailServerResultsOnAdd(object[] inputs) =>
         Validate(inputs: inputs);
 
     private static void ValidateAllMailServerOnDelete(object[] inputs) =>

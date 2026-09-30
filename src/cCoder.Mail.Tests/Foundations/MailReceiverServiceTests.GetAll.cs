@@ -29,7 +29,7 @@ public partial class MailReceiverServiceTests
             .Returns(value: mailReceivers);
 
         // When
-        IQueryable<MailReceiver> result = mailReceiverService.GetAllMailReceiver();
+        IQueryable<MailReceiver> result = mailReceiverService.GetAllMailReceivers();
 
         // Then
 

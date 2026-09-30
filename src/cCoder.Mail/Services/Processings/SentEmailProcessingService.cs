@@ -26,12 +26,12 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
         return service.GetSentEmail(iSentEmailId: sentEmailId);
     });
 
-    public IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false) =>
+    public IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<SentEmail>>(operation: () =>
     {
-        ValidateAllSentEmailOnGet(inputs: [ignoreFilters]);
+        ValidateAllSentEmailsOnGet(inputs: [ignoreFilters]);
 
-        return service.GetAllSentEmail(ignoreFilters: ignoreFilters);
+        return service.GetAllSentEmails(ignoreFilters: ignoreFilters);
     });
 
     public ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail) =>
@@ -66,10 +66,10 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
             return service.DeleteAllByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResult(IEnumerable<SentEmail> newSentEmail) =>
+    public ValueTask<IEnumerable<Result<SentEmail>>> AddOrUpdateSentEmailResults(IEnumerable<SentEmail> newSentEmail) =>
         TryCatch<IEnumerable<Result<SentEmail>>>(operation: async () =>
     {
-        ValidateOrUpdateSentEmailResultOnAdd(inputs: [newSentEmail]);
+        ValidateOrUpdateSentEmailResultsOnAdd(inputs: [newSentEmail]);
 
         List<Result<SentEmail>> results = new List<Result<SentEmail>>();
 
@@ -78,7 +78,7 @@ internal partial class SentEmailProcessingService(ISentEmailService service) : I
             try
             {
                 bool exists = item.Id != 0
-                    && service.GetAllSentEmail(ignoreFilters: true)
+                    && service.GetAllSentEmails(ignoreFilters: true)
                         .Any(predicate: email => email.Id == item.Id);
 
                 SentEmail savedItem =

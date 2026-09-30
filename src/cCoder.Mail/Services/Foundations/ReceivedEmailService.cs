@@ -46,10 +46,10 @@ internal partial class ReceivedEmailService(
         return unrestrictedReceivedEmail;
     });
 
-    public IQueryable<ReceivedEmail> GetAllReceivedEmail(bool ignoreFilters = false) =>
+    public IQueryable<ReceivedEmail> GetAllReceivedEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<ReceivedEmail>>(operation: () =>
         {
-            ValidateAllReceivedEmailOnGet(inputs: [ignoreFilters]);
+            ValidateAllReceivedEmailsOnGet(inputs: [ignoreFilters]);
 
             return ignoreFilters
                 ? receivedEmailBroker.GetAllReceivedEmailsIgnoringFilters()

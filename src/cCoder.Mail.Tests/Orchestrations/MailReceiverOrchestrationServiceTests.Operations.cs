@@ -23,7 +23,7 @@ public partial class MailReceiverOrchestrationServiceTests
     public async Task ExistsAsyncShouldReturnWhetherReceiverExists()
     {
         Guid receiverId = Guid.NewGuid();
-        mailReceiverProcessingServiceMock.Setup(service => service.GetAllMailReceiver(true))
+        mailReceiverProcessingServiceMock.Setup(service => service.GetAllMailReceivers(true))
             .Returns(new[] { new MailReceiver { Id = receiverId } }.AsQueryable());
 
         bool exists = await mailReceiverOrchestrationService.ExistsAsync(receiverId);

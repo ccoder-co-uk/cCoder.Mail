@@ -27,12 +27,12 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
         return processingService.GetMailServer(iMailServerId: mailServerId);
     });
 
-    public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
+    public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
     {
-        ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
+        ValidateAllMailServersOnGet(inputs: [ignoreFilters]);
 
-        return processingService.GetAllMailServer(ignoreFilters: ignoreFilters);
+        return processingService.GetAllMailServers(ignoreFilters: ignoreFilters);
     });
 
     public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
@@ -61,7 +61,7 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
 
         ValidateDeleteAsync(inputs: [mailServerId]);
 
-        MailServer entity = processingService.GetAllMailServer(ignoreFilters: true)
+        MailServer entity = processingService.GetAllMailServers(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == mailServerId);
 
         if (entity is null)
@@ -82,13 +82,13 @@ internal partial class MailServerOrchestrationService(IMailServerProcessingServi
         }, isValueTask: true);
 
     public ValueTask<IEnumerable<Result<MailServer>>>
-        AddOrUpdateMailServerResult(
+        AddOrUpdateMailServerResults(
             IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: () =>
     {
-        ValidateOrUpdateMailServerResultOnAdd(inputs: [newMailServer]);
+        ValidateOrUpdateMailServerResultsOnAdd(inputs: [newMailServer]);
 
-        return processingService.AddOrUpdateMailServerResult(newMailServer: newMailServer);
+        return processingService.AddOrUpdateMailServerResults(newMailServer: newMailServer);
     }, isValueTask: true);
 
     public ValueTask DeleteAllMailServerAsync(IEnumerable<MailServer> deletedMailServer) =>

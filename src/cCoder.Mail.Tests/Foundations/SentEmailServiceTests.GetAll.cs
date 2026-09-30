@@ -29,7 +29,7 @@ public partial class SentEmailServiceTests
             .Returns(value: sentEmails);
 
         // When
-        IQueryable<SentEmail> result = sentEmailService.GetAllSentEmail();
+        IQueryable<SentEmail> result = sentEmailService.GetAllSentEmails();
 
         // Then
 

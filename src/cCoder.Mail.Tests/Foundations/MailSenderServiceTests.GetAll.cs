@@ -29,7 +29,7 @@ public partial class MailSenderServiceTests
             .Returns(value: mailSenders);
 
         // When
-        IQueryable<MailSender> result = mailSenderService.GetAllMailSender();
+        IQueryable<MailSender> result = mailSenderService.GetAllMailSenders();
 
         // Then
 

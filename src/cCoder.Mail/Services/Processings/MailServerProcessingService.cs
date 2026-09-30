@@ -26,12 +26,12 @@ internal partial class MailServerProcessingService(IMailServerService service) :
         return service.GetMailServer(iMailServerId: mailServerId);
     });
 
-    public IQueryable<MailServer> GetAllMailServer(bool ignoreFilters = false) =>
+    public IQueryable<MailServer> GetAllMailServers(bool ignoreFilters = false) =>
         TryCatch<IQueryable<MailServer>>(operation: () =>
     {
-        ValidateAllMailServerOnGet(inputs: [ignoreFilters]);
+        ValidateAllMailServersOnGet(inputs: [ignoreFilters]);
 
-        return service.GetAllMailServer(ignoreFilters: ignoreFilters);
+        return service.GetAllMailServers(ignoreFilters: ignoreFilters);
     });
 
     public ValueTask<MailServer> AddMailServerAsync(MailServer newMailServer) =>
@@ -67,11 +67,11 @@ internal partial class MailServerProcessingService(IMailServerService service) :
         }, isValueTask: true);
 
     ValueTask<IEnumerable<Result<MailServer>>>
-        IMailServerProcessingService.AddOrUpdateMailServerResult(
+        IMailServerProcessingService.AddOrUpdateMailServerResults(
             IEnumerable<MailServer> newMailServer) =>
         TryCatch<IEnumerable<Result<MailServer>>>(operation: async () =>
     {
-        ValidateOrUpdateMailServerResultOnAdd(inputs: [newMailServer]);
+        ValidateOrUpdateMailServerResultsOnAdd(inputs: [newMailServer]);
 
         List<Result<MailServer>> results = new List<Result<MailServer>>();
 
@@ -80,7 +80,7 @@ internal partial class MailServerProcessingService(IMailServerService service) :
             try
             {
                 bool exists = item.Id != 0
-                    && service.GetAllMailServer(ignoreFilters: true)
+                    && service.GetAllMailServers(ignoreFilters: true)
                         .Any(predicate: server => server.Id == item.Id);
 
                 MailServer savedItem =

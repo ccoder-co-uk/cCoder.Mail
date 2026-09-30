@@ -26,12 +26,12 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
         return processingService.GetQueuedEmail(iQueuedEmailId: queuedEmailId);
     });
 
-    public IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false) =>
+    public IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters = false) =>
         TryCatch<IQueryable<QueuedEmail>>(operation: () =>
     {
-        ValidateAllQueuedEmailOnGet(inputs: [ignoreFilters]);
+        ValidateAllQueuedEmailsOnGet(inputs: [ignoreFilters]);
 
-        return processingService.GetAllQueuedEmail(ignoreFilters: ignoreFilters);
+        return processingService.GetAllQueuedEmails(ignoreFilters: ignoreFilters);
     });
 
     public ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail) =>
@@ -60,7 +60,7 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
 
         ValidateDeleteAsync(inputs: [queuedEmailId]);
 
-        QueuedEmail entity = processingService.GetAllQueuedEmail(ignoreFilters: true)
+        QueuedEmail entity = processingService.GetAllQueuedEmails(ignoreFilters: true)
             .FirstOrDefault(predicate: item => item.Id == queuedEmailId);
 
         if (entity is null)
@@ -89,12 +89,12 @@ internal partial class QueuedEmailOrchestrationService(IQueuedEmailProcessingSer
             return processingService.DeleteByAppIdAsync(appId: appId);
         }, isValueTask: true);
 
-    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResult(IEnumerable<QueuedEmail> newQueuedEmail) =>
+    public ValueTask<IEnumerable<Result<QueuedEmail>>> AddOrUpdateQueuedEmailResults(IEnumerable<QueuedEmail> newQueuedEmail) =>
         TryCatch<IEnumerable<Result<QueuedEmail>>>(operation: () =>
     {
-        ValidateOrUpdateQueuedEmailResultOnAdd(inputs: [newQueuedEmail]);
+        ValidateOrUpdateQueuedEmailResultsOnAdd(inputs: [newQueuedEmail]);
 
-        return processingService.AddOrUpdateQueuedEmailResult(newQueuedEmail: newQueuedEmail);
+        return processingService.AddOrUpdateQueuedEmailResults(newQueuedEmail: newQueuedEmail);
     }, isValueTask: true);
 
     public ValueTask DeleteAllQueuedEmailAsync(IEnumerable<QueuedEmail> deletedQueuedEmail) =>

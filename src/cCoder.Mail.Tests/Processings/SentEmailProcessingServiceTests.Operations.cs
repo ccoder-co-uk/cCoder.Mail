@@ -33,7 +33,7 @@ public partial class SentEmailProcessingServiceTests
     {
         SentEmail email = CreateRandomSentEmail(); email.Id = 0;
         sentEmailServiceMock.Setup(x => x.AddSentEmailAsync(email)).ReturnsAsync(email);
-        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResult([email]);
+        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResults([email]);
         results.Single().Success.Should().BeTrue(); results.Single().Message.Should().Be("Added Successfully");
     }
 
@@ -41,9 +41,9 @@ public partial class SentEmailProcessingServiceTests
     public async Task AddOrUpdateSentEmailResultShouldUpdateExistingEmailAsync()
     {
         SentEmail email = CreateRandomSentEmail();
-        sentEmailServiceMock.Setup(x => x.GetAllSentEmail(true)).Returns(new[] { email }.AsQueryable());
+        sentEmailServiceMock.Setup(x => x.GetAllSentEmails(true)).Returns(new[] { email }.AsQueryable());
         sentEmailServiceMock.Setup(x => x.UpdateSentEmailAsync(email)).ReturnsAsync(email);
-        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResult([email]);
+        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResults([email]);
         results.Single().Success.Should().BeTrue(); results.Single().Message.Should().Be("Updated Successfully");
     }
 
@@ -52,7 +52,7 @@ public partial class SentEmailProcessingServiceTests
     {
         SentEmail email = CreateRandomSentEmail(); email.Id = 0;
         sentEmailServiceMock.Setup(x => x.AddSentEmailAsync(email)).ThrowsAsync(new InvalidOperationException("failed"));
-        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResult([email]);
+        IEnumerable<Result<SentEmail>> results = await sentEmailProcessingService.AddOrUpdateSentEmailResults([email]);
         results.Single().Success.Should().BeFalse(); results.Single().Message.Should().Be("failed");
     }
 }

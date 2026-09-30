@@ -17,7 +17,7 @@ namespace cCoder.Mail.Services.Foundations;
 internal interface ISentEmailService
 {
     SentEmail GetSentEmail(int iSentEmailId);
-    IQueryable<SentEmail> GetAllSentEmail(bool ignoreFilters = false);
+    IQueryable<SentEmail> GetAllSentEmails(bool ignoreFilters = false);
     ValueTask<SentEmail> AddSentEmailAsync(SentEmail newSentEmail);
     ValueTask<SentEmail> UpdateSentEmailAsync(SentEmail updatedSentEmail);
     ValueTask DeleteAsync(int iSentEmailId);

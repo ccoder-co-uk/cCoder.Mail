@@ -34,8 +34,8 @@ public sealed partial class MailSenderProcessingServiceTests
     public void GetAllMailSenderShouldDelegate()
     {
         IQueryable<MailSender> senders = Array.Empty<MailSender>().AsQueryable();
-        serviceMock.Setup(x => x.GetAllMailSender(true)).Returns(senders);
-        service.GetAllMailSender(true).Should().BeSameAs(senders);
+        serviceMock.Setup(x => x.GetAllMailSenders(true)).Returns(senders);
+        service.GetAllMailSenders(true).Should().BeSameAs(senders);
     }
 
     [Fact]

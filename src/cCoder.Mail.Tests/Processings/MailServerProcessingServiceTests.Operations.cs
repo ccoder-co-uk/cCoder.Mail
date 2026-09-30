@@ -33,7 +33,7 @@ public partial class MailServerProcessingServiceTests
     {
         MailServer server = CreateRandomMailServer(); server.Id = 0;
         mailServerServiceMock.Setup(x => x.AddMailServerAsync(server, false)).ReturnsAsync(server);
-        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResult([server]);
+        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResults([server]);
         results.Single().Success.Should().BeTrue(); results.Single().Message.Should().Be("Added Successfully");
     }
 
@@ -41,9 +41,9 @@ public partial class MailServerProcessingServiceTests
     public async Task AddOrUpdateMailServerResultShouldUpdateExistingServerAsync()
     {
         MailServer server = CreateRandomMailServer();
-        mailServerServiceMock.Setup(x => x.GetAllMailServer(true)).Returns(new[] { server }.AsQueryable());
+        mailServerServiceMock.Setup(x => x.GetAllMailServers(true)).Returns(new[] { server }.AsQueryable());
         mailServerServiceMock.Setup(x => x.UpdateMailServerAsync(server)).ReturnsAsync(server);
-        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResult([server]);
+        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResults([server]);
         results.Single().Success.Should().BeTrue(); results.Single().Message.Should().Be("Updated Successfully");
     }
 
@@ -52,7 +52,7 @@ public partial class MailServerProcessingServiceTests
     {
         MailServer server = CreateRandomMailServer(); server.Id = 0;
         mailServerServiceMock.Setup(x => x.AddMailServerAsync(server, false)).ThrowsAsync(new InvalidOperationException("failed"));
-        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResult([server]);
+        IEnumerable<Result<MailServer>> results = await ((global::cCoder.Mail.Services.Processings.IMailServerProcessingService)mailServerProcessingService).AddOrUpdateMailServerResults([server]);
         results.Single().Success.Should().BeFalse(); results.Single().Message.Should().Be("failed");
     }
 }

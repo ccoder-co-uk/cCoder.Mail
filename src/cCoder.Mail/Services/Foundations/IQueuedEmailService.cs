@@ -21,7 +21,7 @@ internal interface IQueuedEmailService
     User GetCurrentUser();
 
     QueuedEmail GetQueuedEmail(int iQueuedEmailId);
-    IQueryable<QueuedEmail> GetAllQueuedEmail(bool ignoreFilters = false);
+    IQueryable<QueuedEmail> GetAllQueuedEmails(bool ignoreFilters = false);
     QueuedEmail[] GetDispatchBatch(int batchSize, int maxFailures);
     ValueTask<QueuedEmail> AddQueuedEmailAsync(QueuedEmail newQueuedEmail, bool checkPrivileges = true);
     ValueTask<QueuedEmail> UpdateQueuedEmailAsync(QueuedEmail updatedQueuedEmail);
