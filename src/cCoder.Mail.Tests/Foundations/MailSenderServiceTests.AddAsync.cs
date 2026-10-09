@@ -98,8 +98,7 @@ times: Times.Once
         // Then
 
         await action.Should()
-            .ThrowAsync<cCoder.Mail.Providers.Models.Exceptions.MailServiceException>()
-            .WithMessage(expectedWildcardPattern: "The mail service failed.");
+            .ThrowAsync<SecurityException>();
 
         mailSenderBrokerMock.Verify(expression: x => x.GetAppId(entity: It.IsAny<cCoder.Data.Models.Mail.MailSender>()), times: Times.AtMostOnce());
         mailSenderBrokerMock.VerifyNoOtherCalls();

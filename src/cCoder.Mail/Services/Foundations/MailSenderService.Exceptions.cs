@@ -28,6 +28,10 @@ internal partial class MailSenderService
         {
             throw new MailValidationException(innerException: innerException);
         }
+        catch (System.Security.SecurityException)
+        {
+            throw;
+        }
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
@@ -54,6 +58,10 @@ internal partial class MailSenderService
         {
             throw new MailValidationException(innerException: innerException);
         }
+        catch (System.Security.SecurityException)
+        {
+            throw;
+        }
         catch (Exception innerException)
         {
             throw new MailServiceException(innerException: innerException);
@@ -79,6 +87,10 @@ internal partial class MailSenderService
         catch (ArgumentException innerException)
         {
             throw new MailValidationException(innerException: innerException);
+        }
+        catch (System.Security.SecurityException)
+        {
+            throw;
         }
         catch (Exception innerException)
         {
