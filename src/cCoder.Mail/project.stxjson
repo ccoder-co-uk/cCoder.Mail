@@ -12701,6 +12701,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "ThrowsExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -12869,6 +12870,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "ThrowsExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -12993,6 +12995,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "ThrowsExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -13051,6 +13054,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "ThrowsExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -18636,6 +18640,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "IncomingExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -18735,6 +18740,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "IncomingExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -18880,6 +18886,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "IncomingExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
@@ -18930,6 +18937,7 @@
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
           ],
           "IncomingExceptionTypes": [
+            "System.Security.SecurityException",
             "cCoder.Mail.Providers.Models.Exceptions.MailDependencyException",
             "cCoder.Mail.Providers.Models.Exceptions.MailServiceException",
             "cCoder.Mail.Providers.Models.Exceptions.MailValidationException"
