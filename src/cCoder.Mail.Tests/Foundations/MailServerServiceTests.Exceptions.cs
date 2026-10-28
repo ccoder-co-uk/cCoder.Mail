@@ -46,7 +46,7 @@ public partial class MailServerServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public async Task DeleteAllByAppIdAsyncShouldMapExceptionAsync(Exception exception, Type expectedType)
     {
-        mailServerBrokerMock.Setup(x => x.DeleteAllMailServersByAppIdAsync(7)).ThrowsAsync(exception);
+mailServerBrokerMock.Setup(x => x.DeleteAllMailServersByAppIdAsync(7)).Returns(ValueTask.FromException(exception));
         Func<Task> action = async () => await mailServerService.DeleteAllByAppIdAsync(7);
         (await action.Should().ThrowAsync<Exception>()).Which.Should().BeOfType(expectedType);
     }

@@ -46,7 +46,7 @@ public sealed partial class SentEmailOrchestrationServiceTests
     [MemberData(nameof(ExceptionMappings))]
     public async Task DeleteByAppIdAsyncShouldMapExceptionAsync(Exception exception, Type expectedType)
     {
-        sentEmailProcessingServiceMock.Setup(x => x.DeleteByAppIdAsync(7)).ThrowsAsync(exception);
+sentEmailProcessingServiceMock.Setup(x => x.DeleteByAppIdAsync(7)).Returns(ValueTask.FromException(exception));
         Func<Task> action = async () => await orchestrationService.DeleteByAppIdAsync(7);
         (await action.Should().ThrowAsync<Exception>()).Which.Should().BeOfType(expectedType);
     }

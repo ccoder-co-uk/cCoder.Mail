@@ -37,7 +37,7 @@ public sealed partial class QueuedEmailControllerTests
         Exception exception = exceptionType == typeof(MailValidationException)
             ? new MailValidationException(new Exception())
             : (Exception)Activator.CreateInstance(exceptionType);
-        serviceMock.Setup(x => x.RetryAsync(1)).ThrowsAsync(exception);
+serviceMock.Setup(x => x.RetryAsync(1)).Returns(ValueTask.FromException(exception));
 
         ObjectResult result = (ObjectResult)await controller.Post(1);
 

@@ -47,8 +47,10 @@ public partial class QueuedEmailProcessingServiceTests
 
         queuedEmailServiceMock
             .Setup(expression: x => x.DeleteAsync(iQueuedEmailId: email.Id, checkPrivileges: true))
-            .ThrowsAsync(exception: new MailServiceException(
-innerException: new SecurityException(message: "Access Denied!")));
+            .Returns(value: ValueTask.FromException(
+                exception: new MailServiceException(
+                    innerException: new SecurityException(
+                        message: "Access Denied!"))));
 
         // When
         Func<Task> act = async () => await queuedEmailProcessingService.DeleteAllQueuedEmailAsync(deletedQueuedEmail: [email]);

@@ -1310,22 +1310,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -1512,20 +1498,6 @@
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "ToArray",
-              "MethodId": "System.Linq.Enumerable.ToArray(System.Collections.Generic.IEnumerable\u003CTSource\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -1761,22 +1733,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -2161,22 +2119,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -2631,22 +2575,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -2749,36 +2679,15 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "System.Linq.Queryable",
+              "TypeName": "System.Linq.Enumerable",
               "MethodName": "Contains",
-              "MethodId": "System.Linq.Queryable.Contains(System.Linq.IQueryable\u003CTSource\u003E,TSource)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Select",
-              "MethodId": "System.Linq.Queryable.Select(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, TResult\u003E\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
+              "MethodId": "System.Linq.Enumerable.Contains(System.Collections.Generic.IEnumerable\u003CTSource\u003E,TSource)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -2999,34 +2908,6 @@
               "IsDependencyBoundary": true
             },
             {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "Include",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.Include(System.Linq.IQueryable\u003CTEntity\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTEntity, TProperty\u003E\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Enumerable",
-              "MethodName": "ToArray",
-              "MethodId": "System.Linq.Enumerable.ToArray(System.Collections.Generic.IEnumerable\u003CTSource\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Take",
-              "MethodId": "System.Linq.Queryable.Take(System.Linq.IQueryable\u003CTSource\u003E,System.Int32)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
               "TypeName": "cCoder.Data.ICoreContextFactory",
               "MethodName": "CreateCoreContext",
               "MethodId": "cCoder.Data.ICoreContextFactory.CreateCoreContext()",
@@ -3103,22 +2984,8 @@
             },
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "FirstAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.FirstAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "Include",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.Include(System.Linq.IQueryable\u003CTEntity\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTEntity, TProperty\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -3440,22 +3307,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -3557,13 +3410,6 @@
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Any",
-              "MethodId": "System.Linq.Queryable.Any(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
@@ -3900,22 +3746,8 @@
           "Calls": [
             {
               "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
-              "MethodName": "ExecuteDeleteAsync",
-              "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteDeleteAsync(System.Linq.IQueryable\u003CTSource\u003E,System.Threading.CancellationToken)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions",
               "MethodName": "IgnoreQueryFilters",
               "MethodId": "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.IgnoreQueryFilters(System.Linq.IQueryable\u003CTEntity\u003E)",
-              "StandardElementType": "Dependency",
-              "IsDependencyBoundary": true
-            },
-            {
-              "TypeName": "System.Linq.Queryable",
-              "MethodName": "Where",
-              "MethodId": "System.Linq.Queryable.Where(System.Linq.IQueryable\u003CTSource\u003E,System.Linq.Expressions.Expression\u003CSystem.Func\u003CTSource, System.Boolean\u003E\u003E)",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             },
