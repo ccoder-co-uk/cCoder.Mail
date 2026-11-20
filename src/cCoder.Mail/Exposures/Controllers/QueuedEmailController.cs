@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -33,17 +34,18 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             await service.RetryAsync(queuedEmailId: key);
 
-            return NoContent();
+            return loggingBroker.LogSuccessful(
+                result: NoContent());
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -66,17 +68,18 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             await service.DeleteAsync(iQueuedEmailId: key);
 
-            return NoContent();
+            return loggingBroker.LogSuccessful(
+                result: NoContent());
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -105,20 +108,23 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
 
             if (queuedEmail is null)
             {
+                loggingBroker.LogWarning(message: "Requested mail resource was not found.");
+
                 return NotFound();
             }
 
-            return Ok(value: queuedEmail);
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: queuedEmail));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -141,17 +147,18 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
     {
         try
         {
-            return Ok(value: service.GetAllQueuedEmails());
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: service.GetAllQueuedEmails()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -175,22 +182,25 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
-            return StatusCode(
+            return loggingBroker.LogSuccessful(
+                result: StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail));
+                value: await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -216,23 +226,26 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
             updatedQueuedEmail.Id = key;
 
-            return Ok(value: await service.UpdateQueuedEmailAsync(
-                updatedQueuedEmail: updatedQueuedEmail));
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: await service.UpdateQueuedEmailAsync(
+                updatedQueuedEmail: updatedQueuedEmail)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -33,17 +34,18 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
         {
             await service.DeleteAsync(iReceivedEmailId: key);
 
-            return NoContent();
+            return loggingBroker.LogSuccessful(
+                result: NoContent());
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -72,20 +74,23 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
 
             if (receivedEmail is null)
             {
+                loggingBroker.LogWarning(message: "Requested mail resource was not found.");
+
                 return NotFound();
             }
 
-            return Ok(value: receivedEmail);
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: receivedEmail));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -108,17 +113,18 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
     {
         try
         {
-            return Ok(value: service.GetAllReceivedEmails());
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: service.GetAllReceivedEmails()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -142,22 +148,25 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
-            return StatusCode(
+            return loggingBroker.LogSuccessful(
+                result: StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail));
+                value: await service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -183,23 +192,26 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
             updatedReceivedEmail.Id = key;
 
-            return Ok(value: await service.UpdateReceivedEmailAsync(
-                updatedReceivedEmail: updatedReceivedEmail));
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: await service.UpdateReceivedEmailAsync(
+                updatedReceivedEmail: updatedReceivedEmail)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,

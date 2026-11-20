@@ -8,6 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Extensions.Loggings;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Orchestrations;
@@ -31,24 +32,27 @@ public sealed class ReceivedEmailOperationsController(
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
-            return StatusCode(
+            return loggingBroker.LogSuccessful(
+                result: StatusCode(
                 statusCode: StatusCodes.Status201Created,
                 value: await service.ReceiveMailboxReceiveRequestAsync(
                     request: newMailboxReceiveRequest,
-                    cancellationToken: cancellationToken));
+                    cancellationToken: cancellationToken)));
         }
         catch (ArgumentException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
@@ -72,24 +76,27 @@ public sealed class ReceivedEmailOperationsController(
         {
             if (count <= 0)
             {
+                loggingBroker.LogWarning(message: "The mail receive request is invalid.");
+
                 return BadRequest(error: "Count must be greater than zero.");
             }
 
-            return Ok(
+            return loggingBroker.LogSuccessful(
+                result: Ok(
                 value: await service.ReceiveTopAsync(
                     mailReceiverId: mailReceiverId,
                     count: count,
-                    cancellationToken: cancellationToken));
+                    cancellationToken: cancellationToken)));
         }
         catch (ArgumentException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }

@@ -41,6 +41,7 @@ public sealed partial class MailServerControllerTests
     {
         serviceMock.Setup(x => x.DeleteAsync(1)).Returns(ValueTask.CompletedTask);
         (await controller.Delete(1)).Should().BeOfType<NoContentResult>();
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -48,6 +49,7 @@ public sealed partial class MailServerControllerTests
     {
         serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(new[] { new MailServer { Id = 1 } }.AsQueryable());
         controller.Get(1).Should().BeOfType<OkObjectResult>();
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -55,6 +57,7 @@ public sealed partial class MailServerControllerTests
     {
         serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.Get(1).Should().BeOfType<NotFoundResult>();
+        loggerMock.Verify(x => x.LogWarning("Requested mail resource was not found.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -62,6 +65,7 @@ public sealed partial class MailServerControllerTests
     {
         serviceMock.Setup(x => x.GetAllMailServers(false)).Returns(Array.Empty<MailServer>().AsQueryable());
         controller.GetAll().Should().BeOfType<OkObjectResult>();
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -70,6 +74,7 @@ public sealed partial class MailServerControllerTests
         var email = new MailServer(); serviceMock.Setup(x => x.AddMailServerAsync(email)).ReturnsAsync(email);
         ObjectResult result = (ObjectResult)await controller.Post(email);
         result.StatusCode.Should().Be(StatusCodes.Status201Created); result.Value.Should().BeSameAs(email);
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -77,6 +82,7 @@ public sealed partial class MailServerControllerTests
     {
         controller.ModelState.AddModelError("Subject", "Required");
         (await controller.Post(new MailServer())).Should().BeOfType<BadRequestObjectResult>();
+        loggerMock.Verify(x => x.LogWarning("The mail request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -84,6 +90,7 @@ public sealed partial class MailServerControllerTests
     {
         var email = new MailServer(); serviceMock.Setup(x => x.UpdateMailServerAsync(email)).ReturnsAsync(email);
         (await controller.Put(3, email)).Should().BeOfType<OkObjectResult>(); email.Id.Should().Be(3);
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -91,6 +98,7 @@ public sealed partial class MailServerControllerTests
     {
         controller.ModelState.AddModelError("Subject", "Required");
         (await controller.Put(3, new MailServer())).Should().BeOfType<BadRequestObjectResult>();
+        loggerMock.Verify(x => x.LogWarning("The mail request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
 }

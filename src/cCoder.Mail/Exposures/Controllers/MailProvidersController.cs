@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Extensions.Loggings;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +25,14 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetSenders()
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: providerCatalog.GetSenders()
                 .Concat(second: providerCatalog.GetReceivers())
-                .ToArray());
+                .ToArray()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)
@@ -48,11 +50,12 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetSenders());
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: providerCatalog.GetSenders()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)
@@ -70,11 +73,12 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetReceivers());
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: providerCatalog.GetReceivers()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -33,17 +34,18 @@ public partial class MailServerController(IMailServerOrchestrationService servic
         {
             await service.DeleteAsync(iMailServerId: key);
 
-            return NoContent();
+            return loggingBroker.LogSuccessful(
+                result: NoContent());
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -72,20 +74,23 @@ public partial class MailServerController(IMailServerOrchestrationService servic
 
             if (mailServer is null)
             {
+                loggingBroker.LogWarning(message: "Requested mail resource was not found.");
+
                 return NotFound();
             }
 
-            return Ok(value: mailServer);
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: mailServer));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -108,17 +113,18 @@ public partial class MailServerController(IMailServerOrchestrationService servic
     {
         try
         {
-            return Ok(value: service.GetAllMailServers());
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: service.GetAllMailServers()));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -142,22 +148,25 @@ public partial class MailServerController(IMailServerOrchestrationService servic
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
-            return StatusCode(
+            return loggingBroker.LogSuccessful(
+                result: StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddMailServerAsync(newMailServer: newMailServer));
+                value: await service.AddMailServerAsync(newMailServer: newMailServer)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -183,23 +192,26 @@ public partial class MailServerController(IMailServerOrchestrationService servic
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
             updatedMailServer.Id = key;
 
-            return Ok(value: await service.UpdateMailServerAsync(
-                updatedMailServer: updatedMailServer));
+            return loggingBroker.LogSuccessful(
+                result: Ok(value: await service.UpdateMailServerAsync(
+                updatedMailServer: updatedMailServer)));
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,

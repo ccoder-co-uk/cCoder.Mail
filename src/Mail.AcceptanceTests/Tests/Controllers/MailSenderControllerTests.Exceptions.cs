@@ -8,6 +8,7 @@ using System;
 
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -28,6 +29,10 @@ public partial class MailSenderControllerTests
         IActionResult result = controller.Get(key: Guid.Empty);
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
+        if (expectedStatusCode >= StatusCodes.Status500InternalServerError)
+            loggingBrokerMock.Verify(x => x.LogError(exception, "Controller request failed.", It.IsAny<object[]>()), Times.Once);
+        else
+            loggingBrokerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -40,6 +45,10 @@ public partial class MailSenderControllerTests
         IActionResult result = controller.GetAll();
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
+        if (expectedStatusCode >= StatusCodes.Status500InternalServerError)
+            loggingBrokerMock.Verify(x => x.LogError(exception, "Controller request failed.", It.IsAny<object[]>()), Times.Once);
+        else
+            loggingBrokerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -53,6 +62,10 @@ public partial class MailSenderControllerTests
         IActionResult result = await controller.Post(newMailSender: item);
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
+        if (expectedStatusCode >= StatusCodes.Status500InternalServerError)
+            loggingBrokerMock.Verify(x => x.LogError(exception, "Controller request failed.", It.IsAny<object[]>()), Times.Once);
+        else
+            loggingBrokerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -66,6 +79,10 @@ public partial class MailSenderControllerTests
         IActionResult result = await controller.Put(key: Guid.Empty, updatedMailSender: item);
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
+        if (expectedStatusCode >= StatusCodes.Status500InternalServerError)
+            loggingBrokerMock.Verify(x => x.LogError(exception, "Controller request failed.", It.IsAny<object[]>()), Times.Once);
+        else
+            loggingBrokerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -78,6 +95,10 @@ public partial class MailSenderControllerTests
         IActionResult result = await controller.Delete(key: Guid.Empty);
 
         result.Should().BeAssignableTo<IStatusCodeActionResult>().Which.StatusCode.Should().Be(expectedStatusCode);
+        if (expectedStatusCode >= StatusCodes.Status500InternalServerError)
+            loggingBrokerMock.Verify(x => x.LogError(exception, "Controller request failed.", It.IsAny<object[]>()), Times.Once);
+        else
+            loggingBrokerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 }
 
