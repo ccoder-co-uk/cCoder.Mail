@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -34,8 +33,10 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
         {
             await service.DeleteAsync(iMailReceiverId: key);
 
-            return loggingBroker.LogSuccessful(
-                result: NoContent());
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return NoContent();
         }
         catch (MailValidationException exception)
         {
@@ -79,8 +80,10 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
                 return NotFound();
             }
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: mailReceiver));
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: mailReceiver);
         }
         catch (MailValidationException exception)
         {
@@ -113,8 +116,12 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: service.GetAllMailReceivers()));
+            IQueryable<MailReceiver> values = service.GetAllMailReceivers();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
@@ -153,10 +160,14 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
                 return BadRequest(modelState: ModelState);
             }
 
-            return loggingBroker.LogSuccessful(
-                result: StatusCode(
+            MailReceiver value = await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver)));
+                value: value);
         }
         catch (MailValidationException exception)
         {
@@ -199,9 +210,13 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
 
             updatedMailReceiver.Id = key;
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: await service.UpdateMailReceiverAsync(
-                updatedMailReceiver: updatedMailReceiver)));
+            MailReceiver value = await service.UpdateMailReceiverAsync(
+                updatedMailReceiver: updatedMailReceiver);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: value);
         }
         catch (MailValidationException exception)
         {

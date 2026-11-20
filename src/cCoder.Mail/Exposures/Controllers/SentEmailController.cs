@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -34,8 +33,10 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
         {
             await service.DeleteAsync(iSentEmailId: key);
 
-            return loggingBroker.LogSuccessful(
-                result: NoContent());
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return NoContent();
         }
         catch (MailValidationException exception)
         {
@@ -79,8 +80,10 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
                 return NotFound();
             }
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: sentEmail));
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: sentEmail);
         }
         catch (MailValidationException exception)
         {
@@ -113,8 +116,12 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: service.GetAllSentEmails()));
+            IQueryable<SentEmail> values = service.GetAllSentEmails();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
@@ -153,10 +160,14 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
                 return BadRequest(modelState: ModelState);
             }
 
-            return loggingBroker.LogSuccessful(
-                result: StatusCode(
+            SentEmail value = await service.AddSentEmailAsync(newSentEmail: newSentEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddSentEmailAsync(newSentEmail: newSentEmail)));
+                value: value);
         }
         catch (MailValidationException exception)
         {
@@ -199,9 +210,13 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
 
             updatedSentEmail.Id = key;
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: await service.UpdateSentEmailAsync(
-                updatedSentEmail: updatedSentEmail)));
+            SentEmail value = await service.UpdateSentEmailAsync(
+                updatedSentEmail: updatedSentEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: value);
         }
         catch (MailValidationException exception)
         {

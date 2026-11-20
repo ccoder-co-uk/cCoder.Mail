@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Extensions.Loggings;
+using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +25,14 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: providerCatalog.GetSenders()
+            MailProviderSummary[] values = providerCatalog.GetSenders()
                 .Concat(second: providerCatalog.GetReceivers())
-                .ToArray()));
+                .ToArray();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
@@ -50,8 +54,12 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: providerCatalog.GetSenders()));
+            MailProviderSummary[] values = providerCatalog.GetSenders();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
@@ -73,8 +81,12 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: providerCatalog.GetReceivers()));
+            MailProviderSummary[] values = providerCatalog.GetReceivers();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {

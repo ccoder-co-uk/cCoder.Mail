@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Extensions.Loggings;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Orchestrations;
@@ -37,12 +37,16 @@ public sealed class ReceivedEmailOperationsController(
                 return BadRequest(modelState: ModelState);
             }
 
-            return loggingBroker.LogSuccessful(
-                result: StatusCode(
-                statusCode: StatusCodes.Status201Created,
-                value: await service.ReceiveMailboxReceiveRequestAsync(
+            ReceivedEmail[] values = await service.ReceiveMailboxReceiveRequestAsync(
                     request: newMailboxReceiveRequest,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return StatusCode(
+                statusCode: StatusCodes.Status201Created,
+                value: values);
         }
         catch (ArgumentException exception)
         {
@@ -81,12 +85,15 @@ public sealed class ReceivedEmailOperationsController(
                 return BadRequest(error: "Count must be greater than zero.");
             }
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(
-                value: await service.ReceiveTopAsync(
+            ReceivedEmail[] values = await service.ReceiveTopAsync(
                     mailReceiverId: mailReceiverId,
                     count: count,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (ArgumentException exception)
         {

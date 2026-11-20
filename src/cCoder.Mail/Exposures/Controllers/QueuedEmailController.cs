@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using cCoder.Mail.Brokers.Loggings;
-using cCoder.Mail.Extensions.Loggings;
 using cCoder.Data.Extensions;
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.OData;
@@ -34,8 +33,10 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             await service.RetryAsync(queuedEmailId: key);
 
-            return loggingBroker.LogSuccessful(
-                result: NoContent());
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return NoContent();
         }
         catch (MailValidationException exception)
         {
@@ -68,8 +69,10 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
         {
             await service.DeleteAsync(iQueuedEmailId: key);
 
-            return loggingBroker.LogSuccessful(
-                result: NoContent());
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return NoContent();
         }
         catch (MailValidationException exception)
         {
@@ -113,8 +116,10 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
                 return NotFound();
             }
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: queuedEmail));
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: queuedEmail);
         }
         catch (MailValidationException exception)
         {
@@ -147,8 +152,12 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
     {
         try
         {
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: service.GetAllQueuedEmails()));
+            IQueryable<QueuedEmail> values = service.GetAllQueuedEmails();
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
@@ -187,10 +196,14 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
                 return BadRequest(modelState: ModelState);
             }
 
-            return loggingBroker.LogSuccessful(
-                result: StatusCode(
+            QueuedEmail value = await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail)));
+                value: value);
         }
         catch (MailValidationException exception)
         {
@@ -233,9 +246,13 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
 
             updatedQueuedEmail.Id = key;
 
-            return loggingBroker.LogSuccessful(
-                result: Ok(value: await service.UpdateQueuedEmailAsync(
-                updatedQueuedEmail: updatedQueuedEmail)));
+            QueuedEmail value = await service.UpdateQueuedEmailAsync(
+                updatedQueuedEmail: updatedQueuedEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request completed successfully.");
+
+            return Ok(value: value);
         }
         catch (MailValidationException exception)
         {
