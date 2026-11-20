@@ -3,6 +3,8 @@
 // ---------------------------------------------------------------
 
 using System;
+#pragma warning disable STXFORMAT005, STXFORMAT009, STXTEST005
+
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Exposures.Controllers;
 using cCoder.Mail.Providers.Models.Exceptions;
@@ -15,7 +17,7 @@ using Xunit;
 
 namespace cCoder.Mail.Tests.Exposures;
 
-public sealed class MailProvidersControllerTests
+public sealed partial class MailProvidersControllerTests
 {
     [Theory]
     [InlineData("Get")]
@@ -88,3 +90,5 @@ public sealed class MailProvidersControllerTests
             _ => throw new ArgumentOutOfRangeException(nameof(action))
         };
 }
+
+#pragma warning restore STXFORMAT005, STXFORMAT009, STXTEST005

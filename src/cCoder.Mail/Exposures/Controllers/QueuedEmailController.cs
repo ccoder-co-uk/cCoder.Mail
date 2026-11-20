@@ -34,7 +34,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
             await service.RetryAsync(queuedEmailId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -70,7 +70,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
             await service.DeleteAsync(iQueuedEmailId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -117,7 +117,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: queuedEmail);
         }
@@ -155,7 +155,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
             IQueryable<QueuedEmail> values = service.GetAllQueuedEmails();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -199,7 +199,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
             QueuedEmail value = await service.AddQueuedEmailAsync(newQueuedEmail: newQueuedEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -250,7 +250,7 @@ public partial class QueuedEmailController(IQueuedEmailOrchestrationService serv
                 updatedQueuedEmail: updatedQueuedEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

@@ -42,7 +42,7 @@ public sealed class ReceivedEmailOperationsController(
                     cancellationToken: cancellationToken);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -91,7 +91,7 @@ public sealed class ReceivedEmailOperationsController(
                     cancellationToken: cancellationToken);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }

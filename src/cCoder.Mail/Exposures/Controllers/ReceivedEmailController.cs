@@ -34,7 +34,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
             await service.DeleteAsync(iReceivedEmailId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: receivedEmail);
         }
@@ -119,7 +119,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
             IQueryable<ReceivedEmail> values = service.GetAllReceivedEmails();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -163,7 +163,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
             ReceivedEmail value = await service.AddReceivedEmailAsync(newReceivedEmail: newReceivedEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -214,7 +214,7 @@ public partial class ReceivedEmailController(IReceivedEmailProcessingService ser
                 updatedReceivedEmail: updatedReceivedEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

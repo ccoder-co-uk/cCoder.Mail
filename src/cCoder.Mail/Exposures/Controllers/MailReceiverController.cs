@@ -34,7 +34,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
             await service.DeleteAsync(iMailReceiverId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: mailReceiver);
         }
@@ -119,7 +119,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
             IQueryable<MailReceiver> values = service.GetAllMailReceivers();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -163,7 +163,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
             MailReceiver value = await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -214,7 +214,7 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
                 updatedMailReceiver: updatedMailReceiver);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

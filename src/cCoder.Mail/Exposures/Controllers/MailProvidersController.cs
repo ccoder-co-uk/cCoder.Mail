@@ -30,7 +30,7 @@ public sealed class MailProvidersController(
                 .ToArray();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -57,7 +57,7 @@ public sealed class MailProvidersController(
             MailProviderSummary[] values = providerCatalog.GetSenders();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -84,7 +84,7 @@ public sealed class MailProvidersController(
             MailProviderSummary[] values = providerCatalog.GetReceivers();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }

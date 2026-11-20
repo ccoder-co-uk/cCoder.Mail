@@ -34,7 +34,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
             await service.DeleteAsync(iMailServerId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: mailServer);
         }
@@ -119,7 +119,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
             IQueryable<MailServer> values = service.GetAllMailServers();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -163,7 +163,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
             MailServer value = await service.AddMailServerAsync(newMailServer: newMailServer);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -214,7 +214,7 @@ public partial class MailServerController(IMailServerOrchestrationService servic
                 updatedMailServer: updatedMailServer);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

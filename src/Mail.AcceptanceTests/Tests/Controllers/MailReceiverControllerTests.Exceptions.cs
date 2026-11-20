@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 using System;
-#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning disable STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Data.Models.Mail;
 using FluentAssertions;
@@ -102,4 +102,4 @@ public partial class MailReceiverControllerTests
     }
 }
 
-#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning restore STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005

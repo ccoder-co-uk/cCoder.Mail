@@ -34,7 +34,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
             await service.DeleteAsync(iSentEmailId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: sentEmail);
         }
@@ -119,7 +119,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
             IQueryable<SentEmail> values = service.GetAllSentEmails();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -163,7 +163,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
             SentEmail value = await service.AddSentEmailAsync(newSentEmail: newSentEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -214,7 +214,7 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
                 updatedSentEmail: updatedSentEmail);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

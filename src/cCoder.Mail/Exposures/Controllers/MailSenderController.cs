@@ -34,7 +34,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
             await service.DeleteAsync(iMailSenderId: key);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
             }
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: mailSender);
         }
@@ -119,7 +119,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
             IQueryable<MailSender> values = service.GetAllMailSenders();
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: values);
         }
@@ -163,7 +163,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
             MailSender value = await service.AddMailSenderAsync(newMailSender: newMailSender);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
@@ -214,7 +214,7 @@ public partial class MailSenderController(IMailSenderProcessingService service,
                 updatedMailSender: updatedMailSender);
 
             loggingBroker.LogInformation(
-                message: "Controller request completed successfully.");
+                message: "Controller request succeeded.");
 
             return Ok(value: value);
         }

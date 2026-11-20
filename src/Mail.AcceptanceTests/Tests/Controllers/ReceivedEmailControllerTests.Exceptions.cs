@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 using System;
-#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning disable STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using System.Security;
 using cCoder.Data.Models.Mail;
@@ -87,4 +87,4 @@ public sealed partial class ReceivedEmailControllerTests
     }
 }
 
-#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning restore STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
