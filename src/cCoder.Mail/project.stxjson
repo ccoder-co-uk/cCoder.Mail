@@ -22630,17 +22630,28 @@
     {
       "Name": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
       "StandardElementType": "Broker",
-      "LineNumber": 8,
+      "LineNumber": 9,
       "IsPublic": true,
       "Kind": "Interface",
       "BaseType": null,
-      "Interfaces": [],
+      "Interfaces": [
+        {
+          "Id": "cCoder.CodeAnalysis.Contracts:cCoder.CodeAnalysis.Exposures.IUtilityBroker",
+          "FullName": "cCoder.CodeAnalysis.Exposures.IUtilityBroker",
+          "Name": "IUtilityBroker",
+          "Namespace": "cCoder.CodeAnalysis.Exposures",
+          "AssemblyName": "cCoder.CodeAnalysis.Contracts",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
+          "StandardElementType": "Dependency"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
           "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
           "Name": "LogError",
-          "LineNumber": 12,
+          "LineNumber": 13,
           "Inputs": [
             {
               "Name": "exception",
@@ -22673,7 +22684,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
           "Name": "LogInformation",
-          "LineNumber": 10,
+          "LineNumber": 11,
           "Inputs": [
             {
               "Name": "message",
@@ -22702,7 +22713,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
           "Name": "LogWarning",
-          "LineNumber": 11,
+          "LineNumber": 12,
           "Inputs": [
             {
               "Name": "message",
@@ -31784,20 +31795,6 @@
       "Severity": "Warning",
       "Type": "cCoder.Mail.Exposures.Controllers.SentEmailController",
       "LineNumber": 26
-    },
-    {
-      "Code": "STXFORMAT013",
-      "Description": "C# source files must use one consistent line-ending style throughout the project.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Extensions.Loggings.ILoggingBrokerExtensions",
-      "LineNumber": 1
-    },
-    {
-      "Code": "STXFORMAT001",
-      "Description": "Source files must not contain newline characters after the final code token.",
-      "Severity": "Warning",
-      "Type": "cCoder.Mail.Extensions.Loggings.ILoggingBrokerExtensions",
-      "LineNumber": 20
     }
   ]
 }
