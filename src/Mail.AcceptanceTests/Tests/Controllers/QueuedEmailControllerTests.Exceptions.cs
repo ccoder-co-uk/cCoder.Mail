@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 using System;
-#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning disable STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using System.Security;
 using cCoder.Data.Models.Mail;
@@ -32,7 +32,10 @@ public sealed partial class QueuedEmailControllerTests
     {
         serviceMock.Setup(x => x.DeleteAsync(1)).Throws(exception);
         ((ObjectResult)await controller.Delete(1)).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -41,7 +44,10 @@ public sealed partial class QueuedEmailControllerTests
     {
         serviceMock.Setup(x => x.GetAllQueuedEmails(false)).Throws(exception);
         ((ObjectResult)controller.Get(1)).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -50,7 +56,10 @@ public sealed partial class QueuedEmailControllerTests
     {
         serviceMock.Setup(x => x.GetAllQueuedEmails(false)).Throws(exception);
         ((ObjectResult)controller.GetAll()).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -59,7 +68,10 @@ public sealed partial class QueuedEmailControllerTests
     {
         serviceMock.Setup(x => x.AddQueuedEmailAsync(It.IsAny<QueuedEmail>())).Throws(exception);
         ((ObjectResult)await controller.Post(new QueuedEmail())).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -68,8 +80,11 @@ public sealed partial class QueuedEmailControllerTests
     {
         serviceMock.Setup(x => x.UpdateQueuedEmailAsync(It.IsAny<QueuedEmail>())).Throws(exception);
         ((ObjectResult)await controller.Put(1, new QueuedEmail())).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 }
 
-#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning restore STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using cCoder.Mail.Brokers.Loggings;
+using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
 using cCoder.Mail.Services.Foundations;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +25,18 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetSenders()
+            MailProviderSummary[] values = providerCatalog.GetSenders()
                 .Concat(second: providerCatalog.GetReceivers())
-                .ToArray());
+                .ToArray();
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)
@@ -48,11 +54,16 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetSenders());
+            MailProviderSummary[] values = providerCatalog.GetSenders();
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)
@@ -70,11 +81,16 @@ public sealed class MailProvidersController(
     {
         try
         {
-            return Ok(value: providerCatalog.GetReceivers());
+            MailProviderSummary[] values = providerCatalog.GetReceivers();
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
             return BadRequest(error: "Invalid mail provider request.");
         }
         catch (Exception exception)

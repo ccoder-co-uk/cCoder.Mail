@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 using System;
-#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning disable STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using System.Security;
 using cCoder.Mail.Providers.Models.Exceptions;
@@ -26,6 +26,7 @@ public sealed partial class QueuedEmailControllerTests
         IActionResult result = await controller.Post(1);
 
         result.Should().BeOfType<NoContentResult>();
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -42,8 +43,11 @@ public sealed partial class QueuedEmailControllerTests
         ObjectResult result = (ObjectResult)await controller.Post(1);
 
         result.StatusCode.Should().Be(expectedStatus);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (expectedStatus >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 }
 
-#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning restore STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005

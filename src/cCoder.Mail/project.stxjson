@@ -783,7 +783,7 @@
         {
           "Id": "cCoder.Mail.Brokers.Loggings.LoggingBroker.LogError(System.Exception,System.String,System.Object[])",
           "Name": "LogError",
-          "LineNumber": 18,
+          "LineNumber": 21,
           "Inputs": [
             {
               "Name": "exception",
@@ -846,6 +846,45 @@
               "TypeName": "Microsoft.Extensions.Logging.LoggerExtensions",
               "MethodName": "LogInformation",
               "MethodId": "Microsoft.Extensions.Logging.LoggerExtensions.LogInformation(Microsoft.Extensions.Logging.ILogger,System.String?,System.Object?[])",
+              "StandardElementType": "Dependency",
+              "IsDependencyBoundary": true
+            }
+          ],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.LoggingBroker.LogWarning(System.String,System.Object[])",
+          "Name": "LogWarning",
+          "LineNumber": 18,
+          "Inputs": [
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
+          "Implements": [
+            "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])"
+          ],
+          "Calls": [
+            {
+              "TypeName": "Microsoft.Extensions.Logging.LoggerExtensions",
+              "MethodName": "LogWarning",
+              "MethodId": "Microsoft.Extensions.Logging.LoggerExtensions.LogWarning(Microsoft.Extensions.Logging.ILogger,System.String?,System.Object?[])",
               "StandardElementType": "Dependency",
               "IsDependencyBoundary": true
             }
@@ -4148,7 +4187,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.MailProvidersController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 15,
+      "LineNumber": 16,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -4167,7 +4206,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.Get()",
           "Name": "Get",
-          "LineNumber": 23,
+          "LineNumber": 24,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -4211,6 +4250,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4285,7 +4338,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.GetReceivers()",
           "Name": "GetReceivers",
-          "LineNumber": 69,
+          "LineNumber": 80,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -4315,6 +4368,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4382,7 +4449,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailProvidersController.GetSenders()",
           "Name": "GetSenders",
-          "LineNumber": 47,
+          "LineNumber": 53,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -4412,6 +4479,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4539,6 +4620,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Processings.IMailReceiverProcessingService",
               "MethodName": "DeleteAsync",
               "MethodId": "cCoder.Mail.Services.Processings.IMailReceiverProcessingService.DeleteAsync(System.Guid)",
@@ -4614,7 +4709,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Get(System.Guid)",
           "Name": "Get",
-          "LineNumber": 64,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "key",
@@ -4670,6 +4765,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4757,7 +4866,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 107,
+          "LineNumber": 115,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -4787,6 +4896,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4864,7 +4987,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Post(cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Post",
-          "LineNumber": 139,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "newMailReceiver",
@@ -4899,6 +5022,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -4988,7 +5125,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailReceiverController.Put(System.Guid,cCoder.Data.Models.Mail.MailReceiver)",
           "Name": "Put",
-          "LineNumber": 178,
+          "LineNumber": 198,
           "Inputs": [
             {
               "Name": "key",
@@ -5034,6 +5171,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -5183,6 +5334,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Processings.IMailSenderProcessingService",
               "MethodName": "DeleteAsync",
               "MethodId": "cCoder.Mail.Services.Processings.IMailSenderProcessingService.DeleteAsync(System.Guid)",
@@ -5258,7 +5423,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Get(System.Guid)",
           "Name": "Get",
-          "LineNumber": 64,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "key",
@@ -5314,6 +5479,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -5401,7 +5580,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 107,
+          "LineNumber": 115,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -5431,6 +5610,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -5508,7 +5701,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Post(cCoder.Data.Models.Mail.MailSender)",
           "Name": "Post",
-          "LineNumber": 139,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "newMailSender",
@@ -5543,6 +5736,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -5632,7 +5839,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailSenderController.Put(System.Guid,cCoder.Data.Models.Mail.MailSender)",
           "Name": "Put",
-          "LineNumber": 178,
+          "LineNumber": 198,
           "Inputs": [
             {
               "Name": "key",
@@ -5678,6 +5885,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -5827,6 +6048,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Orchestrations.IMailServerOrchestrationService",
               "MethodName": "DeleteAsync",
               "MethodId": "cCoder.Mail.Services.Orchestrations.IMailServerOrchestrationService.DeleteAsync(System.Int32)",
@@ -5902,7 +6137,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 64,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "key",
@@ -5958,6 +6193,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6045,7 +6294,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 107,
+          "LineNumber": 115,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -6075,6 +6324,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6152,7 +6415,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Post(cCoder.Data.Models.Mail.MailServer)",
           "Name": "Post",
-          "LineNumber": 139,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "newMailServer",
@@ -6187,6 +6450,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6276,7 +6553,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.MailServerController.Put(System.Int32,cCoder.Data.Models.Mail.MailServer)",
           "Name": "Put",
-          "LineNumber": 178,
+          "LineNumber": 198,
           "Inputs": [
             {
               "Name": "key",
@@ -6322,6 +6599,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6432,7 +6723,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Delete(System.Int32)",
           "Name": "Delete",
-          "LineNumber": 63,
+          "LineNumber": 66,
           "Inputs": [
             {
               "Name": "key",
@@ -6467,6 +6758,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6546,7 +6851,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 97,
+          "LineNumber": 103,
           "Inputs": [
             {
               "Name": "key",
@@ -6602,6 +6907,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6689,7 +7008,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 140,
+          "LineNumber": 151,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -6719,6 +7038,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -6835,6 +7168,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Orchestrations.IQueuedEmailOrchestrationService",
               "MethodName": "RetryAsync",
               "MethodId": "cCoder.Mail.Services.Orchestrations.IQueuedEmailOrchestrationService.RetryAsync(System.Int32)",
@@ -6909,7 +7256,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Post(cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Post",
-          "LineNumber": 172,
+          "LineNumber": 188,
           "Inputs": [
             {
               "Name": "newQueuedEmail",
@@ -6944,6 +7291,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7033,7 +7394,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.QueuedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.QueuedEmail)",
           "Name": "Put",
-          "LineNumber": 211,
+          "LineNumber": 234,
           "Inputs": [
             {
               "Name": "key",
@@ -7079,6 +7440,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7228,6 +7603,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Processings.IReceivedEmailProcessingService",
               "MethodName": "DeleteAsync",
               "MethodId": "cCoder.Mail.Services.Processings.IReceivedEmailProcessingService.DeleteAsync(System.Int32)",
@@ -7303,7 +7692,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 64,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "key",
@@ -7359,6 +7748,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7446,7 +7849,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 107,
+          "LineNumber": 115,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -7476,6 +7879,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7553,7 +7970,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Post(cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Post",
-          "LineNumber": 139,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "newReceivedEmail",
@@ -7588,6 +8005,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7677,7 +8108,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailController.Put(System.Int32,cCoder.Data.Models.Mail.ReceivedEmail)",
           "Name": "Put",
-          "LineNumber": 178,
+          "LineNumber": 198,
           "Inputs": [
             {
               "Name": "key",
@@ -7723,6 +8154,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7814,7 +8259,7 @@
     {
       "Name": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController",
       "StandardElementType": "HttpExposure",
-      "LineNumber": 18,
+      "LineNumber": 19,
       "IsPublic": true,
       "Kind": "Class",
       "BaseType": {
@@ -7833,7 +8278,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController.Get(System.Guid,System.Int32,System.Threading.CancellationToken)",
           "Name": "Get",
-          "LineNumber": 66,
+          "LineNumber": 74,
           "Inputs": [
             {
               "Name": "mailReceiverId",
@@ -7876,6 +8321,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -7963,7 +8422,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.ReceivedEmailOperationsController.Post(cCoder.Mail.Providers.Models.MailboxReceiveRequest,System.Threading.CancellationToken)",
           "Name": "Post",
-          "LineNumber": 26,
+          "LineNumber": 27,
           "Inputs": [
             {
               "Name": "newMailboxReceiveRequest",
@@ -8002,6 +8461,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -8150,6 +8623,20 @@
               "IsDependencyBoundary": false
             },
             {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
               "TypeName": "cCoder.Mail.Services.Orchestrations.ISentEmailOrchestrationService",
               "MethodName": "DeleteAsync",
               "MethodId": "cCoder.Mail.Services.Orchestrations.ISentEmailOrchestrationService.DeleteAsync(System.Int32)",
@@ -8225,7 +8712,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Get(System.Int32)",
           "Name": "Get",
-          "LineNumber": 64,
+          "LineNumber": 67,
           "Inputs": [
             {
               "Name": "key",
@@ -8281,6 +8768,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -8368,7 +8869,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.GetAll()",
           "Name": "GetAll",
-          "LineNumber": 107,
+          "LineNumber": 115,
           "Inputs": [],
           "ReturnType": "Microsoft.AspNetCore.Mvc.IActionResult",
           "Implements": [],
@@ -8398,6 +8899,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -8475,7 +8990,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Post(cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Post",
-          "LineNumber": 139,
+          "LineNumber": 152,
           "Inputs": [
             {
               "Name": "newSentEmail",
@@ -8510,6 +9025,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -8599,7 +9128,7 @@
         {
           "Id": "cCoder.Mail.Exposures.Controllers.SentEmailController.Put(System.Int32,cCoder.Data.Models.Mail.SentEmail)",
           "Name": "Put",
-          "LineNumber": 178,
+          "LineNumber": 198,
           "Inputs": [
             {
               "Name": "key",
@@ -8645,6 +9174,20 @@
               "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
               "MethodName": "LogError",
               "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogInformation",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
+              "StandardElementType": "Broker",
+              "IsDependencyBoundary": false
+            },
+            {
+              "TypeName": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
+              "MethodName": "LogWarning",
+              "MethodId": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
               "StandardElementType": "Broker",
               "IsDependencyBoundary": false
             },
@@ -22328,17 +22871,28 @@
     {
       "Name": "cCoder.Mail.Brokers.Loggings.ILoggingBroker",
       "StandardElementType": "Broker",
-      "LineNumber": 8,
+      "LineNumber": 9,
       "IsPublic": true,
       "Kind": "Interface",
       "BaseType": null,
-      "Interfaces": [],
+      "Interfaces": [
+        {
+          "Id": "cCoder.CodeAnalysis.Contracts:cCoder.CodeAnalysis.Exposures.IUtilityBroker",
+          "FullName": "cCoder.CodeAnalysis.Exposures.IUtilityBroker",
+          "Name": "IUtilityBroker",
+          "Namespace": "cCoder.CodeAnalysis.Exposures",
+          "AssemblyName": "cCoder.CodeAnalysis.Contracts",
+          "Kind": "Interface",
+          "IsInCurrentProject": false,
+          "StandardElementType": "Dependency"
+        }
+      ],
       "Properties": [],
       "Methods": [
         {
           "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogError(System.Exception,System.String,System.Object[])",
           "Name": "LogError",
-          "LineNumber": 11,
+          "LineNumber": 13,
           "Inputs": [
             {
               "Name": "exception",
@@ -22371,7 +22925,36 @@
         {
           "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogInformation(System.String,System.Object[])",
           "Name": "LogInformation",
-          "LineNumber": 10,
+          "LineNumber": 11,
+          "Inputs": [
+            {
+              "Name": "message",
+              "Type": "System.String"
+            },
+            {
+              "Name": "args",
+              "Type": "System.Object[]"
+            }
+          ],
+          "ReturnType": "System.Void",
+          "Implements": [],
+          "Calls": [],
+          "PossibleExceptionTypes": [],
+          "IncomingExceptionTypes": [],
+          "ThrowsExceptionTypes": [],
+          "HttpMethods": [],
+          "HttpResponses": [],
+          "IsHttpRequestHandler": false,
+          "IsODataControllerAction": false,
+          "HasFromBodyParameter": false,
+          "HasKeyParameter": false,
+          "HandlesNullWithNotFound": false,
+          "HasTryCatch": false
+        },
+        {
+          "Id": "cCoder.Mail.Brokers.Loggings.ILoggingBroker.LogWarning(System.String,System.Object[])",
+          "Name": "LogWarning",
+          "LineNumber": 12,
           "Inputs": [
             {
               "Name": "message",

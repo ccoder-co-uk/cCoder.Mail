@@ -33,17 +33,20 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
         {
             await service.DeleteAsync(iSentEmailId: key);
 
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
             return NoContent();
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -72,20 +75,25 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
 
             if (sentEmail is null)
             {
+                loggingBroker.LogWarning(message: "Requested mail resource was not found.");
+
                 return NotFound();
             }
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
 
             return Ok(value: sentEmail);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -108,17 +116,22 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
     {
         try
         {
-            return Ok(value: service.GetAllSentEmails());
+            IQueryable<SentEmail> values = service.GetAllSentEmails();
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -142,22 +155,29 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
+            SentEmail value = await service.AddSentEmailAsync(newSentEmail: newSentEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddSentEmailAsync(newSentEmail: newSentEmail));
+                value: value);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -183,23 +203,30 @@ public partial class SentEmailController(ISentEmailOrchestrationService service,
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
             updatedSentEmail.Id = key;
 
-            return Ok(value: await service.UpdateSentEmailAsync(
-                updatedSentEmail: updatedSentEmail));
+            SentEmail value = await service.UpdateSentEmailAsync(
+                updatedSentEmail: updatedSentEmail);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: value);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,

@@ -33,17 +33,20 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
         {
             await service.DeleteAsync(iMailReceiverId: key);
 
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
             return NoContent();
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -72,20 +75,25 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
 
             if (mailReceiver is null)
             {
+                loggingBroker.LogWarning(message: "Requested mail resource was not found.");
+
                 return NotFound();
             }
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
 
             return Ok(value: mailReceiver);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -108,17 +116,22 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
     {
         try
         {
-            return Ok(value: service.GetAllMailReceivers());
+            IQueryable<MailReceiver> values = service.GetAllMailReceivers();
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -142,22 +155,29 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
+            MailReceiver value = await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.AddMailReceiverAsync(newMailReceiver: newMailReceiver));
+                value: value);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,
@@ -183,23 +203,30 @@ public partial class MailReceiverController(IMailReceiverProcessingService servi
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
             updatedMailReceiver.Id = key;
 
-            return Ok(value: await service.UpdateMailReceiverAsync(
-                updatedMailReceiver: updatedMailReceiver));
+            MailReceiver value = await service.UpdateMailReceiverAsync(
+                updatedMailReceiver: updatedMailReceiver);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: value);
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail request is invalid.");
         }
         catch (System.Security.SecurityException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return StatusCode(
                 statusCode: StatusCodes.Status403Forbidden,

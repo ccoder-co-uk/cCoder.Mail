@@ -5,7 +5,7 @@
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-#pragma warning disable STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning disable STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005
 
 using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.Loggings;
@@ -36,6 +36,7 @@ public sealed partial class ReceivedEmailOperationsControllerTests
         serviceMock.Setup(x => x.ReceiveMailboxReceiveRequestAsync(request, CancellationToken.None)).ReturnsAsync(emails);
         ObjectResult result = (ObjectResult)await controller.Post(request, CancellationToken.None);
         result.StatusCode.Should().Be(StatusCodes.Status201Created); result.Value.Should().BeSameAs(emails);
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -43,6 +44,7 @@ public sealed partial class ReceivedEmailOperationsControllerTests
     {
         controller.ModelState.AddModelError("Provider", "Required");
         (await controller.Post(new MailboxReceiveRequest(), CancellationToken.None)).Should().BeOfType<BadRequestObjectResult>();
+        loggerMock.Verify(x => x.LogWarning("The mail request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -54,7 +56,10 @@ public sealed partial class ReceivedEmailOperationsControllerTests
         Exception exception = exceptionType == typeof(MailValidationException) ? new MailValidationException(new Exception()) : (Exception)Activator.CreateInstance(exceptionType);
         serviceMock.Setup(x => x.ReceiveMailboxReceiveRequestAsync(It.IsAny<MailboxReceiveRequest>(), CancellationToken.None)).ThrowsAsync(exception);
         ((ObjectResult)await controller.Post(new MailboxReceiveRequest(), CancellationToken.None)).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -63,12 +68,14 @@ public sealed partial class ReceivedEmailOperationsControllerTests
         Guid id = Guid.NewGuid(); ReceivedEmail[] emails = [new() { Id = 1 }];
         serviceMock.Setup(x => x.ReceiveTopAsync(id, 2, CancellationToken.None)).ReturnsAsync(emails);
         ((OkObjectResult)await controller.Get(id, 2, CancellationToken.None)).Value.Should().BeSameAs(emails);
+        loggerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
     public async Task GetShouldReturnBadRequestForInvalidCountAsync()
     {
         (await controller.Get(Guid.NewGuid(), 0, CancellationToken.None)).Should().BeOfType<BadRequestObjectResult>();
+        loggerMock.Verify(x => x.LogWarning("The mail receive request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Theory]
@@ -80,8 +87,11 @@ public sealed partial class ReceivedEmailOperationsControllerTests
         Exception exception = exceptionType == typeof(MailValidationException) ? new MailValidationException(new Exception()) : (Exception)Activator.CreateInstance(exceptionType);
         serviceMock.Setup(x => x.ReceiveTopAsync(It.IsAny<Guid>(), 2, CancellationToken.None)).ThrowsAsync(exception);
         ((ObjectResult)await controller.Get(Guid.NewGuid(), 2, CancellationToken.None)).StatusCode.Should().Be(statusCode);
-        loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            loggerMock.Verify(x => x.LogError(exception, "Controller request failed."), Times.Once);
+        else
+            loggerMock.Verify(x => x.LogWarning(exception.Message, It.IsAny<object[]>()), Times.Once);
     }
 }
 
-#pragma warning restore STXFORMAT005, STXFORMAT008, STXFORMAT009, STXTEST005
+#pragma warning restore STXFORMAT003, STXFORMAT005, STXFORMAT007, STXFORMAT008, STXFORMAT009, STXTEST005

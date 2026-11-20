@@ -29,6 +29,7 @@ public partial class MailReceiverControllerTests
         IActionResult result = controller.Get(key: mailReceiver.Id);
 
         result.Should().BeOfType<OkObjectResult>();
+        loggingBrokerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -40,6 +41,43 @@ public partial class MailReceiverControllerTests
         IActionResult result = controller.Get(key: Guid.Empty);
 
         result.Should().BeOfType<NotFoundResult>();
+        loggingBrokerMock.Verify(x => x.LogWarning("Requested mail resource was not found.", It.IsAny<object[]>()), Times.Once);
+    }
+
+    [Fact]
+    public void ShouldReturnMailReceiversWhenGetAllSucceeds()
+    {
+        mailReceiverManagerMock.Setup(service => service.GetAllMailReceivers(false))
+            .Returns(Array.Empty<MailReceiver>().AsQueryable());
+
+        IActionResult result = controller.GetAll();
+
+        result.Should().BeOfType<OkObjectResult>();
+        loggingBrokerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ShouldReturnCreatedMailReceiverWhenPostSucceedsAsync()
+    {
+        MailReceiver receiver = new();
+        mailReceiverManagerMock.Setup(service => service.AddMailReceiverAsync(receiver)).ReturnsAsync(receiver);
+
+        IActionResult result = await controller.Post(receiver);
+
+        result.Should().BeAssignableTo<ObjectResult>().Which.StatusCode.Should().Be(StatusCodes.Status201Created);
+        loggingBrokerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ShouldReturnUpdatedMailReceiverWhenPutSucceedsAsync()
+    {
+        MailReceiver receiver = new();
+        mailReceiverManagerMock.Setup(service => service.UpdateMailReceiverAsync(receiver)).ReturnsAsync(receiver);
+
+        IActionResult result = await controller.Put(Guid.Empty, receiver);
+
+        result.Should().BeOfType<OkObjectResult>();
+        loggingBrokerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -50,6 +88,7 @@ public partial class MailReceiverControllerTests
         IActionResult result = await controller.Post(newMailReceiver: new MailReceiver());
 
         result.Should().BeAssignableTo<BadRequestObjectResult>();
+        loggingBrokerMock.Verify(x => x.LogWarning("The mail request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -60,6 +99,7 @@ public partial class MailReceiverControllerTests
         IActionResult result = await controller.Put(key: Guid.Empty, updatedMailReceiver: new MailReceiver());
 
         result.Should().BeAssignableTo<BadRequestObjectResult>();
+        loggingBrokerMock.Verify(x => x.LogWarning("The mail request is invalid.", It.IsAny<object[]>()), Times.Once);
     }
 
     [Fact]
@@ -71,6 +111,7 @@ public partial class MailReceiverControllerTests
         IActionResult result = await controller.Delete(key: Guid.Empty);
 
         result.Should().BeOfType<NoContentResult>();
+        loggingBrokerMock.Verify(x => x.LogInformation("Controller request succeeded.", It.IsAny<object[]>()), Times.Once);
     }
 }
 

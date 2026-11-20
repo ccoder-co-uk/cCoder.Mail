@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using cCoder.Data.Models.Mail;
 using cCoder.Mail.Brokers.Loggings;
 using cCoder.Mail.Models;
 using cCoder.Mail.Providers.Models.Exceptions;
@@ -31,24 +32,31 @@ public sealed class ReceivedEmailOperationsController(
         {
             if (!ModelState.IsValid)
             {
+                loggingBroker.LogWarning(message: "The mail request is invalid.");
+
                 return BadRequest(modelState: ModelState);
             }
 
+            ReceivedEmail[] values = await service.ReceiveMailboxReceiveRequestAsync(
+                    request: newMailboxReceiveRequest,
+                    cancellationToken: cancellationToken);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
             return StatusCode(
                 statusCode: StatusCodes.Status201Created,
-                value: await service.ReceiveMailboxReceiveRequestAsync(
-                    request: newMailboxReceiveRequest,
-                    cancellationToken: cancellationToken));
+                value: values);
         }
         catch (ArgumentException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
@@ -72,24 +80,30 @@ public sealed class ReceivedEmailOperationsController(
         {
             if (count <= 0)
             {
+                loggingBroker.LogWarning(message: "The mail receive request is invalid.");
+
                 return BadRequest(error: "Count must be greater than zero.");
             }
 
-            return Ok(
-                value: await service.ReceiveTopAsync(
+            ReceivedEmail[] values = await service.ReceiveTopAsync(
                     mailReceiverId: mailReceiverId,
                     count: count,
-                    cancellationToken: cancellationToken));
+                    cancellationToken: cancellationToken);
+
+            loggingBroker.LogInformation(
+                message: "Controller request succeeded.");
+
+            return Ok(value: values);
         }
         catch (ArgumentException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
         catch (MailValidationException exception)
         {
-            loggingBroker.LogError(exception: exception, message: "Controller request failed.");
+            loggingBroker.LogWarning(message: exception.Message);
 
             return BadRequest(error: "The mail receive request is invalid.");
         }
